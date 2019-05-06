@@ -2,73 +2,115 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFED214935
-	for <lists+linux-unionfs@lfdr.de>; Mon,  6 May 2019 13:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C137014936
+	for <lists+linux-unionfs@lfdr.de>; Mon,  6 May 2019 13:57:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725852AbfEFL5U (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 6 May 2019 07:57:20 -0400
-Received: from mail-it1-f195.google.com ([209.85.166.195]:52554 "EHLO
-        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725827AbfEFL5U (ORCPT
+        id S1725853AbfEFL5X (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 6 May 2019 07:57:23 -0400
+Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:36377 "EHLO
+        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725827AbfEFL5X (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 6 May 2019 07:57:20 -0400
-Received: by mail-it1-f195.google.com with SMTP id q65so18279633itg.2
-        for <linux-unionfs@vger.kernel.org>; Mon, 06 May 2019 04:57:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=s1IpoUDGK+xfBvzrXvSA3aVuNuuuS7Q2B8vJFGaWnhE=;
-        b=Ljhy2kH/QCdBpk5hiyT+huW3Rvc54rD3SqCuuwqkwjbm+pscoMcTC+qE/mW+Ti+lFe
-         RJfdGedIg1wHMk4uLnaLqjlZFfv5IzK2je9HTmpHf48lRrDZTWvsZ0oJZ/GylZVuS3PP
-         mP8qVFy0Pb40H3Xpk2CCU/qgAG4yr0pUOAsVY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=s1IpoUDGK+xfBvzrXvSA3aVuNuuuS7Q2B8vJFGaWnhE=;
-        b=uZ7Pk/zkRwb3f3yU0DSE330vq/Udi54tM+faODNqvph4h3pYFS1Dy8Q3HOgUgmINQv
-         AjsuOxeIw6ig7B/QEneAT+I/8IO5fYziI5woxTfxQO80ZI8OGYE8pTGI6if/mbYYivFo
-         bm8cWtDHqal1jf60wg7dfolL7dpOhfh1UmfttfAJOT6fejeoH7VuqoxTpdbOaYtwVE8h
-         9rt04UVEXvgTEVgbF8FxgjIxbFolacT4wh/jiu0H1KwjB8vkZRZg+2BEWr/gjrp7QBfz
-         mTsQjeK7efWIwzIJZj4udFBAPvjMCedpUPjQLW7HUvT3JdUGra4J2FJfe+tjPLg1/sDD
-         0VnQ==
-X-Gm-Message-State: APjAAAU2pAs7ODCxOINHquDn4NvBaAHLiNst75P6Z2XRriclTA2JiQxY
-        NqcFISBucKZZAKZEVNXXv2lfLm2ruIHPr8LRdPD3sg==
-X-Google-Smtp-Source: APXvYqxWpw3FJjtAf3ioRcSbbNFGDGkoAUD0UAcJMhw3XNpuaqBzwKd7uPSHSI8lLllRLZC4xhHUcftIC0v9j9mz6oU=
-X-Received: by 2002:a24:b342:: with SMTP id z2mr15979857iti.121.1557143839552;
- Mon, 06 May 2019 04:57:19 -0700 (PDT)
+        Mon, 6 May 2019 07:57:23 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e07487;MF=jiufei.xue@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0TR2GMcP_1557143839;
+Received: from localhost(mailfrom:jiufei.xue@linux.alibaba.com fp:SMTPD_---0TR2GMcP_1557143839)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 06 May 2019 19:57:20 +0800
+From:   Jiufei Xue <jiufei.xue@linux.alibaba.com>
+To:     linux-unionfs@vger.kernel.org
+Cc:     miklos@szeredi.hu, amir73il@gmail.com, joseph.qi@linux.alibaba.com
+Subject: [PATCH v2] overlayfs: check the capability before cred overridden
+Date:   Mon,  6 May 2019 19:57:19 +0800
+Message-Id: <20190506115719.123863-1-jiufei.xue@linux.alibaba.com>
+X-Mailer: git-send-email 2.19.1.856.g8858448bb
 MIME-Version: 1.0
-References: <20190227113211.28006-1-amir73il@gmail.com>
-In-Reply-To: <20190227113211.28006-1-amir73il@gmail.com>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Mon, 6 May 2019 07:57:08 -0400
-Message-ID: <CAJfpegsD8DWW4d8yFxbL57cUHehE8AoiDU-OyB-FCMZ6+3nONA@mail.gmail.com>
-Subject: Re: [PATCH v2] ovl: support stacked SEEK_HOLE/SEEK_DATA
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Eddie Horng <eddiehorng.tw@gmail.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, Feb 27, 2019 at 7:32 AM Amir Goldstein <amir73il@gmail.com> wrote:
->
-> Overlay file f_pos is the master copy that is preserved
-> through copy up and modified on read/write, but only real
-> fs knows how to SEEK_HOLE/SEEK_DATA and real fs may impose
-> limitations that are more strict than ->s_maxbytes for specific
-> files, so we use the real file to perform seeks.
->
-> We do not call real fs for SEEK_CUR:0 query and for SEEK_SET:0
-> requests.
->
-> Fixes: d1d04ef8572b ("ovl: stack file ops")
-> Reported-by: Eddie Horng <eddiehorng.tw@gmail.com>
-> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+We found that it return success when we set IMMUTABLE_FL flag to a
+file in docker even though the docker didn't have the capability
+CAP_LINUX_IMMUTABLE.
 
-Thanks, applied.
+The commit d1d04ef8572b ("ovl: stack file ops") and
+dab5ca8fd9dd ("ovl: add lsattr/chattr support") implemented chattr
+operations on a regular overlay file. ovl_real_ioctl() overridden the
+current process's subjective credentials with ofs->creator_cred which
+have the capability CAP_LINUX_IMMUTABLE so that it will return success
+in vfs_ioctl()->cap_capable().
 
-Miklos
+Fix this by checking the capability before cred overriden. And here we
+only care about APPEND_FL and IMMUTABLE_FL, so get these information from
+inode.
+
+Changes since v1:
+ - remove S_DIRSYNC since ovl_copyflags() does not copy FS_DIRSYNC_FL,
+   pointed out by Amir Goldstein.
+
+Signed-off-by: Jiufei Xue <jiufei.xue@linux.alibaba.com>
+---
+ fs/overlayfs/file.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+index 84dd957efa24..b5aee3c12579 100644
+--- a/fs/overlayfs/file.c
++++ b/fs/overlayfs/file.c
+@@ -11,6 +11,7 @@
+ #include <linux/mount.h>
+ #include <linux/xattr.h>
+ #include <linux/uio.h>
++#include <linux/uaccess.h>
+ #include "overlayfs.h"
+ 
+ static char ovl_whatisit(struct inode *inode, struct inode *realinode)
+@@ -372,10 +373,28 @@ static long ovl_real_ioctl(struct file *file, unsigned int cmd,
+ 	return ret;
+ }
+ 
++static unsigned int ovl_get_inode_flags(struct inode *inode)
++{
++	unsigned int flags = inode->i_flags;
++	unsigned int ovl_iflags = 0;
++
++	if (flags & S_SYNC)
++		ovl_iflags |= FS_SYNC_FL;
++	if (flags & S_APPEND)
++		ovl_iflags |= FS_APPEND_FL;
++	if (flags & S_IMMUTABLE)
++		ovl_iflags |= FS_IMMUTABLE_FL;
++	if (flags & S_NOATIME)
++		ovl_iflags |= FS_NOATIME_FL;
++
++	return ovl_iflags;
++}
++
+ static long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	long ret;
+ 	struct inode *inode = file_inode(file);
++	unsigned int flags;
+ 
+ 	switch (cmd) {
+ 	case FS_IOC_GETFLAGS:
+@@ -386,6 +405,15 @@ static long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 		if (!inode_owner_or_capable(inode))
+ 			return -EACCES;
+ 
++		if (get_user(flags, (int __user *) arg))
++			return -EFAULT;
++
++		/* Check the capability before cred overridden */
++		if ((flags ^ ovl_get_inode_flags(inode)) & (FS_APPEND_FL | FS_IMMUTABLE_FL)) {
++			if (!capable(CAP_LINUX_IMMUTABLE))
++				return -EPERM;
++		}
++
+ 		ret = mnt_want_write_file(file);
+ 		if (ret)
+ 			return ret;
+-- 
+2.19.1.856.g8858448bb
+
