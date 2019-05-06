@@ -2,100 +2,113 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F311A13F3F
-	for <lists+linux-unionfs@lfdr.de>; Sun,  5 May 2019 13:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A74314571
+	for <lists+linux-unionfs@lfdr.de>; Mon,  6 May 2019 09:41:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727479AbfEELw1 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 5 May 2019 07:52:27 -0400
-Received: from out30-42.freemail.mail.aliyun.com ([115.124.30.42]:37136 "EHLO
-        out30-42.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725811AbfEELw1 (ORCPT
+        id S1725864AbfEFHlF (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 6 May 2019 03:41:05 -0400
+Received: from out30-132.freemail.mail.aliyun.com ([115.124.30.132]:58265 "EHLO
+        out30-132.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725851AbfEFHlF (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 5 May 2019 07:52:27 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04420;MF=jiufei.xue@linux.alibaba.com;NM=1;PH=DS;RN=3;SR=0;TI=SMTPD_---0TQwBZ1I_1557057142;
-Received: from ali-186590e05fa3.local(mailfrom:jiufei.xue@linux.alibaba.com fp:SMTPD_---0TQwBZ1I_1557057142)
+        Mon, 6 May 2019 03:41:05 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e07487;MF=jiufei.xue@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0TR.iKh7_1557128462;
+Received: from localhost(mailfrom:jiufei.xue@linux.alibaba.com fp:SMTPD_---0TR.iKh7_1557128462)
           by smtp.aliyun-inc.com(127.0.0.1);
-          Sun, 05 May 2019 19:52:22 +0800
-Subject: =?UTF-8?Q?Re=3a_=5bbug_report=5d_chattr_+i_succeed_in_docker_which_?=
- =?UTF-8?Q?don=e2=80=98t_have_the_capability_CAP=5fLINUX=5fIMMUTABLE?=
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        overlayfs <linux-unionfs@vger.kernel.org>
-References: <3393f96c-e9a7-2882-f210-81a9c332a138@linux.alibaba.com>
- <CAOQ4uxgkO23o8yPdeu060oeU6CwhvQs9f+R0qFEiQGLA1SdL6w@mail.gmail.com>
+          Mon, 06 May 2019 15:41:02 +0800
 From:   Jiufei Xue <jiufei.xue@linux.alibaba.com>
-Message-ID: <fd271b51-0d24-41fc-6e31-28c1917479b9@linux.alibaba.com>
-Date:   Sun, 5 May 2019 19:52:22 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0)
- Gecko/20100101 Thunderbird/60.6.1
+To:     cgroups@vger.kernel.org, linux-unionfs@vger.kernel.org
+Cc:     miklos@szeredi.hu, amir73il@gmail.com, joseph.qi@linux.alibaba.com
+Subject: [PATCH] overlayfs: check the capability before cred overridden
+Date:   Mon,  6 May 2019 15:41:02 +0800
+Message-Id: <20190506074102.87444-1-jiufei.xue@linux.alibaba.com>
+X-Mailer: git-send-email 2.19.1.856.g8858448bb
 MIME-Version: 1.0
-In-Reply-To: <CAOQ4uxgkO23o8yPdeu060oeU6CwhvQs9f+R0qFEiQGLA1SdL6w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
+We found that it return success when we set IMMUTABLE_FL flag to a
+file in docker even though the docker didn't have the capability
+CAP_LINUX_IMMUTABLE.
 
+The commit d1d04ef8572b ("ovl: stack file ops") and
+dab5ca8fd9dd ("ovl: add lsattr/chattr support") implemented chattr
+operations on a regular overlay file. ovl_real_ioctl() overridden the
+current process's subjective credentials with ofs->creator_cred which
+have the capability CAP_LINUX_IMMUTABLE so that it will return success
+in vfs_ioctl()->cap_capable().
 
-On 2019/5/5 下午6:44, Amir Goldstein wrote:
-> On Sun, May 5, 2019 at 12:27 PM Jiufei Xue <jiufei.xue@linux.alibaba.com> wrote:
->>
->> Hi,
->>
->> We are using kernel v4.19.24 and have found that it can be successful
->> when we set IMMUTABLE_FL flag to a file in docker while the docker
->> didn't have the capability CAP_LINUX_IMMUTABLE.
->>
->> # touch tmp
->> # chattr +i tmp
->> # lsattr tmp
->> ----i--------e-- tmp
->>
->> We have tested this case in older version such as 4.9 and it returned
->> -EPERM as expected.
->>
->> We found that the commit d1d04ef8572b ("ovl: stack file ops") and
->> dab5ca8fd9dd ("ovl: add lsattr/chattr support") implemented chattr
->> operations on a regular overlay file. ovl_real_ioctl() overridden the
->> current process's subjective credentials with ofs->creator_cred which
->> have the capability CAP_LINUX_IMMUTABLE so that it will return success
->> in vfs_ioctl()->cap_capable().
->>
->> I wondered is this kind of mechanism of overlayfs or a bug?
->>
-> 
-> It's a bug, but I am not sure how to fix it.
-> If we want to check IMMUTABLE_FL and APPEND_FL permissions
-> in ovl_ioctl() we need to execute FS_IOC_GETFLAGS on upper
-> file to know if we are changing those flags.
-> 
-> Note that overlayfs also (never) copied up those flags, so if flags
-> exist in lower fs they are lost on copy up.
-> Therefore, if we remove ovl_override_creds() from ovl_real_ioctl()
-> if lower inode has APPEND_FL it will be removed on copy up
-> and chattr +S by user without CAP_LINUX_IMMUTABLE will fail
-> because it will do FS_IOC_GETFLAGS from lower and then
-> FS_IOC_SETFLAGS that will do copy up and try to set both
-> APPEND_FL and SYNC_FL on upper inode.
-> 
-> Best I can come up with is store flags in overlay inode on
-> FS_IOC_GETFLAGS and check changes against stored
-> flags on  FS_IOC_SETFLAGS. It relies on the fact that
-> chattr always calls FS_IOC_GETFLAGS before it calls
-> FS_IOC_SETFLAGS (even with the usage chattr =<flags>).
-> 
-> Want to try and write a patch and test?
-> 
+Fix this by checking the capability before cred overriden. And here we
+only care about APPEND_FL and IMMUTABLE_FL, so get these information from
+inode.
 
-Thanks very much for your detailed explanation. And of course, I want
-to try. I will try to send the patch later.
+Signed-off-by: Jiufei Xue <jiufei.xue@linux.alibaba.com>
+---
+ fs/overlayfs/file.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-Thanks
-Jiufei
+diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+index 84dd957efa24..fecf1b43b6fe 100644
+--- a/fs/overlayfs/file.c
++++ b/fs/overlayfs/file.c
+@@ -11,6 +11,7 @@
+ #include <linux/mount.h>
+ #include <linux/xattr.h>
+ #include <linux/uio.h>
++#include <linux/uaccess.h>
+ #include "overlayfs.h"
+ 
+ static char ovl_whatisit(struct inode *inode, struct inode *realinode)
+@@ -372,10 +373,30 @@ static long ovl_real_ioctl(struct file *file, unsigned int cmd,
+ 	return ret;
+ }
+ 
++static unsigned int ovl_get_inode_flags(struct inode *inode)
++{
++	unsigned int flags = READ_ONCE(inode->i_flags);
++	unsigned int ovl_iflags = 0;
++
++	if (flags & S_SYNC)
++		ovl_iflags |= FS_SYNC_FL;
++	if (flags & S_APPEND)
++		ovl_iflags |= FS_APPEND_FL;
++	if (flags & S_IMMUTABLE)
++		ovl_iflags |= FS_IMMUTABLE_FL;
++	if (flags & S_NOATIME)
++		ovl_iflags |= FS_NOATIME_FL;
++	if (flags & S_DIRSYNC)
++		ovl_iflags |= FS_DIRSYNC_FL;
++
++	return ovl_iflags;
++}
++
+ static long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	long ret;
+ 	struct inode *inode = file_inode(file);
++	unsigned int flags;
+ 
+ 	switch (cmd) {
+ 	case FS_IOC_GETFLAGS:
+@@ -386,6 +407,15 @@ static long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 		if (!inode_owner_or_capable(inode))
+ 			return -EACCES;
+ 
++		if (get_user(flags, (int __user *) arg))
++			return -EFAULT;
++
++		/* Check the capability before cred overridden */
++		if ((flags ^ ovl_get_inode_flags(inode)) & (FS_APPEND_FL | FS_IMMUTABLE_FL)) {
++			if (!capable(CAP_LINUX_IMMUTABLE))
++				return -EPERM;
++		}
++
+ 		ret = mnt_want_write_file(file);
+ 		if (ret)
+ 			return ret;
+-- 
+2.19.1.856.g8858448bb
 
-> Thanks,
-> Amir.
-> 
