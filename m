@@ -2,90 +2,82 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 519DB1493D
-	for <lists+linux-unionfs@lfdr.de>; Mon,  6 May 2019 13:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5779414942
+	for <lists+linux-unionfs@lfdr.de>; Mon,  6 May 2019 14:02:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725994AbfEFL6y (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 6 May 2019 07:58:54 -0400
-Received: from mail-it1-f193.google.com ([209.85.166.193]:55675 "EHLO
-        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725827AbfEFL6y (ORCPT
+        id S1725852AbfEFMCQ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 6 May 2019 08:02:16 -0400
+Received: from mail-it1-f195.google.com ([209.85.166.195]:51517 "EHLO
+        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725827AbfEFMCQ (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 6 May 2019 07:58:54 -0400
-Received: by mail-it1-f193.google.com with SMTP id q132so4505014itc.5
-        for <linux-unionfs@vger.kernel.org>; Mon, 06 May 2019 04:58:54 -0700 (PDT)
+        Mon, 6 May 2019 08:02:16 -0400
+Received: by mail-it1-f195.google.com with SMTP id s3so7546466itk.1
+        for <linux-unionfs@vger.kernel.org>; Mon, 06 May 2019 05:02:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=szeredi.hu; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=PaYC1JqAO623Gl+KoBD18WPWraCDEDJU+j3owWXUwKU=;
-        b=cLWVJeHbldosDdIyM2Dff44Abax5kRuJZ4JFWT+3L8DeHQp8fEmoFKS3Zz7FrC2RpR
-         YpkoEjvQ+vUssfX4jwGMXz/rWwBFD2ICsnMTVpBcLlYQQA4DpR7uVq5FZCQBN9Go7G0g
-         C5+CWWYyd61m/NVYFGhZup7NE8UmLwX+v3dxI=
+        bh=ju2njUwLYfTV/wUdh7vLcq4P1BVfeVuepgG/32ySqj4=;
+        b=O23cxSfw0896HVQFi1gZjAEGcGSFPjvYiSr3EpLR5EQpzzf5xfPh6DpGlgvsvdLVwI
+         YMQ3ocHSDGUOvkT/i127ou6mtCIngmZGL+dUU9G8amqEGepCCAywz9BupqbFx5mXotTK
+         /823fngBvhH3Iks4FPz+mPamom2J82JS23ddE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=PaYC1JqAO623Gl+KoBD18WPWraCDEDJU+j3owWXUwKU=;
-        b=ngzRd7slnb29j6QxNg8k5Pq3Hi4LxKxP0rLl98p6hg9FTgiWKQATYo87xfqN/J23Tr
-         PAthb0+QEj5hNRMU6G8B4qvAgDndFfBAYtwgYRzk6s+NLq2euhj+oO3AxCBR96eFQ0Da
-         wegyS5uVkv797utJhlO0It6CAzR59Q70TACTbQxGyvHzpSmIvUjq3Ij1fBmQJVp3moe6
-         F9jKqMHE2TTF4S8emgYm56mlAf+lggPzzQJHvLiftXGNWrkPxNHSCsoW4CGOyo/nd9l7
-         ag/W/JOYvHYtpd4YKj/QFT6Gi6FV9Mfek+Q7YOMki9TVGPWWmHax3b5HI6Vog/DJtHp+
-         52aw==
-X-Gm-Message-State: APjAAAWhHBQ2YOoKJUvXmo3Y1TZ0xWnjpT9CiYcYqaFgHjPQT+TDsNVh
-        xOZMNIxH7IhhZdqSlq5Blax3QRojeUsT28TgOE+Vsg==
-X-Google-Smtp-Source: APXvYqy8+C9SJ8MJExlZKI1ApCztiefXgoTcLKjC62VFnvVQBJFTfpRVWYu+oRx4dZxeUbNbnSXGEcXiDunobljOv80=
-X-Received: by 2002:a24:4094:: with SMTP id n142mr18576671ita.1.1557143933698;
- Mon, 06 May 2019 04:58:53 -0700 (PDT)
+        bh=ju2njUwLYfTV/wUdh7vLcq4P1BVfeVuepgG/32ySqj4=;
+        b=WWWBgVP2jQY3pVMZXmn+Gn38SMzwgziyzw0et+A8OQrPY45Yp8tJnTBCDQzumM0MCl
+         n6lp6g7tHiq2moBpOF0KX1yBpaAVgxRgAA7k7eYpiZYGghc6l9PHY453uLnXw8k7UJTL
+         bKwwV4/r2cp7PuZ+KC3j0e+bFb+2xhQ3YkWc3bli2Fy/FlYQj5quwAiZ9uzECS0bFwY+
+         HM5QzepCEYGHhNtorueW9aq3yFG/0C8d0/hE2cKe7/koDtwmS6QQZcPK3uG+xwqbc8PK
+         WXfSrLumNLd+wJmm+J21NjPfaxHhXOHt2m7LkCUlI/mCsoVZSEkg51ptM+Ouq4Sl6qEr
+         e5iQ==
+X-Gm-Message-State: APjAAAWcXrCg4cN1g4aXXh4YetcClWrQwayxTO5DQsLkRYNNfptZXbyt
+        H2OrFW5O580haxwd575kScgOCVP5NEMT7qf36uBKwQ82
+X-Google-Smtp-Source: APXvYqwBk3eIz9WG0zraDx1Dl6bvQfOGw1l52MHbONdFPKzNeZXhlJnX8K7KHzgd+rJeriQid1moX+5DHr52+f9v1w4=
+X-Received: by 2002:a24:b342:: with SMTP id z2mr15994962iti.121.1557144135662;
+ Mon, 06 May 2019 05:02:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190424163950.14123-1-amir73il@gmail.com> <CADJHv_tDBdHNBqrO_uARQhMZYEeadPcoshtXFVnvpcVpOFGdhQ@mail.gmail.com>
-In-Reply-To: <CADJHv_tDBdHNBqrO_uARQhMZYEeadPcoshtXFVnvpcVpOFGdhQ@mail.gmail.com>
+References: <20190506115719.123863-1-jiufei.xue@linux.alibaba.com>
+In-Reply-To: <20190506115719.123863-1-jiufei.xue@linux.alibaba.com>
 From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Mon, 6 May 2019 07:58:42 -0400
-Message-ID: <CAJfpegvCtm1rEZ2FyGM1xxJ8Ee-5Q_dr6PCt_WBNvMdJLiTcaw@mail.gmail.com>
-Subject: Re: [PATCH v2] ovl: do not generate duplicate fsnotify events for
- "fake" path
-To:     Murphy Zhou <jencce.kernel@gmail.com>
-Cc:     Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>,
-        Linux-Fsdevel <linux-fsdevel@vger.kernel.org>,
-        overlayfs <linux-unionfs@vger.kernel.org>
+Date:   Mon, 6 May 2019 08:02:04 -0400
+Message-ID: <CAJfpegs=a0m8reKeMb7EFH+UgpsZ-RJeMWzshRUBOO5-j_rA-w@mail.gmail.com>
+Subject: Re: [PATCH v2] overlayfs: check the capability before cred overridden
+To:     Jiufei Xue <jiufei.xue@linux.alibaba.com>
+Cc:     overlayfs <linux-unionfs@vger.kernel.org>,
+        Amir Goldstein <amir73il@gmail.com>,
+        joseph.qi@linux.alibaba.com
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Sat, Apr 27, 2019 at 11:09 PM Murphy Zhou <jencce.kernel@gmail.com> wrote:
+On Mon, May 6, 2019 at 7:57 AM Jiufei Xue <jiufei.xue@linux.alibaba.com> wrote:
 >
-> On Thu, Apr 25, 2019 at 12:39 AM Amir Goldstein <amir73il@gmail.com> wrote:
-> >
-> > Overlayfs "fake" path is used for stacked file operations on
-> > underlying files.  Operations on files with "fake" path must not
-> > generate fsnotify events with path data, because those events have
-> > already been generated at overlayfs layer and because the reported
-> > event->fd for fanotify marks on underlying inode/filesystem will
-> > have the wrong path (the overlayfs path).
-> >
-> > Link: https://lore.kernel.org/linux-fsdevel/20190423065024.12695-1-jencce.kernel@gmail.com/
-> > Reported-by: Murphy Zhou <jencce.kernel@gmail.com>
-> > Fixes: d1d04ef8572b ("ovl: stack file ops")
-> > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> > ---
-> >
-> > Miklos,
-> >
-> > V1 was addressed to Jan and was trying to teach fsnotify about fake path.
-> > V2 leaves fsnotify subsystem alone and just sets the FMODE_NONOTIFY
-> > flag on realfile. All the rest of the complications with mark mounts
-> > are irrelevant.
-> >
-> > Same extended fanotify06 that was used to verify V1 also verified V2.
+> We found that it return success when we set IMMUTABLE_FL flag to a
+> file in docker even though the docker didn't have the capability
+> CAP_LINUX_IMMUTABLE.
 >
-> Thanks for fixing this!
+> The commit d1d04ef8572b ("ovl: stack file ops") and
+> dab5ca8fd9dd ("ovl: add lsattr/chattr support") implemented chattr
+> operations on a regular overlay file. ovl_real_ioctl() overridden the
+> current process's subjective credentials with ofs->creator_cred which
+> have the capability CAP_LINUX_IMMUTABLE so that it will return success
+> in vfs_ioctl()->cap_capable().
 >
-> My overlayfs tests on this patch looks good.
+> Fix this by checking the capability before cred overriden. And here we
+> only care about APPEND_FL and IMMUTABLE_FL, so get these information from
+> inode.
+>
+> Changes since v1:
+>  - remove S_DIRSYNC since ovl_copyflags() does not copy FS_DIRSYNC_FL,
+>    pointed out by Amir Goldstein.
+>
+> Signed-off-by: Jiufei Xue <jiufei.xue@linux.alibaba.com>
 
-Thanks, applied.
+Thanks.  Applied with modification, please see my vfs.git#overlayfs-next tree.
 
 Miklos
