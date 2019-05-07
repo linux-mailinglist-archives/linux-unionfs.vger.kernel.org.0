@@ -2,82 +2,163 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5779414942
-	for <lists+linux-unionfs@lfdr.de>; Mon,  6 May 2019 14:02:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7B12156E3
+	for <lists+linux-unionfs@lfdr.de>; Tue,  7 May 2019 02:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725852AbfEFMCQ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 6 May 2019 08:02:16 -0400
-Received: from mail-it1-f195.google.com ([209.85.166.195]:51517 "EHLO
-        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725827AbfEFMCQ (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 6 May 2019 08:02:16 -0400
-Received: by mail-it1-f195.google.com with SMTP id s3so7546466itk.1
-        for <linux-unionfs@vger.kernel.org>; Mon, 06 May 2019 05:02:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ju2njUwLYfTV/wUdh7vLcq4P1BVfeVuepgG/32ySqj4=;
-        b=O23cxSfw0896HVQFi1gZjAEGcGSFPjvYiSr3EpLR5EQpzzf5xfPh6DpGlgvsvdLVwI
-         YMQ3ocHSDGUOvkT/i127ou6mtCIngmZGL+dUU9G8amqEGepCCAywz9BupqbFx5mXotTK
-         /823fngBvhH3Iks4FPz+mPamom2J82JS23ddE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ju2njUwLYfTV/wUdh7vLcq4P1BVfeVuepgG/32ySqj4=;
-        b=WWWBgVP2jQY3pVMZXmn+Gn38SMzwgziyzw0et+A8OQrPY45Yp8tJnTBCDQzumM0MCl
-         n6lp6g7tHiq2moBpOF0KX1yBpaAVgxRgAA7k7eYpiZYGghc6l9PHY453uLnXw8k7UJTL
-         bKwwV4/r2cp7PuZ+KC3j0e+bFb+2xhQ3YkWc3bli2Fy/FlYQj5quwAiZ9uzECS0bFwY+
-         HM5QzepCEYGHhNtorueW9aq3yFG/0C8d0/hE2cKe7/koDtwmS6QQZcPK3uG+xwqbc8PK
-         WXfSrLumNLd+wJmm+J21NjPfaxHhXOHt2m7LkCUlI/mCsoVZSEkg51ptM+Ouq4Sl6qEr
-         e5iQ==
-X-Gm-Message-State: APjAAAWcXrCg4cN1g4aXXh4YetcClWrQwayxTO5DQsLkRYNNfptZXbyt
-        H2OrFW5O580haxwd575kScgOCVP5NEMT7qf36uBKwQ82
-X-Google-Smtp-Source: APXvYqwBk3eIz9WG0zraDx1Dl6bvQfOGw1l52MHbONdFPKzNeZXhlJnX8K7KHzgd+rJeriQid1moX+5DHr52+f9v1w4=
-X-Received: by 2002:a24:b342:: with SMTP id z2mr15994962iti.121.1557144135662;
- Mon, 06 May 2019 05:02:15 -0700 (PDT)
+        id S1726477AbfEGAZJ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 6 May 2019 20:25:09 -0400
+Received: from mx2.suse.de ([195.135.220.15]:51406 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726073AbfEGAZJ (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Mon, 6 May 2019 20:25:09 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 72C33AE5A;
+        Tue,  7 May 2019 00:25:07 +0000 (UTC)
+From:   NeilBrown <neilb@suse.com>
+To:     "J. Bruce Fields" <bfields@fieldses.org>
+Date:   Tue, 07 May 2019 10:24:58 +1000
+Cc:     Andreas Gruenbacher <agruenba@redhat.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Andreas =?utf-8?Q?Gr=C3=BCnbacher?= 
+        <andreas.gruenbacher@gmail.com>,
+        Patrick Plagwitz <Patrick_Plagwitz@web.de>,
+        "linux-unionfs\@vger.kernel.org" <linux-unionfs@vger.kernel.org>,
+        Linux NFS list <linux-nfs@vger.kernel.org>,
+        Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] overlayfs: ignore empty NFSv4 ACLs in ext4 upperdir
+In-Reply-To: <20190503153531.GJ12608@fieldses.org>
+References: <CAJfpegtpkavseTFLspaC7svbvHRq-0-7jvyh63+DK5iWHTGnaQ@mail.gmail.com> <20161205162559.GB17517@fieldses.org> <CAHpGcMKHjic6L+J0qvMYNG9hVCcDO1hEpx4BiEk0ZCKDV39BmA@mail.gmail.com> <266c571f-e4e2-7c61-5ee2-8ece0c2d06e9@web.de> <CAHpGcMKmtppfn7PVrGKEEtVphuLV=YQ2GDYKOqje4ZANhzSgDw@mail.gmail.com> <CAHpGcMKjscfhmrAhwGes0ag2xTkbpFvCO6eiLL_rHz87XE-ZmA@mail.gmail.com> <CAJfpegvRFGOc31gVuYzanzWJ=mYSgRgtAaPhYNxZwHin3Wc0Gw@mail.gmail.com> <CAHc6FU4JQ28BFZE9_8A06gtkMvvKDzFmw9=ceNPYvnMXEimDMw@mail.gmail.com> <20161206185806.GC31197@fieldses.org> <87bm0l4nra.fsf@notabene.neil.brown.name> <20190503153531.GJ12608@fieldses.org>
+Message-ID: <87woj3157p.fsf@notabene.neil.brown.name>
 MIME-Version: 1.0
-References: <20190506115719.123863-1-jiufei.xue@linux.alibaba.com>
-In-Reply-To: <20190506115719.123863-1-jiufei.xue@linux.alibaba.com>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Mon, 6 May 2019 08:02:04 -0400
-Message-ID: <CAJfpegs=a0m8reKeMb7EFH+UgpsZ-RJeMWzshRUBOO5-j_rA-w@mail.gmail.com>
-Subject: Re: [PATCH v2] overlayfs: check the capability before cred overridden
-To:     Jiufei Xue <jiufei.xue@linux.alibaba.com>
-Cc:     overlayfs <linux-unionfs@vger.kernel.org>,
-        Amir Goldstein <amir73il@gmail.com>,
-        joseph.qi@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Mon, May 6, 2019 at 7:57 AM Jiufei Xue <jiufei.xue@linux.alibaba.com> wrote:
->
-> We found that it return success when we set IMMUTABLE_FL flag to a
-> file in docker even though the docker didn't have the capability
-> CAP_LINUX_IMMUTABLE.
->
-> The commit d1d04ef8572b ("ovl: stack file ops") and
-> dab5ca8fd9dd ("ovl: add lsattr/chattr support") implemented chattr
-> operations on a regular overlay file. ovl_real_ioctl() overridden the
-> current process's subjective credentials with ofs->creator_cred which
-> have the capability CAP_LINUX_IMMUTABLE so that it will return success
-> in vfs_ioctl()->cap_capable().
->
-> Fix this by checking the capability before cred overriden. And here we
-> only care about APPEND_FL and IMMUTABLE_FL, so get these information from
-> inode.
->
-> Changes since v1:
->  - remove S_DIRSYNC since ovl_copyflags() does not copy FS_DIRSYNC_FL,
->    pointed out by Amir Goldstein.
->
-> Signed-off-by: Jiufei Xue <jiufei.xue@linux.alibaba.com>
+--=-=-=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Thanks.  Applied with modification, please see my vfs.git#overlayfs-next tree.
+On Fri, May 03 2019, J. Bruce Fields wrote:
 
-Miklos
+> On Thu, May 02, 2019 at 12:02:33PM +1000, NeilBrown wrote:
+>> On Tue, Dec 06 2016, J. Bruce Fields wrote:
+>>=20
+>> > On Tue, Dec 06, 2016 at 02:18:31PM +0100, Andreas Gruenbacher wrote:
+>> >> On Tue, Dec 6, 2016 at 11:08 AM, Miklos Szeredi <miklos@szeredi.hu> w=
+rote:
+>> >> > On Tue, Dec 6, 2016 at 12:24 AM, Andreas Gr=C3=BCnbacher
+>> >> > <andreas.gruenbacher@gmail.com> wrote:
+>> >> >> 2016-12-06 0:19 GMT+01:00 Andreas Gr=C3=BCnbacher <andreas.gruenba=
+cher@gmail.com>:
+>> >> >
+>> >> >>> It's not hard to come up with a heuristic that determines if a
+>> >> >>> system.nfs4_acl value is equivalent to a file mode, and to ignore=
+ the
+>> >> >>> attribute in that case. (The file mode is transmitted in its own
+>> >> >>> attribute already, so actually converting .) That way, overlayfs =
+could
+>> >> >>> still fail copying up files that have an actual ACL. It's still an
+>> >> >>> ugly hack ...
+>> >> >>
+>> >> >> Actually, that kind of heuristic would make sense in the NFS client
+>> >> >> which could then hide the "system.nfs4_acl" attribute.
+>> >> >
+>> >> > Even simpler would be if knfsd didn't send the attribute if not
+>> >> > necessary.  Looks like there's code actively creating the nfs4_acl =
+on
+>> >> > the wire even if the filesystem had none:
+>> >> >
+>> >> >     pacl =3D get_acl(inode, ACL_TYPE_ACCESS);
+>> >> >     if (!pacl)
+>> >> >         pacl =3D posix_acl_from_mode(inode->i_mode, GFP_KERNEL);
+>> >> >
+>> >> > What's the point?
+>> >>=20
+>> >> That's how the protocol is specified.
+>> >
+>> > Yep, even if we could make that change to nfsd it wouldn't help the
+>> > client with the large number of other servers that are out there
+>> > (including older knfsd's).
+>> >
+>> > --b.
+>> >
+>> >> (I'm not saying that that's very helpful.)
+>> >>=20
+>> >> Andreas
+>>=20
+>> Hi everyone.....
+>>  I have a customer facing this problem, and so stumbled onto the email
+>>  thread.
+>>  Unfortunately it didn't resolve anything.  Maybe I can help kick things
+>>  along???
+>>=20
+>>  The core problem here is that NFSv4 and ext4 use different and largely
+>>  incompatible ACL implementations.  There is no way to accurately
+>>  translate from one to the other in general (common specific examples
+>>  can be converted).
+>>=20
+>>  This means that either:
+>>    1/ overlayfs cannot use ext4 for upper and NFS for lower (or vice
+>>       versa) or
+>>    2/ overlayfs need to accept that sometimes it cannot copy ACLs, and
+>>       that is OK.
+>>=20
+>>  Silently not copying the ACLs is probably not a good idea as it might
+>>  result in inappropriate permissions being given away.  So if the
+>>  sysadmin wants this (and some clearly do), they need a way to
+>>  explicitly say "I accept the risk".
+>
+> So, I feel like silently copying ACLs up *also* carries a risk, if that
+> means switching from server-enforcement to client-enforcement of those
+> permissions.
+
+Interesting perspective .... though doesn't NFSv4 explicitly allow
+client-side ACL enforcement in the case of delegations?
+Not sure how relevant that is....
+
+It seems to me we have two options:
+ 1/ declare the NFSv4 doesn't work as a lower layer for overlayfs and
+    recommend people use NFSv3, or
+ 2/ Modify overlayfs to work with NFSv4 by ignoring nfsv4 ACLs either
+ 2a/ always - and ignore all other acls and probably all system. xattrs,
+ or
+ 2b/ based on a mount option that might be
+      2bi/ general "noacl" or might be
+      2bii/ explicit "noxattr=3Dsystem.nfs4acl"
+=20
+I think that continuing to discuss the miniature of the options isn't
+going to help.  No solution is perfect - we just need to clearly
+document the implications of whatever we come up with.
+
+I lean towards 2a, but I be happy with with any '2' and '1' won't kill
+me.
+
+Do we have a vote?  Or does someone make an executive decision??
+
+NeilBrown
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAlzQ0FsACgkQOeye3VZi
+gbmsVw//WnOlxrweqSKICkAAi603PMcmS8Md0wmkM70CI1jpJ83XZmzKxrcTex9N
+yVZv4IqQ/WvQWTPFfqZQEjUJF9VD3hr18q0EPYqAxkTUINChjiqFtXVm7+I1Z/Ws
+MplLXNj978izRf1k4M+HyET8FSc1cp1rADRgRj7yu9sejX85GmIqOjfso6s51KYZ
+ji+GkrEvNiSSLx3H1hN5bzOQMpuzUMUPfTe4k+HvCYpngC5vxd5dpdwta6gFsK9Q
+k8mtWmwXgmBmRCc0yIvzMPoxwH4LIKcg5fc0h0E5ZDduHwkTECRP9bRQ91BxxTT6
+MDgooq7ykE8ymbM2nxsJOhBZbCqpZ4Ax14JiWHr1gHqf62JST/ButWYH+kJkfmWa
+6YVm//jEorhKtBddNix+y9xDqz1vaY2kJvSa586rqO1jfc3k4JD8nhFQ0RyY7ZVp
+35FR4z3hDu9zclmL76Dhisn623IFEkbiosjzXBCSavd4gKB2ps+McSQ+x+ZKhapx
+3yEAMnbxp9Mw/58S5fdil9ftmRp1cf/BGWKOQes8SwxpOy7e3/aJOZRaMVnTk1FX
+s8aIANnLaP2+Rp/0LyN9Z83bEI8sePgPGVBY768Q3QRuGD6K85WA2lc4rOXPrnCD
+e1O4ESUMyEe6ZTOACTw/EF6ceotlqPEBTXrVecVAkI+c4JtwtYs=
+=/EJ8
+-----END PGP SIGNATURE-----
+--=-=-=--
