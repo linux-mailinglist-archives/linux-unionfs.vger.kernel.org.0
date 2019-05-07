@@ -2,95 +2,156 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B25EF15ED1
-	for <lists+linux-unionfs@lfdr.de>; Tue,  7 May 2019 10:07:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57688162CB
+	for <lists+linux-unionfs@lfdr.de>; Tue,  7 May 2019 13:29:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726858AbfEGIHe (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 7 May 2019 04:07:34 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:38791 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726085AbfEGIHd (ORCPT
+        id S1725994AbfEGL3S (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 7 May 2019 07:29:18 -0400
+Received: from out30-57.freemail.mail.aliyun.com ([115.124.30.57]:36672 "EHLO
+        out30-57.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725843AbfEGL3S (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 7 May 2019 04:07:33 -0400
-Received: by mail-io1-f66.google.com with SMTP id y6so13521944ior.5
-        for <linux-unionfs@vger.kernel.org>; Tue, 07 May 2019 01:07:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=PEZVy9C+Z3ICJpvsn26xeqhO1e763sY5Q6qDpaKXZYs=;
-        b=JciVvm+L8utAHEyD6sXVzJvXBWDDmLzUDru6e2Z6O7UUhE2uYt6t01+U9KuovpPXFK
-         SVoBnOMRpR/M0jYtVyra7OBS30QfLjlk+10q3bu8kYLImeYysyY5BCIcTiaH8mJwq+lF
-         dWqGpCsk3fQOh11X0sH7ux9nl+jIhQyw49PY4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=PEZVy9C+Z3ICJpvsn26xeqhO1e763sY5Q6qDpaKXZYs=;
-        b=YbnX3QE1fgrHF9WDGlRHw3G555K9dHtt9Van1K+rCGMXZ1sio6AFBGgL15Y2IgqnPY
-         vC+MjDaaKk96Ingxh9ncw6+0a/btkRFoCVGW7Qe1qNjGtzHfqPh3mvowE6Cxl0+fejjT
-         P+bJxY/g7Jg1l97fqJLAvj1RsM9JCpOx8FTlAByfrKr61Bc0IfTDn9Kgooh7Pxs/xFhk
-         Au0gWTWJIjLzenBAGE5ungZ6nZJupdIR9NeHohoUYwc5KJKcRG+DSla17Oa9NaaQiMYw
-         N2nGlHVkFof1l8ZYBqfZ1McWvc3ceraE6v4P+100Tdd8mgtOzMJKvASZNAcKEkSEeFPX
-         ZdJA==
-X-Gm-Message-State: APjAAAW7Fahj2x7Ke9gw3oqTNrV4+dvGhYbHwndtJSEJ3LyejRkAP1bf
-        /YtwFmYKh2Pzt/LjwQZ4Wieg7g5cdjBthoRnEngDqA==
-X-Google-Smtp-Source: APXvYqwG7Qhlz0ih1MCulvyvogd0VnUgA/VyGWATqTE+j80uOQBpCOYbueOcG/IyjFlZNjhBSEPaLFPbgVREQTdhdl0=
-X-Received: by 2002:a6b:ee04:: with SMTP id i4mr1817315ioh.246.1557216453174;
- Tue, 07 May 2019 01:07:33 -0700 (PDT)
+        Tue, 7 May 2019 07:29:18 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R841e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e07487;MF=jiufei.xue@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0TR6lZwN_1557228554;
+Received: from localhost(mailfrom:jiufei.xue@linux.alibaba.com fp:SMTPD_---0TR6lZwN_1557228554)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 07 May 2019 19:29:14 +0800
+From:   Jiufei Xue <jiufei.xue@linux.alibaba.com>
+To:     fstests@vger.kernel.org
+Cc:     guaneryu@gmail.com, linux-unionfs@vger.kernel.org,
+        amir73il@gmail.com, joseph.qi@linux.alibaba.com
+Subject: [PATCH] generic: add a testcase to check the capability CAP_LINUX_IMMUTABLE
+Date:   Tue,  7 May 2019 19:29:14 +0800
+Message-Id: <20190507112914.20856-1-jiufei.xue@linux.alibaba.com>
+X-Mailer: git-send-email 2.19.1.856.g8858448bb
 MIME-Version: 1.0
-References: <CAJfpegtpkavseTFLspaC7svbvHRq-0-7jvyh63+DK5iWHTGnaQ@mail.gmail.com>
- <20161205162559.GB17517@fieldses.org> <CAHpGcMKHjic6L+J0qvMYNG9hVCcDO1hEpx4BiEk0ZCKDV39BmA@mail.gmail.com>
- <266c571f-e4e2-7c61-5ee2-8ece0c2d06e9@web.de> <CAHpGcMKmtppfn7PVrGKEEtVphuLV=YQ2GDYKOqje4ZANhzSgDw@mail.gmail.com>
- <CAHpGcMKjscfhmrAhwGes0ag2xTkbpFvCO6eiLL_rHz87XE-ZmA@mail.gmail.com>
- <CAJfpegvRFGOc31gVuYzanzWJ=mYSgRgtAaPhYNxZwHin3Wc0Gw@mail.gmail.com>
- <CAHc6FU4JQ28BFZE9_8A06gtkMvvKDzFmw9=ceNPYvnMXEimDMw@mail.gmail.com>
- <20161206185806.GC31197@fieldses.org> <87bm0l4nra.fsf@notabene.neil.brown.name>
- <20190503153531.GJ12608@fieldses.org>
-In-Reply-To: <20190503153531.GJ12608@fieldses.org>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Tue, 7 May 2019 04:07:21 -0400
-Message-ID: <CAJfpegv-0mUs=XRgerxR_Zz_MvYuDvb95v0QZeBUcHNnenusnw@mail.gmail.com>
-Subject: Re: [PATCH] overlayfs: ignore empty NFSv4 ACLs in ext4 upperdir
-To:     "J. Bruce Fields" <bfields@fieldses.org>
-Cc:     NeilBrown <neilb@suse.com>,
-        Andreas Gruenbacher <agruenba@redhat.com>,
-        =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <andreas.gruenbacher@gmail.com>,
-        Patrick Plagwitz <Patrick_Plagwitz@web.de>,
-        "linux-unionfs@vger.kernel.org" <linux-unionfs@vger.kernel.org>,
-        Linux NFS list <linux-nfs@vger.kernel.org>,
-        Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Fri, May 3, 2019 at 11:35 AM J. Bruce Fields <bfields@fieldses.org> wrote:
->
-> On Thu, May 02, 2019 at 12:02:33PM +1000, NeilBrown wrote:
+It should return error while changing IMMUTABLE_FL flag if the process
+has no capability CAP_LINUX_IMMUTABLE.
 
-> >  Silently not copying the ACLs is probably not a good idea as it might
-> >  result in inappropriate permissions being given away.  So if the
-> >  sysadmin wants this (and some clearly do), they need a way to
-> >  explicitly say "I accept the risk".
->
-> So, I feel like silently copying ACLs up *also* carries a risk, if that
-> means switching from server-enforcement to client-enforcement of those
-> permissions.
+However, it's not true on overlayfs after kernel version v4.19 since
+the process's subjective cred is overridden with ofs->creator_cred
+before calling real vfs_ioctl.
 
-That's not correct: permissions are checked on the overlay layer,
-regardless of where the actual file resides.  For filesystems using a
-server enforced permission model that means possibly different
-permissions for accesses through overlayfs than for accesses without
-overlayfs.  Apparently this is missing from the documentation and
-definitely needs to be added.
+The following patch for ovl fix the problem:
+  "ovl: check the capability before cred overridden"
 
-So I think it's perfectly fine to allow copying up ACLs, as long as
-the ACL is representable on the upper fs.  If that cannot be ensured,
-then the only sane thing to do is to disable ACL checking across the
-overlay ("noacl" option).
+Add this testcase to cover this bug.
 
-Thanks,
-Miklos
+Signed-off-by: Jiufei Xue <jiufei.xue@linux.alibaba.com>
+---
+ common/config         |  1 +
+ tests/generic/545     | 61 +++++++++++++++++++++++++++++++++++++++++++
+ tests/generic/545.out |  5 ++++
+ tests/generic/group   |  1 +
+ 4 files changed, 68 insertions(+)
+ create mode 100755 tests/generic/545
+ create mode 100755 tests/generic/545.out
+
+diff --git a/common/config b/common/config
+index 64f87057..364432bb 100644
+--- a/common/config
++++ b/common/config
+@@ -196,6 +196,7 @@ export SQLITE3_PROG="$(type -P sqlite3)"
+ export TIMEOUT_PROG="$(type -P timeout)"
+ export SETCAP_PROG="$(type -P setcap)"
+ export GETCAP_PROG="$(type -P getcap)"
++export CAPSH_PROG="$(type -P capsh)"
+ export CHECKBASHISMS_PROG="$(type -P checkbashisms)"
+ export XFS_INFO_PROG="$(type -P xfs_info)"
+ export DUPEREMOVE_PROG="$(type -P duperemove)"
+diff --git a/tests/generic/545 b/tests/generic/545
+new file mode 100755
+index 00000000..89bdf885
+--- /dev/null
++++ b/tests/generic/545
+@@ -0,0 +1,61 @@
++#! /bin/bash
++# SPDX-License-Identifier: GPL-2.0
++# Copyright (c) 2015, Oracle and/or its affiliates.  All Rights Reserved.
++#
++# FS QA Test No. 545
++#
++# Check that we can't add IMMUTABLE_FL flag to file when the process has
++# no capbility CAP_LINUX_IMMUTABLE
++#
++seq=`basename $0`
++seqres=$RESULT_DIR/$seq
++echo "QA output created by $seq"
++
++here=`pwd`
++tmp=/tmp/$$
++status=1    # failure is the default!
++trap "_cleanup; exit \$status" 0 1 2 3 15
++
++_cleanup()
++{
++    $CHATTR_PROG -i $testdir/file 2>&1
++    cd /
++    rm -rf $tmp.* $testdir
++}
++
++# get standard environment, filters and checks
++. ./common/rc
++. ./common/filter
++. ./common/attr
++
++# real QA test starts here
++_supported_os Linux
++_require_chattr i
++_require_command "$CAPSH_PROG" "capsh"
++
++rm -f $seqres.full
++
++echo "Format and mount"
++testdir="$TEST_DIR/test-$seq"
++rm -rf $testdir
++mkdir $testdir
++
++echo "Create the original files"
++blksz="$(_get_block_size $testdir)"
++blks=1000
++sz=$((blksz * blks))
++_pwrite_byte 0x61 0 $sz $testdir/file >> $seqres.full
++sync
++
++do_filter_output()
++{
++    err_str=`_filter_test_dir | grep "Operation not permitted"`
++    test -n "$err_str" && echo "Operation not permitted"
++}
++
++echo "Try to add IMMUTABLE_FL flag"
++$CAPSH_PROG --drop=cap_linux_immutable -- -c "$CHATTR_PROG +i $testdir/file" 2>&1 | do_filter_output
++
++# success, all done
++status=0
++exit
+diff --git a/tests/generic/545.out b/tests/generic/545.out
+new file mode 100755
+index 00000000..740bb980
+--- /dev/null
++++ b/tests/generic/545.out
+@@ -0,0 +1,5 @@
++QA output created by 545
++Format and mount
++Create the original files
++Try to add IMMUTABLE_FL flag
++Operation not permitted
+diff --git a/tests/generic/group b/tests/generic/group
+index 40deb4d0..2f60b4af 100644
+--- a/tests/generic/group
++++ b/tests/generic/group
+@@ -547,3 +547,4 @@
+ 542 auto quick clone
+ 543 auto quick clone
+ 544 auto quick clone
++545 auto quick clone
+-- 
+2.19.1.856.g8858448bb
+
