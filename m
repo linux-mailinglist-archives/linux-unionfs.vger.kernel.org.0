@@ -2,103 +2,112 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F095529930
-	for <lists+linux-unionfs@lfdr.de>; Fri, 24 May 2019 15:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF1D42A8D7
+	for <lists+linux-unionfs@lfdr.de>; Sun, 26 May 2019 08:28:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391470AbfEXNpY (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 24 May 2019 09:45:24 -0400
-Received: from mx2.suse.de ([195.135.220.15]:42316 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2391124AbfEXNpY (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 24 May 2019 09:45:24 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 57DFDAE65;
-        Fri, 24 May 2019 13:45:23 +0000 (UTC)
-Date:   Fri, 24 May 2019 15:45:22 +0200
-From:   Cyril Hrubis <chrubis@suse.cz>
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     ltp@lists.linux.it, overlayfs <linux-unionfs@vger.kernel.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Petr Vorel <pvorel@suse.cz>,
-        "J. Bruce Fields" <bfields@fieldses.org>
-Subject: Re: [LTP] [PATCH] [COMMITTED] syscalls/fcntl33: Fix typo overlapfs
- -> overlayfs
-Message-ID: <20190524134521.GA2251@rei>
-References: <20190523134549.23103-1-chrubis@suse.cz>
- <CAOQ4uxhHVG9f1njmPgei8-QO4UEivXbxoHkqKi4f50XN6Gup9A@mail.gmail.com>
- <20190524085947.GA11508@rei.lan>
- <CAOQ4uxj3X2Eh+RmzunW1Sb8PWrHWsS1_h-xEH2Bofcr+-S-tiA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOQ4uxj3X2Eh+RmzunW1Sb8PWrHWsS1_h-xEH2Bofcr+-S-tiA@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1726131AbfEZG2e (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 26 May 2019 02:28:34 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:34933 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725999AbfEZG2d (ORCPT
+        <rfc822;linux-unionfs@vger.kernel.org>);
+        Sun, 26 May 2019 02:28:33 -0400
+Received: by mail-wr1-f66.google.com with SMTP id m3so13683393wrv.2;
+        Sat, 25 May 2019 23:28:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=HltrZ9Y26+BomrIjk30FDuP0Xf8LQvqT34H9pYFxMRk=;
+        b=h1ckKVQUHjz/Df74Vr9OKBTatdWQ7E0CajrhEKtG8Ql5KA+PHajLZDm85+PJ34i1Ko
+         tUiDC8U80YOZOlWSwPXEfBP9mhyx7LTJcacMmkxXuyC0cclwyqyoUtbVnuc8qEhvn1FI
+         RbFYMQerVPepQ1p1sBdhs18UL02ROG3iVgnXrlZPjrSIdeQy2jeAh0Y8zi6zIc+k28Ku
+         50TFwSlPGKLnh0jMKOFKY4eWFfFZpFKZcIz4DFnF9lJX8oYmYjDVxX3I6AZ2wO9MBCM4
+         qBobFCjftFcM7hfZnlkqpMWe7FL86G5uJuzj0R3fvY1jbB0enUQBxSxlFCEEj3fJcmU2
+         1H3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=HltrZ9Y26+BomrIjk30FDuP0Xf8LQvqT34H9pYFxMRk=;
+        b=crdwyTQ+FGm1BcAITIbsm0oUi0kwsegGHUJM2Fy3rdH0/duC+nPFGXzvR+JBqm37F5
+         E1R/CU4GmYUgZOISRke9rz6DVQ5VemBxmwI1xCnprZr9rXU04mMUx6qXlA6aECSt/vOK
+         PujU9K0oMICHxDuYV3iSjWGfaymyniL6pwPAHpnqY1tp5Z3zxx70EZFBRhyqjd5K7loh
+         OIyfFe/fD+agy6PqJ/7k1FOXvjMBWXXK7uzNkgbxdpT22FtrgKP+NiYWYo14bal10n75
+         VaRWVCI++xgg4T9shA2kD4zxsMZPgI22Kxq/ui/Z/JQRXi1XwdKJOWvvX6c7Umqpg9Z8
+         RlgA==
+X-Gm-Message-State: APjAAAXIF5vlx1eiFMPb5ZwTT5Ld52MqIljHvik6X9kNRFlSKtYiGeGe
+        a5xj5pZS0CggLzov99hH6MzTwPRH
+X-Google-Smtp-Source: APXvYqyRvQivV3LZg4B7USgOcrR/yB3T9O6qhYQ+SBAMVN8Moc2D+8rnIfuv+B9gCa3xR2od4ZnprQ==
+X-Received: by 2002:adf:dccf:: with SMTP id x15mr23430712wrm.139.1558852111989;
+        Sat, 25 May 2019 23:28:31 -0700 (PDT)
+Received: from localhost.localdomain ([5.102.238.208])
+        by smtp.gmail.com with ESMTPSA id y10sm16111325wmg.8.2019.05.25.23.28.30
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 25 May 2019 23:28:31 -0700 (PDT)
+From:   Amir Goldstein <amir73il@gmail.com>
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     Dave Chinner <david@fromorbit.com>, linux-unionfs@vger.kernel.org,
+        linux-xfs@vger.kernel.org
+Subject: [PATCH] ovl: support the FS_IOC_FS[SG]ETXATTR ioctls
+Date:   Sun, 26 May 2019 09:28:25 +0300
+Message-Id: <20190526062825.23059-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Hi!
-> > Agreed, I'm always against working around kernel bugs/deficiencies in
-> > tests, unfortunately that usually conflicts with QA deparenments that
-> > wants to skip known problems and have everything green. So we usually
-> > end up somewhere in a middle ground.
-> 
-> But is everything green though?
-> Does QA department know that if you run samba inside a container
-> whose storage driver is overlayfs, if samba is configured with
-> "kernel oplock = yes"
-> Samba clients would never be able to acquire an oplock and
-> write performance would be horrible?
-> 
-> Sure, not everyone cares about this case, but seems to be that
-> silencing the error should be in the hands of the user and that LTP
-> project should just report the problems as they are.
-> 
-> Worse is the fact that this error will only trigger for people that
-> configured LTP to test overlayfs specifically, not all LTP users.
-> This group of users is even more likely to be interested in
-> bugs/deficiencies of overlayfs.
+They are the extended version of FS_IOC_FS[SG]ETFLAGS ioctls.
+xfs_io -c "chattr <flags>" uses the new ioctls for setting flags.
 
-I can see how this is wrong.
+This used to work in kernel pre v4.19, before stacked file ops
+introduced the ovl_ioctl whitelist.
 
-On the other hand it took us some time to explain our release managers
-that kernel is OK when we say that it's OK and that the actuall test
-results are not the end result. But even then we never attempted to
-to put workarounds into the upstream tests. So I guess that we can
-remove the workaround when there is a fix in upstream.
+Reported-by: Dave Chinner <david@fromorbit.com>
+Fixes: d1d04ef8572b ("ovl: stack file ops")
+Cc: <stable@vger.kernel.org> # v4.19
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+---
+ fs/overlayfs/file.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-> > Also as usuall, do you care enough to send a patch? :-)
-> 
-> No, not yet.
-> Give me a few days to cook.
-> When I get to caring enough I will fix the kernel ;-)
-
-Ok.
-
-> > > Besides, this problem looks quite easy to fix.
-> > > I think Bruce was already looking at changing the implementation of
-> > > check_conflicting_open(), so if the test is not failing, nobody is going to
-> > > nudge for a fix...
-> >
-> > Once it's fixed we can change that to a failure for new enough kernels,
-> > old ones should probably stay with SKIPPED/TCONF.
-> >
-> 
-> This too would be wrong practice IMO.
-> If stable kernel users see that the test passes on mainline and fails
-> on old kernel, somebody may get the idea to backport the fix to stable kernel
-> and fix the bug.
-> IOW, setting min_kver is a tool that should be reserved IMO to situations
-> where:
-> 1. The interface/functionality does not exist -OR-
-> 2. The maintainers have made it clear that the fix will not be backported
-
-It's even worse with the distribution kernels that have arbitrary
-version numbers and thousands of patches on the top of it, so we use it
-as a last option...
-
+diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+index 540a8b845145..340a6ad45914 100644
+--- a/fs/overlayfs/file.c
++++ b/fs/overlayfs/file.c
+@@ -426,7 +426,8 @@ static unsigned int ovl_get_inode_flags(struct inode *inode)
+ 	return ovl_iflags;
+ }
+ 
+-static long ovl_ioctl_set_flags(struct file *file, unsigned long arg)
++static long ovl_ioctl_set_flags(struct file *file, unsigned int cmd,
++				unsigned long arg)
+ {
+ 	long ret;
+ 	struct inode *inode = file_inode(file);
+@@ -456,7 +457,7 @@ static long ovl_ioctl_set_flags(struct file *file, unsigned long arg)
+ 	if (ret)
+ 		goto unlock;
+ 
+-	ret = ovl_real_ioctl(file, FS_IOC_SETFLAGS, arg);
++	ret = ovl_real_ioctl(file, cmd, arg);
+ 
+ 	ovl_copyflags(ovl_inode_real(inode), inode);
+ unlock:
+@@ -474,11 +475,13 @@ static long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 
+ 	switch (cmd) {
+ 	case FS_IOC_GETFLAGS:
++	case FS_IOC_FSGETXATTR:
+ 		ret = ovl_real_ioctl(file, cmd, arg);
+ 		break;
+ 
+ 	case FS_IOC_SETFLAGS:
+-		ret = ovl_ioctl_set_flags(file, arg);
++	case FS_IOC_FSSETXATTR:
++		ret = ovl_ioctl_set_flags(file, cmd, arg);
+ 		break;
+ 
+ 	default:
 -- 
-Cyril Hrubis
-chrubis@suse.cz
+2.17.1
+
