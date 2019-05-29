@@ -2,114 +2,95 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EA762DAF7
-	for <lists+linux-unionfs@lfdr.de>; Wed, 29 May 2019 12:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFBBF2E1C0
+	for <lists+linux-unionfs@lfdr.de>; Wed, 29 May 2019 17:57:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726043AbfE2KnG (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 29 May 2019 06:43:06 -0400
-Received: from mail-yb1-f175.google.com ([209.85.219.175]:46271 "EHLO
-        mail-yb1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726016AbfE2KnG (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 29 May 2019 06:43:06 -0400
-Received: by mail-yb1-f175.google.com with SMTP id p8so586824ybo.13
-        for <linux-unionfs@vger.kernel.org>; Wed, 29 May 2019 03:43:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eonbqDCHsVuiHrhUN5KUYPEGi4gZzmkyK9BMR88OEes=;
-        b=SkNqup0MVT+R21oxpXgOdBq3DQmLKetH8ad6EogR5uQUXUnU0L0HEV0htHk/VcTWgR
-         RXlRmBJD+TLnoxFdtAhhY0RzUzpXeWlQKRwvUvpc0qEJ1pU2Qgz7w4Ss6WrWgOplN5uH
-         ue6yQEnFUyNyxjZkXoLxMbmKF87dDkX/X89AThCDBCGMOmkhnp00kjFDbfDcAwBclKEM
-         AT8dRMl+JX/FclrXIN93KWiE8EQRfvrsDlP5mFjk1pykDw6VLAiyzx+1idwRMTtmYHhH
-         M+U1j1KznUKXEFWkBTDh1pGPh2iWrX8EEjjp3w3SiKAYgoP6+kSWCmw4hxbW9SoB114r
-         3EcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eonbqDCHsVuiHrhUN5KUYPEGi4gZzmkyK9BMR88OEes=;
-        b=cUGfj5oNfSDO7lbz3kKmA2O+Evc/NDvR0bEqLau0RutqakUbdT4k26RYJfzbGSWux2
-         hrKG8eV6cDedmaVaUyMrXYWwdW64U/sYm6N8n5RfqlKLJx77YSKWy315XkQoBk8RJJo7
-         KymSxLsxdgjo3dx3lEHOcQEckl60Hctw829esAQmF20RQqMWqZM5AjEsM2FfAqzUIc+X
-         wRyAk3aPWt/56AZEU414Oo4jzmi7X/3bjtNYhV1jDL5mLtAg0SSqAShQuJtZxZdTU7wA
-         RKfzJHBN4fe1z6/ktD9XGaYMYGTRH65iKLSu9VvkNd9n2KS+b/HXHlKB5YQsWJOirbgR
-         Befg==
-X-Gm-Message-State: APjAAAUpVWVYLJVyzSXoOsVEnOa/VKyXfOwjdiNQBZ7KZ79+GASzyFYr
-        M4Q2a/BN9WJzrjAuhnbtZ2vfJCMuh4XNb3u9Hj42uwk9
-X-Google-Smtp-Source: APXvYqwfZpfynXaRdVMGsnOzlFm/MzPIwMJLh0wMcwOi8wf4Uh6Y6jtcPvZ+lXQmMt2yMK2tkvQLvWJN7OOLBvxnYsA=
-X-Received: by 2002:a25:c983:: with SMTP id z125mr57864097ybf.45.1559126585713;
- Wed, 29 May 2019 03:43:05 -0700 (PDT)
+        id S1726240AbfE2P5I (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 29 May 2019 11:57:08 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:17609 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726330AbfE2P5I (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Wed, 29 May 2019 11:57:08 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 10196E5BFF748E09291A;
+        Wed, 29 May 2019 23:57:06 +0800 (CST)
+Received: from [127.0.0.1] (10.177.244.145) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Wed, 29 May 2019
+ 23:57:02 +0800
+Subject: Re: [PATCH v3 1/4] fstests: define constants for fsck exit codes
+To:     Amir Goldstein <amir73il@gmail.com>, Eryu Guan <guaneryu@gmail.com>
+References: <20190528151723.12525-1-amir73il@gmail.com>
+ <20190528151723.12525-2-amir73il@gmail.com>
+CC:     Miklos Szeredi <miklos@szeredi.hu>,
+        <linux-unionfs@vger.kernel.org>, <fstests@vger.kernel.org>
+From:   "zhangyi (F)" <yi.zhang@huawei.com>
+Message-ID: <8070e26a-b46e-e161-0376-76c88177199a@huawei.com>
+Date:   Wed, 29 May 2019 23:57:00 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 MIME-Version: 1.0
-References: <20190529103120.GA15021@mwanda>
-In-Reply-To: <20190529103120.GA15021@mwanda>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Wed, 29 May 2019 13:42:54 +0300
-Message-ID: <CAOQ4uxjZi-XF17+GT1iQYEHmr18AiZpTjL1M_HhGPaLhtSvBxQ@mail.gmail.com>
-Subject: Re: [bug report] ovl: detect overlapping layers
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Miklos Szeredi <miklos@szeredi.hu>
-Cc:     overlayfs <linux-unionfs@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190528151723.12525-2-amir73il@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.244.145]
+X-CFilter-Loop: Reflected
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, May 29, 2019 at 1:31 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> Hello Amir Goldstein,
->
-> The patch 0e7f2cccb42a: "ovl: detect overlapping layers" from Apr 18,
-> 2019, leads to the following static checker warning:
->
->         fs/overlayfs/super.c:998 ovl_setup_trap()
->         warn: passing a valid pointer to 'PTR_ERR'
->
-> fs/overlayfs/super.c
->    991  static int ovl_setup_trap(struct super_block *sb, struct dentry *dir,
->    992                            struct inode **ptrap, const char *name)
->    993  {
->    994          struct inode *trap;
->    995          int err;
->    996
->    997          trap = ovl_get_trap_inode(sb, dir);
->    998          err = PTR_ERR(trap);
->    999          if (IS_ERR(trap) && err == -ELOOP) {
->   1000                  pr_err("overlayfs: conflicting %s path\n", name);
->   1001                  return err;
->   1002          }
->   1003
->   1004          *ptrap = trap;
->   1005          return 0;
->   1006  }
->
-> The warning message is wrong but the code is also wrong.  The
-> ovl_get_trap_inode() can return ERR_PTR(-ENOMEM) and that would lead to
-> and Oops when we try to call iput() on it.
->
+On 2019/5/28 23:17, Amir Goldstein Wrote:
+> Define the constants for hard coded values used in _repair_scratch_fs()
+> to check fsck exit code.
+> 
+> Suggested-by: zhangyi (F) <yi.zhang@huawei.com>
+> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 
-Right, thank you for spotting this!
-
-Miklos,
-
-Can you fold in this fix:
+Looks good to me.
+Reviewed-by: zhangyi (F) <yi.zhang@huawei.com>
 
 Thanks,
-Amir.
+Yi.
 
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -996,8 +996,9 @@ static int ovl_setup_trap(struct super_block *sb,
-struct dentry *dir,
+> ---
+>  common/config | 11 +++++++++++
+>  common/rc     |  2 +-
+>  2 files changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/common/config b/common/config
+> index 364432bb..bd64be62 100644
+> --- a/common/config
+> +++ b/common/config
+> @@ -69,6 +69,17 @@ export OVL_WORK="ovl-work"
+>  # overlay mount point parent must be the base fs root
+>  export OVL_MNT="ovl-mnt"
+>  
+> +# From e2fsprogs/e2fsck/e2fsck.h:
+> +# Exit code used by fsck-type programs
+> +export FSCK_OK=0
+> +export FSCK_NONDESTRUCT=1
+> +export FSCK_REBOOT=2
+> +export FSCK_UNCORRECTED=4
+> +export FSCK_ERROR=8
+> +export FSCK_USAGE=16
+> +export FSCK_CANCELED=32
+> +export FSCK_LIBRARY=128
+> +
+>  export PWD=`pwd`
+>  #export DEBUG=${DEBUG:=...} # arbitrary CFLAGS really.
+>  export MALLOCLIB=${MALLOCLIB:=/usr/lib/libefence.a}
+> diff --git a/common/rc b/common/rc
+> index e78e0920..cedc1cfa 100644
+> --- a/common/rc
+> +++ b/common/rc
+> @@ -1116,7 +1116,7 @@ _repair_scratch_fs()
+>          fsck -t $FSTYP -y $SCRATCH_DEV 2>&1
+>  	local res=$?
+>  	case $res in
+> -	0|1|2)
+> +	$FSCK_OK|$FSCK_NONDESTRUCT|$FSCK_REBOOT)
+>  		res=0
+>  		;;
+>  	*)
+> 
 
-        trap = ovl_get_trap_inode(sb, dir);
-        err = PTR_ERR(trap);
--       if (IS_ERR(trap) && err == -ELOOP) {
--               pr_err("overlayfs: conflicting %s path\n", name);
-+       if (IS_ERR(trap)) {
-+               if (err == -ELOOP)
-+                       pr_err("overlayfs: conflicting %s path\n", name);
-                return err;
-        }
