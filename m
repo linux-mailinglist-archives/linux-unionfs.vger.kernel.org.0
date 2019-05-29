@@ -2,183 +2,99 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CA2E2CA2D
-	for <lists+linux-unionfs@lfdr.de>; Tue, 28 May 2019 17:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2029B2DAD1
+	for <lists+linux-unionfs@lfdr.de>; Wed, 29 May 2019 12:31:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727841AbfE1PRj (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 28 May 2019 11:17:39 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:44875 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727797AbfE1PRi (ORCPT
+        id S1725990AbfE2Kba (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 29 May 2019 06:31:30 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:56056 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725936AbfE2Kba (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 28 May 2019 11:17:38 -0400
-Received: by mail-wr1-f67.google.com with SMTP id w13so12306696wru.11;
-        Tue, 28 May 2019 08:17:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=4Lg0K0q8VReszXMeOvyTdpLQyUXLxJAiBvY9d4NKRqQ=;
-        b=pxqRKt7YOONRzl8/jtjQiWihKpEd2TpjXgtXBfLkXppF/fTdpl/0rpNeeZSaGj/zO5
-         ekPbGmIeLR1HD2oNFDp13oLaih+dJ73NUN8faXhr2EwSMOsqR8YFCjDflcY/L1vpw0nO
-         V9BDA01DlTmud1o9Zgkr1FblQlzyTfPl/oDbYw0dUL4pKDrnuZx14O947A9mg+554zY3
-         RkiqOaPFZ4jieU07TamFnOXE8ENhEuNyYpwL399e3xWfkY+NuDSABNDFtirlT23ZMmAp
-         akW1f6TE1fJukXEEUNqSnQcoHX2vZ/l4q8Q7jkH7HZK4lcVeoZELj/Cdsce+oVEKgr0k
-         T4pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=4Lg0K0q8VReszXMeOvyTdpLQyUXLxJAiBvY9d4NKRqQ=;
-        b=JhvquEFwjnx1fYFe8A2Sfd1YZ8kFjB8rmNbEfpHJCfR1OmHAgW3JyIAiv+E/OM/XzQ
-         9oNUMYl4ORuAueswkJuqYiAeA6z/3msW7PTJFyiZ8V+fTgDXviGsH4Jh2Yrnp+62t/F6
-         EgWiRHtCyxD/xErk4tqHlLNFKPSGZFklfq5F5uYIOG8v3J8I0gZue13OldkgiqkDiFhi
-         BZXq/06gUI/ldr3teMHuf2Aw9QTZJAz+QvQkgF9ej3ZM5USp0IJ2HfeGIO9LnRU/SkvL
-         YstHcvYkRy/E0+8xv6thbiHw83fMAYrGnjb/RjBe1CsXMpp+Bbfg0G4vfXtloh1SmUu/
-         fBbw==
-X-Gm-Message-State: APjAAAWJeoT+WEwa2mF72wjzw1R/wIXp3IV3IDCUqsNjvqy66fxGm1iD
-        oT6w2T5akXKvGaqt8BG3oAj16lYD
-X-Google-Smtp-Source: APXvYqwzRLG91zNR5ThmrPSX2M4AzfrpQB2OMwzlkbahiGrfL9r5Jre6/NImMBVfZPPtE8dPIR46GA==
-X-Received: by 2002:adf:f292:: with SMTP id k18mr52692440wro.321.1559056656524;
-        Tue, 28 May 2019 08:17:36 -0700 (PDT)
-Received: from amir-ThinkPad-T480.ctera.local (bzq-166-168-31-246.red.bezeqint.net. [31.168.166.246])
-        by smtp.gmail.com with ESMTPSA id z65sm5017010wme.37.2019.05.28.08.17.35
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 28 May 2019 08:17:35 -0700 (PDT)
-From:   Amir Goldstein <amir73il@gmail.com>
-To:     Eryu Guan <guaneryu@gmail.com>
-Cc:     zhangyi <yi.zhang@huawei.com>, Miklos Szeredi <miklos@szeredi.hu>,
-        linux-unionfs@vger.kernel.org, fstests@vger.kernel.org
-Subject: [PATCH v3 4/4] overlay: fix exit code for some fsck.overlay valid cases
-Date:   Tue, 28 May 2019 18:17:23 +0300
-Message-Id: <20190528151723.12525-5-amir73il@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190528151723.12525-1-amir73il@gmail.com>
-References: <20190528151723.12525-1-amir73il@gmail.com>
+        Wed, 29 May 2019 06:31:30 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4TAO1jT009076;
+        Wed, 29 May 2019 10:31:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
+ bh=HgJ/uiVimMlnpkh8hoGMBh8Rt6ZLjLCLq/C0NTe5V+s=;
+ b=FGX6ssAq1KAuT53S3axRF+nlUvxeTphKqtEqdv1nAVjZms0/jwWU/fPhgUctqyJna1ck
+ TpoeEl9OySMHlE1Brca5wmrDQO3JjaD4CLOuhB4MN+OCmkAZnwkQHBndg4CE/eqapiN6
+ KhlfUccM0iFvtuboxf/D233+MYdKIgYizA5+oM0OPZ5ne4f11Lz8hmbUIQNY9XfezGaC
+ a4FBYgYd5w9BLyDfm680OS4GEfkBj4Xm+iwyCy3RcKMArqipZCYwte+zh8eniqRtjMfO
+ t4suf8MOEKzyYX+sWARZ6JyFPK8pQz6TmH5tESZBoA2q21AGEXjOIN1KnhE5TEUj3yOd gQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 2spxbq8p4n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 29 May 2019 10:31:28 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4TAUNNn120292;
+        Wed, 29 May 2019 10:31:27 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 2sqh73mdcb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 29 May 2019 10:31:27 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4TAVRtC024795;
+        Wed, 29 May 2019 10:31:27 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 29 May 2019 03:31:26 -0700
+Date:   Wed, 29 May 2019 13:31:20 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     amir73il@gmail.com
+Cc:     linux-unionfs@vger.kernel.org
+Subject: [bug report] ovl: detect overlapping layers
+Message-ID: <20190529103120.GA15021@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9271 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=546
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905290070
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9271 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=588 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905290070
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-From: "zhangyi (F)" <yi.zhang@huawei.com>
+Hello Amir Goldstein,
 
-Some valid test cases about fsck.overlay may be not valid enough now,
-they lose the impure xattr on the parent directory of the simluated
-redirect directory, and lose the whiteout which use to cover the origin
-lower object. Then fsck.overlay will fix these two inconsistency which
-are not those test cases want to cover, thus it will lead to
-fsck.overlay return FSCK_NONDESTRUCT instead of FSCK_OK. Fix these by
-complement the missing overlay related features.
+The patch 0e7f2cccb42a: "ovl: detect overlapping layers" from Apr 18,
+2019, leads to the following static checker warning:
 
-Signed-off-by: zhangyi (F) <yi.zhang@huawei.com>
----
- tests/overlay/045 | 19 ++++++++++++++++---
- tests/overlay/046 | 13 +++++++++++++
- 2 files changed, 29 insertions(+), 3 deletions(-)
+	fs/overlayfs/super.c:998 ovl_setup_trap()
+	warn: passing a valid pointer to 'PTR_ERR'
 
-diff --git a/tests/overlay/045 b/tests/overlay/045
-index 6b5e8ae4..34b7ce4c 100755
---- a/tests/overlay/045
-+++ b/tests/overlay/045
-@@ -37,6 +37,7 @@ _require_attrs
- _require_command "$FSCK_OVERLAY_PROG" fsck.overlay
- 
- OVL_XATTR_OPAQUE_VAL=y
-+OVL_XATTR_IMPURE_VAL=y
- 
- # remove all files from previous tests
- _scratch_mkfs
-@@ -69,6 +70,15 @@ make_opaque_dir()
- 	$SETFATTR_PROG -n $OVL_XATTR_OPAQUE -v $OVL_XATTR_OPAQUE_VAL $target
- }
- 
-+# Create impure directories
-+make_impure_dir()
-+{
-+	for dir in $*; do
-+		mkdir -p $dir
-+		$SETFATTR_PROG -n $OVL_XATTR_IMPURE -v $OVL_XATTR_IMPURE_VAL $dir
-+	done
-+}
-+
- # Create a redirect directory
- make_redirect_dir()
- {
-@@ -155,8 +165,9 @@ echo "+ Valid whiteout(2)"
- make_test_dirs
- mkdir $lowerdir/origin
- touch $lowerdir/origin/foo
-+make_impure_dir $upperdir
- make_redirect_dir $upperdir/testdir "origin"
--make_whiteout $upperdir/testdir/foo
-+make_whiteout $upperdir/origin $upperdir/testdir/foo
- 
- _overlay_fsck_expect $FSCK_OK $lowerdir $upperdir $workdir -p
- check_whiteout $upperdir/testdir/foo
-@@ -169,7 +180,8 @@ mkdir -p $lowerdir2/origin/subdir
- touch $lowerdir2/origin/subdir/foo
- make_redirect_dir $lowerdir/testdir "origin"
- mkdir -p $upperdir/testdir/subdir
--make_whiteout $upperdir/testdir/subdir/foo
-+make_whiteout $lowerdir/origin $upperdir/testdir/subdir/foo
-+make_impure_dir $upperdir/testdir $upperdir
- 
- _overlay_fsck_expect $FSCK_OK "$lowerdir:$lowerdir2" $upperdir $workdir -p
- check_whiteout $upperdir/testdir/subdir/foo
-@@ -195,7 +207,8 @@ mkdir $lowerdir/origin
- touch $lowerdir/origin/foo
- make_opaque_dir $upperdir/testdir
- make_redirect_dir $upperdir/testdir/subdir "/origin"
--make_whiteout $upperdir/testdir/subdir/foo
-+make_whiteout $upperdir/origin $upperdir/testdir/subdir/foo
-+make_impure_dir $upperdir/testdir
- 
- _overlay_fsck_expect $FSCK_OK $lowerdir $upperdir $workdir -p
- check_whiteout $upperdir/testdir/subdir/foo
-diff --git a/tests/overlay/046 b/tests/overlay/046
-index 4a9ee68f..36c74207 100755
---- a/tests/overlay/046
-+++ b/tests/overlay/046
-@@ -40,6 +40,16 @@ _require_command "$FSCK_OVERLAY_PROG" fsck.overlay
- _scratch_mkfs
- 
- OVL_XATTR_OPAQUE_VAL=y
-+OVL_XATTR_IMPURE_VAL=y
-+
-+# Create impure directories
-+make_impure_dir()
-+{
-+	for dir in $*; do
-+		mkdir -p $dir
-+		$SETFATTR_PROG -n $OVL_XATTR_IMPURE -v $OVL_XATTR_IMPURE_VAL $dir
-+	done
-+}
- 
- # Create a redirect directory
- make_redirect_dir()
-@@ -140,6 +150,7 @@ make_test_dirs
- mkdir $lowerdir/origin
- make_whiteout $upperdir/origin
- make_redirect_dir $upperdir/testdir "origin"
-+make_impure_dir $upperdir
- 
- _overlay_fsck_expect $FSCK_OK $lowerdir $upperdir $workdir -p
- check_redirect $upperdir/testdir "origin"
-@@ -151,6 +162,7 @@ make_test_dirs
- mkdir $lowerdir/origin
- make_whiteout $upperdir/origin
- make_redirect_dir $upperdir/testdir1/testdir2 "/origin"
-+make_impure_dir $upperdir/testdir1
- 
- _overlay_fsck_expect $FSCK_OK $lowerdir $upperdir $workdir -p
- check_redirect $upperdir/testdir1/testdir2 "/origin"
-@@ -172,6 +184,7 @@ make_test_dirs
- mkdir $lowerdir/{testdir1,testdir2}
- make_redirect_dir $upperdir/testdir1 "testdir2"
- make_redirect_dir $upperdir/testdir2 "testdir1"
-+make_impure_dir $upperdir
- 
- _overlay_fsck_expect $FSCK_OK $lowerdir $upperdir $workdir -p
- check_redirect $upperdir/testdir1 "testdir2"
--- 
-2.17.1
+fs/overlayfs/super.c
+   991  static int ovl_setup_trap(struct super_block *sb, struct dentry *dir,
+   992                            struct inode **ptrap, const char *name)
+   993  {
+   994          struct inode *trap;
+   995          int err;
+   996  
+   997          trap = ovl_get_trap_inode(sb, dir);
+   998          err = PTR_ERR(trap);
+   999          if (IS_ERR(trap) && err == -ELOOP) {
+  1000                  pr_err("overlayfs: conflicting %s path\n", name);
+  1001                  return err;
+  1002          }
+  1003  
+  1004          *ptrap = trap;
+  1005          return 0;
+  1006  }
 
+The warning message is wrong but the code is also wrong.  The
+ovl_get_trap_inode() can return ERR_PTR(-ENOMEM) and that would lead to
+and Oops when we try to call iput() on it.
+
+regards,
+dan carpenter
