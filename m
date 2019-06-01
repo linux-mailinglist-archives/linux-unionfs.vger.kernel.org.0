@@ -2,39 +2,39 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E7AD31F0E
-	for <lists+linux-unionfs@lfdr.de>; Sat,  1 Jun 2019 15:41:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26B1A31E72
+	for <lists+linux-unionfs@lfdr.de>; Sat,  1 Jun 2019 15:38:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728118AbfFANTL (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 1 Jun 2019 09:19:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46394 "EHLO mail.kernel.org"
+        id S1728590AbfFANVo (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 1 Jun 2019 09:21:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49200 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728117AbfFANTL (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 1 Jun 2019 09:19:11 -0400
+        id S1728587AbfFANVn (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Sat, 1 Jun 2019 09:21:43 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 01BD325525;
-        Sat,  1 Jun 2019 13:19:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0FDC527301;
+        Sat,  1 Jun 2019 13:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559395150;
+        s=default; t=1559395302;
         bh=2LUsXLY2sI/4AyYGBsY7LNb4t1yX41DcnUFOv/XEQ+Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BPG1vr0fTvjBMcb9VdT06u5MmQ8xJKlWJAHb7406rFzKqwVfd2mBsmZkB8oeLIca+
-         2Zm18ZAxma9HPmD/nxw8vS7Tocri9YR2YzuhH6TejRyqH2wWq4AlneT5HMALxA+v9f
-         tyxGmEuA8v3zXkYkLVUhKZjT3tf8B4J/0jGlb9to=
+        b=wh8yEujOnUgVE2O9EZw8AxQZGD8u2jrYyu+5m2zTFMowHXPDz0GwQYIgDRsbEH76e
+         qumsBqfFoFW1/Ba5etqojkMXmRqRM5hCkU/Q8Jr73RBIoUeKPLQOZTJEhuGX2Ajfy7
+         m697cM052RZjcdrousiHDw+R/zotRzt8JqswN9gA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Amir Goldstein <amir73il@gmail.com>,
         Murphy Zhou <jencce.kernel@gmail.com>,
         Miklos Szeredi <mszeredi@redhat.com>,
         Sasha Levin <sashal@kernel.org>, linux-unionfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 067/186] ovl: do not generate duplicate fsnotify events for "fake" path
-Date:   Sat,  1 Jun 2019 09:14:43 -0400
-Message-Id: <20190601131653.24205-67-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.0 062/173] ovl: do not generate duplicate fsnotify events for "fake" path
+Date:   Sat,  1 Jun 2019 09:17:34 -0400
+Message-Id: <20190601131934.25053-62-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190601131653.24205-1-sashal@kernel.org>
-References: <20190601131653.24205-1-sashal@kernel.org>
+In-Reply-To: <20190601131934.25053-1-sashal@kernel.org>
+References: <20190601131934.25053-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
