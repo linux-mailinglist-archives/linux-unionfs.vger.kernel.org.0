@@ -2,95 +2,62 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEAB331E30
-	for <lists+linux-unionfs@lfdr.de>; Sat,  1 Jun 2019 15:34:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BF78320A2
+	for <lists+linux-unionfs@lfdr.de>; Sat,  1 Jun 2019 22:01:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728966AbfFANep (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 1 Jun 2019 09:34:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53510 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728697AbfFANXc (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 1 Jun 2019 09:23:32 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7A64027358;
-        Sat,  1 Jun 2019 13:23:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559395412;
-        bh=Fv9uytBOgNYpDhXFGzwaeV2PNsUrMGxcqV1c9hs8yv8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F64slh9Z3XKynOEGWGOyYq9Eq2TnrQ3D5QJ1yKacHBIjDpNheSy9k+LPPEWGYUSoE
-         fQNYxu8wbzyMcLjMXtH2fl8FPydE3FpSDU5jPFt8L1+EJU7t/3w19aUFjSHrXLxOYj
-         420F/+gHYquKpMtD/zzyvMRfFsT2UYJ6yC2HoqEE=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Amir Goldstein <amir73il@gmail.com>,
-        Murphy Zhou <jencce.kernel@gmail.com>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        Sasha Levin <sashal@kernel.org>, linux-unionfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 049/141] ovl: do not generate duplicate fsnotify events for "fake" path
-Date:   Sat,  1 Jun 2019 09:20:25 -0400
-Message-Id: <20190601132158.25821-49-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190601132158.25821-1-sashal@kernel.org>
-References: <20190601132158.25821-1-sashal@kernel.org>
+        id S1726251AbfFAUB6 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 1 Jun 2019 16:01:58 -0400
+Received: from mail-vs1-f47.google.com ([209.85.217.47]:40752 "EHLO
+        mail-vs1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726246AbfFAUB6 (ORCPT
+        <rfc822;linux-unionfs@vger.kernel.org>);
+        Sat, 1 Jun 2019 16:01:58 -0400
+Received: by mail-vs1-f47.google.com with SMTP id c24so8906981vsp.7
+        for <linux-unionfs@vger.kernel.org>; Sat, 01 Jun 2019 13:01:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=K928l8jamCNWvjxLXiT3xGNCthYYBnojmU2eY+D0ZWk=;
+        b=RC4H2z4J09yhdu8xCYKib3A6/+hGRImsWaBuc0nsVLaaCcFmGUhMCiRZQFQ8YoSZ2z
+         goML8C9l57n8UHA2Y9QumbXZxggoq787AS5VBGnYqZI4F28GqIeR92tZi2HIoMT4hRc9
+         SJwg9sUrluYA0cZfTsVngycn9SDYn11f9JNxGtVDVCDYcsJ2YPa4JoZu2TiJYT8eccp+
+         ZNNvAbA6wYY8uZH1WdqH2omKDO7IibNLprl+PEOR7TX7OQKO5opY5ddO2ht/dic7MRaj
+         Pl26lqAPUetVNztED+aP+7MtDRZESsiUx9iLMFpxJNGtI6X+BX0uy6nznU489GoU36LG
+         wYGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=K928l8jamCNWvjxLXiT3xGNCthYYBnojmU2eY+D0ZWk=;
+        b=gATlfYNSJwpkahZQSozxTFYL/9c6sr1AjjMm1CXc8rZ8yUlI/1Y+TEkYFSCpFeRFAv
+         M8LapXXyMpPQdnK3wiU09PFG69OH3xpBZmlTota00ZjCwewO730V5Ncb7/0BOva8E1q0
+         dMp4DGJDCvlxdyBCTP2TMFHSNrKXhBV2FMtJh27Af7cN6HmvLHcCmZQstqGv5fF1W83w
+         31tW+M9/mSjJvYMVv6fyD/GClQh2jDT+M76//1woR4slkHM5uWyi8XkTMUckmAGJxv54
+         6f5yVMpJnrcClyvnD9aB27BqXsP/PlG80stoec9sx6hRP6IfsI0yj6kutQRimOkIQqa1
+         Su0g==
+X-Gm-Message-State: APjAAAXkdaFtGQ05noLYlXsx5BiHpB4qhiniYxFqCSKQd/4qZiqLGYgh
+        IbCsSkZOI0BcrcvT96go4F37quLZbGYYa2qaZY+OmtpkLAk=
+X-Google-Smtp-Source: APXvYqxUd5ZHuqi9r0jJHyo1EFD3T8VPg8dwb9S9tSs59LQTLTtjcDwf/SFS0jGw8lx4BHdcy3l0i1SCTAv6AX9jeIw=
+X-Received: by 2002:a67:f78d:: with SMTP id j13mr6343979vso.67.1559419316344;
+ Sat, 01 Jun 2019 13:01:56 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+From:   Marco Nelissen <marco.nelissen@gmail.com>
+Date:   Sat, 1 Jun 2019 13:01:45 -0700
+Message-ID: <CAH2+hP4Q3i4LdKL2Cz=1uWq0+JSD1RnzcdmicDtCeqEUqLo+hg@mail.gmail.com>
+Subject: which lower filesystems are actually supported?
+To:     linux-unionfs@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-From: Amir Goldstein <amir73il@gmail.com>
+According to the documentation, "The lower filesystem can be any filesystem
+supported by Linux", however this appears to not actually be the case, since
+using a vfat filesystem results in the mount command printing "mount:
+wrong fs type, bad option, bad superblock on overlay, missing codepage or
+helper program, or other error", with dmesg saying "overlayfs: filesystem on
+'/boot' not supported".
+(that's from ovl_mount_dir_noesc(), when ovl_dentry_weird() returns nonzero)
 
-[ Upstream commit d989903058a83e8536cc7aadf9256a47d5c173fe ]
-
-Overlayfs "fake" path is used for stacked file operations on underlying
-files.  Operations on files with "fake" path must not generate fsnotify
-events with path data, because those events have already been generated at
-overlayfs layer and because the reported event->fd for fanotify marks on
-underlying inode/filesystem will have the wrong path (the overlayfs path).
-
-Link: https://lore.kernel.org/linux-fsdevel/20190423065024.12695-1-jencce.kernel@gmail.com/
-Reported-by: Murphy Zhou <jencce.kernel@gmail.com>
-Fixes: d1d04ef8572b ("ovl: stack file ops")
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/overlayfs/file.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
-index 986313da0c889..dbf39e715e6aa 100644
---- a/fs/overlayfs/file.c
-+++ b/fs/overlayfs/file.c
-@@ -29,10 +29,11 @@ static struct file *ovl_open_realfile(const struct file *file,
- 	struct inode *inode = file_inode(file);
- 	struct file *realfile;
- 	const struct cred *old_cred;
-+	int flags = file->f_flags | O_NOATIME | FMODE_NONOTIFY;
- 
- 	old_cred = ovl_override_creds(inode->i_sb);
--	realfile = open_with_fake_path(&file->f_path, file->f_flags | O_NOATIME,
--				       realinode, current_cred());
-+	realfile = open_with_fake_path(&file->f_path, flags, realinode,
-+				       current_cred());
- 	revert_creds(old_cred);
- 
- 	pr_debug("open(%p[%pD2/%c], 0%o) -> (%p, 0%o)\n",
-@@ -50,7 +51,7 @@ static int ovl_change_flags(struct file *file, unsigned int flags)
- 	int err;
- 
- 	/* No atime modificaton on underlying */
--	flags |= O_NOATIME;
-+	flags |= O_NOATIME | FMODE_NONOTIFY;
- 
- 	/* If some flag changed that cannot be changed then something's amiss */
- 	if (WARN_ON((file->f_flags ^ flags) & ~OVL_SETFL_MASK))
--- 
-2.20.1
-
+Should vfat be supported, or is the documentation wrong? If the documentation
+is wrong, what other filesystems are (not) supported?
