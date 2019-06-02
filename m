@@ -2,62 +2,131 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BF78320A2
-	for <lists+linux-unionfs@lfdr.de>; Sat,  1 Jun 2019 22:01:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4754E32257
+	for <lists+linux-unionfs@lfdr.de>; Sun,  2 Jun 2019 09:08:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726251AbfFAUB6 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 1 Jun 2019 16:01:58 -0400
-Received: from mail-vs1-f47.google.com ([209.85.217.47]:40752 "EHLO
-        mail-vs1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726246AbfFAUB6 (ORCPT
+        id S1726634AbfFBHIy (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 2 Jun 2019 03:08:54 -0400
+Received: from mail-yw1-f42.google.com ([209.85.161.42]:37425 "EHLO
+        mail-yw1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725977AbfFBHIy (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 1 Jun 2019 16:01:58 -0400
-Received: by mail-vs1-f47.google.com with SMTP id c24so8906981vsp.7
-        for <linux-unionfs@vger.kernel.org>; Sat, 01 Jun 2019 13:01:57 -0700 (PDT)
+        Sun, 2 Jun 2019 03:08:54 -0400
+Received: by mail-yw1-f42.google.com with SMTP id 186so6036514ywo.4;
+        Sun, 02 Jun 2019 00:08:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=K928l8jamCNWvjxLXiT3xGNCthYYBnojmU2eY+D0ZWk=;
-        b=RC4H2z4J09yhdu8xCYKib3A6/+hGRImsWaBuc0nsVLaaCcFmGUhMCiRZQFQ8YoSZ2z
-         goML8C9l57n8UHA2Y9QumbXZxggoq787AS5VBGnYqZI4F28GqIeR92tZi2HIoMT4hRc9
-         SJwg9sUrluYA0cZfTsVngycn9SDYn11f9JNxGtVDVCDYcsJ2YPa4JoZu2TiJYT8eccp+
-         ZNNvAbA6wYY8uZH1WdqH2omKDO7IibNLprl+PEOR7TX7OQKO5opY5ddO2ht/dic7MRaj
-         Pl26lqAPUetVNztED+aP+7MtDRZESsiUx9iLMFpxJNGtI6X+BX0uy6nznU489GoU36LG
-         wYGA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=X84XQkIIhbzI/1DrC38YNb+tCYYcuI5s2GMEjO0K2to=;
+        b=OxNu1MMI2QkEm+n3L6Rbku4wAiO2MmO64eCgYg81FhnHH/YrXNPeP2g/U5UjYP8ffD
+         sxO3+I8wVG1Up1X/yvP0tXl0kK21lQIYxtspWDCVgOlgNd+6i8mft1A3d5CeLOz6ZHH3
+         TdGWpP+FvpTBtoeFPRYLPk/FUTJ3mFPvMD/E1zRnssiooScmuumrV0nTxyUHi1d0mM4P
+         MjmWvDRfD8Zsnaym5+bzrjN+YP09IPdwGU5Se/IEdoAi0KnRZd0h5CkSz+c2ih9i8FuZ
+         0Om86L5wMFq+adq6ZO2HwfaPmIHDbV3E040eOSrsPwoxpF4LEh4d8MqKo71vdM0329B7
+         egCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=K928l8jamCNWvjxLXiT3xGNCthYYBnojmU2eY+D0ZWk=;
-        b=gATlfYNSJwpkahZQSozxTFYL/9c6sr1AjjMm1CXc8rZ8yUlI/1Y+TEkYFSCpFeRFAv
-         M8LapXXyMpPQdnK3wiU09PFG69OH3xpBZmlTota00ZjCwewO730V5Ncb7/0BOva8E1q0
-         dMp4DGJDCvlxdyBCTP2TMFHSNrKXhBV2FMtJh27Af7cN6HmvLHcCmZQstqGv5fF1W83w
-         31tW+M9/mSjJvYMVv6fyD/GClQh2jDT+M76//1woR4slkHM5uWyi8XkTMUckmAGJxv54
-         6f5yVMpJnrcClyvnD9aB27BqXsP/PlG80stoec9sx6hRP6IfsI0yj6kutQRimOkIQqa1
-         Su0g==
-X-Gm-Message-State: APjAAAXkdaFtGQ05noLYlXsx5BiHpB4qhiniYxFqCSKQd/4qZiqLGYgh
-        IbCsSkZOI0BcrcvT96go4F37quLZbGYYa2qaZY+OmtpkLAk=
-X-Google-Smtp-Source: APXvYqxUd5ZHuqi9r0jJHyo1EFD3T8VPg8dwb9S9tSs59LQTLTtjcDwf/SFS0jGw8lx4BHdcy3l0i1SCTAv6AX9jeIw=
-X-Received: by 2002:a67:f78d:: with SMTP id j13mr6343979vso.67.1559419316344;
- Sat, 01 Jun 2019 13:01:56 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=X84XQkIIhbzI/1DrC38YNb+tCYYcuI5s2GMEjO0K2to=;
+        b=h3Kr4WoeFD6ycf3PLHYG9T9R6x9WWK2ouxsBelEtMxkYJCHXdR01rbo5tvA5XbgTRx
+         8jqyMKG6VVpVuic299EwLpcSkbqV9ETWFGeLDtW6BNFLleQjEs4NCBBYcnIaLX33CipM
+         negRY8TSTpKBH1HM+sMuweIxyXXoI6mMEqicVs4/QdqIQRreBWbRfxFcefiEjP7hS6uk
+         kgDwFpzvnWvBLvgfkXaeENxuuUMKmB7ANT54PqICpbCQ1+TwYJ9AaJL2+NoL16TPb9nq
+         1Fj0GFw+009OjncIEx3IBuo7sxncJLCSiI97jptmZgbj5xOPhM4L0aQGkcHM7gN7+mLk
+         d6Pg==
+X-Gm-Message-State: APjAAAUVJ14zEXsKtMRohkmJ6d+5WK6jG1A1CNN/MOAra6OPF1zbFAOD
+        Qav+/8VxnGMLTpdgr1mGt0kVceQavOnIlY6wVzk=
+X-Google-Smtp-Source: APXvYqxc5K/+oFNG6Dgba9/QmX9G0xdErSwsOyQfQGXHLb2n5OaNmAowf5jl/7CUMBNGLhJ90VbKp2NUAoQEm05wySk=
+X-Received: by 2002:a81:3956:: with SMTP id g83mr10411312ywa.183.1559457785607;
+ Sat, 01 Jun 2019 23:43:05 -0700 (PDT)
 MIME-Version: 1.0
-From:   Marco Nelissen <marco.nelissen@gmail.com>
-Date:   Sat, 1 Jun 2019 13:01:45 -0700
-Message-ID: <CAH2+hP4Q3i4LdKL2Cz=1uWq0+JSD1RnzcdmicDtCeqEUqLo+hg@mail.gmail.com>
-Subject: which lower filesystems are actually supported?
-To:     linux-unionfs@vger.kernel.org
+References: <CAH2+hP4Q3i4LdKL2Cz=1uWq0+JSD1RnzcdmicDtCeqEUqLo+hg@mail.gmail.com>
+In-Reply-To: <CAH2+hP4Q3i4LdKL2Cz=1uWq0+JSD1RnzcdmicDtCeqEUqLo+hg@mail.gmail.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Sun, 2 Jun 2019 09:42:54 +0300
+Message-ID: <CAOQ4uxgPXBazE-g2v=T_vOvnr_f0ZHyKYZ4wvn7A3ePatZrhnQ@mail.gmail.com>
+Subject: Re: which lower filesystems are actually supported?
+To:     Marco Nelissen <marco.nelissen@gmail.com>
+Cc:     overlayfs <linux-unionfs@vger.kernel.org>,
+        Ext4 <linux-ext4@vger.kernel.org>, Theodore Tso <tytso@mit.edu>,
+        Gabriel Krisman Bertazi <krisman@collabora.com>,
+        "Darrick J. Wong" <darrick.wong@oracle.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-According to the documentation, "The lower filesystem can be any filesystem
-supported by Linux", however this appears to not actually be the case, since
-using a vfat filesystem results in the mount command printing "mount:
-wrong fs type, bad option, bad superblock on overlay, missing codepage or
-helper program, or other error", with dmesg saying "overlayfs: filesystem on
-'/boot' not supported".
-(that's from ovl_mount_dir_noesc(), when ovl_dentry_weird() returns nonzero)
+[+cc ext4] Heads up on bug reports "Overlayfs fails to mount with ext4"
 
-Should vfat be supported, or is the documentation wrong? If the documentation
-is wrong, what other filesystems are (not) supported?
+On Sat, Jun 1, 2019 at 11:02 PM Marco Nelissen <marco.nelissen@gmail.com> wrote:
+>
+> According to the documentation, "The lower filesystem can be any filesystem
+> supported by Linux", however this appears to not actually be the case, since
+> using a vfat filesystem results in the mount command printing "mount:
+> wrong fs type, bad option, bad superblock on overlay, missing codepage or
+> helper program, or other error", with dmesg saying "overlayfs: filesystem on
+> '/boot' not supported".
+> (that's from ovl_mount_dir_noesc(), when ovl_dentry_weird() returns nonzero)
+
+Specifically for vfat it is weird because of
+dentry->d_flags & (DCACHE_OP_HASH | DCACHE_OP_COMPARE)
+because it is case insensitive.
+
+>
+> Should vfat be supported, or is the documentation wrong? If the documentation
+
+Documentation is wrong.
+
+> is wrong, what other filesystems are (not) supported?
+
+There are some special cases like /proc/sys and auto mount points,
+but the most common reason for unsupported lower is case insensitive filesystems
+and filesystems that support unicode character folding.
+Those filesystems MAY be case insensitive/unicode, depending on
+mkfs/mount options:
+ adfs affs cifs efivarfs fat hfs hfsplus hpfs isofs isofs jfs xfs(*) ext4(**)
+
+(*) xfs case insensitive-ness feature is hidden from dcache (dcache is
+disabled), so
+overlayfs mount won't fail, but it may have unexpected behaviors.
+
+(**) ext4 supports per directory case insensitive and unicode folding
+since v5.2-rc1,
+if the filesystem was configured that way with mkfs/tune2fs. In this
+case, regardless of
+whether the lower dir is case insensitive or not, overlayfs mount will fail.
+
+I am guessing when people start using case insensitive enabled ext4,
+this problem
+is going to surface, because the same ext4 (e.g. root fs) could be
+used for samba
+export (case insensitive) and docker storage (overlayfs).
+
+I can think of some solutions for the private case of same case
+insensitive fs used
+for upper and lower, but let's see that the problem is real before
+discussing a solution.
+
+Ted, Gabriel,
+
+I didn't see that xfstests-bld was updated with case folding configs for ext4,
+nor that xfstests has any new case folding tests (saw some posted), so I guess
+that is still in the works (?).
+
+Did you happen to try out overlayfs/docker over a case insensitive enabled fs?
+
+I wonder if you could spare a few extra GCE instances per pre-release tests
+to run an overlay over ext4 config?
+I was nagging Darrick about this for a while and now I think the
+overlay/xfs config
+is being tested regularly.
+
+Beyond the fact that there are vast number of users using docker with overlay
+over ext4, overlayfs tends to find rare filesystem bugs because of its special
+use patterns (e.g. acd1d71598f7 "xfs: preserve i_rdev when recycling...").
+
+Thanks,
+Amir.
