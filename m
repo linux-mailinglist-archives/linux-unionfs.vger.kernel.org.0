@@ -2,131 +2,117 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66E1F322AF
-	for <lists+linux-unionfs@lfdr.de>; Sun,  2 Jun 2019 10:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4FA732482
+	for <lists+linux-unionfs@lfdr.de>; Sun,  2 Jun 2019 20:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726159AbfFBIHN (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 2 Jun 2019 04:07:13 -0400
-Received: from mail-yw1-f67.google.com ([209.85.161.67]:35658 "EHLO
-        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726032AbfFBIHN (ORCPT
+        id S1726693AbfFBSBN (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 2 Jun 2019 14:01:13 -0400
+Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:43234 "EHLO
+        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726170AbfFBSBM (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 2 Jun 2019 04:07:13 -0400
-Received: by mail-yw1-f67.google.com with SMTP id k128so6070842ywf.2;
-        Sun, 02 Jun 2019 01:07:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xqk7EKL2SV95UZjmOddmWxOkIDexNhAp5jf3T3MFvW8=;
-        b=V0JHpErnwFA1OOgIcLW3XJUX95RYObH08r7EKM7FFfXxq8lbnMcVYow+EJxDSpX3sf
-         1bNgreOXYbZSHHo67d4TrfSmR07dsyBO69SmFgf7aYdlBBPUHpjbvwMqiOroipdMSwED
-         w77jrnyuHrGZDr/rhOhArqP3vQSkh+KOoU0tqaLDabroHQGuwfr1wCISN424YcbynyBO
-         4vQ8ZZwzoxIMP7j9MFfTFUM9QQqY2aZK/5oIpi8munjbtuy/6JmEJ6Up9L9jefXENx1K
-         jtpKhY44f9SsCocbMCcFxI0uJd/daQuhFbTjmkKbC9mVVjy8zABNkz1c67rXgMQZoTMY
-         diJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xqk7EKL2SV95UZjmOddmWxOkIDexNhAp5jf3T3MFvW8=;
-        b=Z0XUbmq7lTc/iekDFe6ltOPSGF7Hvg/vlj2bPfXB3d6ETls5Jnr3tQoJf+0a33XXaM
-         Rt+PA6xPppwOQvkSd+9o84HJXcEPVWexxO+mW25zBJCqMc+TrWOmontX0LX7KcsRANDL
-         RGeWzB7J8B6Ar7EUesogmqhqDu8rMxHUDWueGmS4MfPKcVQVVRoOfVUvDFzsAKWe4XDv
-         Jvg6kZhmXSLAT6t0mZ0qttdcYSwExbaNGqE0xSqDeGLax279j8ms6Aj1QxOM+BenHNYu
-         pgZDjboLeyufBxzxiYJkPtVNzfBXyo2wWwvwDrJGjsy7wQaWf12RDpbzeyOnza1oYDED
-         gYhg==
-X-Gm-Message-State: APjAAAUPeKitgBETeydWCOaAZ5KF5O6Wk3RV6P8M8MArPk6Nl7kfNSR+
-        PB1WoAgJlk4xSDzKR77K6XhWKdSE3kiZzSGYMiU=
-X-Google-Smtp-Source: APXvYqxI2uVWhBBewMgqlip/1feeE8+21jUEuHl4Uxb1kT+z886/t//Lk50F21hEZhjem78d5JoDM4bilVd+Np+MxM8=
-X-Received: by 2002:a0d:f5c4:: with SMTP id e187mr652800ywf.88.1559462832493;
- Sun, 02 Jun 2019 01:07:12 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190528151723.12525-1-amir73il@gmail.com> <20190528151723.12525-4-amir73il@gmail.com>
- <20190602070949.GS15846@desktop>
-In-Reply-To: <20190602070949.GS15846@desktop>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Sun, 2 Jun 2019 11:07:01 +0300
-Message-ID: <CAOQ4uxgvajS+JzAc9NTNHF4XtYDp_mqV22dDZ73uEu72uQJP1g@mail.gmail.com>
-Subject: Re: [PATCH v3 3/4] overlay: correct fsck.overlay exit code
-To:     Eryu Guan <guaneryu@gmail.com>
-Cc:     zhangyi <yi.zhang@huawei.com>, Miklos Szeredi <miklos@szeredi.hu>,
+        Sun, 2 Jun 2019 14:01:12 -0400
+Received: from callcc.thunk.org ([66.31.38.53])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id x52I0w4O013375
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 2 Jun 2019 14:00:58 -0400
+Received: by callcc.thunk.org (Postfix, from userid 15806)
+        id 10303420481; Sun,  2 Jun 2019 14:00:58 -0400 (EDT)
+Date:   Sun, 2 Jun 2019 14:00:58 -0400
+From:   "Theodore Ts'o" <tytso@mit.edu>
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Marco Nelissen <marco.nelissen@gmail.com>,
         overlayfs <linux-unionfs@vger.kernel.org>,
-        fstests <fstests@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Ext4 <linux-ext4@vger.kernel.org>,
+        Gabriel Krisman Bertazi <krisman@collabora.com>,
+        "Darrick J. Wong" <darrick.wong@oracle.com>
+Subject: Re: which lower filesystems are actually supported?
+Message-ID: <20190602180057.GA4865@mit.edu>
+References: <CAH2+hP4Q3i4LdKL2Cz=1uWq0+JSD1RnzcdmicDtCeqEUqLo+hg@mail.gmail.com>
+ <CAOQ4uxgPXBazE-g2v=T_vOvnr_f0ZHyKYZ4wvn7A3ePatZrhnQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOQ4uxgPXBazE-g2v=T_vOvnr_f0ZHyKYZ4wvn7A3ePatZrhnQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Sun, Jun 2, 2019 at 10:26 AM Eryu Guan <guaneryu@gmail.com> wrote:
->
-> On Tue, May 28, 2019 at 06:17:22PM +0300, Amir Goldstein wrote:
-> > From: "zhangyi (F)" <yi.zhang@huawei.com>
+On Sun, Jun 02, 2019 at 09:42:54AM +0300, Amir Goldstein wrote:
+> [+cc ext4] Heads up on bug reports "Overlayfs fails to mount with ext4"
+> 
+> On Sat, Jun 1, 2019 at 11:02 PM Marco Nelissen <marco.nelissen@gmail.com> wrote:
 > >
-> > fsck.overlay should return correct exit code to show the file system
-> > status after fsck, instead of return 0 means consistency and !0 means
-> > inconsistency or something bad happened.
-> >
-> > Fix the following three exit code after running fsck.overlay:
-> >
-> > - Return FSCK_OK if the input file system is consistent,
-> > - Return FSCK_NONDESTRUCT if the file system inconsistent errors
-> >   corrected,
-> > - Return FSCK_UNCORRECTED if the file system still have inconsistent
-> >   errors.
-> >
-> > This patch also add a helper function to run fsck.overlay and check
-> > the return value is expected or not.
-> >
-> > [amir] rename helper to _overlay_fsck_expect, split define of FSCK_*
-> > to a seprate path.
-> >
-> > Signed-off-by: zhangyi (F) <yi.zhang@huawei.com>
-> > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> > ---
-> >  common/overlay    | 19 +++++++++++++++++++
-> >  tests/overlay/045 | 27 +++++++++------------------
-> >  tests/overlay/046 | 36 ++++++++++++------------------------
-> >  tests/overlay/056 |  9 +++------
-> >  4 files changed, 43 insertions(+), 48 deletions(-)
-> >
-> > diff --git a/common/overlay b/common/overlay
-> > index a71c2035..53e35caf 100644
-> > --- a/common/overlay
-> > +++ b/common/overlay
-> > @@ -193,6 +193,25 @@ _overlay_fsck_dirs()
-> >                          -o workdir=$workdir $*
-> >  }
-> >
-> > +# Run fsck and check for expected return value
-> > +_overlay_fsck_expect()
-> > +{
-> > +     # The first arguments is the expected fsck program exit code, the
-> > +     # remaining arguments are the input parameters of the fsck program.
-> > +     local expect_ret=$1
-> > +     local lowerdir=$2
-> > +     local upperdir=$3
-> > +     local workdir=$4
-> > +     shift 4
-> > +
-> > +     _overlay_fsck_dirs $lowerdir $upperdir $workdir $* >> \
-> > +                     $seqres.full 2>&1
-> > +     fsck_ret=$?
-> > +
-> > +     [[ "$fsck_ret" == "$expect_ret" ]] || \
-> > +             echo "fsck return unexpected value:$expect_ret,$fsck_ret"
->
-> This statement looks ambiguous, it's not that clear which return value
-> is expected and which is unexpected. I'd like to change it to something
-> like:
->
-> "expect fsck.overlay to return $expect_ret, but got $fsck_ret"
->
-> I can fix it on commit if you're OK with this change.
->
+> > According to the documentation, "The lower filesystem can be any filesystem
+> > supported by Linux", however this appears to not actually be the case, since
+> > using a vfat filesystem results in the mount command printing "mount:
+> > wrong fs type, bad option, bad superblock on overlay, missing codepage or
+> > helper program, or other error", with dmesg saying "overlayfs: filesystem on
+> > '/boot' not supported".
+> > (that's from ovl_mount_dir_noesc(), when ovl_dentry_weird() returns nonzero)
+> 
+> Specifically for vfat it is weird because of
+> dentry->d_flags & (DCACHE_OP_HASH | DCACHE_OP_COMPARE)
+> because it is case insensitive.
 
-Fine by me.
+Marco, did you actually *need* to use the case insensitive feature?
+It is not turned on by default by e2fsprogs, and the assumption was
+that it only be turned in cases where it was needed --- e.g., VM's
+running Steam games that need Microsoft file system semantics,
+including case insensitivity, Samba (and eventually NFSv4) file
+servers for the same reason, and Android (so people won't have to try
+to get the abomination known as sdcardfs upstream :-).
 
-Thanks,
-Amir.
+> 
+> I am guessing when people start using case insensitive enabled ext4,
+> this problem
+> is going to surface, because the same ext4 (e.g. root fs) could be
+> used for samba
+> export (case insensitive) and docker storage (overlayfs).
+
+So I didn't think this would be that common, since you can certainly
+run Sambda without this new file system feature --- Samba has lived
+without it for over a decade.  However, if you are running a high
+performance file server, it matters --- but if you're running a high
+performance file server, you're certainly not going to be trying to do
+it on the same server as one running Docker.
+
+Now, if you're trying to use overlayfs for some kind of snapshot
+application, then we'll need to figure out how to make overlayfs and
+ext4 work together --- but I view this as much more over an overlay
+compatibility issue than an ext4 bug.
+
+We *might* be able to only set the dentry functions on directory
+entries belonging to directories which have the casefold flag set,
+instead of simply setting it on all ext4 dentry entries.  But still
+won't change the fact that overlayfs is going to have case
+insensitivity support if we want the combination of overlayfs &&
+casefold to be supported.
+
+> I didn't see that xfstests-bld was updated with case folding configs for ext4,
+> nor that xfstests has any new case folding tests (saw some posted), so I guess
+> that is still in the works (?).
+
+That's correct, it's still on the todo list.
+
+> Did you happen to try out overlayfs/docker over a case insensitive enabled fs?
+
+Nope.  I didn't think that was going to be a common use case.  Docker
+is typically used on servers, where as case insensitivity is important
+for clients and file servers --- at least on the general case.
+
+> I wonder if you could spare a few extra GCE instances per pre-release tests
+> to run an overlay over ext4 config?
+> I was nagging Darrick about this for a while and now I think the
+> overlay/xfs config
+> is being tested regularly.
+
+It wouldn't be that hard to test overlayfs with ext4 for my
+pre-release testing.  But it would only be in the default ext4
+configuration --- and that doesn't include the case fold feature.
+
+	      	      	   	   	   - Ted
