@@ -2,109 +2,194 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 07C4232811
-	for <lists+linux-unionfs@lfdr.de>; Mon,  3 Jun 2019 07:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4E6634BA7
+	for <lists+linux-unionfs@lfdr.de>; Tue,  4 Jun 2019 17:10:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726550AbfFCFli (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 3 Jun 2019 01:41:38 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:57912 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726409AbfFCFli (ORCPT
+        id S1727839AbfFDPKn (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 4 Jun 2019 11:10:43 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:37704 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727822AbfFDPKn (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 3 Jun 2019 01:41:38 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: krisman)
-        with ESMTPSA id E6E1B261FA4
-From:   Gabriel Krisman Bertazi <krisman@collabora.com>
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     "Theodore Ts'o" <tytso@mit.edu>,
-        Marco Nelissen <marco.nelissen@gmail.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Ext4 <linux-ext4@vger.kernel.org>,
-        Eric Biggers <ebiggers@google.com>
-Subject: Re: which lower filesystems are actually supported?
-Organization: Collabora
-References: <CAH2+hP4Q3i4LdKL2Cz=1uWq0+JSD1RnzcdmicDtCeqEUqLo+hg@mail.gmail.com>
-        <CAOQ4uxgPXBazE-g2v=T_vOvnr_f0ZHyKYZ4wvn7A3ePatZrhnQ@mail.gmail.com>
-        <20190602180057.GA4865@mit.edu>
-        <CAOQ4uxhbSc0nZ69ffJVfNgVnr=ahg+HetiXcZKMXA2nXKCabqA@mail.gmail.com>
-Date:   Mon, 03 Jun 2019 01:41:33 -0400
-In-Reply-To: <CAOQ4uxhbSc0nZ69ffJVfNgVnr=ahg+HetiXcZKMXA2nXKCabqA@mail.gmail.com>
-        (Amir Goldstein's message of "Mon, 3 Jun 2019 02:18:25 +0300")
-Message-ID: <85k1e39qeq.fsf@collabora.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+        Tue, 4 Jun 2019 11:10:43 -0400
+Received: by mail-wr1-f67.google.com with SMTP id h1so16237810wro.4
+        for <linux-unionfs@vger.kernel.org>; Tue, 04 Jun 2019 08:10:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=CVe8GNIy/jQT2Xib23+VR1m07gUIdS0n/O8YMNvFuQU=;
+        b=YV5RxoXXaXO3ffWGqNRG9787gKuJ4vqkGLKaBQSzDKk3614orRzvJXG9oE8mfj5zTa
+         +mi6Pc5RtnhjUay9dHSScFM7FPwQ+1SFUUIJo/E1woWbb7ygGydVD1yCxpUVWbfxOpQY
+         lYY4E8Ba1aPmqMeVFuyaPo/mKqWewpGAsVa1yqzwAkZKqHRWPfs4Juy2WIeSwfMniPt0
+         jvwqwipqQ+Zl7EeZ11CLwOZZUuWlhtM9FvbblLEm7GbcM13Tz744A28F9/SmxDSHP84Q
+         cI6atxgu2lEUgl+D5Ibu4r8w4FUDSro/sL3DYULBWYrJwprcYxPIl5Mkw3ekhvmtrfMj
+         gtfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=CVe8GNIy/jQT2Xib23+VR1m07gUIdS0n/O8YMNvFuQU=;
+        b=F3wmsArjFlSXQRh700lDplqPiSmD4mt883uGuki6OJpwzJEC/iz5jUQZ3j1St5G9Jh
+         jIk5+jh486/W9lipJ4WUPLtwGSMizP9FDUASuyngX2nr/lDUJvkwoVhiGpnchd6KlioE
+         agTW5RtVf8WcDA1i6c+7QHXWyoUl2At9Y9nC01TPxrpDM8jOJJVPxDIGGFbcXDkQChAs
+         COHZEXjyD4vMP2qDTasEaJu6uWrcV8d4ts/JYec2iVVnQ9U/HWe+a7J6v4k7P0cDHhCR
+         /nFCNnR2ampkZum0ti8NG1s+ChTl9gAZTemoNcaC18zA8dCVoPdCmw6Gl3n4xasUTruo
+         BeFw==
+X-Gm-Message-State: APjAAAVYMpw1xwxL05vCZKyHJEF1NUqtFEU9o+1xmVWTU5ucOPfZxQx0
+        PAq3Lp1b4xZL3UDcJZghPjC390V1Oc0=
+X-Google-Smtp-Source: APXvYqyQxF4n08JLQREYaGKaXOmoa21LoiTQNR4fiDJ1Li0myH8dw3ML6w7yb3PkmrU2GRg41Ey7vQ==
+X-Received: by 2002:adf:c5c1:: with SMTP id v1mr3636700wrg.129.1559661041439;
+        Tue, 04 Jun 2019 08:10:41 -0700 (PDT)
+Received: from localhost.localdomain (p548C66C4.dip0.t-ipconnect.de. [84.140.102.196])
+        by smtp.gmail.com with ESMTPSA id l7sm9077326wmh.20.2019.06.04.08.10.40
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 04 Jun 2019 08:10:40 -0700 (PDT)
+From:   Amir Goldstein <amir73il@gmail.com>
+To:     Petr Vorel <pvorel@suse.cz>
+Cc:     Cyril Hrubis <chrubis@suse.cz>, Murphy Zhou <xzhou@redhat.com>,
+        Jan Kara <jack@suse.cz>, Miklos Szeredi <miklos@szeredi.hu>,
+        linux-unionfs@vger.kernel.org, ltp@lists.linux.it
+Subject: [PATCH v2 1/2] fanotify06: add a test case for overlayfs
+Date:   Tue,  4 Jun 2019 18:10:34 +0300
+Message-Id: <20190604151035.6123-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Amir Goldstein <amir73il@gmail.com> writes:
+This test fails on overlayfs since kernel v4.19.
+Added a test case for overlayfs mount.
 
-> On Sun, Jun 2, 2019 at 9:01 PM Theodore Ts'o <tytso@mit.edu> wrote:
->>
->> On Sun, Jun 02, 2019 at 09:42:54AM +0300, Amir Goldstein wrote:
->> > [+cc ext4] Heads up on bug reports "Overlayfs fails to mount with ext4"
->> >
->> > On Sat, Jun 1, 2019 at 11:02 PM Marco Nelissen <marco.nelissen@gmail.com> wrote:
->> > >
->> > > According to the documentation, "The lower filesystem can be any filesystem
->> > > supported by Linux", however this appears to not actually be the case, since
->> > > using a vfat filesystem results in the mount command printing "mount:
->> > > wrong fs type, bad option, bad superblock on overlay, missing codepage or
->> > > helper program, or other error", with dmesg saying "overlayfs: filesystem on
->> > > '/boot' not supported".
->> > > (that's from ovl_mount_dir_noesc(), when ovl_dentry_weird() returns nonzero)
->> >
->> > Specifically for vfat it is weird because of
->> > dentry->d_flags & (DCACHE_OP_HASH | DCACHE_OP_COMPARE)
->> > because it is case insensitive.
->>
-> [...]
->> >
->> > I am guessing when people start using case insensitive enabled ext4,
->> > this problem
->> > is going to surface, because the same ext4 (e.g. root fs) could be
->> > used for samba
->> > export (case insensitive) and docker storage (overlayfs).
->>
-> [...]
->>
->> We *might* be able to only set the dentry functions on directory
->> entries belonging to directories which have the casefold flag set,
->> instead of simply setting it on all ext4 dentry entries.  But still
->> won't change the fact that overlayfs is going to have case
->> insensitivity support if we want the combination of overlayfs &&
->> casefold to be supported.
->>
->
-> My intention was not that overlayfs should support casefold, just that
-> an isolated casefold subdir in an ext4 fs shouldn't make the entire fs
-> not usable with overlayfs.
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+---
 
-That is a reasonable request.  I discussed a bit with Ted about how to
-not set dentry functions filesystem wide,  because that gets in the way
-of fscrypt.  I don't have a definite answer on how to do it, but it is
-something that I will try to fix to enable fscrypt+casefold support.
+Changes since v1:
+- Use new overlayfs mount helpers
+- Add patch to fix EBUSY error on overlayfs umount
 
-> Incidentally, we already ran into a similar issue with ext4 encryption.
-> Issue was reported by OpenWRT developers and fixed by:
-> d456a33f041a fscrypt: only set dentry_operations on ciphertext dentries
->
-> I recon casefold is taking a similar direction to the fs/crypto library, so
-> solution should be similar as well.
->
-> BTW, is casefold feature mutually exclusive with encryption feature?
-> Because if it isn't, d_set_d_op() in __fscrypt_prepare_lookup() is
-> going to WARN_ON dentry already has ext4_dentry_ops.
+ .../kernel/syscalls/fanotify/fanotify06.c     | 61 +++++++++++++------
+ 1 file changed, 43 insertions(+), 18 deletions(-)
 
-Not yet, and that is part of the reason. Right now, these two features
-cannot be enable simultaneously, but it is on my todo list to support
-that case.
-
-> Thanks,
-> Amir.
-
+diff --git a/testcases/kernel/syscalls/fanotify/fanotify06.c b/testcases/kernel/syscalls/fanotify/fanotify06.c
+index 6a2e2494f..e053da0e5 100644
+--- a/testcases/kernel/syscalls/fanotify/fanotify06.c
++++ b/testcases/kernel/syscalls/fanotify/fanotify06.c
+@@ -15,6 +15,14 @@
+  *  Date:   Thu Nov 13 15:19:33 2014 -0800
+  *
+  *      fanotify: fix notification of groups with inode & mount marks
++ *
++ * The overlayfs test case is a regression test for:
++ *
++ *  commit d989903058a83e8536cc7aadf9256a47d5c173fe
++ *  Author: Amir Goldstein <amir73il@gmail.com>
++ *  Date:   Wed Apr 24 19:39:50 2019 +0300
++ *
++ *      ovl: do not generate duplicate fsnotify events for "fake" path
+  */
+ #define _GNU_SOURCE
+ #include "config.h"
+@@ -54,8 +62,18 @@ static int fd_notify[FANOTIFY_PRIORITIES][GROUPS_PER_PRIO];
+ 
+ static char event_buf[EVENT_BUF_LEN];
+ 
+-#define MOUNT_NAME "mntpoint"
+-static int mount_created;
++static const char mntpoint[] = OVL_BASE_MNTPOINT;
++
++static int ovl_mounted;
++
++static struct tcase {
++	const char *tname;
++	const char *mnt;
++	int use_overlay;
++} tcases[] = {
++	{ "Fanotify merge mount mark", mntpoint, 0 },
++	{ "Fanotify merge overlayfs mount mark", OVL_MNT, 1 },
++};
+ 
+ static void create_fanotify_groups(void)
+ {
+@@ -72,12 +90,12 @@ static void create_fanotify_groups(void)
+ 			ret = fanotify_mark(fd_notify[p][i],
+ 					    FAN_MARK_ADD | FAN_MARK_MOUNT,
+ 					    FAN_MODIFY,
+-					    AT_FDCWD, ".");
++					    AT_FDCWD, fname);
+ 			if (ret < 0) {
+ 				tst_brk(TBROK | TERRNO,
+ 					"fanotify_mark(%d, FAN_MARK_ADD | "
+ 					"FAN_MARK_MOUNT, FAN_MODIFY, AT_FDCWD,"
+-					" '.') failed", fd_notify[p][i]);
++					" %s) failed", fd_notify[p][i], fname);
+ 			}
+ 			/* Add ignore mark for groups with higher priority */
+ 			if (p == 0)
+@@ -130,11 +148,23 @@ static void verify_event(int group, struct fanotify_event_metadata *event)
+ 	}
+ }
+ 
+-void test01(void)
++void test_fanotify(unsigned int n)
+ {
+ 	int ret;
+ 	unsigned int p, i;
+ 	struct fanotify_event_metadata *event;
++	struct tcase *tc = &tcases[n];
++
++	tst_res(TINFO, "Test #%d: %s", n, tc->tname);
++
++	if (tc->use_overlay && !ovl_mounted) {
++		tst_res(TCONF,
++		        "overlayfs is not configured in this kernel.");
++		return;
++	}
++
++	sprintf(fname, "%s/tfile_%d", tc->mnt, getpid());
++	SAFE_TOUCH(fname, 0644, NULL);
+ 
+ 	create_fanotify_groups();
+ 
+@@ -196,31 +226,26 @@ void test01(void)
+ 
+ static void setup(void)
+ {
+-	SAFE_MKDIR(MOUNT_NAME, 0755);
+-	SAFE_MOUNT(MOUNT_NAME, MOUNT_NAME, "none", MS_BIND, NULL);
+-	mount_created = 1;
+-	SAFE_CHDIR(MOUNT_NAME);
+-
+-	sprintf(fname, "tfile_%d", getpid());
+-	SAFE_FILE_PRINTF(fname, "1");
++	ovl_mounted = TST_MOUNT_OVERLAY();
+ }
+ 
+ static void cleanup(void)
+ {
+ 	cleanup_fanotify_groups();
+ 
+-	SAFE_CHDIR("../");
+-
+-	if (mount_created && tst_umount(MOUNT_NAME) < 0)
+-		tst_brk(TBROK | TERRNO, "umount failed");
++	if (ovl_mounted)
++		SAFE_UMOUNT(OVL_MNT);
+ }
+ 
+ static struct tst_test test = {
+-	.test_all = test01,
++	.test = test_fanotify,
++	.tcnt = ARRAY_SIZE(tcases),
+ 	.setup = setup,
+ 	.cleanup = cleanup,
+ 	.needs_tmpdir = 1,
+-	.needs_root = 1
++	.needs_root = 1,
++	.mount_device = 1,
++	.mntpoint = mntpoint,
+ };
+ 
+ #else
 -- 
-Gabriel Krisman Bertazi
+2.17.1
+
