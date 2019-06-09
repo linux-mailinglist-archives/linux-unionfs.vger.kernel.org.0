@@ -2,110 +2,72 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D9113A6B9
-	for <lists+linux-unionfs@lfdr.de>; Sun,  9 Jun 2019 18:03:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D96023AB9A
+	for <lists+linux-unionfs@lfdr.de>; Sun,  9 Jun 2019 21:14:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728868AbfFIQDx (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 9 Jun 2019 12:03:53 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:54903 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728858AbfFIQDx (ORCPT
+        id S1729322AbfFITOu (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 9 Jun 2019 15:14:50 -0400
+Received: from mail-it1-f195.google.com ([209.85.166.195]:54532 "EHLO
+        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729163AbfFITOu (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 9 Jun 2019 12:03:53 -0400
-Received: by mail-wm1-f67.google.com with SMTP id g135so6270786wme.4
-        for <linux-unionfs@vger.kernel.org>; Sun, 09 Jun 2019 09:03:51 -0700 (PDT)
+        Sun, 9 Jun 2019 15:14:50 -0400
+Received: by mail-it1-f195.google.com with SMTP id m138so8504296ita.4
+        for <linux-unionfs@vger.kernel.org>; Sun, 09 Jun 2019 12:14:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=DQAqhd6yW8/oZ54nlbb6TgMDCHKIsaX596//5UCpuGc=;
-        b=Nc5Lo1xXQIXfmWPOxA9bJpGnfQeqTAR61GY9G6TdpkCTE1yKg5EGXUZyEu+aDbawjp
-         mM4jVZ72z+vjO9pYjAlSDEC/j7dGvsRVyL14IICXsEVE8m4MfPVFzhKleG948yMijl6t
-         I6m/ZCtqvLplQwl7Nuy+0o+ZJ92sCv3ZuAPRfUYH8te0uDNoSP4ohovQnu68mYP37KSo
-         4KE3lRxkwqtNbdrSKV0EATwqzOjP6YHYjV4zpuS5ju/ysbZaEdgbhuAX/vT41DQhyuA8
-         fA0FHngWjsOuGRNidY6e2zAaYkmip1mISad9qTGzhelwSbPm9140i+SoPvGUYKLVbixF
-         QOJw==
+        d=szeredi.hu; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=P5Pd/Hc+J/D+S818ZNSPGXdANB/70Kck426UUxoe1U8=;
+        b=b+0uwLBKwNE5aHoBiTJqP4UvzvwemF0nlc45qvxqzRwyW9lXfRBOcZ6/XjkRVAbrof
+         X7s5OA6Pa4jQxxupcVOYPrc5OIAmxX0bcB1DoPvyLuLH7sAXPhZbw/AAiwHYQc59Y0Ie
+         ndEsHsJPYVnFlSz9GQjl2fd65QKFK4JQm854E=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=DQAqhd6yW8/oZ54nlbb6TgMDCHKIsaX596//5UCpuGc=;
-        b=A+j5XNalidT0STZFJApRpnS9ah+4Zove7vwY4l7fQKhKKj86veNFVUJnEWsIpOWVmX
-         GaNqKqWNWlvjDq/MW+WHLjsWx8U9EYS40WTJBL54LEX+HIn9dSClAk+/pWgWjiRjHD4D
-         pEp9jbYJSBaWk1qfHWofuQYLUBKMkmJu+mcpb9YJcG2PgqFvU+QKoWnd8CTIc+ZiGVhx
-         Pl5zyKo69kWtaj6Zmk1HgtMhVjZbbazaIlDTzMd9WMgvctuMfgOSyyeY22A5ezZf1KbI
-         BpQrddXWxS/PSUUOJPNxcrxSjv0XbcTMUVeCFu0Mu//0k6klRknbpLuhT50BvK29fxPY
-         Pvdg==
-X-Gm-Message-State: APjAAAWtcZFUtOXgInnpP/uGB7X58eCPoEBWIXW/cmAGoJ2CkdNmX33H
-        J8UDk4Q7Ic7wdDfnDT6awq4=
-X-Google-Smtp-Source: APXvYqwvx6Gv2cWnP6IpazH/Nx2a9BW4DBolmiLIp7E1h/mCPI2VRkFG1efiINjUMqj6hRisOh48vw==
-X-Received: by 2002:a1c:b604:: with SMTP id g4mr10882899wmf.111.1560096230988;
-        Sun, 09 Jun 2019 09:03:50 -0700 (PDT)
-Received: from localhost.localdomain ([5.102.238.208])
-        by smtp.gmail.com with ESMTPSA id j189sm3276549wmb.48.2019.06.09.09.03.49
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 09 Jun 2019 09:03:49 -0700 (PDT)
-From:   Amir Goldstein <amir73il@gmail.com>
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     linux-unionfs@vger.kernel.org
-Subject: [PATCH] ovl: make i_ino consistent with st_ino in more cases
-Date:   Sun,  9 Jun 2019 19:03:44 +0300
-Message-Id: <20190609160344.24979-1-amir73il@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=P5Pd/Hc+J/D+S818ZNSPGXdANB/70Kck426UUxoe1U8=;
+        b=Et6TzL7UwL3adTjqVaIymhqVVXdNZWJO+poZHap6orALum8ukHJOSldIu1y/5Jj5Ir
+         u2aTjRUu02rDLJDUkjllwQdVhkh6p3WGd1rKgQTD3dekDR7RgHHEF3UHvjJg1lbEqGU3
+         CgPq/Imv2ut4/PbAG+WEEWPcVPVbb7/6QvqFPAjN55Uqp32AUNq7Ul1TmWqoPmbQkJWJ
+         3JKD1uUz2miLFG0ioH/ImgPe4lag2/w6KlDL4pAvl9FY5WxCjswntkpqYuk4Q0U37luv
+         pM2QTHjD4YDQx+u/s9YJExBH9Q/hTG1tOnQjbZF+u2qrQv+V69g7ZGshjQc5cYoG1aJO
+         QHzA==
+X-Gm-Message-State: APjAAAXHXZ9hZiNTMMFbAa2hvvdFFQlPRd1WY84WLxOgoPFYRsAmD37v
+        +DEGehL4Z1NaE01dwRjnAf6BFiL4g6ru6jM7O6oYqA==
+X-Google-Smtp-Source: APXvYqxW6QD48CCnqGkIG2VEn4gNoIzr2dM8ua3FphJvHV2kvI88V7pgUdUGczaKTPdIJW+XlP72Eq2z3zVdH0dieQ0=
+X-Received: by 2002:a24:292:: with SMTP id 140mr12340371itu.57.1560107689276;
+ Sun, 09 Jun 2019 12:14:49 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190607010431.11868-1-mcoffin13@gmail.com> <20190607205105.21858-1-mcoffin13@gmail.com>
+ <CAOQ4uximPqsNivkqD36LdNfT4g41v2rtDm+OB6t2z40dpWs_og@mail.gmail.com>
+ <f5b0bddd-678b-bdd9-6fc7-cc9e5b3211e5@gmail.com> <CAOQ4uxjQQcrcpxhtu3kAJvGaK+xd5TfNB=7_UnNciGj990DN6Q@mail.gmail.com>
+In-Reply-To: <CAOQ4uxjQQcrcpxhtu3kAJvGaK+xd5TfNB=7_UnNciGj990DN6Q@mail.gmail.com>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Sun, 9 Jun 2019 21:14:38 +0200
+Message-ID: <CAJfpegvy-Vfc6AEP7+=VfUtfL4izY8AzgoUdvqP4PHnLDEQhNg@mail.gmail.com>
+Subject: Re: [PATCH v2] overlay: allow config override of metacopy/redirect defaults
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Matt Coffin <mcoffin13@gmail.com>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        Vivek Goyal <vgoyal@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Relax the condition that overlayfs supports nfs export, to require
-that i_ino is consistent with st_ino/d_ino.
+On Sat, Jun 8, 2019 at 8:47 PM Amir Goldstein <amir73il@gmail.com> wrote:
 
-It is enough to require that st_ino and d_ino are consistent.
+> And then every time that a feature needs to be turned off for some reason
+> that also needs to be taken into account.
+> IOW, I advise against diving into this mess. You have been warned ;-)
 
-This fixes the failure of xfstest generic/504, due to mismatch of
-st_ino to inode number in the output of /proc/locks.
+Also a much more productive direction would be to optimize building
+the docker image based on the specific format used by overlayfs for
+readirect_dir/metacopy.
 
-Fixes: 12574a9f4c9c ("ovl: consistent i_ino for non-samefs with xino")
-Cc: <stable@vger.kernel.org> # v4.19
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
----
-
-Miklos,
-
-TBH, I can't remember why I put the s_export_op condition in the
-first place (can you?), expect for the fact the original bug fix
-was reported on nfsd readdirplus.
+To me it seems like a no-brainer, but I don't know much about docker, so...
 
 Thanks,
-Amir.
-
- fs/overlayfs/inode.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index f7eba21effa5..f0389849fd80 100644
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -553,15 +553,15 @@ static void ovl_fill_inode(struct inode *inode, umode_t mode, dev_t rdev,
- 	int xinobits = ovl_xino_bits(inode->i_sb);
- 
- 	/*
--	 * When NFS export is enabled and d_ino is consistent with st_ino
--	 * (samefs or i_ino has enough bits to encode layer), set the same
--	 * value used for d_ino to i_ino, because nfsd readdirplus compares
--	 * d_ino values to i_ino values of child entries. When called from
-+	 * When d_ino is consistent with st_ino (samefs or i_ino has enough
-+	 * bits to encode layer), set the same value used for st_ino to i_ino,
-+	 * so inode number exposed via /proc/locks and a like will be
-+	 * consistent with d_ino and st_ino values. An i_ino value inconsistent
-+	 * with d_ino also causes nfsd readdirplus to fail.  When called from
- 	 * ovl_new_inode(), ino arg is 0, so i_ino will be updated to real
- 	 * upper inode i_ino on ovl_inode_init() or ovl_inode_update().
- 	 */
--	if (inode->i_sb->s_export_op &&
--	    (ovl_same_sb(inode->i_sb) || xinobits)) {
-+	if (ovl_same_sb(inode->i_sb) || xinobits) {
- 		inode->i_ino = ino;
- 		if (xinobits && fsid && !(ino >> (64 - xinobits)))
- 			inode->i_ino |= (unsigned long)fsid << (64 - xinobits);
--- 
-2.17.1
-
+Miklos
