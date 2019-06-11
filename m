@@ -2,102 +2,139 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 493523D1C7
+	by mail.lfdr.de (Postfix) with ESMTP id B3B3B3D1C9
 	for <lists+linux-unionfs@lfdr.de>; Tue, 11 Jun 2019 18:09:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391877AbfFKQIs (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 11 Jun 2019 12:08:48 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:36511 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391873AbfFKQIr (ORCPT
+        id S2391879AbfFKQIt (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 11 Jun 2019 12:08:49 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:36514 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391878AbfFKQIs (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 11 Jun 2019 12:08:47 -0400
-Received: by mail-wm1-f68.google.com with SMTP id u8so3558945wmm.1;
-        Tue, 11 Jun 2019 09:08:46 -0700 (PDT)
+        Tue, 11 Jun 2019 12:08:48 -0400
+Received: by mail-wm1-f66.google.com with SMTP id u8so3559031wmm.1;
+        Tue, 11 Jun 2019 09:08:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=JbTb7II0Y+dG5GeTrOm9MNVRZtehoJwHZOh9kblNSSg=;
-        b=uog9bI+RkrcFwuXJ53DmiN6BS52k3YF66MMMlH91xNkSyq3KyiX1E+lk4sckKjV6cF
-         DiHceFcoX9wbIBY6qPYwcWiYWOsxeVg2lJcQtOAm+OgimKlp3a6ac/rpBTgbnA1qC1xk
-         ZgYEbiGvp4SWuTZ8dC8V35eqEia1lgoTdSS5xFuzTgzHUxiJHkJIq0fUdiB3q2eV+Tag
-         8F/sj8N/4liQBtZR7Xy3Z4jHalIH1ua3YgPiHDNnD9dXV3YZevWeI39hFBbuDmm4znB1
-         gIZzjL6O1SEGlCLAVaj/LEpAQc2qc3F+tXqdTlIMNOkOiYTXOz7o2HYutFLWs2HaKN4W
-         /qJQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=13N4Ag9KCv4dGo80Rtk1TpuZs5X9rJWOgPG6ZRw49Qw=;
+        b=YEGRXUMdZb2akUAQHdQ9SgQU97ytflxLVqF7/Co2m9ieD1C7dSwpdI1YldcJwB4c8f
+         +ZWGmbIbmdjzOM8b6TwtcaALHSEdPLb4QZbaMHIoKnSvd/FGBkcED5A1XxkjCyyAn1Mg
+         I8JBvRXL07SaiBJAIvkLuqzidTFgSNIFsmohTNmAaIVEBIhGW6xIdG1Vzj9Xhy+PdC9c
+         KIjZmDBhfoW9MQt7N6eYDhzTs8NDwO+X58pWpw5SdlqiRbrsPatWJ9Rn9lREPyRAH/iL
+         eMMPFjsNckNnWqfXbQN0EvJjlWqjUmVxd8pZ8x4V/cxZ6RXbdqA2wanTv/8JjD/lkZl9
+         083g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=JbTb7II0Y+dG5GeTrOm9MNVRZtehoJwHZOh9kblNSSg=;
-        b=ojme2edgliiPuHqjrGW8Z4jBnN0cGJvxt4qXBPIW97DsV8CwIvIjvlE2Mju2taxR8E
-         4Ru16jXNTCzKz8rOQ3W3MrLCjVgon0LrfND6Kis6NRTEv6GpOg2lT02Kt2Z9T99qOj19
-         mFY5Jgb1uatgfp+NKhnXZo9gpmHxqM2y2ALrP9lNndFMmrb4LA48jGdj1mmH47Gy7vvT
-         6iY1oTPjqROU6UhU28FKFQt/l7DJ0QVrvQIOPQ6c4LJR6LWrQeVwjNbJwR6eZGKj2k6u
-         QYmI3DnBZzNxt7a/ZrmWWJ7WZjdZ+3MMHzb6jPIYvUxLC6sIxLUl+Rcrk8nHZcl8IYXF
-         SHsA==
-X-Gm-Message-State: APjAAAU3xRhRUIjqBD9ouxXMvxUsdYsRMbZARu+443UVMRnkfC7OA4F6
-        IK8unGOPMAVGnR97udVNsqM1C3V3
-X-Google-Smtp-Source: APXvYqx37hEsNnm4ZgRrGEZLet+fUlbL20679g5crE2bijbCBYlYChuvoSWjzreA+1rEr3RA791oSA==
-X-Received: by 2002:a1c:1f06:: with SMTP id f6mr19159726wmf.60.1560269325542;
-        Tue, 11 Jun 2019 09:08:45 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=13N4Ag9KCv4dGo80Rtk1TpuZs5X9rJWOgPG6ZRw49Qw=;
+        b=J4cjranJwQaskZfbfTlTSOoOMjKTN1kB9UrQ5v161RomJf5xNVpan/Y6Trw5DUWlGE
+         JIEy10mMG6KpDjGpTLxZDc/7gOqYLcx9glRAb1e81X3fj4xxJj1Yi4bHsJ+AlLSnUPLw
+         27QqwoxDntOfIjwbUJ5rXk34p73xHu2f5HBKKwlqoq2EF8fZ86h29+Ol7PsR8+nVZ6Sr
+         eUZbL8oX4puus1LggDp+nbpRi+u1J5FQjPip4N1FS7VVd/tOl9FxD70KB3RFZUxZRm0m
+         hdbliQbXOeXbJJ0ChJGYckmy4QeAz+GHkN/eVF/zYii10B5MzjzNWuycazxpRKVfXfqE
+         cUiw==
+X-Gm-Message-State: APjAAAXO5Sed+bzpS2eQcWuuEp3vFVY86j3onQ2uJAI8ABRZrucZJJAm
+        GvFbfWkQ+/dVuc64j4CV3/o=
+X-Google-Smtp-Source: APXvYqyY/ioOd7xjQB9mN4O7OIvNiIIgozZIYAzqngnDHyLcTM0d6Za07540a77AIVYRWVh1v/JuUg==
+X-Received: by 2002:a05:600c:28d:: with SMTP id 13mr6373119wmk.5.1560269326954;
+        Tue, 11 Jun 2019 09:08:46 -0700 (PDT)
 Received: from amir-ThinkPad-T480.ctera.local (bzq-166-168-31-246.red.bezeqint.net. [31.168.166.246])
-        by smtp.gmail.com with ESMTPSA id u11sm10942873wrn.1.2019.06.11.09.08.44
+        by smtp.gmail.com with ESMTPSA id u11sm10942873wrn.1.2019.06.11.09.08.45
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 11 Jun 2019 09:08:44 -0700 (PDT)
+        Tue, 11 Jun 2019 09:08:46 -0700 (PDT)
 From:   Amir Goldstein <amir73il@gmail.com>
 To:     Eryu Guan <guaneryu@gmail.com>
 Cc:     Miklos Szeredi <miklos@szeredi.hu>,
         "Darrick J . Wong" <darrick.wong@oracle.com>,
         linux-unionfs@vger.kernel.org, fstests@vger.kernel.org
-Subject: [PATCH 0/3] Improved FS_IOC_FSSETXATTR tests
-Date:   Tue, 11 Jun 2019 19:08:36 +0300
-Message-Id: <20190611160839.14777-1-amir73il@gmail.com>
+Subject: [PATCH 1/3] fstests: print out xfs_io parameter when command fails
+Date:   Tue, 11 Jun 2019 19:08:37 +0300
+Message-Id: <20190611160839.14777-2-amir73il@gmail.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190611160839.14777-1-amir73il@gmail.com>
+References: <20190611160839.14777-1-amir73il@gmail.com>
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Eryu,
+In _require_xfs_io_command, when command fails for one of the
+generic reasons, if command was tested with params, print out
+the params of the failed command.
 
-Overlayfs gained support for FS_IOC_FSSETXATTR ioctl in v5.2-rc4
-with buggy capability check. The fix is trivial so it should land
-upstream soon.
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+---
+ common/rc | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-This series adds a generic test to cover the bug in overlayfs v5.2-rc4.
-It also adds a proper _require directive to test filesystem support
-for FS_IOC_FSSETXATTR and let the tests that use this ioctl require
-filesystem support for it.
-
-The only existing generic test that needed this requirement is the
-recently added generic/553 copy_range immutable file test. When run on
-overlayfs over xfs/ext4/btrfs, generic/553 would fail instead of _notrun
-with kernel v5.2-rc3.
-
-But the requirement fix is not only for overlayfs, other filesystems
-that support FS_IOC_SETFLAGS but not FS_IOC_FSSETXATTR (e.g. ext2),
-need those fixes to _notrun generic/553.
-
-Thanks,
-Amir.
-
-
-Amir Goldstein (3):
-  fstests: print out xfs_io parameter when command fails
-  fstests: check for filesystem FS_IOC_FSSETXATTR support
-  generic: check CAP_LINUX_IMMUTABLE capability with FS_IOC_FSSETXATTR
-
- common/rc                    | 30 ++++++++++-----
- doc/requirement-checking.txt |  2 +-
- tests/generic/553            |  3 +-
- tests/generic/555            | 74 ++++++++++++++++++++++++++++++++++++
- tests/generic/555.out        |  9 +++++
- tests/generic/group          |  1 +
- tests/xfs/260                |  2 +-
- tests/xfs/431                |  2 +-
- 8 files changed, 108 insertions(+), 15 deletions(-)
- create mode 100755 tests/generic/555
- create mode 100644 tests/generic/555.out
-
+diff --git a/common/rc b/common/rc
+index d0aa36a0..85330de2 100644
+--- a/common/rc
++++ b/common/rc
+@@ -2084,7 +2084,7 @@ _require_xfs_io_command()
+ 	local command=$1
+ 	shift
+ 	local param="$*"
+-	local param_checked=0
++	local param_checked=""
+ 	local opts=""
+ 
+ 	local testfile=$TEST_DIR/$$.xfs_io
+@@ -2101,7 +2101,7 @@ _require_xfs_io_command()
+ 		;;
+ 	"falloc" )
+ 		testio=`$XFS_IO_PROG -F -f -c "falloc $param 0 1m" $testfile 2>&1`
+-		param_checked=1
++		param_checked="$param"
+ 		;;
+ 	"fpunch" | "fcollapse" | "zero" | "fzero" | "finsert" | "funshare")
+ 		local blocksize=$(_get_block_size $TEST_DIR)
+@@ -2119,7 +2119,7 @@ _require_xfs_io_command()
+ 		fi
+ 		testio=`$XFS_IO_PROG -F -f -c "pwrite 0 20k" -c "fsync" \
+ 			-c "fiemap -v $param" $testfile 2>&1`
+-		param_checked=1
++		param_checked="$param"
+ 		;;
+ 	"flink")
+ 		local testlink=$TEST_DIR/$$.link.xfs_io
+@@ -2159,7 +2159,7 @@ _require_xfs_io_command()
+ 		fi
+ 		testio=`$XFS_IO_PROG -f $opts -c \
+ 		        "pwrite $pwrite_opts $param 0 4k" $testfile 2>&1`
+-		param_checked=1
++		param_checked="$pwrite_opts $param"
+ 		;;
+ 	"scrub"|"repair")
+ 		testio=`$XFS_IO_PROG -x -c "$command probe" $TEST_DIR 2>&1`
+@@ -2179,19 +2179,19 @@ _require_xfs_io_command()
+ 
+ 	rm -f $testfile 2>&1 > /dev/null
+ 	echo $testio | grep -q "not found" && \
+-		_notrun "xfs_io $command support is missing"
++		_notrun "xfs_io $command $param_checked support is missing"
+ 	echo $testio | grep -q "Operation not supported\|Inappropriate ioctl" && \
+-		_notrun "xfs_io $command failed (old kernel/wrong fs?)"
++		_notrun "xfs_io $command $param_checked failed (old kernel/wrong fs?)"
+ 	echo $testio | grep -q "Invalid" && \
+-		_notrun "xfs_io $command failed (old kernel/wrong fs/bad args?)"
++		_notrun "xfs_io $command $param_checked failed (old kernel/wrong fs/bad args?)"
+ 	echo $testio | grep -q "foreign file active" && \
+-		_notrun "xfs_io $command not supported on $FSTYP"
++		_notrun "xfs_io $command $param_checked not supported on $FSTYP"
+ 	echo $testio | grep -q "Function not implemented" && \
+-		_notrun "xfs_io $command support is missing (missing syscall?)"
++		_notrun "xfs_io $command $param_checked support is missing (missing syscall?)"
+ 
+ 	[ -n "$param" ] || return
+ 
+-	if [ $param_checked -eq 0 ]; then
++	if [ -z "$param_checked" ]; then
+ 		$XFS_IO_PROG -c "help $command" | grep -q "^ $param --" || \
+ 			_notrun "xfs_io $command doesn't support $param"
+ 	else
 -- 
 2.17.1
 
