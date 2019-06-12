@@ -2,104 +2,176 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F245C425E3
-	for <lists+linux-unionfs@lfdr.de>; Wed, 12 Jun 2019 14:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA169426AD
+	for <lists+linux-unionfs@lfdr.de>; Wed, 12 Jun 2019 14:52:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438998AbfFLMcR (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 12 Jun 2019 08:32:17 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:38688 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2438907AbfFLMcQ (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 12 Jun 2019 08:32:16 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 14EC831628E2;
-        Wed, 12 Jun 2019 12:32:16 +0000 (UTC)
-Received: from horse.redhat.com (unknown [10.18.25.29])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id BE2F260BF1;
-        Wed, 12 Jun 2019 12:32:15 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-        id 576AE223AE7; Wed, 12 Jun 2019 08:32:15 -0400 (EDT)
-Date:   Wed, 12 Jun 2019 08:32:15 -0400
-From:   Vivek Goyal <vgoyal@redhat.com>
-To:     Matt Coffin <mcoffin13@gmail.com>
-Cc:     Daniel Walsh <dwalsh@redhat.com>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Amir Goldstein <amir73il@gmail.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Nalin Dahyabhai <nalin@redhat.com>
-Subject: Re: [PATCH v2] overlay: allow config override of metacopy/redirect
- defaults
-Message-ID: <20190612123215.GA27088@redhat.com>
-References: <f5b0bddd-678b-bdd9-6fc7-cc9e5b3211e5@gmail.com>
- <CAOQ4uxjQQcrcpxhtu3kAJvGaK+xd5TfNB=7_UnNciGj990DN6Q@mail.gmail.com>
- <CAJfpegvy-Vfc6AEP7+=VfUtfL4izY8AzgoUdvqP4PHnLDEQhNg@mail.gmail.com>
- <20190610184043.GD25290@redhat.com>
- <20190610184553.GE25290@redhat.com>
- <CAJfpegvrOy3yBpu1AVBFyjdXBNM44k4gSqQ0F2npBG8wH8cUeg@mail.gmail.com>
- <20190611130932.GA28835@redhat.com>
- <cb363beb-9b2e-1d20-ca46-cba7724ec648@redhat.com>
- <20190611214951.GC28835@redhat.com>
- <be9bfd25-ff48-bd9e-25ff-aa2a5f5873ed@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <be9bfd25-ff48-bd9e-25ff-aa2a5f5873ed@gmail.com>
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Wed, 12 Jun 2019 12:32:16 +0000 (UTC)
+        id S1730126AbfFLMwI (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 12 Jun 2019 08:52:08 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:40844 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726778AbfFLMwI (ORCPT
+        <rfc822;linux-unionfs@vger.kernel.org>);
+        Wed, 12 Jun 2019 08:52:08 -0400
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5CCq3aP119666
+        for <linux-unionfs@vger.kernel.org>; Wed, 12 Jun 2019 08:52:06 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2t31mrrdrk-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-unionfs@vger.kernel.org>; Wed, 12 Jun 2019 08:52:06 -0400
+Received: from localhost
+        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-unionfs@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Wed, 12 Jun 2019 13:51:55 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 12 Jun 2019 13:51:52 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x5CCppLb34603156
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 12 Jun 2019 12:51:51 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9C7254C04A;
+        Wed, 12 Jun 2019 12:51:51 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 7EB904C040;
+        Wed, 12 Jun 2019 12:51:50 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.80.109.218])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed, 12 Jun 2019 12:51:50 +0000 (GMT)
+Subject: Re: [PATCH 1/2] vfs: replace i_readcount with a biased i_count
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Amir Goldstein <amir73il@gmail.com>,
+        Miklos Szeredi <miklos@szeredi.hu>
+Cc:     "J . Bruce Fields" <bfields@fieldses.org>,
+        Jeff Layton <jlayton@poochiereds.net>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org,
+        linux-integrity@vger.kernel.org
+Date:   Wed, 12 Jun 2019 08:51:39 -0400
+In-Reply-To: <20190608135717.8472-2-amir73il@gmail.com>
+References: <20190608135717.8472-1-amir73il@gmail.com>
+         <20190608135717.8472-2-amir73il@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19061212-0008-0000-0000-000002F31C46
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061212-0009-0000-0000-000022601DF8
+Message-Id: <1560343899.4578.9.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-12_07:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=707 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906120089
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Tue, Jun 11, 2019 at 03:57:03PM -0600, Matt Coffin wrote:
-> This could just be because I don't understand the implications here, but
-> wouldn't it be easier, at least for now, to just mount with
+On Sat, 2019-06-08 at 16:57 +0300, Amir Goldstein wrote:
+> Count struct files open RO together with inode reference count instead
+> of using a dedicated i_readcount field.  This will allow us to use the
+> RO count also when CONFIG_IMA is not defined and will reduce the size of
+> struct inode for 32bit archs when CONFIG_IMA is defined.
 > 
-> redirect_dir=0,metacopy=0
+> We need this RO count for posix leases code, which currently naively
+> checks i_count and d_count in an inaccurate manner.
 > 
-> in the mount parameters when building images, but allow the user's
-> default settings to still take over when just executing a container?
+> Should regular i_count overflow into RO count bias by struct files
+> opened for write, it's not a big deal, as we mostly need the RO count
+> to be reliable when the first writer comes along.
 
-I think that's what docker does by default, isn't it? That is redirect_dir
-and metacopy features are disabled by default (until and unless user
-decides to enable it).
+"i_count" has been defined forever.  Has its meaning changed?  This
+patch implies that "i_readcount" was never really needed.
 
-Dan walsh recently changed podman to enable metacopy feature by default
-(which in-turn will enable redirect as well). He wants to make use of
-user namespaces with containers and chown the images with metacopy
-enabled. We don't have shiftfs upstream yet.
-
-BTW, how slow is image building with naivediff interface.
-
-Vivek
+Mimi
 
 > 
-> On 6/11/19 3:49 PM, Vivek Goyal wrote:
-> > On Tue, Jun 11, 2019 at 05:44:33PM -0400, Daniel Walsh wrote:
-> >> On 6/11/19 9:09 AM, Vivek Goyal wrote:
-> >>> On Tue, Jun 11, 2019 at 02:37:34PM +0200, Miklos Szeredi wrote:
-> >>>> On Mon, Jun 10, 2019 at 8:45 PM Vivek Goyal <vgoyal@redhat.com> wrote:
-> >>>> AFAICS what happens when generating a layer is to start with a clean
-> >>>> upper layer, do some operations, then save the contents of the upper
-> >>>> layer.  If redirect or metacopy is enabled, then the contents of the
-> >>>> upper layer won't be portable.  So need to do something like this:
-> >>>>
-> >>>> traverse(overlay_dir, upper_dir, target_dir)
-> >>>> {
-> >>>>     iterate name for entries in $upper_dir {
-> >>>>         if ($name is non-directory) {
-> >>>>             copy($overlay_dir/$name, $target_dir/$name)
-> >>>>         } else if ($name is redirect) {
-> >>>>             copy-recursive($overlay_dir/$name, $target_dir/$name)
-> >>>>         } else {
-> >>>>             copy($overlay_dir/$name, $target_dir/$name)
-> >>>>             traverse($overlay_dir/$name, $upper_dir/$name, $target_dir/$name)
-> >>>>         }
-> >>>>     }
-> >>>> }
-> >>>>
-> >>>> Basically: traverse the *upper layer* but copy files and directories
-> >>>> from the *overlay*.  Does that make sense?
+> Cc: <stable@vger.kernel.org> # v4.19
+> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> ---
+>  include/linux/fs.h                | 33 +++++++++++++++++++------------
+>  security/integrity/ima/ima_main.c |  2 +-
+>  2 files changed, 21 insertions(+), 14 deletions(-)
+> 
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index f7fdfe93e25d..504bf17967dd 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -694,9 +694,6 @@ struct inode {
+>  	atomic_t		i_count;
+>  	atomic_t		i_dio_count;
+>  	atomic_t		i_writecount;
+> -#ifdef CONFIG_IMA
+> -	atomic_t		i_readcount; /* struct files open RO */
+> -#endif
+>  	union {
+>  		const struct file_operations	*i_fop;	/* former ->i_op->default_file_ops */
+>  		void (*free_inode)(struct inode *);
+> @@ -2890,26 +2887,36 @@ static inline bool inode_is_open_for_write(const struct inode *inode)
+>  	return atomic_read(&inode->i_writecount) > 0;
+>  }
+>  
+> -#ifdef CONFIG_IMA
+> +/*
+> + * Count struct files open RO together with inode rerefernce count.
+> + * We need this count for IMA and for posix leases. The RO count should not
+> + * include files opened RDWR nor files opened O_PATH and internal kernel
+> + * inode references, like the ones taken by overlayfs and inotify.
+> + * Should regular i_count overflow into I_RO_COUNT_BIAS by struct files
+> + * opened for write, it's not a big deal, as we mostly need
+> + * inode_is_open_rdonly() to be reliable when the first writer comes along.
+> + */
+> +#define I_RO_COUNT_SHIFT 10
+> +#define I_RO_COUNT_BIAS	(1UL << I_RO_COUNT_SHIFT)
+> +
+>  static inline void i_readcount_dec(struct inode *inode)
+>  {
+> -	BUG_ON(!atomic_read(&inode->i_readcount));
+> -	atomic_dec(&inode->i_readcount);
+> +	WARN_ON(atomic_read(&inode->i_count) < I_RO_COUNT_BIAS);
+> +	atomic_sub(I_RO_COUNT_BIAS, &inode->i_count);
+>  }
+>  static inline void i_readcount_inc(struct inode *inode)
+>  {
+> -	atomic_inc(&inode->i_readcount);
+> +	atomic_add(I_RO_COUNT_BIAS, &inode->i_count);
+>  }
+> -#else
+> -static inline void i_readcount_dec(struct inode *inode)
+> +static inline int i_readcount_read(const struct inode *inode)
+>  {
+> -	return;
+> +	return atomic_read(&inode->i_count) >> I_RO_COUNT_SHIFT;
+>  }
+> -static inline void i_readcount_inc(struct inode *inode)
+> +static inline bool inode_is_open_rdonly(const struct inode *inode)
+>  {
+> -	return;
+> +	return atomic_read(&inode->i_count) > I_RO_COUNT_BIAS;
+>  }
+> -#endif
+> +
+>  extern int do_pipe_flags(int *, int);
+>  
+>  #define __kernel_read_file_id(id) \
+> diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+> index 357edd140c09..766bac778d11 100644
+> --- a/security/integrity/ima/ima_main.c
+> +++ b/security/integrity/ima/ima_main.c
+> @@ -94,7 +94,7 @@ static void ima_rdwr_violation_check(struct file *file,
+>  	bool send_tomtou = false, send_writers = false;
+>  
+>  	if (mode & FMODE_WRITE) {
+> -		if (atomic_read(&inode->i_readcount) && IS_IMA(inode)) {
+> +		if (inode_is_open_rdonly(inode) && IS_IMA(inode)) {
+>  			if (!iint)
+>  				iint = integrity_iint_find(inode);
+>  			/* IMA_MEASURE is set from reader side */
+
