@@ -2,124 +2,215 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E79D242B85
-	for <lists+linux-unionfs@lfdr.de>; Wed, 12 Jun 2019 17:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 296FE42D60
+	for <lists+linux-unionfs@lfdr.de>; Wed, 12 Jun 2019 19:24:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407597AbfFLP7Z (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 12 Jun 2019 11:59:25 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:56734 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2405897AbfFLP7Z (ORCPT
+        id S2407235AbfFLRYT (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 12 Jun 2019 13:24:19 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:40390 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2407019AbfFLRYS (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 12 Jun 2019 11:59:25 -0400
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5CFvDXv140603
-        for <linux-unionfs@vger.kernel.org>; Wed, 12 Jun 2019 11:59:24 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2t33bcupd9-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-unionfs@vger.kernel.org>; Wed, 12 Jun 2019 11:59:23 -0400
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-unionfs@vger.kernel.org> from <zohar@linux.ibm.com>;
-        Wed, 12 Jun 2019 16:59:22 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 12 Jun 2019 16:59:19 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x5CFxI2m40042810
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 12 Jun 2019 15:59:18 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2B2FF4C044;
-        Wed, 12 Jun 2019 15:59:18 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 28C034C050;
-        Wed, 12 Jun 2019 15:59:17 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.80.109.218])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed, 12 Jun 2019 15:59:17 +0000 (GMT)
-Subject: Re: [PATCH 1/2] vfs: replace i_readcount with a biased i_count
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        "J . Bruce Fields" <bfields@fieldses.org>,
+        Wed, 12 Jun 2019 13:24:18 -0400
+Received: by mail-wr1-f67.google.com with SMTP id p11so17799039wre.7;
+        Wed, 12 Jun 2019 10:24:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=JaDk0B2JuZF4UPbktkuAfxaGadSzIqD38JFVgmfBIWs=;
+        b=L/8aQM0zZfjRGpclojJSpYbbgU7RKIEziz0NHfsIDDLYRDOt+iAy7LlpErcteY5hbk
+         Zk8xPd24vIzJ+HhiWHf5i+cHYyroTfaPCN6cDKDlObpRb4pyOAqhEeXfMbxz2zEYK37M
+         uZ43tQodaOLP8QEgDQNgtY/bk3mtv2/hYCwHAYIQydD2iLFAJJZTvRvFwyJRR1vokBFr
+         UQbGJLErLOZIkSPuzDj91DHtrPsJR8Wmd6XlLiEx/bgS5aBrH8Pz6kOdPULmMaDjiPHB
+         0gOFBLuMleWHilRh4Cz5vJTOrjRvlbr1USqXgrhDH9kAWBcHXywc+LKzzfF8HsY2iXpv
+         9JUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=JaDk0B2JuZF4UPbktkuAfxaGadSzIqD38JFVgmfBIWs=;
+        b=RWSpmAFULhfjhDFG7/5HQT4w8K9zyIrmAjqBJn6Qrd1Mi6rI0oScPptxcOrkQ6wrBH
+         PjoM6OZjJglAJmFDWw4MdXhtuoP0mDlW4TAYC8TxRcYdBSgrZRsuoJZVwImDN8LzRvWi
+         jKACR399hoSwseoKIuE1bvzCFaX7lzT95NpgL2P26OCi6Zv9csvMjjEIPmgomUiys9Po
+         n951D6N105xVj6mUl7jv/XmCjEfep5sbFEkLUaL0xqDMTBdDVg3He8Cy2r1SZNYkwjcQ
+         Bva2Q5pTlLc7/NfaROiH8ZMqc3K4/6eDXZTW6rO2Ik7tI5PMGUXTCzXX01xuh4kTl8DW
+         /pCQ==
+X-Gm-Message-State: APjAAAXf13JyBGlJxxt+Vd4d1v5SXh55wOowFNzBdPYJU3G49XFcmY5W
+        dvpiBC4jjfmhN7MmzVYOD3U=
+X-Google-Smtp-Source: APXvYqwStm/z+FAde/SFAgWzsa5IoAKISOCAtEsvi1y9UO+FcQKU4hEaIb9WOUjr2yY/00ILxAJHyw==
+X-Received: by 2002:a5d:6b47:: with SMTP id x7mr3863898wrw.83.1560360255667;
+        Wed, 12 Jun 2019 10:24:15 -0700 (PDT)
+Received: from localhost.localdomain ([5.102.238.208])
+        by smtp.gmail.com with ESMTPSA id j17sm423482wrw.6.2019.06.12.10.24.14
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 12 Jun 2019 10:24:14 -0700 (PDT)
+From:   Amir Goldstein <amir73il@gmail.com>
+To:     Miklos Szeredi <miklos@szeredi.hu>,
         Jeff Layton <jlayton@poochiereds.net>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-integrity <linux-integrity@vger.kernel.org>
-Date:   Wed, 12 Jun 2019 11:59:06 -0400
-In-Reply-To: <CAOQ4uxhooVwtHcDCr4hu+ovzKGUdWfQ+3F3nbgK3HXgV+fUK9w@mail.gmail.com>
-References: <20190608135717.8472-1-amir73il@gmail.com>
-         <20190608135717.8472-2-amir73il@gmail.com>
-         <1560343899.4578.9.camel@linux.ibm.com>
-         <CAOQ4uxhooVwtHcDCr4hu+ovzKGUdWfQ+3F3nbgK3HXgV+fUK9w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19061215-0016-0000-0000-000002887DF7
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061215-0017-0000-0000-000032E5B4BB
-Message-Id: <1560355146.4578.61.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-12_09:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=776 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906120107
+        "J . Bruce Fields" <bfields@fieldses.org>
+Cc:     linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org,
+        linux-unionfs@vger.kernel.org
+Subject: [PATCH v2] locks: eliminate false positive conflicts for write lease
+Date:   Wed, 12 Jun 2019 20:24:08 +0300
+Message-Id: <20190612172408.22671-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, 2019-06-12 at 18:09 +0300, Amir Goldstein wrote:
-> On Wed, Jun 12, 2019 at 3:52 PM Mimi Zohar <zohar@linux.ibm.com> wrote:
-> >
-> > On Sat, 2019-06-08 at 16:57 +0300, Amir Goldstein wrote:
-> > > Count struct files open RO together with inode reference count instead
-> > > of using a dedicated i_readcount field.  This will allow us to use the
-> > > RO count also when CONFIG_IMA is not defined and will reduce the size of
-> > > struct inode for 32bit archs when CONFIG_IMA is defined.
-> > >
-> > > We need this RO count for posix leases code, which currently naively
-> > > checks i_count and d_count in an inaccurate manner.
-> > >
-> > > Should regular i_count overflow into RO count bias by struct files
-> > > opened for write, it's not a big deal, as we mostly need the RO count
-> > > to be reliable when the first writer comes along.
-> >
-> > "i_count" has been defined forever.  Has its meaning changed?  This
-> > patch implies that "i_readcount" was never really needed.
-> >
-> 
-> Not really.
-> i_count is only used to know if object is referenced.
-> It does not matter if user takes 1 or more references on i_count
-> as long as user puts back all the references it took.
-> 
-> If user took i_readcount, i_count cannot be zero, so short of overflow,
-> we can describe i_readcount as a biased i_count.
+check_conflicting_open() is checking for existing fd's open for read or
+for write before allowing to take a write lease.  The check that was
+implemented using i_count and d_count is an approximation that has
+several false positives.  For example, overlayfs since v4.19, takes an
+extra reference on the dentry; An open with O_PATH takes a reference on
+the dentry although the file cannot be read nor written.
 
-Having a count was originally to make sure we weren't missing
-anything.  As long as we can detect if a file is opened for read, the
-less IMA specific code there is, the better.
+Change the implementation to use i_readcount and i_writecount to
+eliminate the false positive conflicts and allow a write lease to be
+taken on an overlayfs file.
 
-> 
-> But if I am following Miklos' suggestion to make i_count 64bit, inode
-> struct size is going to grow for 32bit arch when  CONFIG_IMA is not
-> defined, so to reduce impact, I will keep i_readcount as a separate
-> member and let it be defined also when BITS_PER_LONG == 64
-> and implement inode_is_open_rdonly() using d_count and i_count
-> when i_readcount is not defined.
-> 
-> Let's see what people will have to say about that...
+The change of behavior with existing fd's open with O_PATH is symmetric
+w.r.t. current behavior of lease breakers - an open with O_PATH currently
+does not break a write lease.
 
-Ok
+This increases the size of struct inode by 4 bytes on 32bit archs when
+CONFIG_FILE_LOCKING is defined and CONFIG_IMA was not already
+defined.
 
-Mimi
+Cc: <stable@vger.kernel.org> # v4.19
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+---
+
+Miklos, Jeff and Bruce,
+
+This patch fixes a v4.19 overlayfs regression with taking write
+leases. It also provides correct semantics w.r.t RDONLY open counter
+that Bruce also needed for nfsd.
+
+Since this is locks code that fixes an overlayfs regression which
+is also needed for nfsd, it could go via either of your trees.
+I didn't want to pick sides, so first one to grab the patch wins ;-)
+
+I verified the changes using modified LTP F_SETLEASE tests [1],
+which I ran over xfs and overlayfs.
+
+Thanks,
+Amir.
+
+[1] https://github.com/amir73il/ltp/commits/overlayfs-devel
+
+Changes since v1:
+- Drop patch to fold i_readcount into i_count
+- Make i_readcount depend on CONFIG_FILE_LOCKING
+
+ fs/locks.c         | 33 ++++++++++++++++++++++-----------
+ include/linux/fs.h |  4 ++--
+ 2 files changed, 24 insertions(+), 13 deletions(-)
+
+diff --git a/fs/locks.c b/fs/locks.c
+index ec1e4a5df629..28528b4fc53b 100644
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -1753,10 +1753,10 @@ int fcntl_getlease(struct file *filp)
+ }
+ 
+ /**
+- * check_conflicting_open - see if the given dentry points to a file that has
++ * check_conflicting_open - see if the given file points to an inode that has
+  *			    an existing open that would conflict with the
+  *			    desired lease.
+- * @dentry:	dentry to check
++ * @filp:	file to check
+  * @arg:	type of lease that we're trying to acquire
+  * @flags:	current lock flags
+  *
+@@ -1764,19 +1764,31 @@ int fcntl_getlease(struct file *filp)
+  * conflict with the lease we're trying to set.
+  */
+ static int
+-check_conflicting_open(const struct dentry *dentry, const long arg, int flags)
++check_conflicting_open(struct file *filp, const long arg, int flags)
+ {
+ 	int ret = 0;
+-	struct inode *inode = dentry->d_inode;
++	struct inode *inode = locks_inode(filp);
++	int wcount = atomic_read(&inode->i_writecount);
++	int self_wcount = 0, self_rcount = 0;
+ 
+ 	if (flags & FL_LAYOUT)
+ 		return 0;
+ 
+-	if ((arg == F_RDLCK) && inode_is_open_for_write(inode))
++	if (arg == F_RDLCK && wcount > 0)
+ 		return -EAGAIN;
+ 
+-	if ((arg == F_WRLCK) && ((d_count(dentry) > 1) ||
+-	    (atomic_read(&inode->i_count) > 1)))
++	/* Eliminate deny writes from actual writers count */
++	if (wcount < 0)
++		wcount = 0;
++
++	/* Make sure that only read/write count is from lease requestor */
++	if (filp->f_mode & FMODE_WRITE)
++		self_wcount = 1;
++	else if ((filp->f_mode & (FMODE_READ | FMODE_WRITE)) == FMODE_READ)
++		self_rcount = 1;
++
++	if (arg == F_WRLCK && (wcount != self_wcount ||
++	    atomic_read(&inode->i_readcount) != self_rcount))
+ 		ret = -EAGAIN;
+ 
+ 	return ret;
+@@ -1786,8 +1798,7 @@ static int
+ generic_add_lease(struct file *filp, long arg, struct file_lock **flp, void **priv)
+ {
+ 	struct file_lock *fl, *my_fl = NULL, *lease;
+-	struct dentry *dentry = filp->f_path.dentry;
+-	struct inode *inode = dentry->d_inode;
++	struct inode *inode = locks_inode(filp);
+ 	struct file_lock_context *ctx;
+ 	bool is_deleg = (*flp)->fl_flags & FL_DELEG;
+ 	int error;
+@@ -1822,7 +1833,7 @@ generic_add_lease(struct file *filp, long arg, struct file_lock **flp, void **pr
+ 	percpu_down_read(&file_rwsem);
+ 	spin_lock(&ctx->flc_lock);
+ 	time_out_leases(inode, &dispose);
+-	error = check_conflicting_open(dentry, arg, lease->fl_flags);
++	error = check_conflicting_open(filp, arg, lease->fl_flags);
+ 	if (error)
+ 		goto out;
+ 
+@@ -1879,7 +1890,7 @@ generic_add_lease(struct file *filp, long arg, struct file_lock **flp, void **pr
+ 	 * precedes these checks.
+ 	 */
+ 	smp_mb();
+-	error = check_conflicting_open(dentry, arg, lease->fl_flags);
++	error = check_conflicting_open(filp, arg, lease->fl_flags);
+ 	if (error) {
+ 		locks_unlink_lock_ctx(lease);
+ 		goto out;
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 79ffa2958bd8..2d55f1b64014 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -694,7 +694,7 @@ struct inode {
+ 	atomic_t		i_count;
+ 	atomic_t		i_dio_count;
+ 	atomic_t		i_writecount;
+-#ifdef CONFIG_IMA
++#if defined(CONFIG_IMA) || defined(CONFIG_FILE_LOCKING)
+ 	atomic_t		i_readcount; /* struct files open RO */
+ #endif
+ 	union {
+@@ -2895,7 +2895,7 @@ static inline bool inode_is_open_for_write(const struct inode *inode)
+ 	return atomic_read(&inode->i_writecount) > 0;
+ }
+ 
+-#ifdef CONFIG_IMA
++#if defined(CONFIG_IMA) || defined(CONFIG_FILE_LOCKING)
+ static inline void i_readcount_dec(struct inode *inode)
+ {
+ 	BUG_ON(!atomic_read(&inode->i_readcount));
+-- 
+2.17.1
 
