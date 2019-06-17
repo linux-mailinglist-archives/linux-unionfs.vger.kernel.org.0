@@ -2,88 +2,113 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ADAB482AE
-	for <lists+linux-unionfs@lfdr.de>; Mon, 17 Jun 2019 14:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04062484B8
+	for <lists+linux-unionfs@lfdr.de>; Mon, 17 Jun 2019 15:58:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727465AbfFQMkJ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 17 Jun 2019 08:40:09 -0400
-Received: from mout.kundenserver.de ([217.72.192.74]:56871 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727394AbfFQMkJ (ORCPT
+        id S1726151AbfFQN6v (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 17 Jun 2019 09:58:51 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:53413 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725906AbfFQN6v (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 17 Jun 2019 08:40:09 -0400
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.145]) with ESMTPA (Nemesis) id
- 1My3In-1iYGfA14mt-00zT27; Mon, 17 Jun 2019 14:39:51 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        syzbot+9c69c282adc4edd2b540@syzkaller.appspotmail.com,
-        Amir Goldstein <amir73il@gmail.com>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        Vivek Goyal <vgoyal@redhat.com>, linux-unionfs@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ovl: fix bogus -Wmaybe-unitialized warning
-Date:   Mon, 17 Jun 2019 14:39:29 +0200
-Message-Id: <20190617123947.941417-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:VMmghNLouvOr+K+bfJY6ktXiz4LQF0Tgkc4VipMMdMlj5hSYiFF
- Kuz66NlT5mfIqkDPhs0INSQ6W5g7xUrO2VsXRfwdGPxJOsGvfzMD+KQu0gn6YEeyv4ZocKA
- giMzsF6/brReIyLfXmyw+qIqq1isbPE3LsIeV1zF2HP56PR9ww3lPYirQ+nC8kFYr+g0ooB
- ijAEtaOXzCcbLycDzSvmg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:2GlMJfBsJmw=:TbCQHBQlR61T4n2//VMNhP
- uQrwe3wS78ihWQNEXlV2DpY6WUp3/2RaICX+TzXcILt0j0WWfXItn1YP4zGhLbtHYLdHaf4T7
- u7OHs+uSiYmveKvqpKHUsBYv1SntgZFaeeElviUYU/WCeg11R0KnLngxfMHY7z1NzbNXfQqAn
- cRhQEYphUVlq4Nib+DJng2SWY+PU5g2WpjKzn1itu3zi8Yo61ZwXnzbcx2beK2x9VuScJFP1c
- 6zxplSj8LgRCoBX+xpL7BtWQcWna7Mw5P1fOs7EuaQcZ68agqXssjSm4MWkTiC1A0nw3tDqoh
- m3B+WWb1WHexcmq24f2pCWEDkqDr6QUq63Ljs5KUEjojK/tENLCwfictWEMIUdu4J5XdxdKq0
- BDIQuj/Sng8Gpy9iJdGBDNKafgECoI045CtLN+X73Ml+z8CA1V2AMbikvE8GK66I3W1KFU8Vf
- 2MwR2ydLQj7RbcjvH46VcUaM4lweB+cLzQegTnZtZg+fHfbRGIjTalQwdjg3YNsx47bBtkHMn
- xpnkWWyJSC39/MTMZo9BDN9vFMkLNrPX4ObkMHHHyalEZYnULbWoT7S5GvlC6E4EhALXYx1HM
- 1+bVB4aJi05SkI/IyzR3olWI3a7/+CPZhZejqI8baKLkO247QlCXYsYOHjPlutjmVHiIDqjR5
- DRO9D1wupUxQdG7IbxNDlaZ1sQdTwfcUmCtLhpNLyoq3W3/hL9kpnaVEn2ky23FFZIG5vqZJu
- eRqfNfdtlcvh55d/3Ei3CxEH2OPWgcb29gz2Tw==
+        Mon, 17 Jun 2019 09:58:51 -0400
+Received: by mail-wm1-f68.google.com with SMTP id x15so9405492wmj.3;
+        Mon, 17 Jun 2019 06:58:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=LXMcVfGduW54PXBtMvhHr1AmqEkWJ/apYKsh/cp+L+E=;
+        b=nxV1v/7VX0EO10FfCy7NXKeYGS8Rgv87ylYDXltBZxRSSWLioGQeAXdZQY/tvUiHDe
+         9QrxiUW9z1fb7yJSGN8xOsqJTiBquqzgHqmwBnc0CQ7xCXoNGZGelzYrMvhPtWVH1HXU
+         K+pbL6+zzZ+h83at9CsrtPGfZ0D9C4PtfsY+LvZ4XgdNrNpqFqQ4vm4mjVLTdnfDFBXC
+         uYTmk1Xmn0KqdJiMioNgo6RDQGFBFpZrBb8/zjdeTBMsi6lD2tCfEeT9ni8lDF0/wX0K
+         bc152WrIU1jnrW6I8ZqJGfuDuzqd+GYORc9aPlbvkbs5jTNNtLQIJjPbzboNU0G1MWIK
+         AYTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=LXMcVfGduW54PXBtMvhHr1AmqEkWJ/apYKsh/cp+L+E=;
+        b=UlQsP7lKpnxERMKK5lPeS34ER8cSsEDafvZtMz9/yC8Ae764YWiLQ8hZONZ9Ukcm9F
+         5oB6IjoClOKzh2PJgqHCgM8cFRbTPtdN0F8EraGxfoMiX7dKUcEwJkA6Dqctcgwoh6iZ
+         /yxK/DQyaI3SvglYSpnmmfUOHO1eDKAgKKeB+EXeyigT+eqyqlev0+/YpkutbLEgKFQU
+         OWQhlP+K1I3GYWf+7A/dlkmiT5j7x9kcQIXENIULeIo36MMY3mysdRZL1Zfnk7wuyhYd
+         kFxuHWQtxsgrnji3tlCaoihCbLlJqvJxw7piMNpQ72YzuVXD0QWF7DFzczlOIr7qXHEL
+         2DRQ==
+X-Gm-Message-State: APjAAAUVLstlZu77TUoABiF4El5bKPnHFQy0OqLu2OWRuHUXtG2+SnRg
+        ctXd/+dcrVC8YDRKCFMxvUc=
+X-Google-Smtp-Source: APXvYqyqm2n0pjwzyl9+VEe7Clkgrlqb0QsTtHkUrRFsCZ3auFcjmVJK/rkjFzbo8nnHrrnKJ3z99g==
+X-Received: by 2002:a1c:4054:: with SMTP id n81mr19414273wma.78.1560779929359;
+        Mon, 17 Jun 2019 06:58:49 -0700 (PDT)
+Received: from amir-ThinkPad-T480.ctera.local (bzq-166-168-31-246.red.bezeqint.net. [31.168.166.246])
+        by smtp.gmail.com with ESMTPSA id v67sm15512710wme.24.2019.06.17.06.58.47
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 17 Jun 2019 06:58:48 -0700 (PDT)
+From:   Amir Goldstein <amir73il@gmail.com>
+To:     Eryu Guan <guaneryu@gmail.com>
+Cc:     "Darrick J . Wong" <darrick.wong@oracle.com>,
+        linux-unionfs@vger.kernel.org, fstests@vger.kernel.org
+Subject: [PATCH] overlay: fix _scratch_remount with xfs_info 5.0.0
+Date:   Mon, 17 Jun 2019 16:58:43 +0300
+Message-Id: <20190617135843.12659-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-gcc gets a bit confused by the logic in ovl_setup_trap() and
-can't figure out whether the local 'trap' variable in the caller
-was initialized or not:
+xfs_info version 5.0.0 started using findmnt to find the
+filesystem to query. This change resulted in a regression
+of _scratch_remount when testing overlay over xfs.
+For example, test overlay/035, started to report:
+[not run] overlay/035 -- upper fs needs to support d_type
 
-fs/overlayfs/super.c: In function 'ovl_fill_super':
-fs/overlayfs/super.c:1333:4: error: 'trap' may be used uninitialized in this function [-Werror=maybe-uninitialized]
-    iput(trap);
-    ^~~~~~~~~~
-fs/overlayfs/super.c:1312:17: note: 'trap' was declared here
+Internally, '_overlay_scratch_mount -o remount' calls
+'_supports_filetype $OVL_BASE_SCRATCH_MNT -o remount'
+and with the following example mounts:
 
-Reword slightly to make it easier for the compiler to understand.
+/dev/vdf /vdf xfs rw,relatime,attr2,inode64,noquota 0 0
+/vdf /vdf/ovl-mnt overlay rw,lowerdir=/vdf/lower,upperdir=/vdf/upper...
 
-Fixes: 146d62e5a586 ("ovl: detect overlapping layers")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+'_supports_filetype /vdf' returns false and reports:
+"/vdf/ovl-mnt: Not on a mounted XFS filesystem".
+
+Regardless of the change in xfs_info, which I proposed a fix
+for, there is no reason to test d_type support on remount.
+Therefore, fix the regression by skipping unneeded overlayfs
+mount logic on remount.
+
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 ---
- fs/overlayfs/super.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index 746ea36f3171..d150ad6dba94 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -995,8 +995,8 @@ static int ovl_setup_trap(struct super_block *sb, struct dentry *dir,
- 	int err;
+Eryu,
+
+I think this fix is desired regardless of the proposed
+xfs_info fix [1].
+
+Thanks,
+Amir.
+
+[1] https://marc.info/?l=linux-xfs&m=156077152313826&w=2
+
+ common/overlay | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/common/overlay b/common/overlay
+index 00946a94..65c639e9 100644
+--- a/common/overlay
++++ b/common/overlay
+@@ -105,6 +105,11 @@ _overlay_base_scratch_mount()
  
- 	trap = ovl_get_trap_inode(sb, dir);
--	err = PTR_ERR(trap);
--	if (IS_ERR(trap)) {
-+	err = PTR_ERR_OR_ZERO(trap);
-+	if (err) {
- 		if (err == -ELOOP)
- 			pr_err("overlayfs: conflicting %s path\n", name);
- 		return err;
+ _overlay_scratch_mount()
+ {
++	if echo "$*" | grep -q remount; then
++		$MOUNT_PROG $SCRATCH_MNT $*
++		return
++	fi
++
+ 	_overlay_base_scratch_mount && \
+ 		_overlay_mount $OVL_BASE_SCRATCH_MNT $SCRATCH_MNT $*
+ }
 -- 
-2.20.0
+2.17.1
 
