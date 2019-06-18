@@ -2,121 +2,179 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CAF0B49916
-	for <lists+linux-unionfs@lfdr.de>; Tue, 18 Jun 2019 08:44:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1685549B7E
+	for <lists+linux-unionfs@lfdr.de>; Tue, 18 Jun 2019 09:51:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728827AbfFRGoF (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 18 Jun 2019 02:44:05 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:33498 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728810AbfFRGoE (ORCPT
+        id S1726232AbfFRHvb (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 18 Jun 2019 03:51:31 -0400
+Received: from mout.kundenserver.de ([212.227.17.10]:38395 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725870AbfFRHvb (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 18 Jun 2019 02:44:04 -0400
-Received: by mail-wr1-f66.google.com with SMTP id n9so12611168wru.0;
-        Mon, 17 Jun 2019 23:44:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=8YMeWmIyyq89IcmvN4vVUK/VhCYck0NSmpdo/v8WKm4=;
-        b=e94dxPpwgZV3PHR4nIc8QMgqNZalHb7PN1og1K9MfDCKqeceF790IjA33gFIpNtR2O
-         U8apiHRCZ4R1VkHgYbOCRpakPCxrxWmzZzBtVdkGCLFYm5B1J1dSy+iKlz72yd4IsZ4G
-         AHNc6XnfQQhNf/rxRY+2+v1sCuMTkJW5YNIUNx4B4oOcsVgdR808VMfgFOzBuKisnP0O
-         Xh9Z7CtehqC8yjiwfrUBC0oUicsts9VIUluIIHsa+igljUMKkECQLNOJYFfLwIlOK0aX
-         CSSt+ltBHr5IlfXIOGJ1Auq2fdAjnSz31ux67THjTlbXbl27ZCVoI673qimKvFL8meqX
-         1SCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=8YMeWmIyyq89IcmvN4vVUK/VhCYck0NSmpdo/v8WKm4=;
-        b=EiGu4nGvPV8dwgA4KMpSS8NB9K115nMrbZFRNTkAiMebZ9OXjuW/dMVug3/45C/6yq
-         20mi5ZdFoHcku7AM/8vnJd1OK5ZQhgz9e5cyYgpPzCRKDhlqR8QHQTQqAkzNlgKSzvxj
-         XG0HBg66b/o3CuK70A3ncdeyqfQpTqg+nYrYtAq8vL/JnOESzGp4fN6TNnamgnxlOw3f
-         KzCQUHO4ooFtvWxSxMIJrC0Z/lsTSDK/iqHuPWuJvO4ZveCbuaydyhcQDh2lA3DWdwHy
-         1+iwOgY491Y6T6oYLxBv3ObFGtLQZwA2q1dCSj3XlymNOj3WTW6WG4be6bvnkulvgwAd
-         2Hrg==
-X-Gm-Message-State: APjAAAXPZ5UNt/Io3jxc2YH3CFrUX/9nUyt7AgJoOIJ6emgzD4e/iPDE
-        JCFUmHplICjZGrRMEzvEIpc=
-X-Google-Smtp-Source: APXvYqxCUDkuoirh8jkmUMXmmbqK9SCbMDeFNY6uu493rWObMQT9lgtorsdsSUG73rOj3dB2zK0KDA==
-X-Received: by 2002:adf:e9c6:: with SMTP id l6mr1561280wrn.216.1560840242343;
-        Mon, 17 Jun 2019 23:44:02 -0700 (PDT)
-Received: from localhost.localdomain ([5.102.238.208])
-        by smtp.gmail.com with ESMTPSA id v204sm1429006wma.20.2019.06.17.23.44.00
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 17 Jun 2019 23:44:01 -0700 (PDT)
-From:   Amir Goldstein <amir73il@gmail.com>
-To:     Eryu Guan <guaneryu@gmail.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        "Darrick J . Wong" <darrick.wong@oracle.com>,
-        linux-unionfs@vger.kernel.org, fstests@vger.kernel.org
-Subject: [PATCH] overlay/061: remove from auto and quick groups
-Date:   Tue, 18 Jun 2019 09:43:55 +0300
-Message-Id: <20190618064355.29398-1-amir73il@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Tue, 18 Jun 2019 03:51:31 -0400
+Received: from leknes.fjasle.eu ([92.116.119.3]) by mrelayeu.kundenserver.de
+ (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MplPf-1iOb3h2GVB-00qDy9; Tue, 18 Jun 2019 09:51:00 +0200
+Received: by leknes.fjasle.eu (Postfix, from userid 1000)
+        id C400D423D2; Tue, 18 Jun 2019 09:50:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fjasle.eu; s=mail;
+        t=1560844258; bh=JSr5FYsreTev5jm3vVvWViVsoZetQ5kuXV8VrQDPf00=;
+        h=From:To:Cc:Subject:Date:From;
+        b=5X3ssSVGmS0WCLjiQo0zJx46t2uoIzfkfWiHqwk7LeBTWHDIOMk7AeRvobcgnyD74
+         hlsSb1iC2uA5hyomF/STv7zFJCagIwItyDYdlp+hCcqs7Wc5+fdBVqqddiWRlgZ7nZ
+         vymfXz7o4Dv8XRR/uPTTE/3uq1G3Qi9boGk0iZgY=
+From:   Nicolas Schier <nicolas@fjasle.eu>
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     Amir Goldstein <amir73il@gmail.com>,
+        Vivek Goyal <vgoyal@redhat.com>, linux-unionfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Nicolas Schier <n.schier@avm.de>
+Subject: [PATCH v2] ovl: fix typo in MODULE_PARM_DESC
+Date:   Tue, 18 Jun 2019 09:50:29 +0200
+Message-Id: <20190618075029.3996-1-nicolas@fjasle.eu>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:Q33Sp8kmOxGQnwqbLn5Hpm/t+PNaNrsb+Lrpw4Lu6tKJbEzggEv
+ Ccu2nGj+wF33t3e0g34ig6E3/wdEtNWMkM/YpMv6NkWKvHXgWvcyjGWjNtprVdiz63jsNqx
+ AeKhzlvTGcHwNdFEDiZjEpTEvSbnrYloZzp3oh+TaQrt/Jma/OSYrcVgocPj/iU5jRIEx1J
+ mUuSMnfF4qxSyi61WniVA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:5ka3ClcJ244=:xT1SfDAQy4o+ojiXSPbYsu
+ WCHzMq6i9OXaNqSXR6F2qWG3By8zmCBTxJeelhuxRjBl2zX4EyVsSFCo5sbQ3JzmTyefVmJlH
+ yt7A+6rJm9Z1hZwPAIWcu3+dQZwH0sgXx7DcC2CnHMrYtqJX0Fa/OsXnAgQwqUa1RIovH82KV
+ 9YZoL/0S0Ao1KqhB2C5qnn67gBdgP55AQixt1JgXlnPmbRFHKtoqalorCMJKzq3UHUJtPN3Vp
+ fw/RMRLwvdt5hAe4jUApRusv89ST/weVAiVXo4dxv8KzYG+1Njxh9hZXKTkv29QNp4J2IW4pD
+ KDR+Ni3jk7O0sfYoYlVIQYSBbRVadGZTZP42woza37jlHK9EOeYik3+lavoy5IfpbLoDBAcJ3
+ OVoD3mSi7DTiEq/ZgVoSpJ5YxLgo4qTsoPJP4KY0SXOUGHV5NxJ4YZkqRcug3Av4ZocnGPgIp
+ me5SGRPYujMemOio5eci6pO1Qzdm4M8dSWkjC5nR3M5aY3R1GhwI0FUIoxrnmoR9uqYWKSl5S
+ Cx3Y5ESx8aQLu5kowg55VBGAF7eoZqCHALpuiLTCf840snmbF0GV3jdpa5xJqBx3MoGqEbqOK
+ kkVdyjFqk0Wt2A2ioYFzvBlm7IaoeJJGDLMQ1WvtTtYVJk0mEG/ziHvUqgUgT+HH7ephhQ/6g
+ N+Ki0g7Pd/FzcyVCNb7ebOhZaUAXhFfjwVsm+8V9CTW86Bc3hxmWxH4+kQUzgbStuWD6+i3PI
+ xntuPTVOx7vZUW5yZgOdDlIzU9liKUB4llW7cQ==
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-In late 2016, tests overlay/01[6-8] where merged to track the
-state of several ilong standing posix compliance issues on overlayfs.
+From: Nicolas Schier <n.schier@avm.de>
 
-This practice was somewhat of an exception for xfstests project,
-which more often merges tests for issues that are expected to be
-resolved in the short term.
+Change first argument of MODULE_PARM_DESC() calls, such that each of
+them matches the actual module parameter name.  The patch results in
+changing (the 'parm' section from) the output of `modinfo overlay`:
 
-Over the years, some test cases have been fixed and more tests
-where created to cover the remaining issues (e.g. overlay/04[34]).
+    parm: ovl_check_copy_up:Obsolete; does nothing
+    parm: redirect_max:ushort
+    parm: ovl_redirect_max:Maximum length of absolute redirect xattr value
+    parm: redirect_dir:bool
+    parm: ovl_redirect_dir_def:Default to on or off for the redirect_ [...]
+    parm: redirect_always_follow:bool
+    parm: ovl_redirect_always_follow:Follow redirects even if [...]
+    parm: index:bool
+    parm: ovl_index_def:Default to on or off for the inodes index [...]
+    parm: nfs_export:bool
+    parm: ovl_nfs_export_def:Default to on or off for the NFS export [...]
+    parm: xino_auto:bool
+    parm: ovl_xino_auto_def:Auto enable xino feature
+    parm: metacopy:bool
+    parm: ovl_metacopy_def:Default to on or off for the metadata only [...]
 
-Currently, the only failing test from this category is overlay/061
-which covers item b) in the "Non-standard behavior" section of
-Documentation/filesystems/overlayfs.txt.
+into:
 
-Since there is no clear design, roadmap nor allocated resources
-to resolve this remaining issue, the test is removed from the
-"auto" and "quick" groups, following a suggestion that Darrick
-has made for a similarly long failing generic test.
+    parm: check_copy_up:Obsolete; does nothing
+    parm: redirect_max:Maximum length of absolute redirect xattr [...]
+    parm: redirect_dir:Default to on or off for the redirect_dir [...]
+    parm: redirect_always_follow:Follow redirects even if [...]
+    parm: index:Default to on or off for the inodes index feature [...]
+    parm: nfs_export:Default to on or off for the NFS export feature [...]
+    parm: xino_auto:Auto enable xino feature (bool)
+    parm: metacopy:Default to on or off for the metadata only copy up [...]
 
-The test was added to the new "posix" group, to allow testing
-for posix compliance.
-
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Nicolas Schier <n.schier@avm.de>
 ---
 
-Eryu,
+Changes since v1:
+ - update/fix commit message wording (now completely checkpatch
+   compliant)
 
-With this change, check -overlay -g overlay/quick run is expdected
-to be all green.
+ fs/overlayfs/copy_up.c |  2 +-
+ fs/overlayfs/dir.c     |  2 +-
+ fs/overlayfs/super.c   | 12 ++++++------
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-I did not observe any regressing with check -overlay -g generic/quick
-compared to check -g generic/quick on xfs with recent kernel.
-I did not test all filesystems and -g generic/auto with recent kernel,
-but I am not aware of any expected failures specific for -overlay run
-on generic tests.
-
-check -overlay -g overlay/auto has one non-quick stress test
-(overlay/019) which is failing on lockdep circular locking dependency
-warning (if you have lockdep enabled).
-This is a known issue that has also been reported by syzbot.
-
-Thanks,
-Amir.
-
- tests/overlay/group | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tests/overlay/group b/tests/overlay/group
-index 8bde6ea1..ef8517a1 100644
---- a/tests/overlay/group
-+++ b/tests/overlay/group
-@@ -63,7 +63,7 @@
- 058 auto quick exportfs
- 059 auto quick copyup
- 060 auto quick metacopy
--061 auto quick copyup
-+061 posix copyup
- 062 auto quick exportfs
- 063 auto quick whiteout
- 064 auto quick copyup
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index 9e62dcf06fc4..e9cdc453f247 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -37,7 +37,7 @@ static int ovl_ccup_get(char *buf, const struct kernel_param *param)
+ }
+ 
+ module_param_call(check_copy_up, ovl_ccup_set, ovl_ccup_get, NULL, 0644);
+-MODULE_PARM_DESC(ovl_check_copy_up, "Obsolete; does nothing");
++MODULE_PARM_DESC(check_copy_up, "Obsolete; does nothing");
+ 
+ int ovl_copy_xattr(struct dentry *old, struct dentry *new)
+ {
+diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
+index 82c129bfe58d..dbcb3ff588aa 100644
+--- a/fs/overlayfs/dir.c
++++ b/fs/overlayfs/dir.c
+@@ -21,7 +21,7 @@
+ 
+ static unsigned short ovl_redirect_max = 256;
+ module_param_named(redirect_max, ovl_redirect_max, ushort, 0644);
+-MODULE_PARM_DESC(ovl_redirect_max,
++MODULE_PARM_DESC(redirect_max,
+ 		 "Maximum length of absolute redirect xattr value");
+ 
+ static int ovl_set_redirect(struct dentry *dentry, bool samedir);
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 0116735cc321..eb32e68f1a83 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -31,29 +31,29 @@ struct ovl_dir_cache;
+ 
+ static bool ovl_redirect_dir_def = IS_ENABLED(CONFIG_OVERLAY_FS_REDIRECT_DIR);
+ module_param_named(redirect_dir, ovl_redirect_dir_def, bool, 0644);
+-MODULE_PARM_DESC(ovl_redirect_dir_def,
++MODULE_PARM_DESC(redirect_dir,
+ 		 "Default to on or off for the redirect_dir feature");
+ 
+ static bool ovl_redirect_always_follow =
+ 	IS_ENABLED(CONFIG_OVERLAY_FS_REDIRECT_ALWAYS_FOLLOW);
+ module_param_named(redirect_always_follow, ovl_redirect_always_follow,
+ 		   bool, 0644);
+-MODULE_PARM_DESC(ovl_redirect_always_follow,
++MODULE_PARM_DESC(redirect_always_follow,
+ 		 "Follow redirects even if redirect_dir feature is turned off");
+ 
+ static bool ovl_index_def = IS_ENABLED(CONFIG_OVERLAY_FS_INDEX);
+ module_param_named(index, ovl_index_def, bool, 0644);
+-MODULE_PARM_DESC(ovl_index_def,
++MODULE_PARM_DESC(index,
+ 		 "Default to on or off for the inodes index feature");
+ 
+ static bool ovl_nfs_export_def = IS_ENABLED(CONFIG_OVERLAY_FS_NFS_EXPORT);
+ module_param_named(nfs_export, ovl_nfs_export_def, bool, 0644);
+-MODULE_PARM_DESC(ovl_nfs_export_def,
++MODULE_PARM_DESC(nfs_export,
+ 		 "Default to on or off for the NFS export feature");
+ 
+ static bool ovl_xino_auto_def = IS_ENABLED(CONFIG_OVERLAY_FS_XINO_AUTO);
+ module_param_named(xino_auto, ovl_xino_auto_def, bool, 0644);
+-MODULE_PARM_DESC(ovl_xino_auto_def,
++MODULE_PARM_DESC(xino_auto,
+ 		 "Auto enable xino feature");
+ 
+ static void ovl_entry_stack_free(struct ovl_entry *oe)
+@@ -66,7 +66,7 @@ static void ovl_entry_stack_free(struct ovl_entry *oe)
+ 
+ static bool ovl_metacopy_def = IS_ENABLED(CONFIG_OVERLAY_FS_METACOPY);
+ module_param_named(metacopy, ovl_metacopy_def, bool, 0644);
+-MODULE_PARM_DESC(ovl_metacopy_def,
++MODULE_PARM_DESC(metacopy,
+ 		 "Default to on or off for the metadata only copy up feature");
+ 
+ static void ovl_dentry_release(struct dentry *dentry)
 -- 
-2.17.1
+2.20.1
 
