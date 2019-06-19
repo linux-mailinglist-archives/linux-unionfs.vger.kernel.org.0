@@ -2,53 +2,51 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E67C4A26A
-	for <lists+linux-unionfs@lfdr.de>; Tue, 18 Jun 2019 15:36:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E79D4B28E
+	for <lists+linux-unionfs@lfdr.de>; Wed, 19 Jun 2019 09:04:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729336AbfFRNgf (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 18 Jun 2019 09:36:35 -0400
-Received: from mail-yw1-f68.google.com ([209.85.161.68]:43519 "EHLO
-        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729552AbfFRNga (ORCPT
+        id S1730846AbfFSHDT (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 19 Jun 2019 03:03:19 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:41092 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730826AbfFSHDS (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 18 Jun 2019 09:36:30 -0400
-Received: by mail-yw1-f68.google.com with SMTP id t2so6707681ywe.10
-        for <linux-unionfs@vger.kernel.org>; Tue, 18 Jun 2019 06:36:29 -0700 (PDT)
+        Wed, 19 Jun 2019 03:03:18 -0400
+Received: by mail-io1-f66.google.com with SMTP id w25so35704358ioc.8
+        for <linux-unionfs@vger.kernel.org>; Wed, 19 Jun 2019 00:03:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=szeredi.hu; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=sD5fXTT12jECXW04NsW+5gjGQW+RPfY7fMbBzQisftA=;
-        b=cLeAUMgJI9tzJP56cXtri+fsiFO+ikwszidYTv1L3MYSQbRXzH+QSFqJv840oow98U
-         1Ow257Z38+st8zeSl/RQO2UPI4TRhWoyouPWLVfISq/enzOas3pDPKD7DC2+pnRxWW48
-         9/7o37Njhc2ITINw74iCByLvCvMwD1xsPWAp8aaLmP9YqUGP8hR8uoAXTaQR4uCunEp8
-         8jiI3wl8ElPF04DLe8PmfPYRSAaQu+RVw+4dTc5dSi8MBS1EiKFgqWBfuQcHCPnwsEV7
-         GX2CXM1dPrt7eSXwj0wxHHBsKWnpSSFfJG9V85hF0txvjUKUm/CikTzkowKWnT97CCzM
-         Z7Mg==
+        bh=ARuZEo6u7w+8GlCsjJmjBlF7JPwsvDeIzhN5j/K48V0=;
+        b=hcWZtqtvEVZqlKAYxhEC/nXTYZ6IoePbeqAPOisO7ypFEV+bWD2C2v8saPijMbE5Ma
+         eentYPTjPh6cQ7BcsQUumT8b/9+sDRPVNW6QQRyH9Rw+BvIujpgPyVVUcN5bglUHiDWD
+         q/IUqRzdTRBlNGjy6q8vHMh0lsK6d98Azto9U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=sD5fXTT12jECXW04NsW+5gjGQW+RPfY7fMbBzQisftA=;
-        b=eKIGoc9cGbdUcQAlRU5Et1O0XbxM8LunzGwXbWsig0MjBFk4h7FQ7pmQVJtG2xISJR
-         bPMdkznO7l5qPViakB/xRxHs8qoMF/uui8cCnyggTE+9WMaAjdOSvVhaz+br8TPCOmTN
-         6b2jU96HWw3lCsIdO3RQN93OZDwctu1sjPBZC91yjPFfdLts1WqBfn7VHuoOqMAWfMWB
-         WRQZzWKMOfQFLISjC+8yTOj87UaSyJQnKQNHpZ/NcjYUb/5Uu8wNP4ceswjfY918J+Ko
-         f9kOjgpNr0XqGF5w41zD9L1UmZTX3rQpBtfi1tHvH2gMzwZFjLjJEyEjhHYmdAwg/h6F
-         lBsA==
-X-Gm-Message-State: APjAAAVcgAoAhSOhubKKJ8ygKicJMJP7Ugrbuj6wejSY52FUgdVEpy+T
-        inySs5IJt8skX6OoDgEA/UpupkDORTejDFTn0yc=
-X-Google-Smtp-Source: APXvYqzmonPPn93rsJeaKIwaOyNFYxhH7hYR2gBQI5c3h4Wg84QYFRVHvY7WOLr7UAJ+3TBnOSlmaima4FRO6K+Dak4=
-X-Received: by 2002:a81:3956:: with SMTP id g83mr64431835ywa.183.1560864989393;
- Tue, 18 Jun 2019 06:36:29 -0700 (PDT)
+        bh=ARuZEo6u7w+8GlCsjJmjBlF7JPwsvDeIzhN5j/K48V0=;
+        b=fNE/Nhs7zlNqLip2BQKbf5ohX45fhDVAms8TD+aIjd1mAQmR6a8+ITGTaspcBLxyd2
+         3O5w813/dPcZrUy+re2W6dZ6Jz7Q4f4YnpuaPvuNGpfS71y8XZ6quKQ/gTXkFI1mtkeY
+         FcoXu12vs5zD88pPVpSiYJf1kVJFdvlt2N89zO+Jo0pjRWUd8KYn9IzsVwyZbVknefPD
+         FggnM2fEBLUCQWo5ZHYSWqBoEUjCAiljzsKgzjw+yh+kSOcj+oC3m2EAqSJDC8Ir2vh5
+         tU8N1J7YfBLxpdnQv9yt2dgsQjU0VgY0SIpFUXYl4pN5Iy9kWw2mp6j2P+dH5cdSol8J
+         A5Jg==
+X-Gm-Message-State: APjAAAXL//scC8HbFkJ7zCEZmY+3sOX2PagSAinNVTIsFXuljfu2zAhx
+        HrUei44HYomQhHKC9YhusTx3nYLV70+HJpUukDg+oQ==
+X-Google-Smtp-Source: APXvYqxxll743jkU9T6Uphs2fuHWjnPwiax6mVi9MJjCMrHhg25ffsF2rB4Xvdlke6aFoBGxHwFmyYbY/CdiMB3Jryo=
+X-Received: by 2002:a5e:8618:: with SMTP id z24mr10673126ioj.174.1560927798169;
+ Wed, 19 Jun 2019 00:03:18 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190609160344.24979-1-amir73il@gmail.com> <CAJfpegt4QXGC0-y_sug7kuFo2q28c6DFJQnQ-UHe1bmCGC0jag@mail.gmail.com>
-In-Reply-To: <CAJfpegt4QXGC0-y_sug7kuFo2q28c6DFJQnQ-UHe1bmCGC0jag@mail.gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Tue, 18 Jun 2019 16:36:18 +0300
-Message-ID: <CAOQ4uxi2HANUnep5JQV5=kTTPFmCgnqgBMYcLdvgFPnC9Z3Osg@mail.gmail.com>
+ <CAOQ4uxi2HANUnep5JQV5=kTTPFmCgnqgBMYcLdvgFPnC9Z3Osg@mail.gmail.com>
+In-Reply-To: <CAOQ4uxi2HANUnep5JQV5=kTTPFmCgnqgBMYcLdvgFPnC9Z3Osg@mail.gmail.com>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Wed, 19 Jun 2019 09:03:07 +0200
+Message-ID: <CAJfpegsrFJk3BjG2Jy4FeLY2=ykBNGz-Qnd=mdCBARYSxrz1vQ@mail.gmail.com>
 Subject: Re: [PATCH] ovl: make i_ino consistent with st_ino in more cases
-To:     Miklos Szeredi <miklos@szeredi.hu>
+To:     Amir Goldstein <amir73il@gmail.com>
 Cc:     overlayfs <linux-unionfs@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
@@ -56,38 +54,25 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Tue, Jun 11, 2019 at 4:58 PM Miklos Szeredi <miklos@szeredi.hu> wrote:
+On Tue, Jun 18, 2019 at 3:36 PM Amir Goldstein <amir73il@gmail.com> wrote:
 >
-> On Sun, Jun 9, 2019 at 6:03 PM Amir Goldstein <amir73il@gmail.com> wrote:
+> On Tue, Jun 11, 2019 at 4:58 PM Miklos Szeredi <miklos@szeredi.hu> wrote:
 > >
-> > Relax the condition that overlayfs supports nfs export, to require
-> > that i_ino is consistent with st_ino/d_ino.
-> >
-> > It is enough to require that st_ino and d_ino are consistent.
->
-> Yes.
->
-> >
-> > This fixes the failure of xfstest generic/504, due to mismatch of
-> > st_ino to inode number in the output of /proc/locks.
-> >
-> > Fixes: 12574a9f4c9c ("ovl: consistent i_ino for non-samefs with xino")
-> > Cc: <stable@vger.kernel.org> # v4.19
-> > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> > ---
-> >
-> > Miklos,
-> >
-> > TBH, I can't remember why I put the s_export_op condition in the
-> > first place (can you?), expect for the fact the original bug fix
-> > was reported on nfsd readdirplus.
->
-> I have no recollection of any issue that would require nfs export.
->
-> I've applied the patch.
->
+> > On Sun, Jun 9, 2019 at 6:03 PM Amir Goldstein <amir73il@gmail.com> wrote:
 
-Forgot to apply to overlayfs-next or intentionally left for 5.3?
+> > > TBH, I can't remember why I put the s_export_op condition in the
+> > > first place (can you?), expect for the fact the original bug fix
+> > > was reported on nfsd readdirplus.
+> >
+> > I have no recollection of any issue that would require nfs export.
+> >
+> > I've applied the patch.
+> >
+>
+> Forgot to apply to overlayfs-next or intentionally left for 5.3?
+
+Safer to leave it to 5.3 since this is not a recent regression and the
+only reporter is xfstests.
 
 Thanks,
-Amir.
+Miklos
