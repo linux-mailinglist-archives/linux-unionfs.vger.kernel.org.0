@@ -2,77 +2,85 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E79D4B28E
-	for <lists+linux-unionfs@lfdr.de>; Wed, 19 Jun 2019 09:04:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B859D4B671
+	for <lists+linux-unionfs@lfdr.de>; Wed, 19 Jun 2019 12:47:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730846AbfFSHDT (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 19 Jun 2019 03:03:19 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:41092 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730826AbfFSHDS (ORCPT
+        id S1727198AbfFSKrN (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 19 Jun 2019 06:47:13 -0400
+Received: from mail-yb1-f194.google.com ([209.85.219.194]:46453 "EHLO
+        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726751AbfFSKrN (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 19 Jun 2019 03:03:18 -0400
-Received: by mail-io1-f66.google.com with SMTP id w25so35704358ioc.8
-        for <linux-unionfs@vger.kernel.org>; Wed, 19 Jun 2019 00:03:18 -0700 (PDT)
+        Wed, 19 Jun 2019 06:47:13 -0400
+Received: by mail-yb1-f194.google.com with SMTP id p8so7393545ybo.13;
+        Wed, 19 Jun 2019 03:47:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ARuZEo6u7w+8GlCsjJmjBlF7JPwsvDeIzhN5j/K48V0=;
-        b=hcWZtqtvEVZqlKAYxhEC/nXTYZ6IoePbeqAPOisO7ypFEV+bWD2C2v8saPijMbE5Ma
-         eentYPTjPh6cQ7BcsQUumT8b/9+sDRPVNW6QQRyH9Rw+BvIujpgPyVVUcN5bglUHiDWD
-         q/IUqRzdTRBlNGjy6q8vHMh0lsK6d98Azto9U=
+        bh=IzPT7BaLr+o3GG3LZYVk6BTlcHp6ZzyDkbN4F9qcZ/o=;
+        b=W3piUkBIYFlkFQGMet47EtAIv49iHPgGADK7212QqI3vAsK4KNNh+B0DQZq/NABx+e
+         Qse26vXlcl8TSCiELpwVqxTUCckWG4Botq9pyvig/hxfcV2w0z2p0BsUFNj3xTbLwVLo
+         NbPopxOK/tclr2Ke0HXNzcECdpE87H5aeRCFXFg2PlVZKFaEdCHNINKXPaw6U4q4LHB0
+         MLYyH4ZnWkYWAl+AYMXmjMTi9Z+CixrL/nZwZJZSXzvBzT2/mT/Me4UMSJbu9F6qnl7g
+         KDcibhDNaqGjAsjCKVLZYd3O0Tr+UQKaZAR3+la5lUasNrvU4d/PoXoCCQgxaIb3J+dX
+         5AkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ARuZEo6u7w+8GlCsjJmjBlF7JPwsvDeIzhN5j/K48V0=;
-        b=fNE/Nhs7zlNqLip2BQKbf5ohX45fhDVAms8TD+aIjd1mAQmR6a8+ITGTaspcBLxyd2
-         3O5w813/dPcZrUy+re2W6dZ6Jz7Q4f4YnpuaPvuNGpfS71y8XZ6quKQ/gTXkFI1mtkeY
-         FcoXu12vs5zD88pPVpSiYJf1kVJFdvlt2N89zO+Jo0pjRWUd8KYn9IzsVwyZbVknefPD
-         FggnM2fEBLUCQWo5ZHYSWqBoEUjCAiljzsKgzjw+yh+kSOcj+oC3m2EAqSJDC8Ir2vh5
-         tU8N1J7YfBLxpdnQv9yt2dgsQjU0VgY0SIpFUXYl4pN5Iy9kWw2mp6j2P+dH5cdSol8J
-         A5Jg==
-X-Gm-Message-State: APjAAAXL//scC8HbFkJ7zCEZmY+3sOX2PagSAinNVTIsFXuljfu2zAhx
-        HrUei44HYomQhHKC9YhusTx3nYLV70+HJpUukDg+oQ==
-X-Google-Smtp-Source: APXvYqxxll743jkU9T6Uphs2fuHWjnPwiax6mVi9MJjCMrHhg25ffsF2rB4Xvdlke6aFoBGxHwFmyYbY/CdiMB3Jryo=
-X-Received: by 2002:a5e:8618:: with SMTP id z24mr10673126ioj.174.1560927798169;
- Wed, 19 Jun 2019 00:03:18 -0700 (PDT)
+        bh=IzPT7BaLr+o3GG3LZYVk6BTlcHp6ZzyDkbN4F9qcZ/o=;
+        b=Vw0wG5HEu8fmmUElb7kIYNBO9wDx+8/Aom5ja5ZkHERVnbr8VSPbjUUL5ToUfzRQrJ
+         PWDeq+6agsmZvddH7w1RXFETQuM7fgFzt3FuWfHSd7BK2cs7/f6F9QsWYdMWqXrYrlZX
+         OQwMk1cKR+kiF7KafqB2StbhPlAY0dLKuQxtXc3b8cpVkLl0XNw4ChEuAzOm+ulHI98x
+         2+yxfJzfqUp7DzGIZMovktAZGEmp0r7wFkusk+UFuJUQR3gnR+A0me+slZWEx84VpscO
+         qwEURoKMXJpezBDpo+jOCjYLS4ScVeMGzPL4rkPkNEz1XQZw7x502MrzbNLBpY5RZSJJ
+         Bo9A==
+X-Gm-Message-State: APjAAAURcTeEAq9ze03JBAwXrhrZV5Yv2xi4JQyv2kYA1vGuIIttTJ/Z
+        9jaNeuNjCj9X3TMM6ijY2hA/u0yLEDYZX2dtNJ8=
+X-Google-Smtp-Source: APXvYqzsVOrufjk/bpBWTEquUf03n+s6hD45L+u8uO2soFvUKwQSlbWpSlJvEodmlHhOKCVk4wV4+XgdUWSFlmrmjDY=
+X-Received: by 2002:a25:dc88:: with SMTP id y130mr11892785ybe.14.1560941232479;
+ Wed, 19 Jun 2019 03:47:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190609160344.24979-1-amir73il@gmail.com> <CAJfpegt4QXGC0-y_sug7kuFo2q28c6DFJQnQ-UHe1bmCGC0jag@mail.gmail.com>
- <CAOQ4uxi2HANUnep5JQV5=kTTPFmCgnqgBMYcLdvgFPnC9Z3Osg@mail.gmail.com>
-In-Reply-To: <CAOQ4uxi2HANUnep5JQV5=kTTPFmCgnqgBMYcLdvgFPnC9Z3Osg@mail.gmail.com>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Wed, 19 Jun 2019 09:03:07 +0200
-Message-ID: <CAJfpegsrFJk3BjG2Jy4FeLY2=ykBNGz-Qnd=mdCBARYSxrz1vQ@mail.gmail.com>
-Subject: Re: [PATCH] ovl: make i_ino consistent with st_ino in more cases
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     overlayfs <linux-unionfs@vger.kernel.org>
+References: <20190618064355.29398-1-amir73il@gmail.com>
+In-Reply-To: <20190618064355.29398-1-amir73il@gmail.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Wed, 19 Jun 2019 13:47:01 +0300
+Message-ID: <CAOQ4uxiDZjr2+EyjWtimjLxFHrMN13K4N5Aw+9BACPmx+2W6Kg@mail.gmail.com>
+Subject: Re: [PATCH] overlay/061: remove from auto and quick groups
+To:     Eryu Guan <guaneryu@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
+        "Darrick J . Wong" <darrick.wong@oracle.com>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        fstests <fstests@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Tue, Jun 18, 2019 at 3:36 PM Amir Goldstein <amir73il@gmail.com> wrote:
 >
-> On Tue, Jun 11, 2019 at 4:58 PM Miklos Szeredi <miklos@szeredi.hu> wrote:
-> >
-> > On Sun, Jun 9, 2019 at 6:03 PM Amir Goldstein <amir73il@gmail.com> wrote:
-
-> > > TBH, I can't remember why I put the s_export_op condition in the
-> > > first place (can you?), expect for the fact the original bug fix
-> > > was reported on nfsd readdirplus.
-> >
-> > I have no recollection of any issue that would require nfs export.
-> >
-> > I've applied the patch.
-> >
+> I did not observe any regressing with check -overlay -g generic/quick
+> compared to check -g generic/quick on xfs with recent kernel.
+> I did not test all filesystems and -g generic/auto with recent kernel,
+> but I am not aware of any expected failures specific for -overlay run
+> on generic tests.
 >
-> Forgot to apply to overlayfs-next or intentionally left for 5.3?
 
-Safer to leave it to 5.3 since this is not a recent regression and the
-only reporter is xfstests.
+Oh! I was lying. I *did* notice two regressions with
+check -overlay -g generic/quick (compared to xfs),
+so I posted fixes for them:
+
+1) generic/504 is failing with -overlay on master.
+
+This kernel fix commit is on linux-next:
+6ef048fd5955 locks: eliminate false positive conflicts for write lease
+
+2) generic/555 (was just merged this week) is failing with
+-overlay on master.
+
+This kernel fix commit is on Miklos' overlayfs-next:
+941d935ac763 ovl: fix wrong flags check in FS_IOC_FS[SG]ETXATTR ioctls
 
 Thanks,
-Miklos
+Amir.
