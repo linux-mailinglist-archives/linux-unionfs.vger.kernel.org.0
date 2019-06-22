@@ -2,52 +2,65 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FCC64F568
-	for <lists+linux-unionfs@lfdr.de>; Sat, 22 Jun 2019 12:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 413264F70F
+	for <lists+linux-unionfs@lfdr.de>; Sat, 22 Jun 2019 18:29:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726299AbfFVKww (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 22 Jun 2019 06:52:52 -0400
-Received: from sonic311-48.consmr.mail.bf2.yahoo.com ([74.6.131.222]:33581
-        "EHLO sonic311-48.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726278AbfFVKww (ORCPT
+        id S1726317AbfFVQ3R (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 22 Jun 2019 12:29:17 -0400
+Received: from sonic316-11.consmr.mail.bf2.yahoo.com ([74.6.130.121]:43996
+        "EHLO sonic316-11.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726443AbfFVQ3J (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 22 Jun 2019 06:52:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561200770; bh=Wn45IEVQxjYS/KJ/AenupJ6pixj3tpnk+IQw8lNF8Cw=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Oq1YKrXr1kYD8c6yLlRZRbniJSlcC5200yUStvYqrcLnO30Yt5HCFxnIo532pk36ZzwXxbRwXW4sXrmw9HyVL5f5ub16ZqbekWDzBpiRCfmgWNvjXpIB1k+vAGgblYiBm+vua7lHKdn0OlejzTZEwhbVJv0psnegUgWrd7tR8Xo4Wm3FG8Ww7CeujPCxr8EDbTKDOY+/qrgWMb4/HXLMQsEph7YBYSwn28x7N1uC3PfGodra1+vkcnbQ8xwqHsNad4QGgVMmAAtn5cMCNCQurq9VNdZv0LpGfIR6lZESIwbb7E8JEV4VTctkfqyAQVLzPvXmxwhqiIEddxR5FFL9WA==
-X-YMail-OSG: 2jSg0CIVM1m1YpToY_tKT7C7f.m2kPvEiuZQjPMNHLtMYV6SsMAw8STVFAG_uBt
- DT9jt6Yn7XUUHFXkghQb4kNRGomq6APuFH7ixVDAZpsNKfIq4J2LyVPf2R2AWZ5LDVPvQU6cYpQv
- LNT0Klio4Z.LmqY66B5OuQoDMaLTneX_xLvIbIqUAGWaVqmk7wh_Ar4UpB80TiYU0IswMgEWS8KI
- scls1aH5pVOGfjoTv_qm0vLrLUJmX0GifDvP7JmGTJDmJSn4fXKW2Oy6YPMu0Svoc8UNvQVKpQTm
- ysvr4WTucpMKkdoQx.RdwMbKUdOatzYDRSH32hUWkuH1.1VmhBEs5HMQySuLhFn0ZaDfCB_5MwXb
- o3bZygbHV7IYzaT1w7xDZJ0Lw5Rx6Jfj4f00g.Igoueera.VPoTgaA6FlUlBwiNTMalL1pohBi_s
- DCVvGuZmJczhw3bO3hygnAes2QNDITn3wTgvAWWwHAdK3wKGKSyPkg2wAAYxTbC08ZTa5mKUUa7O
- 7OY84YXtO.LduF3rHvxm8icJI6RMAMBmc_oGRfj1IfpwcFX5RNdYpuEFrMjZZcuf0TevC72C0ie4
- gogGflRhHx0QPw.kVZSvrcArD0JeB9IOd3vEvlzcgxLKYEI127_IW1IQ0KSlYOGYB3iBRsQzKkfg
- HeEmllWxisCOAOLIcagXt5z0vJT0kKITo_4AiDoOKakamDacgOfF1K0RBiL9zfe3LVdk1E4bricH
- SkQLw9nBe.O_.eInwAIe7jqSZFiee4MUMJ3bJgIOKv.7rFLwmJ149fZDAiEo09H4QMYmnl6PDQCj
- LBIIcnZ7tHVTer99ZwILFLx4Niz6cUX0B_gUCOfGGxj6qK.KwKCeEnOnmqsfQ1NgYjNwg2_Y53Zn
- 5cTnHN7rkYw.xGqUobS96YfWdW0vsGncQbvSK3r5I5zJuB9BMrDYCp1F.4TpjkfPpSNfqLWepFFm
- BK9.iOFMIIpfH8CTkh0ESrBK3iqhdHB174gAM0vf3ovX10HNx1AGFUECTQXcRU8KIU3en7jOkXxA
- W.pu36cVlAAQ1FO5ijZwDTbmGXOeuhmana9EW0mcOWh_eps.S.BNuN.xgWF9HWNwUaSXOFzgHTFk
- 4SnsUQT8p6wpGBNuACf6cSyhSX7mNdqh43KbMPbEh.HonUVO4tSp0utaDFELo59MlerRxe4PYKAb
- Vf8ESCJiZK270JOh4SmONqupevAci
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 10:52:50 +0000
-Date:   Sat, 22 Jun 2019 10:50:49 +0000 (UTC)
-From:   Major Dennis Hornbeck <ab3@gajdm.org.in>
-Reply-To: Major Dennis Hornbeck <hornbeckmajordennis635@gmail.com>
-Message-ID: <277629053.248981.1561200649617@mail.yahoo.com>
-Subject: 
+        Sat, 22 Jun 2019 12:29:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561220948; bh=3fXYToOZXvh5MOJ1JSawYDThjnynC/Ekt2gucIg6zZg=; h=Date:From:Reply-To:Subject:From:Subject; b=Sqmma7rQCC9csXbuiUU3W2/3JNoNH7S8264Vtax3p6vjP/GOy3xpD3wbU2PRR9kt9Hpkf+FIWW9PMCnOCaw1O79buHof/+e4XCSgtAjG8InDhCml6NU6QqPjKJ3zDc6ntgnpVqWtJnbhtjoUqIbv1W6GU8NTi8qVdCcmhrTc1IZ6aiOxpvBar7FQmN3jAwZcqruMWVYBgbk1LAoNqGvQ8jjOiTjNhCDJjpcLi94EE60gk+qIfYgu1AQDdd9wVo7X6i3XlVR9KCYw0l7ikZmlDSVkcSrrmJBlognD3+QlW4wko0RiyOGAXy+sEMAa8UXhFfxEEhf+A0WfqKBKwkVQbg==
+X-YMail-OSG: 3TA6aNEVM1mHk4tfSNROwYxIcekGBuzt5YSl8uAf.0_HHQ2LGDBhX2FGT2.Do_z
+ _0DV280q.YGRxDLoRDSJM82e2d5hsgoPZVcKxWsle6Z3oHX8Omo6hY9bu5QjJLY68zQNKFXygJQb
+ l1z62dHRy69xOFvl6tq.81EbMsOh1_cirrcCk2fMX_Jmwx0sebG__1rhE6wzzo_NDP9VbvIqZ9bR
+ 2icQk1E4jS_eT.9i5S8Sf0xsdShl9dMibpAXRU93yOYuHTQIa_P77tZTcStgCsIVxKiDvC3a0NxY
+ 8gZtRhwFdS641nFzLb368UTov.mB4xMHIDhTJv9NazaTg1j8sw18ET29s.TqlBmXHg8vLU94qBpd
+ 5PlUttniCcoNFEJpnLF3UUydECDiL8Z11cc18YJXwsIeDfFkYqHGX5XdA4jNj054mfKUIhoNEakn
+ WUKps59xvPMOhDCVBujS9v_vJClG4fXrBtjl.W_LQqwsSCutxIcdvaqHEtURhc6MkAEPdp4bTGI.
+ srA9smb.rYGHYAQmfGBYSrMpzCORaFwD3sLBOdwCdBjEVVdu.sBEOGddWsx2T8AZRYYy5nvR9Foz
+ bPsz41tE4__SqGjxrktEJ2_s2wIQAUza2deZFDGXc6T62eXwgZpA4Pp2nGTmGbFQ6h4nAMd51HJh
+ T3GzQn8s4GOn.0BKRwZDpwf7w10rv6JPk5nAgLZOaX7LfFs2yeq7fnFrg4OCOiG9MCMxrUNq6gf7
+ VomHdE0MTMCDmL3Ebk4K0YUhXaCTht27MRDaoJusaRVRGavzgn0vj3Z4n7xxu27l7AAqrNZTRmUI
+ n_b8fWLMzkIFoI7ZcmL_O5d2bYctv7x0WqIS4U6onMjRr4HtPSPFTejqwRtmzChG01EgeDt1Xu9J
+ 3fp8ciCxthupmhAtFqCrukMze7VttucN.DpeM8bKmVw1EDgn.s_L.L9fVdDwg2umGkLNazDxoP0_
+ dzbgtjASRdO1.JaxkowN5gRT6rna4oVoAmbHsjQ4rLTjBWSWz8ZqQDlV43apY.buigbJvn4Qmvf1
+ GxhsPAlHlnnGfjZ9pr3BSAVXKd_Qs83vYaBOYxWdXDlwxBl9.1.bnCTqFBLXCTND1BZASE2pli5W
+ fu842ttK3BMCdw5COU_fvmE4HTFnTUQ5tN2a6KHryWZiInkZpWdo8I9xFucw8IlPI3qY2rDSegZk
+ LLEiGCawsrUj04Yg3uv6LVIzJaVvTytAzboyOeQVTgoj.0EfkvEtgpXm3
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 16:29:08 +0000
+Date:   Sat, 22 Jun 2019 16:29:03 +0000 (UTC)
+From:   "Miss.Fatima Yusuf" <fatimayusuf5@outlook.fr>
+Reply-To: miss.fmayusuf11@gmail.com
+Message-ID: <1743094696.311303.1561220943310@mail.yahoo.com>
+Subject: From:Miss: Fatima Yusuf.
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-References: <277629053.248981.1561200649617.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.13837 YahooMailBasic Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36
 To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-I am in the military unit here in Afghanistan, we have some amount of funds that we want to move out of the country. My partners and I need a good partner someone we can trust. It is risk free and legal. Reply to this email: hornbeckmajordennis635@gmail.com
 
-Regards,
-Major Dennis Hornbeck.
+
+From:Miss: Fatima Yusuf.
+
+For sure this mail would definitely come to you as a surprise, but do take your good time to go through it, My name is Ms. Fatima Yusuf,i am from Ivory Coast.
+
+I lost my parents a year and couple of months ago. My father was a serving director of the Agro-exporting board until his death. He was assassinated by his business partners.Before his death, he made a deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for the purchase of cocoa processing machine and development of another factory before his untimely death.
+
+Being that this part of the world experiences political and crises time without number, there is no guarantee of lives and properties. I cannot invest this money here any long, despite the fact it had been my late father's industrial plans.
+
+I want you to do me a favor to receive this funds into your country or any safer place as the beneficiary, I have plans to invest this money in continuation with the investment vision of my late father, but not in this place again rather in your country. I have the vision of going into real estate and industrial production or any profitable business venture.
+
+I will be ready to compensate you with 20% of the total Amount, now all my hope is banked on you and i really wants to invest this money in your country, where there is stability of Government, political and economic welfare.
+
+My greatest worry now is how to move out of this country because my uncle is threatening to kill me as he killed my father,Please do not let anybody hear about this, it is between me and you alone because of my security reason.
+
+I am waiting to hear from you.
+Yours Sincerely,
+Miss.Fatima Yusuf.
