@@ -2,65 +2,118 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 413264F70F
-	for <lists+linux-unionfs@lfdr.de>; Sat, 22 Jun 2019 18:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 639324F96A
+	for <lists+linux-unionfs@lfdr.de>; Sun, 23 Jun 2019 03:03:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726317AbfFVQ3R (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 22 Jun 2019 12:29:17 -0400
-Received: from sonic316-11.consmr.mail.bf2.yahoo.com ([74.6.130.121]:43996
-        "EHLO sonic316-11.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726443AbfFVQ3J (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 22 Jun 2019 12:29:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561220948; bh=3fXYToOZXvh5MOJ1JSawYDThjnynC/Ekt2gucIg6zZg=; h=Date:From:Reply-To:Subject:From:Subject; b=Sqmma7rQCC9csXbuiUU3W2/3JNoNH7S8264Vtax3p6vjP/GOy3xpD3wbU2PRR9kt9Hpkf+FIWW9PMCnOCaw1O79buHof/+e4XCSgtAjG8InDhCml6NU6QqPjKJ3zDc6ntgnpVqWtJnbhtjoUqIbv1W6GU8NTi8qVdCcmhrTc1IZ6aiOxpvBar7FQmN3jAwZcqruMWVYBgbk1LAoNqGvQ8jjOiTjNhCDJjpcLi94EE60gk+qIfYgu1AQDdd9wVo7X6i3XlVR9KCYw0l7ikZmlDSVkcSrrmJBlognD3+QlW4wko0RiyOGAXy+sEMAa8UXhFfxEEhf+A0WfqKBKwkVQbg==
-X-YMail-OSG: 3TA6aNEVM1mHk4tfSNROwYxIcekGBuzt5YSl8uAf.0_HHQ2LGDBhX2FGT2.Do_z
- _0DV280q.YGRxDLoRDSJM82e2d5hsgoPZVcKxWsle6Z3oHX8Omo6hY9bu5QjJLY68zQNKFXygJQb
- l1z62dHRy69xOFvl6tq.81EbMsOh1_cirrcCk2fMX_Jmwx0sebG__1rhE6wzzo_NDP9VbvIqZ9bR
- 2icQk1E4jS_eT.9i5S8Sf0xsdShl9dMibpAXRU93yOYuHTQIa_P77tZTcStgCsIVxKiDvC3a0NxY
- 8gZtRhwFdS641nFzLb368UTov.mB4xMHIDhTJv9NazaTg1j8sw18ET29s.TqlBmXHg8vLU94qBpd
- 5PlUttniCcoNFEJpnLF3UUydECDiL8Z11cc18YJXwsIeDfFkYqHGX5XdA4jNj054mfKUIhoNEakn
- WUKps59xvPMOhDCVBujS9v_vJClG4fXrBtjl.W_LQqwsSCutxIcdvaqHEtURhc6MkAEPdp4bTGI.
- srA9smb.rYGHYAQmfGBYSrMpzCORaFwD3sLBOdwCdBjEVVdu.sBEOGddWsx2T8AZRYYy5nvR9Foz
- bPsz41tE4__SqGjxrktEJ2_s2wIQAUza2deZFDGXc6T62eXwgZpA4Pp2nGTmGbFQ6h4nAMd51HJh
- T3GzQn8s4GOn.0BKRwZDpwf7w10rv6JPk5nAgLZOaX7LfFs2yeq7fnFrg4OCOiG9MCMxrUNq6gf7
- VomHdE0MTMCDmL3Ebk4K0YUhXaCTht27MRDaoJusaRVRGavzgn0vj3Z4n7xxu27l7AAqrNZTRmUI
- n_b8fWLMzkIFoI7ZcmL_O5d2bYctv7x0WqIS4U6onMjRr4HtPSPFTejqwRtmzChG01EgeDt1Xu9J
- 3fp8ciCxthupmhAtFqCrukMze7VttucN.DpeM8bKmVw1EDgn.s_L.L9fVdDwg2umGkLNazDxoP0_
- dzbgtjASRdO1.JaxkowN5gRT6rna4oVoAmbHsjQ4rLTjBWSWz8ZqQDlV43apY.buigbJvn4Qmvf1
- GxhsPAlHlnnGfjZ9pr3BSAVXKd_Qs83vYaBOYxWdXDlwxBl9.1.bnCTqFBLXCTND1BZASE2pli5W
- fu842ttK3BMCdw5COU_fvmE4HTFnTUQ5tN2a6KHryWZiInkZpWdo8I9xFucw8IlPI3qY2rDSegZk
- LLEiGCawsrUj04Yg3uv6LVIzJaVvTytAzboyOeQVTgoj.0EfkvEtgpXm3
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 16:29:08 +0000
-Date:   Sat, 22 Jun 2019 16:29:03 +0000 (UTC)
-From:   "Miss.Fatima Yusuf" <fatimayusuf5@outlook.fr>
-Reply-To: miss.fmayusuf11@gmail.com
-Message-ID: <1743094696.311303.1561220943310@mail.yahoo.com>
-Subject: From:Miss: Fatima Yusuf.
+        id S1726425AbfFWBDr (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 22 Jun 2019 21:03:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34738 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725844AbfFWBDr (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Sat, 22 Jun 2019 21:03:47 -0400
+Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 53A472084E;
+        Sun, 23 Jun 2019 01:03:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561251826;
+        bh=cuwbYT8yBxuJ7pc8Ea2TdAptwyRjgPT1ZamHNhYYwwY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=L24R2DEIfBcLEreg0U/G/Lx1iIAeodxZVKSaG8Buhh+Tw5gs6J2YYM+/Qpg3Wzzpr
+         KDlru/GoMdrz2sKvUXqDatA4IDugkDGxvbPXltjeDO+jZD5kVgdMwdNiUmrHdzeuhr
+         gt+yMvMrV7DMEsw3iDbYPE4UQ714s2dnp9IlNeH4=
+Date:   Sat, 22 Jun 2019 21:03:45 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Miklos Szeredi <mszeredi@redhat.com>,
+        stable <stable@vger.kernel.org>,
+        overlayfs <linux-unionfs@vger.kernel.org>
+Subject: Re: FAILED: patch "[PATCH] ovl: support the FS_IOC_FS[SG]ETXATTR
+ ioctls" failed to apply to 5.1-stable tree
+Message-ID: <20190623010345.GJ2226@sasha-vm>
+References: <1560073529193139@kroah.com>
+ <CAOQ4uxiTrsOs3KWOxedZicXNMJJharmWo=TDXDnxSC1XMNVKBg@mail.gmail.com>
+ <CAOQ4uxiTTuOESvZ2Y5cSebqKs+qeU3q6ZMReBDro0Qv7aRBhpw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CAOQ4uxiTTuOESvZ2Y5cSebqKs+qeU3q6ZMReBDro0Qv7aRBhpw@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
+On Fri, Jun 21, 2019 at 11:15:47AM +0300, Amir Goldstein wrote:
+>On Thu, Jun 13, 2019 at 11:49 AM Amir Goldstein <amir73il@gmail.com> wrote:
+>>
+>> On Sun, Jun 9, 2019 at 12:45 PM <gregkh@linuxfoundation.org> wrote:
+>> >
+>> >
+>> > The patch below does not apply to the 5.1-stable tree.
+>> > If someone wants it applied there, or to any other stable or longterm
+>> > tree, then please email the backport, including the original git commit
+>> > id to <stable@vger.kernel.org>.
+>> >
+>> > thanks,
+>> >
+>> > greg k-h
+>> >
+>>
+>> FYI, the failure to apply this patch would be resolved after you
+>> picked up "ovl: check the capability before cred overridden" for
+>> stable, please hold off from taking this patch just yet, because
+>> it has a bug, whose fix wasn't picked upstream yet.
+>>
+>
+>Greg,
+>
+>Please apply these patches to stable 4.19.
+>They fix a docker regression (project quotas feature).
+>
+>b21d9c435f93 ovl: support the FS_IOC_FS[SG]ETXATTR ioctls
+>941d935ac763 ovl: fix wrong flags check in FS_IOC_FS[SG]ETXATTR ioctls
+>
+>They apply cleanly and tested on v4.19.53.
 
+I've queued these for 4.19.
 
-From:Miss: Fatima Yusuf.
+>While at it, I also tested that the following patches apply cleanly and solve
+>relevant issues on v4.19.53, but they are not clear stable candidates.
+>
+>1) /proc/locks shows incorrect ino. Only reported by xfstests (so far):
+>6dde1e42f497 ovl: make i_ino consistent with st_ino in more cases
 
-For sure this mail would definitely come to you as a surprise, but do take your good time to go through it, My name is Ms. Fatima Yusuf,i am from Ivory Coast.
+And this.
 
-I lost my parents a year and couple of months ago. My father was a serving director of the Agro-exporting board until his death. He was assassinated by his business partners.Before his death, he made a deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for the purchase of cocoa processing machine and development of another factory before his untimely death.
+>2) Fix output of `modinfo overlay`:
+>253e74833911 ovl: fix typo in MODULE_PARM_DESC
 
-Being that this part of the world experiences political and crises time without number, there is no guarantee of lives and properties. I cannot invest this money here any long, despite the fact it had been my late father's industrial plans.
+But not this one. Maybe we should be including these in stable trees
+since the risk factor is low and it fixes something user-visible, but
+our current rules object this this kind of patches so I've left it out.
 
-I want you to do me a favor to receive this funds into your country or any safer place as the beneficiary, I have plans to invest this money in continuation with the investment vision of my late father, but not in this place again rather in your country. I have the vision of going into real estate and industrial production or any profitable business venture.
+>3) Disallow bogus layer combinations.
+>syzbot has started to produce repros that create bogus layer combinations.
+>So far it has only been able to reproduce a WARN_ON, which has already
+>been fixed in stable, by  acf3062a7e1c ("ovl: relax WARN_ON()..."), but
+>other real bugs could be lurking if those setups are allowed.
+>We decided to detect and error on these setups on mount, to stop syzbot
+>(and attackers) from trying to attack overlayfs this way.
+>To stop syzbot from mutating this class of repros on stable kernel you
+>MAY apply these 3 patches, but in any case, I would wait a while to see
+>if more bugs are reported on master.
+>Although this solves a problem dating before 4.19, I have no plans
+>of backporting these patches further back.
+>
+>146d62e5a586 ovl: detect overlapping layers
+>9179c21dc6ed ovl: don't fail with disconnected lower NFS
+>1dac6f5b0ed2 ovl: fix bogus -Wmaybe-unitialized warning
 
-I will be ready to compensate you with 20% of the total Amount, now all my hope is banked on you and i really wants to invest this money in your country, where there is stability of Government, political and economic welfare.
+I've queued these 3 for 4.19.
 
-My greatest worry now is how to move out of this country because my uncle is threatening to kill me as he killed my father,Please do not let anybody hear about this, it is between me and you alone because of my security reason.
-
-I am waiting to hear from you.
-Yours Sincerely,
-Miss.Fatima Yusuf.
+--
+Thanks,
+Sasha
