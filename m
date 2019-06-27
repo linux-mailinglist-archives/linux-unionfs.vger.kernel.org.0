@@ -2,53 +2,92 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C383F517FE
-	for <lists+linux-unionfs@lfdr.de>; Mon, 24 Jun 2019 18:06:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AA4657EE3
+	for <lists+linux-unionfs@lfdr.de>; Thu, 27 Jun 2019 11:02:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731548AbfFXQGE (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 24 Jun 2019 12:06:04 -0400
-Received: from sonic315-53.consmr.mail.ne1.yahoo.com ([66.163.190.179]:45872
-        "EHLO sonic315-53.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726924AbfFXQGD (ORCPT
+        id S1726657AbfF0JC2 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 27 Jun 2019 05:02:28 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:34119 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726648AbfF0JC2 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 24 Jun 2019 12:06:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561392362; bh=Wn45IEVQxjYS/KJ/AenupJ6pixj3tpnk+IQw8lNF8Cw=; h=Date:From:Reply-To:Subject:References:From:Subject; b=adz+9T8AOWQF7cpX3UIJFgDbsGa0lPQOJBD2UMxhhLU92GhZPeqNH9sniYqhQQ0dF0VUlc5Hr9P2z/tzlClgzme+/T7j6wgLNIMLpXvZaEyw1ssSgi3HQLMINJhm9QaGM+XSPb0nqXs1GaaAkl7CJ/qm5Lz2ZklTt+sl3OTGU1CYYKW6BBAkVGjb+YnkNYcI1VWYvlJvXUfuy6Kzz57gfT38X0V/oc0FVnIQh2mmSr3sdch+ySho62hc6FEc4tABm9NOulo5eXZ9aRQwghL3vPpJlSs+cYGI5lPfUqRQ/LCDL5jms4dpIaHvUa0PjD5gY+9h5EuIMderXfJuJY4s2A==
-X-YMail-OSG: df8Hr4sVM1nQAOpsedsGwDE93k9EQHaKbpTdkv_ZjEX4z1dWIMJB.F5LPIDCwlA
- oZkPEFARJ0MnvZD_16HqBhebnBIpi7eGlh1xFVbmkXTSBr2qcKJ7KaXflKDpchCDebw5vcOr46p0
- oYwZEz4iUaG4G0wno3lYXbReJov.Gj459w95GB2bZGEhB2i.YyG1_RpEhZizN_bsjwX877V1B6XP
- cbdLGYCxQkYsO9G6Wu9neppUaB_OrGnbDHJHNPy3498BHWaL2eexOy8M2nikzdYOKq0VWeqePK0o
- mjncJLrwM4P536YZml58mgCuk0tkN_XXdYKEzlPGd2H52n9aLgo3sfZ.tC5L93kS9UFilrgKjEsQ
- geJCPMs1yMGR..amYJTKJRNvvLBXFas.lFO9kxa.1f4tP9HVzCtBveYs5A.Mzidki60bgvE16_WG
- 8c9or4W37PsKe.6hzeRd7HmK7N1NXuZ.wuZ41adqn6FOdMqBX1QFe6t._zlDS3Ixmu30tliUNqWc
- J5aSrqjOm3MaJl2HNt97vjQKCMzzj9Iq35ufJWjZdC1_3zE3h3jNdU9FaoArhweNXOpXYitQTtel
- 6If7PBPXBRPaPL_aVl2shjqbaG_KmBymOcZNb3b3p6u_8GWd3Q2TBwEY0yRo9BibDD.hob.ekkJg
- OWdGJwzU2VVPC7ueXJaQ2mRmmbLAOLlls2OLxubIwH8xI_1dzKLRwoMWFeCf6wSzEWbC8h4.V991
- fev5fAOQzEx6vNPQy61og_vjs0saS7NoM3AYblP2dTEiP6Ba8RjXf4ztYYfbd05lEKM38vyDtAwR
- s5BzoSx8hXQBpf93_JLoWxyY2NnAOjL6ukyjiM6Li.hwrMRazWn9ie81UwZKcNM7_Stk9ScteAoG
- S_jHGzU7KZtsCdTkCJEdntY2_gFOI8Uh3zDTz3vISBuBNkhbKdzVuqB1WAYHA2osYKBbonobPkW.
- j_DWgjtpt2ftKCyo.EVVxrErJr5oAWwk34L6VQwbN8kJNHaTCKzY_s8VvZ5.mVkhZ4vzlclAQEEU
- 33ZcpxesVzATdBk8LSVdu6HO7abscZ2P2MG7Sct0I8W4lw3QNMvbYE6wYqJxNOMdP8_FKfNcGIch
- LmLadgkXm8D3rJsC1k_f955FgEp47WUdTqvlD8e5cren4SjXMAjpGHZtUOdY2fPYk66d933onKdq
- bcDTc0PVd7jMYBKetqEHRc5CIrAwcCxWbframCstMBLQfoVlpGj_ajwTachApW38xM2G15Nhv7ZO
- 5Xub.Is.KC0vU0eHMjd5HjrI-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic315.consmr.mail.ne1.yahoo.com with HTTP; Mon, 24 Jun 2019 16:06:02 +0000
-Date:   Mon, 24 Jun 2019 16:04:01 +0000 (UTC)
-From:   "ij49 ." <ij49@gajdm.org.in>
-Reply-To: "ij49 ." <ij49@gajdm.org.in>
-Message-ID: <1179155815.1171075.1561392241619@mail.yahoo.com>
-Subject: 
+        Thu, 27 Jun 2019 05:02:28 -0400
+Received: by mail-pf1-f194.google.com with SMTP id c85so903876pfc.1;
+        Thu, 27 Jun 2019 02:02:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bdGzQwsFbUV/HCONHsbImrbySNkccApcp2w5Da9OzBs=;
+        b=IbU0B/hwWepUteRrj5UH2NWM7Lq5swfwNkfhgAxGnG8Ey5JG2iqADQNxgCnrTCHGux
+         8YpOa8P1E62GubkzwlpXbaW9oIdbd+VhCUCD8fdEw4Ohfmjvt67a/bPcaPN80y03Kk6r
+         lrDZ1G4CNYeDYylpRCn4ncCeQ2mFqJ4Pb9su26U28Q2xALJ5VgwH/bN0eXwrmmCp1BYT
+         jxzcFufhf8/AetK8RPv1Y5sUOfR313Yle0u0R09JI/hSdQ8PXd7oC1D6HM5+gYwQz3q4
+         4rb2ZJ3EKX4aUq4PmEUi7EBRYPb8JsI/DZ6lgTXPTbBu+G8ccN1Q+uXUJ8wn0xVqRl6X
+         lR1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bdGzQwsFbUV/HCONHsbImrbySNkccApcp2w5Da9OzBs=;
+        b=ZD83t/FYaAxWFP8I1e7bxslgfhf4annfQ4Ts6doxnhIqybQz30KHhFunBtjBpcFw7+
+         UfNI2ivPZ/sFS1tw0neAQZwBuABHLerRve1lHCGz0+Tb9GhCyjZNTUOQE/a9IjtO9lZy
+         WLm0HAJsjBVf3KoTwHa9pybUcxhXW6//3izVtAzWD0KluxohleZTqZwIyO8e2OhZd9nb
+         k5Ogjc/8EmgLsx3Pk3Wla+RcFW9CIv5jetys47kIPfyWcTBF1mRjbaONYINTRpN6abyO
+         lEkxWXfBjTLYaICeUEp8/5fMZDUhvQ4tytGMjiuHQ0JN7Mse4s3HNXaGZz+v/qOCo91Q
+         IqsA==
+X-Gm-Message-State: APjAAAXFFHv5khm4uNFwOn20IdQ5vfXxz8KFWhc3eaI0AD943odHraAy
+        B/W1wkYgUfgTAxhQGpebK9o/qskcP+0=
+X-Google-Smtp-Source: APXvYqwRcewbzAvJx30vEKvhfVvrfoShUQgdbDxAJKifmb1Tmyx+YEUSjU+9QSJta7H85zInH+wnUg==
+X-Received: by 2002:a63:d755:: with SMTP id w21mr2742917pgi.311.1561626147397;
+        Thu, 27 Jun 2019 02:02:27 -0700 (PDT)
+Received: from XZHOUW.usersys.redhat.com ([209.132.188.80])
+        by smtp.gmail.com with ESMTPSA id a21sm2555134pfi.27.2019.06.27.02.02.25
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 27 Jun 2019 02:02:26 -0700 (PDT)
+From:   Murphy Zhou <jencce.kernel@gmail.com>
+To:     fstests@vger.kernel.org
+Cc:     darrick.wong@oracle.com, linux-unionfs@vger.kernel.org,
+        miklos@szeredi.hu, Murphy Zhou <jencce.kernel@gmail.com>
+Subject: [PATCH] generic/486: filter out irrelevant attrs
+Date:   Thu, 27 Jun 2019 17:00:59 +0800
+Message-Id: <20190627090100.18542-1-jencce.kernel@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1179155815.1171075.1561392241619.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.13837 YahooMailBasic Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-I am in the military unit here in Afghanistan, we have some amount of funds that we want to move out of the country. My partners and I need a good partner someone we can trust. It is risk free and legal. Reply to this email: hornbeckmajordennis635@gmail.com
+In some setup, there could be extra attrs printed, like selinux.
+They are breaking golden output and irrelevant for this test.
+So focus on the attr we are testing on to avoid false alarm.
+Print the output to .full for debug.
 
-Regards,
-Major Dennis Hornbeck.
+Signed-off-by: Murphy Zhou <jencce.kernel@gmail.com>
+---
+ tests/generic/486 | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/tests/generic/486 b/tests/generic/486
+index ff115a07..ea571efe 100755
+--- a/tests/generic/486
++++ b/tests/generic/486
+@@ -46,10 +46,12 @@ _scratch_mkfs >>$seqres.full 2>&1
+ _scratch_mount >>$seqres.full 2>&1
+ 
+ filter_attr_output() {
+-	_filter_scratch | sed -e 's/has a [0-9]* byte value/has a NNNN byte value/g'
++	_filter_scratch | grep world | \
++		sed -e 's/has a [0-9]* byte value/has a NNNN byte value/g'
+ }
+ 
+ ./src/attr_replace_test $SCRATCH_MNT/hello
++$ATTR_PROG -l $SCRATCH_MNT/hello >>$seqres.full 2>&1
+ $ATTR_PROG -l $SCRATCH_MNT/hello | filter_attr_output
+ 
+ status=0
+-- 
+2.21.0
+
