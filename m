@@ -2,99 +2,102 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C0A5634B2
-	for <lists+linux-unionfs@lfdr.de>; Tue,  9 Jul 2019 13:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BD656378A
+	for <lists+linux-unionfs@lfdr.de>; Tue,  9 Jul 2019 16:13:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726165AbfGILCp (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 9 Jul 2019 07:02:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41478 "EHLO mail.kernel.org"
+        id S1726060AbfGIONL (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 9 Jul 2019 10:13:11 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:35700 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726055AbfGILCp (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 9 Jul 2019 07:02:45 -0400
-Received: from tleilax.poochiereds.net (cpe-71-70-156-158.nc.res.rr.com [71.70.156.158])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726025AbfGIONL (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Tue, 9 Jul 2019 10:13:11 -0400
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CAA9E20861;
-        Tue,  9 Jul 2019 11:02:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562670164;
-        bh=hL37JcKeLyH9DZ7CbyS9wdqGlD9LnWI+3fpZyFuIhpA=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=Atbk/mDDVQ3d+H+TE2v8QPNIv6+4uHKrnLjsYM7WJEuwr7qttU76I6dW1eeRnO0g6
-         j+1Qqc/4TLOXUTlOuXTqRdxWAf/eXJigPJgmB/yPlWrmWPxwDf1tIWSnKoIHf7Bqv2
-         vZiLMEiTjXvoYA9m9hf6EdzHej8dz3gyBz2kGh5k=
-Message-ID: <d86b0afa34654da16b4ecfeb6d23a6b0efcea3ba.camel@kernel.org>
-Subject: Re: [PATCH v2] locks: eliminate false positive conflicts for write
- lease
-From:   Jeff Layton <jlayton@kernel.org>
-To:     Amir Goldstein <amir73il@gmail.com>,
-        "J . Bruce Fields" <bfields@fieldses.org>
+        by mx1.redhat.com (Postfix) with ESMTPS id EE2B6307D88D;
+        Tue,  9 Jul 2019 14:13:02 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.109])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A5DC1A8454;
+        Tue,  9 Jul 2019 14:13:02 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+        id 3FE48220937; Tue,  9 Jul 2019 10:13:02 -0400 (EDT)
+Date:   Tue, 9 Jul 2019 10:13:02 -0400
+From:   Vivek Goyal <vgoyal@redhat.com>
+To:     Amir Goldstein <amir73il@gmail.com>
 Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
         overlayfs <linux-unionfs@vger.kernel.org>
-Date:   Tue, 09 Jul 2019 07:02:42 -0400
-In-Reply-To: <CAOQ4uxjBGHh9cU7EX7X3F-iVFZkD+kax2x+Hj8YX83HMiwLqSw@mail.gmail.com>
-References: <20190612172408.22671-1-amir73il@gmail.com>
-         <2851a6b983ed8b5b858b3b336e70296204349762.camel@kernel.org>
-         <CAOQ4uxi-uEhAbqVeYbeqAR=TXpthZHdUKkaZJB7fy1TgdZObjQ@mail.gmail.com>
-         <20190613140804.GA2145@fieldses.org>
-         <CAOQ4uxjBGHh9cU7EX7X3F-iVFZkD+kax2x+Hj8YX83HMiwLqSw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.3 (3.32.3-1.fc30) 
+Subject: Re: [RFC] unionmount metacopy tests
+Message-ID: <20190709141302.GA19084@redhat.com>
+References: <CAOQ4uxhi63LPKdmkEJjnTEgy0VaX0qXML2Uz_258_B2iZcqd3w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOQ4uxhi63LPKdmkEJjnTEgy0VaX0qXML2Uz_258_B2iZcqd3w@mail.gmail.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.48]); Tue, 09 Jul 2019 14:13:11 +0000 (UTC)
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Mon, 2019-07-08 at 19:09 +0300, Amir Goldstein wrote:
-> On Thu, Jun 13, 2019 at 5:08 PM J . Bruce Fields <bfields@fieldses.org> wrote:
-> > On Thu, Jun 13, 2019 at 04:28:49PM +0300, Amir Goldstein wrote:
-> > > On Thu, Jun 13, 2019 at 4:22 PM Jeff Layton <jlayton@kernel.org> wrote:
-> > > > Looks good to me. Aside from the minor nit above:
-> > > > 
-> > > >     Reviewed-by: Jeff Layton <jlayton@kernel.org>
-> > > > 
-> > > > I have one file locking patch queued up for v5.3 so far, but nothing for
-> > > > v5.2. Miklos or Bruce, if either of you have anything to send to Linus
-> > > > for v5.2 would you mind taking this one too?
-> > > > 
-> > > 
-> > > Well. I did send a fix patch to Miklos for a bug introduced in v5.2-rc4,
-> > > so...
-> > 
-> > I could take it.  I've modified it as below.
-> > 
-> > I'm very happy with the patch, but not so much with the idea of 5.2 and
-> > stable.
-> > 
-> > It seems like a subtle change with some possibility of unintended side
-> > effects.  (E.g. I don't think this is true any more, but my memory is
-> > that for a long time the only thing stopping nfsd from giving out
-> > (probably broken) write delegations was an extra reference that it held
-> > during processing.) And if the overlayfs bug's been there since 4.19,
-> > then waiting a little longer seems OK?
-> > 
+On Thu, Jul 04, 2019 at 06:11:25PM +0300, Amir Goldstein wrote:
+> Hi Vivek,
 > 
-> Getting back to this now that the patch is on its way to Linus.
-> Bruce, I was fine with waiting to 5.3 and I also removed CC: stable,
-> but did you mean that patch is not appropriate for stable or just that
-> we'd better wait a bit and let it soak in master before forwarding it to stable?
+> I was working on extending snapshot validation tests and got
+> this as a by-product:
 > 
+> https://github.com/amir73il/unionmount-testsuite/commits/metacopy
+> 
+> ca566c3 Check that data was not copied up with metacopy=on
+> 140d99c Reset dentry copy_up state on upper layer rotate
+> 960a5ce Check that files were copied up as expected
+> 1bfcc7d Record meta copy_up vs. data copy_up
+> c3db453 Fix instantiation of hardlinked dentry
+> 2104e51 Simplify initialization of __upper
+> 1fc2eec Fix ./run --ov --verify --recycle
+> 
+> Would you be interested to review these changes,
+> so I would merge them to master?
 
-With NFS and SMB, oplocks/leases/delegations are optimizations and
-you're never guaranteed to get one in the face of competing access.
+Hi Amir,
 
-stable-kernel-rules.rst says:
+Glad to see more tests for metacopy feature. I will have a look at
+these.
 
-- It must fix a problem that causes a build error (but not for
-things marked CONFIG_BROKEN), an oops, a hang, data corruption, a real
-security issue, or some "oh, that's not good" issue.  In short,
-something critical.
+> 
+> Would you or someone else be interested in running those tests
+> regularly on pre release kernel?
 
-I'm not sure this clears that bar.
--- 
-Jeff Layton <jlayton@kernel.org>
+I generally don't run tests regularly on latest kernel. Whenever I 
+am fixing something, I run tests to make sure I have not broken
+anything.
 
+So I can't say I will run the tests regularly, but once in a while
+I should be able to run it.
+
+
+> 
+> If anyone is running unionmount-testsuite on regular basis
+> I would be happy to know which configurations are being tested,
+> because the test matrix grew considerably since I took over the project -
+> both Overlayfs config options and the testsuite config options.
+
+For me, I think I am most interested in configuration used by
+container runtimes (docker/podman). Docker seems to turn off
+redirects as of now. podman is turning on metacopy (hence redirect)
+by default now to see how do things go.
+
+So for me (redirect=on/off and metacopy=on/off) are important
+configurations as of now. Havind said that, I think I should talk
+to container folks and encourage them to use "index" and "xino"
+as well to be more posix like fs.
+
+I think container folks still have not modified their code to
+be able to generate an image layer properly if redirect is
+enabled. Last time Miklos had some good ideas. I will poke them
+again. It will be nice if they can use redirect (instead of
+disabling it) and be able to generate image layer efficiently. 
+
+Thanks
+Vivek
