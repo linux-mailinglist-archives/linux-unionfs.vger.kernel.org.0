@@ -2,98 +2,90 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DD026589E
-	for <lists+linux-unionfs@lfdr.de>; Thu, 11 Jul 2019 16:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A747865AA0
+	for <lists+linux-unionfs@lfdr.de>; Thu, 11 Jul 2019 17:41:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728606AbfGKOPB (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 11 Jul 2019 10:15:01 -0400
-Received: from mail-yb1-f196.google.com ([209.85.219.196]:45140 "EHLO
-        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728423AbfGKOPA (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 11 Jul 2019 10:15:00 -0400
-Received: by mail-yb1-f196.google.com with SMTP id j133so2589520ybj.12;
-        Thu, 11 Jul 2019 07:14:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=24mHEeUOKdC3lWSV7eKiUFRDL0z9SNtZomrLjyCZibM=;
-        b=P8XRXZoUD+qcbbA5wjfT0Sbrkh2GkMW5nl1YR9c9DaCZ5R/rZE06son+q39bbtNUnq
-         sIcu2tg1M2TK8u072UUNipL2EOTpV5ITyDymrzT+GdjMJY6d5lqXnrUCE5gxb0UgrY0o
-         MWOrZ5IWR5BsKPh2CPoAmulPOo6uUA0ovLkCjIjruwFBirqCEHZjNWUEovuqI0xqPcnV
-         y4PiF9+Pj2Suk+Ac0OHk78s5/iszggoW8KSLb/2eyUCClVRxALbhr00CSZQ0g3boT/96
-         t7cfYe2ilDqIGeMovPq0/dmtDZMRWi6rGslzwiEsAI3N2faJwbkR6g5ZNZ4HTkHThCUX
-         JQCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=24mHEeUOKdC3lWSV7eKiUFRDL0z9SNtZomrLjyCZibM=;
-        b=eJQhPyJYl3LwCFoocEHuy38b7JMWKx51rYZKwP8CxeyyXgJGl9Dz/2kV/nWM8fWv+5
-         ltlSHfgW4Npp/a7QHLlVu0r3kCErKPlmp/+J1enGSY/4hk8PNlbVWNdxhCR46N3Pql9B
-         uj2F8DlsFnJ2525T+E7jV2aKZROSW3n4fdme3pVddEMY8YJXiHev8zcXKLBMOK3xcWuY
-         INGxSaPu780BFSyr4XMliMRliTqgMKBNXC+fg/2aW9n9etDJsO/gN4LsJA2h8L2/4VA+
-         /wKiReaPH3a4b2NJ/wxzd2QBvofjmeh8bNB8aVtJ9v89QLqFlh8MNe+aMLNU8QYaiIqv
-         qU3A==
-X-Gm-Message-State: APjAAAXXqvZRyuJH7GrQ3PQXkAq/rJcK9jNHH6g0S6Z/+9mIf7jOZm5e
-        Hsawr8E0EvncALwi1G3lpHUvrGTLsTCIzGFiaTfAFa0K
-X-Google-Smtp-Source: APXvYqw6F9inQmNYMnP0aVWuiYhvauwPlNixWVJOJSg0qDvXHOXcPE2ah/3LoQhtfrN7kkpcV+wU69YXlYD7K67nixo=
-X-Received: by 2002:a25:7683:: with SMTP id r125mr2422175ybc.144.1562854499483;
- Thu, 11 Jul 2019 07:14:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <1560073529193139@kroah.com> <CAOQ4uxiTrsOs3KWOxedZicXNMJJharmWo=TDXDnxSC1XMNVKBg@mail.gmail.com>
- <CAOQ4uxiTTuOESvZ2Y5cSebqKs+qeU3q6ZMReBDro0Qv7aRBhpw@mail.gmail.com> <20190623010345.GJ2226@sasha-vm>
-In-Reply-To: <20190623010345.GJ2226@sasha-vm>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 11 Jul 2019 17:14:48 +0300
-Message-ID: <CAOQ4uxgv_FOLagfAMa=XLZZXnVhKoQK9oUHXiO45TZrKq5LQDw@mail.gmail.com>
-Subject: overlayfs regression in master and stable trees
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        id S1726213AbfGKPlN (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 11 Jul 2019 11:41:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39908 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725971AbfGKPlN (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Thu, 11 Jul 2019 11:41:13 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 42FD221537;
+        Thu, 11 Jul 2019 15:41:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1562859672;
+        bh=mWo5hCIGc4oPfm+WCi3xG/fwGJK6s8d7L7thRy0e3mg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cJNJerz84O9GsooyrtKxXgPZDhwuTDQLGM7goImnSkwV4po69C8kbDJQ7JALAnKvh
+         peqWw4ir7W8NN34VVhNZpi+YSqeG0okiSEI6MB+yWPWnO7ot/cmQugkR6KpfcJ7wU7
+         kk+JEpZ8AwsrBIvySQQvE60bYw5bFTuyYUSOFzh8=
+Date:   Thu, 11 Jul 2019 17:41:10 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Sasha Levin <sashal@kernel.org>,
         Miklos Szeredi <mszeredi@redhat.com>,
         stable <stable@vger.kernel.org>,
         overlayfs <linux-unionfs@vger.kernel.org>,
         Vivek Goyal <vgoyal@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: overlayfs regression in master and stable trees
+Message-ID: <20190711154110.GA28220@kroah.com>
+References: <1560073529193139@kroah.com>
+ <CAOQ4uxiTrsOs3KWOxedZicXNMJJharmWo=TDXDnxSC1XMNVKBg@mail.gmail.com>
+ <CAOQ4uxiTTuOESvZ2Y5cSebqKs+qeU3q6ZMReBDro0Qv7aRBhpw@mail.gmail.com>
+ <20190623010345.GJ2226@sasha-vm>
+ <CAOQ4uxgv_FOLagfAMa=XLZZXnVhKoQK9oUHXiO45TZrKq5LQDw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOQ4uxgv_FOLagfAMa=XLZZXnVhKoQK9oUHXiO45TZrKq5LQDw@mail.gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
->
-> >3) Disallow bogus layer combinations.
-> >syzbot has started to produce repros that create bogus layer combinations.
-> >So far it has only been able to reproduce a WARN_ON, which has already
-> >been fixed in stable, by  acf3062a7e1c ("ovl: relax WARN_ON()..."), but
-> >other real bugs could be lurking if those setups are allowed.
-> >We decided to detect and error on these setups on mount, to stop syzbot
-> >(and attackers) from trying to attack overlayfs this way.
-> >To stop syzbot from mutating this class of repros on stable kernel you
-> >MAY apply these 3 patches, but in any case, I would wait a while to see
-> >if more bugs are reported on master.
-> >Although this solves a problem dating before 4.19, I have no plans
-> >of backporting these patches further back.
+On Thu, Jul 11, 2019 at 05:14:48PM +0300, Amir Goldstein wrote:
 > >
-> >146d62e5a586 ovl: detect overlapping layers
-> >9179c21dc6ed ovl: don't fail with disconnected lower NFS
-> >1dac6f5b0ed2 ovl: fix bogus -Wmaybe-unitialized warning
->
-> I've queued these 3 for 4.19.
->
+> > >3) Disallow bogus layer combinations.
+> > >syzbot has started to produce repros that create bogus layer combinations.
+> > >So far it has only been able to reproduce a WARN_ON, which has already
+> > >been fixed in stable, by  acf3062a7e1c ("ovl: relax WARN_ON()..."), but
+> > >other real bugs could be lurking if those setups are allowed.
+> > >We decided to detect and error on these setups on mount, to stop syzbot
+> > >(and attackers) from trying to attack overlayfs this way.
+> > >To stop syzbot from mutating this class of repros on stable kernel you
+> > >MAY apply these 3 patches, but in any case, I would wait a while to see
+> > >if more bugs are reported on master.
+> > >Although this solves a problem dating before 4.19, I have no plans
+> > >of backporting these patches further back.
+> > >
+> > >146d62e5a586 ovl: detect overlapping layers
+> > >9179c21dc6ed ovl: don't fail with disconnected lower NFS
+> > >1dac6f5b0ed2 ovl: fix bogus -Wmaybe-unitialized warning
+> >
+> > I've queued these 3 for 4.19.
+> >
+> 
+> FYI, an overlayfs regression has been reported:
+> https://github.com/containers/libpod/issues/3540
+> 
+> Caused by commit "ovl: detect overlapping layers"
+> 
+> I am working on a fix.
+> In retrospect, given my lengthy disclaimer above, it seems
+> that this patch should not have been applied to stable (yet).
+> I believe that this patch belongs to a class of fixed that
+> should soak in master for a while before being considered for
+> stable. On my part, I will not propose these sort of fixed in the future,
+> with or without a disclaimer until they have soaked in master.
 
-FYI, an overlayfs regression has been reported:
-https://github.com/containers/libpod/issues/3540
+That's fair enough, send the git ids to stable@vger when you feel they
+have "soaked" long enough in the future.
 
-Caused by commit "ovl: detect overlapping layers"
+thanks,
 
-I am working on a fix.
-In retrospect, given my lengthy disclaimer above, it seems
-that this patch should not have been applied to stable (yet).
-I believe that this patch belongs to a class of fixed that
-should soak in master for a while before being considered for
-stable. On my part, I will not propose these sort of fixed in the future,
-with or without a disclaimer until they have soaked in master.
-
-Thanks,
-Amir.
+greg k-h
