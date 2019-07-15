@@ -2,116 +2,149 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18EE268B8B
-	for <lists+linux-unionfs@lfdr.de>; Mon, 15 Jul 2019 15:41:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFD0468B78
+	for <lists+linux-unionfs@lfdr.de>; Mon, 15 Jul 2019 15:41:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730429AbfGONlk (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 15 Jul 2019 09:41:40 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:41943 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730584AbfGONiv (ORCPT
+        id S1730503AbfGONix (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 15 Jul 2019 09:38:53 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:55509 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730517AbfGONiw (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 15 Jul 2019 09:38:51 -0400
-Received: by mail-wr1-f68.google.com with SMTP id c2so13950126wrm.8;
-        Mon, 15 Jul 2019 06:38:50 -0700 (PDT)
+        Mon, 15 Jul 2019 09:38:52 -0400
+Received: by mail-wm1-f67.google.com with SMTP id a15so15210192wmj.5;
+        Mon, 15 Jul 2019 06:38:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=pCCGRpmdtrB1mcj5ZFa2K6njhUWpd05SyB1tjqa8GXc=;
-        b=TgKqMCMdVllXgxOxq2GzIy3XUZpCFqT0jmAKYW98S0k4DUpGf1X93zwH02B7dfw2My
-         OFsKZULVI9bnC3BSyOxLSRqofHO7o21mnFD7aeXqBj8DF7clFPuuXGFFuoWpxmkGc7Bm
-         Ur/lkrqEQ1mwRoB9R8Yy+WO137CPmqzzBxr8O25jAvSO7rKbmAUglY1BKtkw/jbX47S5
-         gAVr5flfjZjimvJ17fDG202tk4U8CWmKkWhtsnJa7uDqbAcAdGpu9YxGC3vo7L8QgCTV
-         z0QURbgR+MP8PeEPpyh/51tzz5jw5aVuDf0++zoeRrjLnLM49XodWWMeBMy9lD7Pyjho
-         h89A==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=G0qrvSOgvQ6yK2rmDZbEXEOEVLwb2sXgjUX4/QpRTUM=;
+        b=YJGgtSA7qdI6JnxPZWXZ6fSdBUEo1por2dydSgOvVeWb6sdhGCg1FIluTDB30o4c/a
+         6QAe4MwiENh+zaFguimXDdmi5IJnH1E0Siaax/96si7k7nar/L2bNhtmGLXMZ/KJbvtn
+         DRTS0IqzQsxIYDXNRH6j+oter8esDUvZse7MkJNt4KDv4Aet55D6tFinwY2RWVtOKMBu
+         cYTvQ0T7BBKXH2KlzTjLlLgRLWtotjyX7InmkTTmymEyYKDYwKLX+8dLzSNsWqF4oSr4
+         ZoRpzKrEy16cYtgZ3Foes4ojz14hWcafTud6RFHiaFJtBlV3p7BcRDJ48efDupHwYSQC
+         IlKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=pCCGRpmdtrB1mcj5ZFa2K6njhUWpd05SyB1tjqa8GXc=;
-        b=p8OL+7bPyjE57X2rvxlTRn/zAFW5++m5hBEmNCteETpqFNaIH105+e2GhkMHfs2+8N
-         VbDiNiBPGlyT0M3JFaJ51PMGeJx3DeUpBcZrg+Eo3iEuBOBnBjI8MXi2s9TsA9zqbxRZ
-         b+thkW0qB6RVFIXRrV4BblqqgB0RLShaVhGU+E/8o0fMUcqjn3hWL1XfMYi293iHPcu9
-         0qZQjKVtNhx3Wv8xmmn44KGbCNsDAvAIv/WOOuUOs0i/5Pelr1y+RbeG/YWOXmnDJWdp
-         rksT76WB0NL+wsGB0uiBMgneMVsH5bGurwjDrHGBQrJ8SnyDqFxgEx3qSEvG6SFSdBrS
-         0IcA==
-X-Gm-Message-State: APjAAAXdvj8q47fwZUTj9LJ83v0Z7IAgP30oCc6VDgVVVcbKpNwm1fQM
-        cQUf6hOdvZWil86O5k13reY=
-X-Google-Smtp-Source: APXvYqxe4wpQ+JRPJyNh7/jn1TVc8hwC8EJkhjoWG9KEzSgKmNdfisWpuyRHZrTNeFG6OCtr9cwpLw==
-X-Received: by 2002:a5d:4211:: with SMTP id n17mr26845790wrq.137.1563197929508;
-        Mon, 15 Jul 2019 06:38:49 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=G0qrvSOgvQ6yK2rmDZbEXEOEVLwb2sXgjUX4/QpRTUM=;
+        b=XwhSoePLDIFLTZuWOi23qxMGdQ52bQ1bgJ1/R8BTM2lCC8w15lG0Lu/StsSd+RGRRb
+         LdQx7sVX4IE27j6uxPIpsWAcZlIIHakL5lTbtrYbG745h2MleLB3ZheVRFaY0qoaHp1R
+         8FK6chqPMB2sEpLw3+xT92W5PTLeP6+uu8V9fXb/3mjncpMRNBEBZdVPYjLGNHO3YhTi
+         7ywqJt91OjJY+GaugcaEbrkK6sDs1HUh571AdZvDgdXGGzZ+CmG7gjALMa2EEaLcezPe
+         oZCGZVnCJOjLY9cRIp+vqU6m/gIWQ701OIW8+kC0IYy5uze6FSNmu7px/rTF4P4QHApX
+         u4UA==
+X-Gm-Message-State: APjAAAXxKrDpgaBHAg7Vwm17wk57mjUtv/EaY9kljCdKj65kEgSR1i3u
+        BCTEaH+GgscXvfXsRYh+q9I=
+X-Google-Smtp-Source: APXvYqwXqTMClxMel7/FgiVQ3ov8D+2z7O0Ekjwg5niB2eVa5v9G0uzg0XYRMtAsBTxqcG/ex2S6yA==
+X-Received: by 2002:a1c:eb17:: with SMTP id j23mr26006087wmh.151.1563197930640;
+        Mon, 15 Jul 2019 06:38:50 -0700 (PDT)
 Received: from amir-ThinkPad-T480.ctera.local (bzq-166-168-31-246.red.bezeqint.net. [31.168.166.246])
-        by smtp.gmail.com with ESMTPSA id s15sm4058250wrw.21.2019.07.15.06.38.48
+        by smtp.gmail.com with ESMTPSA id s15sm4058250wrw.21.2019.07.15.06.38.49
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 15 Jul 2019 06:38:48 -0700 (PDT)
+        Mon, 15 Jul 2019 06:38:50 -0700 (PDT)
 From:   Amir Goldstein <amir73il@gmail.com>
 To:     Miklos Szeredi <miklos@szeredi.hu>
 Cc:     Vivek Goyal <vgoyal@redhat.com>, linux-fsdevel@vger.kernel.org,
         linux-unionfs@vger.kernel.org
-Subject: [PFC][PATCH 0/4] Overlayfs SHUTDOWN ioctl
-Date:   Mon, 15 Jul 2019 16:38:35 +0300
-Message-Id: <20190715133839.9878-1-amir73il@gmail.com>
+Subject: [PATCH 1/4] ovl: support [S|G]ETFLAGS ioctl for directories
+Date:   Mon, 15 Jul 2019 16:38:36 +0300
+Message-Id: <20190715133839.9878-2-amir73il@gmail.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190715133839.9878-1-amir73il@gmail.com>
+References: <20190715133839.9878-1-amir73il@gmail.com>
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Miklos,
+[S|G]ETFLAGS and FS[S|G]ETXATTR ioctls are applicable to both files and
+directories, so add ioctl operations to dir as well.
 
-I was trying to think of a way forward w.r.t container runtime
-mount leaks and overlayfs mount failures, see [1][2][3].
+ifdef away compat ioctl implementation to conform to standard practice.
 
-It does not seem reasonable to expect they will fix all the mount
-leaks and that new ones will not show up. It's a hard problem to
-solve.
+With this change, xfstest generic/079 which tests these ioctls on files
+and directories passes.
 
-I posted a fix patch to mitigate the recent regression with
-index=off [2], but it does not seem reasonable to hold index=on feature
-hostage for eternity or until all mount leaks are fixed.
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+---
+ fs/overlayfs/file.c      | 10 ++++++----
+ fs/overlayfs/overlayfs.h |  2 ++
+ fs/overlayfs/readdir.c   |  4 ++++
+ 3 files changed, 12 insertions(+), 4 deletions(-)
 
-The proposal I have come up with is to provide an API for containers
-to shutdown the instance before unmount, so the leaked mounts become
-"zombies" with no ability to do any harm beyond hogging resources.
-
-The SHUTDOWN ioctl, used by xfs/ext4/f2fs to stop any access to
-underlying blockdev is implemented in overlayfs to stop any access
-to underlying layers. The real objects are still referenced, but no
-vfs API can be called on underlying layers.
-
-Naturally, SHUTDOWN releases the inuse locks to mitigate the mount
-failures.
-
-I wrote an xfstest to verify SHUTDOWN solves the mount leak issue [5].
-
-Thoughts?
-
-Thanks,
-Amir.
-
-[1] https://github.com/containers/libpod/issues/3540
-[2] https://github.com/moby/moby/issues/39475
-[3] https://github.com/coreos/linux/pull/339
-[4] https://github.com/amir73il/linux/commits/ovl-overlap-detect-regression-fix
-[5] https://github.com/amir73il/xfstests/commit/a56d5560e404cc8052a8e47850676364b5e8c76c
-
-Amir Goldstein (4):
-  ovl: support [S|G]ETFLAGS ioctl for directories
-  ovl: use generic vfs_ioc_setflags_prepare() helper
-  ovl: add pre/post access hooks to underlying layers
-  ovl: add support for SHUTDOWN ioctl
-
- fs/overlayfs/copy_up.c   |  10 +-
- fs/overlayfs/dir.c       |  26 +++--
- fs/overlayfs/file.c      | 200 ++++++++++++++++++++++++++-------------
- fs/overlayfs/inode.c     |  64 +++++++++----
- fs/overlayfs/namei.c     |  15 ++-
- fs/overlayfs/overlayfs.h |  15 ++-
- fs/overlayfs/ovl_entry.h |   7 ++
- fs/overlayfs/readdir.c   |  17 +++-
- fs/overlayfs/super.c     |   9 +-
- fs/overlayfs/util.c      |  75 +++++++++++++--
- 10 files changed, 318 insertions(+), 120 deletions(-)
-
+diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+index e235a635d9ec..c6426e4d3f1f 100644
+--- a/fs/overlayfs/file.c
++++ b/fs/overlayfs/file.c
+@@ -502,7 +502,7 @@ static long ovl_ioctl_set_fsxflags(struct file *file, unsigned int cmd,
+ 				   ovl_fsxflags_to_iflags(fa.fsx_xflags));
+ }
+ 
+-static long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
++long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	long ret;
+ 
+@@ -527,8 +527,8 @@ static long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 	return ret;
+ }
+ 
+-static long ovl_compat_ioctl(struct file *file, unsigned int cmd,
+-			     unsigned long arg)
++#ifdef CONFIG_COMPAT
++long ovl_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	switch (cmd) {
+ 	case FS_IOC32_GETFLAGS:
+@@ -545,6 +545,7 @@ static long ovl_compat_ioctl(struct file *file, unsigned int cmd,
+ 
+ 	return ovl_ioctl(file, cmd, arg);
+ }
++#endif
+ 
+ enum ovl_copyop {
+ 	OVL_COPY,
+@@ -646,8 +647,9 @@ const struct file_operations ovl_file_operations = {
+ 	.fallocate	= ovl_fallocate,
+ 	.fadvise	= ovl_fadvise,
+ 	.unlocked_ioctl	= ovl_ioctl,
++#ifdef CONFIG_COMPAT
+ 	.compat_ioctl	= ovl_compat_ioctl,
+-
++#endif
+ 	.copy_file_range	= ovl_copy_file_range,
+ 	.remap_file_range	= ovl_remap_file_range,
+ };
+diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+index 6934bcf030f0..7c94cc3521cb 100644
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -416,6 +416,8 @@ struct dentry *ovl_create_temp(struct dentry *workdir, struct ovl_cattr *attr);
+ 
+ /* file.c */
+ extern const struct file_operations ovl_file_operations;
++long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
++long ovl_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
+ 
+ /* copy_up.c */
+ int ovl_copy_up(struct dentry *dentry);
+diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
+index 47a91c9733a5..eff8fbfccc7c 100644
+--- a/fs/overlayfs/readdir.c
++++ b/fs/overlayfs/readdir.c
+@@ -907,6 +907,10 @@ const struct file_operations ovl_dir_operations = {
+ 	.llseek		= ovl_dir_llseek,
+ 	.fsync		= ovl_dir_fsync,
+ 	.release	= ovl_dir_release,
++	.unlocked_ioctl	= ovl_ioctl,
++#ifdef CONFIG_COMPAT
++	.compat_ioctl	= ovl_compat_ioctl,
++#endif
+ };
+ 
+ int ovl_check_empty_dir(struct dentry *dentry, struct list_head *list)
 -- 
 2.17.1
 
