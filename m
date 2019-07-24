@@ -2,180 +2,144 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F47E6F8AB
-	for <lists+linux-unionfs@lfdr.de>; Mon, 22 Jul 2019 07:02:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C42672E43
+	for <lists+linux-unionfs@lfdr.de>; Wed, 24 Jul 2019 13:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728006AbfGVFCg (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 22 Jul 2019 01:02:36 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:35664 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726440AbfGVFCg (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 22 Jul 2019 01:02:36 -0400
-Received: by mail-wm1-f66.google.com with SMTP id l2so33896717wmg.0;
-        Sun, 21 Jul 2019 22:02:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=OxIEwsisU2GX7C0xYZAcnnok/PiBZauC/idx9Unda/c=;
-        b=BZnp7ccrFiSkaGczXBbqwxXF/TTW//N/MlKrz5DrrkNIwbV79RD/fyrxfLmX7Ycc+b
-         3g/nUOmK4ByqnRG6+Iijh+7XOoQ/M3MHOn32zDi4AFHt0aSUWo+lF7GXeOu4VLQR5+TQ
-         NLgeY/6H+isJUFwxUKsQ09u1mQA8QG84nCHhCMv57DI8vjHtJ+H8i/MIxvxkm5xn+hXx
-         G74YnIpwUGWY26ErQzDUgF9xdW8YqnZCe6T6nHaTw5sZ0rcWR7czGrjHP0K5MGyFg+EY
-         jGs8Df2CrT5xJYDzEMqqVvGNaprtOUgbNkqf6TwjOO82VWZZ4wpZxE2Kg1MlPyK/z3PI
-         G1rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=OxIEwsisU2GX7C0xYZAcnnok/PiBZauC/idx9Unda/c=;
-        b=t8k4wjxMLLAtiAPZsVzRWWl2iANvqHs1O+xeIwb3Ev7nssLwzmdoSTIGiGgWi4Bfs4
-         Eeu+ljQOc16QLpdgp3DZao6T2/j2wlelMUZuUANH0bChhzRPqHPItmnXCKsqp6pZ85/G
-         YW7F/kbhccmkx8VMFXvF1vP8/KFEmp+lqZ0jojcW9E5ctsU+HItSbGfm7Pjzb2KWc4kJ
-         uQjXm60J4FpJC8ub9Trg4QuFQm927xuGU94STs/fhhxdWqEdPe8C2jfyLvJGjefdw0au
-         8MaFqXkYb+If+oCa0+zdW2s8WXhib+jmthUfRSUfFrPEbWDuDwVtj8RJ2xmKFKl9iFhe
-         oR7g==
-X-Gm-Message-State: APjAAAVajvRoD0v58Mi2wajoKjBOnum7/Ml+Kwziv9qE72WPo81PxntE
-        FMrZgh+mYnwcFTPpo/C3p2Aqytkt
-X-Google-Smtp-Source: APXvYqzVZIyvG/ng9FRJBUpCWwQgL0GyyeCEAFXH7eWiRoO32aLPNa5NrboyS8COiXrzvxugdmxTEg==
-X-Received: by 2002:a1c:f418:: with SMTP id z24mr12488605wma.80.1563771753996;
-        Sun, 21 Jul 2019 22:02:33 -0700 (PDT)
-Received: from amir-VirtualBox.ctera.local ([5.102.238.208])
-        by smtp.gmail.com with ESMTPSA id z5sm27043186wmf.48.2019.07.21.22.02.32
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 21 Jul 2019 22:02:33 -0700 (PDT)
-From:   Amir Goldstein <amir73il@gmail.com>
-To:     Eryu Guan <guaneryu@gmail.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        Vivek Goyal <vgoyal@redhat.com>, linux-unionfs@vger.kernel.org,
-        fstests@vger.kernel.org
-Subject: [PATCH] overlay/065: adjust test to expect EBUSY only with index=on
-Date:   Mon, 22 Jul 2019 08:02:27 +0300
-Message-Id: <20190722050227.24944-1-amir73il@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S2387398AbfGXL5T (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 24 Jul 2019 07:57:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37772 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387394AbfGXL5S (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Wed, 24 Jul 2019 07:57:18 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F1B3221926;
+        Wed, 24 Jul 2019 11:57:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563969437;
+        bh=V3MHZ4a0FYKU0/zh93aRaZkyLf8z6W2hDkel19hVLrQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Q71g8DEAf0PR+HF5VsjtjhrG7E+J08nb23XAr1CebemgmlK4dOmBnEXTa+4wf2chp
+         7CGZCc058iCaubflYdSmRg/7mGaqsyTMvM6hXYZdZ8XXcgFRPI61Plad2h/YdEJF7S
+         YlRwMhKY3Qs7E6t9eAMy0Ea9GsxFbe49366yJux8=
+Date:   Wed, 24 Jul 2019 13:57:14 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Sasha Levin <sashal@kernel.org>,
+        Miklos Szeredi <mszeredi@redhat.com>,
+        stable <stable@vger.kernel.org>,
+        overlayfs <linux-unionfs@vger.kernel.org>
+Subject: Re: FAILED: patch "[PATCH] ovl: support the FS_IOC_FS[SG]ETXATTR
+ ioctls" failed to apply to 5.1-stable tree
+Message-ID: <20190724115714.GA3244@kroah.com>
+References: <1560073529193139@kroah.com>
+ <CAOQ4uxiTrsOs3KWOxedZicXNMJJharmWo=TDXDnxSC1XMNVKBg@mail.gmail.com>
+ <CAOQ4uxiTTuOESvZ2Y5cSebqKs+qeU3q6ZMReBDro0Qv7aRBhpw@mail.gmail.com>
+ <20190623010345.GJ2226@sasha-vm>
+ <20190623202916.GA10957@kroah.com>
+ <20190624003409.GO2226@sasha-vm>
+ <CAOQ4uxiz5CkGojr5yquUd__TS_eae+ZapqyGaojiOUGniFPMsg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOQ4uxiz5CkGojr5yquUd__TS_eae+ZapqyGaojiOUGniFPMsg@mail.gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-This is needed to support the kernel regression fix commit 0be0bfd2de9d
-("ovl: fix regression caused by overlapping layers detection").
+On Mon, Jun 24, 2019 at 07:52:11AM +0300, Amir Goldstein wrote:
+> On Mon, Jun 24, 2019 at 3:34 AM Sasha Levin <sashal@kernel.org> wrote:
+> >
+> > On Sun, Jun 23, 2019 at 10:29:16PM +0200, Greg KH wrote:
+> > >On Sat, Jun 22, 2019 at 09:03:45PM -0400, Sasha Levin wrote:
+> > >> On Fri, Jun 21, 2019 at 11:15:47AM +0300, Amir Goldstein wrote:
+> > >> > On Thu, Jun 13, 2019 at 11:49 AM Amir Goldstein <amir73il@gmail.com> wrote:
+> > >> > >
+> > >> > > On Sun, Jun 9, 2019 at 12:45 PM <gregkh@linuxfoundation.org> wrote:
+> > >> > > >
+> > >> > > >
+> > >> > > > The patch below does not apply to the 5.1-stable tree.
+> > >> > > > If someone wants it applied there, or to any other stable or longterm
+> > >> > > > tree, then please email the backport, including the original git commit
+> > >> > > > id to <stable@vger.kernel.org>.
+> > >> > > >
+> > >> > > > thanks,
+> > >> > > >
+> > >> > > > greg k-h
+> > >> > > >
+> > >> > >
+> > >> > > FYI, the failure to apply this patch would be resolved after you
+> > >> > > picked up "ovl: check the capability before cred overridden" for
+> > >> > > stable, please hold off from taking this patch just yet, because
+> > >> > > it has a bug, whose fix wasn't picked upstream yet.
+> > >> > >
+> > >> >
+> > >> > Greg,
+> > >> >
+> > >> > Please apply these patches to stable 4.19.
+> > >> > They fix a docker regression (project quotas feature).
+> > >> >
+> > >> > b21d9c435f93 ovl: support the FS_IOC_FS[SG]ETXATTR ioctls
+> > >> > 941d935ac763 ovl: fix wrong flags check in FS_IOC_FS[SG]ETXATTR ioctls
+> > >> >
+> > >> > They apply cleanly and tested on v4.19.53.
+> > >>
+> > >> I've queued these for 4.19.
+> > >>
+> > >> > While at it, I also tested that the following patches apply cleanly and solve
+> > >> > relevant issues on v4.19.53, but they are not clear stable candidates.
+> > >> >
+> > >> > 1) /proc/locks shows incorrect ino. Only reported by xfstests (so far):
+> > >> > 6dde1e42f497 ovl: make i_ino consistent with st_ino in more cases
+> > >>
+> > >> And this.
+> > >>
+> > >> > 2) Fix output of `modinfo overlay`:
+> > >> > 253e74833911 ovl: fix typo in MODULE_PARM_DESC
+> > >>
+> > >> But not this one. Maybe we should be including these in stable trees
+> > >> since the risk factor is low and it fixes something user-visible, but
+> > >> our current rules object this this kind of patches so I've left it out.
+> > >>
+> > >> > 3) Disallow bogus layer combinations.
+> > >> > syzbot has started to produce repros that create bogus layer combinations.
+> > >> > So far it has only been able to reproduce a WARN_ON, which has already
+> > >> > been fixed in stable, by  acf3062a7e1c ("ovl: relax WARN_ON()..."), but
+> > >> > other real bugs could be lurking if those setups are allowed.
+> > >> > We decided to detect and error on these setups on mount, to stop syzbot
+> > >> > (and attackers) from trying to attack overlayfs this way.
+> > >> > To stop syzbot from mutating this class of repros on stable kernel you
+> > >> > MAY apply these 3 patches, but in any case, I would wait a while to see
+> > >> > if more bugs are reported on master.
+> > >> > Although this solves a problem dating before 4.19, I have no plans
+> > >> > of backporting these patches further back.
+> > >> >
+> > >> > 146d62e5a586 ovl: detect overlapping layers
+> > >> > 9179c21dc6ed ovl: don't fail with disconnected lower NFS
+> > >> > 1dac6f5b0ed2 ovl: fix bogus -Wmaybe-unitialized warning
+> > >>
+> > >> I've queued these 3 for 4.19.
+> > >
+> > >What about the ones that are needed for 5.1?
+> >
+> > Ah yes, I haven't realized that the syzkaller ones are needed for 5.1.
+> > I'll queue them up.
+> >
+> 
+> I don't think syzkaller ones are more relevant to 5.1 then the rest of
+> the patches applied to 4.19. If anything, its the other way around.
+> According to syzbot dashboard, it is being run on LTS kernels, not on
+> latest stable.
+> 
+> Please forgive me if my language caused confusion, when I said
+> "please apply to 4.19" I meant 4.19+.
 
-Overlayfs mount is not supposed to fail due to upper/work dir in-use
-by other mount unless option index=on is enabled.
+So is anything else needed to be done here, or are we all caught up and
+everything merged properly?
 
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
----
+thanks,
 
-Eryu,
-
-With this applied, test is expected to fail on upstream kernel,
-because upstream kernel has a regression.
-
-The kernel fix commit is on Miklos' overlayfs-next branch.
-
-Thanks,
-Amir.
-
- tests/overlay/065     | 26 ++++++++++++++++----------
- tests/overlay/065.out |  4 ++--
- 2 files changed, 18 insertions(+), 12 deletions(-)
-
-diff --git a/tests/overlay/065 b/tests/overlay/065
-index abfc6737..a75a9a10 100755
---- a/tests/overlay/065
-+++ b/tests/overlay/065
-@@ -13,9 +13,14 @@
- #
- # Overlapping layers on mount or lookup results in ELOOP.
- # Overlapping lowerdir with other mount upperdir/workdir
--# result in EBUSY.
-+# result in EBUSY (if index=on is used).
- #
--# Kernel patch "ovl: detect overlapping layers" is needed to pass the test.
-+# This is a regression test for kernel commit:
-+#
-+#    146d62e5a586 "ovl: detect overlapping layers"
-+#
-+# and its followup fix commit:
-+#    0be0bfd2de9d "ovl: fix regression caused by overlapping layers detection"
- #
- seq=`basename $0`
- seqres=$RESULT_DIR/$seq
-@@ -46,6 +51,7 @@ _supported_os Linux
- # Use non-default scratch underlying overlay dirs, we need to check
- # them explicity after test.
- _require_scratch_nocheck
-+_require_scratch_feature index
- 
- # Remove all files from previous tests
- _scratch_mkfs
-@@ -61,10 +67,10 @@ mnt2=$basedir/mnt.2
- 
- mkdir -p $lowerdir/lower $upperdir $workdir
- 
--# Try to mount an overlay with the same upperdir/lowerdir - expect EBUSY
-+# Try to mount an overlay with the same upperdir/lowerdir - expect ELOOP
- echo Conflicting upperdir/lowerdir
- _overlay_scratch_mount_dirs $upperdir $upperdir $workdir \
--	2>&1 | _filter_busy_mount
-+	2>&1 | _filter_error_mount
- $UMOUNT_PROG $SCRATCH_MNT 2>/dev/null
- 
- # Use new upper/work dirs for each test to avoid ESTALE errors
-@@ -72,11 +78,11 @@ $UMOUNT_PROG $SCRATCH_MNT 2>/dev/null
- rm -rf $upperdir $workdir
- mkdir $upperdir $workdir
- 
--# Try to mount an overlay with the same workdir/lowerdir - expect EBUSY
-+# Try to mount an overlay with the same workdir/lowerdir - expect ELOOP
- # because $workdir/work overlaps with lowerdir
- echo Conflicting workdir/lowerdir
- _overlay_scratch_mount_dirs $workdir $upperdir $workdir \
--	2>&1 | _filter_busy_mount
-+	-oindex=off 2>&1 | _filter_error_mount
- $UMOUNT_PROG $SCRATCH_MNT 2>/dev/null
- 
- rm -rf $upperdir $workdir
-@@ -126,20 +132,20 @@ rm -rf $upperdir2 $workdir2
- mkdir -p $upperdir2 $workdir2 $mnt2
- 
- # Try to mount an overlay with layers overlapping with another overlayfs
--# upperdir - expect EBUSY
-+# upperdir - expect EBUSY with index=on
- echo Overlapping with upperdir of another instance
- _overlay_scratch_mount_dirs $upperdir/upper $upperdir2 $workdir2 \
--	2>&1 | _filter_busy_mount
-+	-oindex=on 2>&1 | _filter_busy_mount
- $UMOUNT_PROG $SCRATCH_MNT 2>/dev/null
- 
- rm -rf $upperdir2 $workdir2
- mkdir -p $upperdir2 $workdir2
- 
- # Try to mount an overlay with layers overlapping with another overlayfs
--# workdir - expect EBUSY
-+# workdir - expect EBUSY with index=on
- echo Overlapping with workdir of another instance
- _overlay_scratch_mount_dirs $workdir/work $upperdir2 $workdir2 \
--	2>&1 | _filter_busy_mount
-+	-oindex=on 2>&1 | _filter_busy_mount
- $UMOUNT_PROG $SCRATCH_MNT 2>/dev/null
- 
- # Move upper layer root into lower layer after mount
-diff --git a/tests/overlay/065.out b/tests/overlay/065.out
-index 0260327c..c63d4df8 100644
---- a/tests/overlay/065.out
-+++ b/tests/overlay/065.out
-@@ -1,8 +1,8 @@
- QA output created by 065
- Conflicting upperdir/lowerdir
--mount: device already mounted or mount point busy
-+mount: Too many levels of symbolic links
- Conflicting workdir/lowerdir
--mount: device already mounted or mount point busy
-+mount: Too many levels of symbolic links
- Overlapping upperdir/lowerdir
- mount: Too many levels of symbolic links
- Conflicting lower layers
--- 
-2.17.1
-
+greg k-h
