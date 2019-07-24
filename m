@@ -2,49 +2,49 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFA2F73B2C
-	for <lists+linux-unionfs@lfdr.de>; Wed, 24 Jul 2019 21:58:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 049B373B2F
+	for <lists+linux-unionfs@lfdr.de>; Wed, 24 Jul 2019 21:58:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392028AbfGXT5e (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 24 Jul 2019 15:57:34 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:37029 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392023AbfGXT5e (ORCPT
+        id S2392052AbfGXT5k (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 24 Jul 2019 15:57:40 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:46501 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392050AbfGXT5k (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 24 Jul 2019 15:57:34 -0400
-Received: by mail-pl1-f193.google.com with SMTP id b3so22416487plr.4
-        for <linux-unionfs@vger.kernel.org>; Wed, 24 Jul 2019 12:57:33 -0700 (PDT)
+        Wed, 24 Jul 2019 15:57:40 -0400
+Received: by mail-pg1-f193.google.com with SMTP id k189so2698348pgk.13
+        for <linux-unionfs@vger.kernel.org>; Wed, 24 Jul 2019 12:57:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=android.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=xWf1wqBywrzqDn4QoQmjv8h4FPdjfVbADD3ipadMdY0=;
-        b=Ps3kbWjF13UPogwWSsC0j1C1LHTomES8Modx8qFda13HSsS2jZ4gUjMhQQyjIctloQ
-         kr3kLXtMYRijIejm/ZHtQ4C3AqKPqY3ZHzBVoDk9iRt4R9cw06KEAYwmVxY3QZtIPjnq
-         y+EnI9kd6drKRqNsuWKiEzoO/K332RFgL3+iVCi6iBhhkIitIXXG2sg5J8vY2z+5gHC2
-         SFovx1V4uzeTYGC4PQ0ipuH3uTpIWDyVbHQw6GcPjb+ZSgRIpmH/Eo7AUWg0/vEUUIuR
-         Z87flKb7/uwvWhZWnxpSDZLnP2l+ZEp4A7ejy86spDsLIF9+9jWNQJ3ucUpLAUhnmW9s
-         DlSQ==
+        bh=L1oMJfrLOhz58HDhVH6CDl46g8rPXC84FR3jYEnwlGc=;
+        b=GJbaZyZrN284EZaMgoaqSAtkOaiXvAl2Jzk1NdlCcJt1i+MCIStLfk4VLsZ2eWeOwL
+         aSM/E1tfLEiFAK3NdeyIcFcVvjWjGQQ+uWIHDhmkk8M/SBs1ETRAFe+LkroYUjhXTbx0
+         SkMLhttcCwzaCdxowZTuk5Ud6qZm6p8qg32R93rtYmLzltdBctyeCSeLDBsi9u5+AWER
+         AV37Ol3qJnqTXl7pm5LrCVzP3JTx6e+lFViT2UYI+qcEHJtGCnuRImT8Uk41RoR0AH0M
+         s96Qe7uf+LFZFOV7uPbHX2OtrfWq4tbzx0fZ8BaY8r6/+WWWq9K6m7m/ZjrazNSZSFZT
+         6e/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=xWf1wqBywrzqDn4QoQmjv8h4FPdjfVbADD3ipadMdY0=;
-        b=N6dFU1EU6ingOn+6ftvKcCh1bhyUXru2+kNY2PqgJsh6oLUaZ9tHA4QogCNK3INUys
-         bj1cDT+Jg7y8jtwZSfG/zPM9gGZYFWPxhvCb4qdUE0Ysuw+EajgerK/ehXeCSShLM3gB
-         /JALkYCqP02SkSS4thJupGbDZPHzyTDPdkgL0oYqFVuI6eKMB6xTTirmcJn5H7i3ClAY
-         a9VSpzAJawg8fcRImb6g1pM01RzxaQdi/N615sN6gwG8JILVQ08XlVCEEt4NgQf8sUIp
-         xuqeVQLbIo4YMif+b01l9eN99vS2rz90DIoWMuzenZanF1aSyYAsc3Y4OuVhDa6nuXqL
-         h5Uw==
-X-Gm-Message-State: APjAAAVpUU327b4Tuf6GwCwl4TNbHt8rwlknKNyAxz6h+fT6lRblwiQK
-        MLk+Wczyv7xhHVksnrJ23zFGg0eg
-X-Google-Smtp-Source: APXvYqyOM0dv0KNnlpru4O+Ku92Xy82BvYB2ri/rGxGwsQ32yP0CJ/DGZq3sRmE9fDxjNQjCUf4tBQ==
-X-Received: by 2002:a17:902:830c:: with SMTP id bd12mr89230023plb.237.1563998253455;
-        Wed, 24 Jul 2019 12:57:33 -0700 (PDT)
+        bh=L1oMJfrLOhz58HDhVH6CDl46g8rPXC84FR3jYEnwlGc=;
+        b=f0H8dio1CICd0q7O+Cs4N1NtXVyVBzfI3dswTrxikoGGMFfq/M7ZykMGORMoKuQJO8
+         FWdWwOuJO1jLYHe/4WhoN2JlM5yDndQSX3pKPoIX5IFq2DynD4pqFFYakg/YDPS7J7Q6
+         yFo8Dc7d+IhaCSYl0M4srDRutvUcV1OfuuMSTGi70dy6d65LStBmi/64m84UzVPbSc/E
+         DLHvYywmF2SeKHjdOXwHlV9rFNelvaKa/QGlUQwrALQE6wfMgacnYCftAA7vHFXSGnzP
+         FXg4sR150lVlHGnwukfLHNJdn45jITOerPMPoX+MXdQ+D+rN6Yb+Teup9jApeRuKOcYh
+         XxvQ==
+X-Gm-Message-State: APjAAAVKGEuYTQtXsXH2w6+7pPb/lvcY/pDWLBqFsvJS52T7DO2xEAS4
+        sGh6EyGAJYo9R2gfq9w7UTk=
+X-Google-Smtp-Source: APXvYqy7X7TyygDWC4aF4AtmXyrL0XzYUXo6uIcdD2u7K60Xp3HzR54ZYiPqDmuME7OVT8NPmFC2Nw==
+X-Received: by 2002:a63:3147:: with SMTP id x68mr19151426pgx.212.1563998258943;
+        Wed, 24 Jul 2019 12:57:38 -0700 (PDT)
 Received: from nebulus.mtv.corp.google.com ([2620:15c:211:200:5404:91ba:59dc:9400])
-        by smtp.gmail.com with ESMTPSA id f88sm46307394pjg.5.2019.07.24.12.57.32
+        by smtp.gmail.com with ESMTPSA id f88sm46307394pjg.5.2019.07.24.12.57.38
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 24 Jul 2019 12:57:33 -0700 (PDT)
+        Wed, 24 Jul 2019 12:57:38 -0700 (PDT)
 From:   Mark Salyzyn <salyzyn@android.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     kernel-team@android.com, Mark Salyzyn <salyzyn@android.com>,
@@ -55,10 +55,13 @@ Cc:     kernel-team@android.com, Mark Salyzyn <salyzyn@android.com>,
         Amir Goldstein <amir73il@gmail.com>,
         Randy Dunlap <rdunlap@infradead.org>,
         Stephen Smalley <sds@tycho.nsa.gov>,
-        linux-unionfs@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: [PATCH v10 1/5] overlayfs: check CAP_DAC_READ_SEARCH before issuing exportfs_decode_fh
-Date:   Wed, 24 Jul 2019 12:57:12 -0700
-Message-Id: <20190724195719.218307-2-salyzyn@android.com>
+        linux-unionfs@vger.kernel.org, linux-doc@vger.kernel.org,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Mark Salyzyn <salyzyn@google.com>,
+        linux-fsdevel@vger.kernel.org
+Subject: [PATCH v10 2/5] Add optional __get xattr method paired to __vfs_getxattr
+Date:   Wed, 24 Jul 2019 12:57:13 -0700
+Message-Id: <20190724195719.218307-3-salyzyn@android.com>
 X-Mailer: git-send-email 2.22.0.657.g960e92d24f-goog
 In-Reply-To: <20190724195719.218307-1-salyzyn@android.com>
 References: <20190724195719.218307-1-salyzyn@android.com>
@@ -69,8 +72,8 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Assumption never checked, should fail if the mounter creds are not
-sufficient.
+Add an optional __get xattr method that would be called, if set, only
+in __vfs_getxattr instead of the regular get xattr method.
 
 Signed-off-by: Mark Salyzyn <salyzyn@android.com>
 Cc: Miklos Szeredi <miklos@szeredi.hu>
@@ -85,40 +88,68 @@ Cc: linux-doc@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Cc: kernel-team@android.com
 ---
-v10:
-- return NULL rather than ERR_PTR(-EPERM)
-- did _not_ add it ovl_can_decode_fh() because of changes since last
-  review, suspect needs to be added to ovl_lower_uuid_ok()?
-
-v8 + v9:
-- rebase
-
-v7:
-- This time for realz
-
-v6:
-- rebase
-
-v5:
-- dependency of "overlayfs: override_creds=off option bypass creator_cred"
+v10 - added to patch series
 ---
- fs/overlayfs/namei.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/xattr.c            | 11 ++++++++++-
+ include/linux/xattr.h |  7 +++++--
+ 2 files changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
-index e9717c2f7d45..9702f0d5309d 100644
---- a/fs/overlayfs/namei.c
-+++ b/fs/overlayfs/namei.c
-@@ -161,6 +161,9 @@ struct dentry *ovl_decode_real_fh(struct ovl_fh *fh, struct vfsmount *mnt,
- 	if (!uuid_equal(&fh->uuid, &mnt->mnt_sb->s_uuid))
- 		return NULL;
+diff --git a/fs/xattr.c b/fs/xattr.c
+index 90dd78f0eb27..b8f4734e222f 100644
+--- a/fs/xattr.c
++++ b/fs/xattr.c
+@@ -306,6 +306,9 @@ __vfs_getxattr(struct dentry *dentry, struct inode *inode, const char *name,
+ 	handler = xattr_resolve_name(inode, &name);
+ 	if (IS_ERR(handler))
+ 		return PTR_ERR(handler);
++	if (unlikely(handler->__get))
++		return handler->__get(handler, dentry, inode, name, value,
++				      size);
+ 	if (!handler->get)
+ 		return -EOPNOTSUPP;
+ 	return handler->get(handler, dentry, inode, name, value, size);
+@@ -317,6 +320,7 @@ vfs_getxattr(struct dentry *dentry, const char *name, void *value, size_t size)
+ {
+ 	struct inode *inode = dentry->d_inode;
+ 	int error;
++	const struct xattr_handler *handler;
  
-+	if (!capable(CAP_DAC_READ_SEARCH))
-+		return NULL;
-+
- 	bytes = (fh->len - offsetof(struct ovl_fh, fid));
- 	real = exportfs_decode_fh(mnt, (struct fid *)fh->fid,
- 				  bytes >> 2, (int)fh->type,
+ 	error = xattr_permission(inode, name, MAY_READ);
+ 	if (error)
+@@ -339,7 +343,12 @@ vfs_getxattr(struct dentry *dentry, const char *name, void *value, size_t size)
+ 		return ret;
+ 	}
+ nolsm:
+-	return __vfs_getxattr(dentry, inode, name, value, size);
++	handler = xattr_resolve_name(inode, &name);
++	if (IS_ERR(handler))
++		return PTR_ERR(handler);
++	if (!handler->get)
++		return -EOPNOTSUPP;
++	return handler->get(handler, dentry, inode, name, value, size);
+ }
+ EXPORT_SYMBOL_GPL(vfs_getxattr);
+ 
+diff --git a/include/linux/xattr.h b/include/linux/xattr.h
+index 6dad031be3c2..30f25e1ac571 100644
+--- a/include/linux/xattr.h
++++ b/include/linux/xattr.h
+@@ -30,10 +30,13 @@ struct xattr_handler {
+ 	const char *prefix;
+ 	int flags;      /* fs private flags */
+ 	bool (*list)(struct dentry *dentry);
+-	int (*get)(const struct xattr_handler *, struct dentry *dentry,
++	int (*get)(const struct xattr_handler *handler, struct dentry *dentry,
+ 		   struct inode *inode, const char *name, void *buffer,
+ 		   size_t size);
+-	int (*set)(const struct xattr_handler *, struct dentry *dentry,
++	int (*__get)(const struct xattr_handler *handler, struct dentry *dentry,
++		     struct inode *inode, const char *name, void *buffer,
++		     size_t size);
++	int (*set)(const struct xattr_handler *handler, struct dentry *dentry,
+ 		   struct inode *inode, const char *name, const void *buffer,
+ 		   size_t size, int flags);
+ };
 -- 
 2.22.0.657.g960e92d24f-goog
 
