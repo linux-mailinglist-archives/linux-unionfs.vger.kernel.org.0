@@ -2,111 +2,118 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AE5B74F74
-	for <lists+linux-unionfs@lfdr.de>; Thu, 25 Jul 2019 15:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 870BB75154
+	for <lists+linux-unionfs@lfdr.de>; Thu, 25 Jul 2019 16:37:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726949AbfGYN3k (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 25 Jul 2019 09:29:40 -0400
-Received: from mail-yb1-f196.google.com ([209.85.219.196]:44675 "EHLO
-        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725944AbfGYN3k (ORCPT
+        id S1728717AbfGYOhJ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 25 Jul 2019 10:37:09 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:34582 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727322AbfGYOhJ (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 25 Jul 2019 09:29:40 -0400
-Received: by mail-yb1-f196.google.com with SMTP id a14so18478255ybm.11;
-        Thu, 25 Jul 2019 06:29:39 -0700 (PDT)
+        Thu, 25 Jul 2019 10:37:09 -0400
+Received: by mail-pf1-f196.google.com with SMTP id b13so22869305pfo.1
+        for <linux-unionfs@vger.kernel.org>; Thu, 25 Jul 2019 07:37:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NVu+S23Gv1yOG6EQW2R8cxaCUo15rcMvxts6vU6HpEM=;
-        b=Z6YactpJLSqzGorrC5H61mi+l2QDXmU1tZuYDEI4NstQVWsVHXQIMtHqQoictB+Azy
-         ikHoEzDoCHZLvq4Z8h4Dd1NWOVVPmB72iN0V9akY4Qc87f3pMAbqYEs6o7o+OOfoUsMl
-         ihbURjjk8nvW64kY3mt3oqHZlPI0pD7dpOi8O+14EY2Mo9atEheCddRoMN/VjabuPuHK
-         z8MlICk2z7UgWItSjhRpppOTgU7LJ4bm/TPw5BZr0Dn4iG9SInOI+wNw09lwqf1wiJk2
-         n4bDsOx/ZY0yPuwCDU7NxFlQmCLMSvjnb+JDn7e/oH/VNjQbkh6QfW/0GW1SUClqd9G7
-         RARQ==
+        d=android.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=eR9Hp6lNdSYA3Q9LS12AuwAXP6EgUTReBDkxImpX5hM=;
+        b=lk2NGtx5FqgD81SxeWV7cc9gi6gUfxxPm8Vw1C2fRjdvKVT415jdlNqzYMMC+aB53l
+         HwC2FGD/kd+ot31j2TND04GQNCilJniBlkulcKaqjUc/gkYJYPjxtUEahs9Tfiia9r/f
+         ifHMuSLRXja1h4Ebug5DXIxxSVErvU4Qc7l2QtRmAakLP2bzsJA0fFxy0FgkLoyGOkZU
+         uz/Tt9gAr/tWmFDWcmjY7BGQa3KSxFWBeRxU60dXJk7/1RTrjIdlZGF4Vgh4XYpHWBgJ
+         6WiE6PpzpvtvLlv6P7wF0jyo34sn9Ir3Le7yN/XJnJ3JO2yIUXc+8OSRzdcOObHAxN/I
+         b94w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NVu+S23Gv1yOG6EQW2R8cxaCUo15rcMvxts6vU6HpEM=;
-        b=AkIpYmVqpip7yj/jkhInpMP1JFIJlPiQrR10p34/FwIrvsuW3YpHgewAZDlWc8Z/5p
-         vBF+IIMSVmlBATPjRkoy+B5oVFm1WFpvGMWjNv/Mm+fyD/aXSHLphB+yel/ZHoNrtwo8
-         k9RAi9GYfpLx45XNi5V7s+h6aGHAwMHKEyL0qRdIk9mCWbWroKAjjPEOqadmAhrGRqCL
-         VVYISplBQkwJc4yyfzxgMoDgdxOcwsbDeuqaIHVaz/Dit7uTWtL4+jKU51lpmmY0NT3j
-         Fl1OIXQ/EXXfXiPrfwL4gRcn5yoagxZy0AjcbM2Mb1V1y7mixDjQUD3pJIyH2jOU4rTN
-         BZOQ==
-X-Gm-Message-State: APjAAAXw8ocBlElBteBbJxx7VfynSA5tmDf6OIXaSkkefLkF/ZxuUl+4
-        SgvVeg/s/miRUrUZ5gIhEs1ajhO1wIoGk9eGstY=
-X-Google-Smtp-Source: APXvYqz7f1Ci0npqtyBiHcAFyrc/Uu1/8h6eibamhHeSo/YFbsxEEaq9E+39K305A1gpp77D8WQiAhCH6Xt1m1ZVsGE=
-X-Received: by 2002:a25:aaea:: with SMTP id t97mr52207466ybi.126.1564059845729;
- Thu, 25 Jul 2019 06:04:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190725085732.15674-1-baijiaju1990@gmail.com>
-In-Reply-To: <20190725085732.15674-1-baijiaju1990@gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 25 Jul 2019 16:03:54 +0300
-Message-ID: <CAOQ4uxg1f3rgnc4sitF82FMftROHkubk+3s9=v1Bf47m-zVYBw@mail.gmail.com>
-Subject: Re: [PATCH] fs: overlayfs: Fix a possible null-pointer dereference in ovl_free_fs()
-To:     Jia-Ju Bai <baijiaju1990@gmail.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=eR9Hp6lNdSYA3Q9LS12AuwAXP6EgUTReBDkxImpX5hM=;
+        b=g+SJgCC42EOlleewUPxnT+E0YBN9rkIudV5/EkOUuO8wmA9JdcE5EVNidn9ydhrtgJ
+         0RvH3TrdE0UyiRYo7/RjGW0x2Ldz4nO6gjDMM4iAN6OxazN1h4DDwwjw6zQC5cf1m/fT
+         jxvzUZUf6ubjvF1IucK2eNX0lIbHD1z7+h32rk1luefF5rorv4StBh/78HbBOQ+hMAEv
+         XNdLAvhGcmEZqIv1sRsiGUGe/LkIEovi4LTLdYcYkdRUS3rQhMgvXhkWoANrz50Eig7T
+         NRKr055sHaWayJLw7n/ipM2AY97sS9gBMx9EQ2bAE5ZwvPlPI8ak87dBV1h4JchDIc8l
+         sJNA==
+X-Gm-Message-State: APjAAAX1vBiFZAzG4CDCR0xnOCwOZjhTiE6ETH2cD7yVQQ2r1sL9xFgW
+        JBchLVHomEmk+u8R+LWXZEI=
+X-Google-Smtp-Source: APXvYqyM+b0LIhHKU6UawP/Xg2Yu8CVrpTZWWVwOYd0IcNAxs1f6VsdAVX4Xa08OWBMpPtwJXLywcw==
+X-Received: by 2002:a62:e20b:: with SMTP id a11mr17216612pfi.0.1564065428842;
+        Thu, 25 Jul 2019 07:37:08 -0700 (PDT)
+Received: from nebulus.mtv.corp.google.com ([2620:15c:211:200:5404:91ba:59dc:9400])
+        by smtp.googlemail.com with ESMTPSA id k3sm35749356pgq.92.2019.07.25.07.37.08
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 25 Jul 2019 07:37:08 -0700 (PDT)
+Subject: Re: [PATCH v10 4/5] overlayfs: internal getxattr operations without
+ sepolicy checking
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
+        kernel-team@android.com, Miklos Szeredi <miklos@szeredi.hu>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Vivek Goyal <vgoyal@redhat.com>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
         overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-doc@vger.kernel.org
+References: <20190724195719.218307-1-salyzyn@android.com>
+ <20190724195719.218307-5-salyzyn@android.com>
+ <CAOQ4uxhtASSymEOdh4XByXbxWO2_ZivzqjBrgK7jB3fWXLqr_w@mail.gmail.com>
+From:   Mark Salyzyn <salyzyn@android.com>
+Message-ID: <20df8497-17ea-27db-43c8-fcd73633e7f3@android.com>
+Date:   Thu, 25 Jul 2019 07:37:07 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <CAOQ4uxhtASSymEOdh4XByXbxWO2_ZivzqjBrgK7jB3fWXLqr_w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-GB
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Thu, Jul 25, 2019 at 3:48 PM Jia-Ju Bai <baijiaju1990@gmail.com> wrote:
->
-> In ovl_fill_super(), there is an if statement on line 1607 to check
-> whether ofs->upper_mnt is NULL:
->     if (!ofs->upper_mnt)
->
-> When ofs->upper_mnt is NULL and d_make_root() on line 1654 fails,
-> ovl_free_fs() on line 1683 is executed.
-> In ovl_free_fs(), ofs->upper_mnt is used on line 224:
->     ovl_inuse_unlock(ofs->upper_mnt->mnt_root);
->
-> Thus, a possible null-pointer dereference may occur.
->
-> To fix this bug, ofs->upper_mnt is checked before being used in
-> ovl_free_fs().
->
-> This bug is found by a static analysis tool STCheck written by us.
->
-> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
-> ---
->  fs/overlayfs/super.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-> index b368e2e102fa..1d7c3d280834 100644
-> --- a/fs/overlayfs/super.c
-> +++ b/fs/overlayfs/super.c
-> @@ -220,7 +220,7 @@ static void ovl_free_fs(struct ovl_fs *ofs)
->         if (ofs->workdir_locked)
->                 ovl_inuse_unlock(ofs->workbasedir);
->         dput(ofs->workbasedir);
-> -       if (ofs->upperdir_locked)
-> +       if (ofs->upperdir_locked && ofs->upper_mnt)
->                 ovl_inuse_unlock(ofs->upper_mnt->mnt_root);
->         mntput(ofs->upper_mnt);
->         for (i = 0; i < ofs->numlower; i++) {
-> --
+Thanks for the review.
 
-Can you teach STCheck to know that if upperdir_locked is only set this way:
-        ofs->upper_mnt = upper_mnt;
+On 7/25/19 4:00 AM, Amir Goldstein wrote:
+> On Wed, Jul 24, 2019 at 10:57 PM Mark Salyzyn <salyzyn@android.com> wrote:
+>> Check impure, opaque, origin & meta xattr with no sepolicy audit
+>> (using __vfs_getxattr) since these operations are internal to
+>> overlayfs operations and do not disclose any data.  This became
+>> an issue for credential override off since sys_admin would have
+>> been required by the caller; whereas would have been inherently
+>> present for the creator since it performed the mount.
+>>
+>> This is a change in operations since we do not check in the new
+>> ovl_vfs_getxattr function if the credential override is off or
+>> not.  Reasoning is that the sepolicy check is unnecessary overhead,
+>> especially since the check can be expensive.
+> I don't know that this reasoning suffice to skip the sepolicy checks
+> for overlayfs private xattrs.
+> Can't sepolicy be defined to allow get access to trusted.overlay.*?
 
-        err = -EBUSY;
-        if (ovl_inuse_trylock(ofs->upper_mnt->mnt_root)) {
-                ofs->upperdir_locked = true;
+Because for override credentials off, _everyone_ would need it (at least 
+on Android, the sole user AFAIK, and only on userdebug builds, not user 
+builds), and if everyone is special, and possibly including the random 
+applications we add from the play store, then no one is ...
 
-Then upperdir_locked implies ofs->upper_mnt != NULL?
+For the override credentials on, the sepolicy would be required to add 
+to init or other mounters so that callers can actually use overlayfs. 
+Without the sepolicy for init, overlayfs will not function. the xattr 
+are in the backing storage and the details are not exported outside of 
+the driver. This would represent an imbalance since none of the callers 
+would require the sepolicy adjustment for the ;normal' case, but for 
+override credentials off as stated above, _everyone_ would require it.
 
-Whether or not this patch should be applied is not my call,
-but the title "possible null-pointer dereference" is certainly not true.
+Not against adding the sepolicy in Android, it is how we roll with only 
+opening up credentials on an as-need basis. We could deny it on user 
+(customer) builds and that closes a door that gains security. However 
+our people are starting to resist userdebug being different from user so 
+it may be a door I can not shut. Again felt like an imbalance for a 
+trusted driver read only operation.
 
-Thanks,
-Amir.
+Sincerely -- Mark Salyzyn
+
