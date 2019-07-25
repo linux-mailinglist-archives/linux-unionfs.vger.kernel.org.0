@@ -2,101 +2,95 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 949CB75337
-	for <lists+linux-unionfs@lfdr.de>; Thu, 25 Jul 2019 17:51:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 576387539C
+	for <lists+linux-unionfs@lfdr.de>; Thu, 25 Jul 2019 18:12:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728523AbfGYPvs (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 25 Jul 2019 11:51:48 -0400
-Received: from mail-yb1-f196.google.com ([209.85.219.196]:44971 "EHLO
+        id S2389374AbfGYQMg (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 25 Jul 2019 12:12:36 -0400
+Received: from mail-yb1-f196.google.com ([209.85.219.196]:43914 "EHLO
         mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726692AbfGYPvs (ORCPT
+        with ESMTP id S2389184AbfGYQMg (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 25 Jul 2019 11:51:48 -0400
-Received: by mail-yb1-f196.google.com with SMTP id a14so18636273ybm.11;
-        Thu, 25 Jul 2019 08:51:47 -0700 (PDT)
+        Thu, 25 Jul 2019 12:12:36 -0400
+Received: by mail-yb1-f196.google.com with SMTP id y123so15634538yby.10
+        for <linux-unionfs@vger.kernel.org>; Thu, 25 Jul 2019 09:12:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=XzjdGqC1KanFcesRBecTPozKcz3xVgLXZiKoPtdXfLQ=;
-        b=T9zktBfj+oIxSDxV7DWaLUAtH2lZn9X3qyEgmZLH8oxDJbdLzxZs8KVT5g71EiS24V
-         WUCGpIhvT1iOHx4m9D1eXKfWRkfoVDFIj+CvJggpIz4t3oMMCo0xEHDYkh069VVT5nrt
-         u1dom5QKGlXYL4Mob17aMXYResfKZIqi4lzTEoq8Hi4EsvMveNO3tULKiiO/v0b4sktB
-         8dOvUyeV00ZX9qOnMIku/9GFiUxW32mZCh5dzAPVkH7GK2Lc0f3Ywgq0SDHl99QLGvpz
-         LWKzv3AerCcDpkAmvjWZAAuBi0JpxoJ9eJFra0rDD5bPVbmcXJ6p4TMVGTxPy0BgK3t1
-         uYOQ==
+        bh=VBnHGF6HXMOX/5LSl7dC8ezm+mGlHqv8X21lq6WD2lA=;
+        b=cMn/alnHpYV3rRHMCUFoZ+KMA+dHLfGCw2RGJa1wzNLmBU6LxQW+8dq/K/Q+ADw2NM
+         T1Es/yuc1dzJWbvUV2y1WBl3KNjr80n0nGRl9uGoLUX6mHvRleRP7ST2QWu3wbigvneu
+         sYWnmg47HJx2818Nq5DihM1V0xA+e1e08Er8Bo/5Lv4x0R+dEfHjH6PxswUSWsfpXmTG
+         0PDpAQqzANdCVcyG54F+5yHD6KBPS2Qvfu/AjuuyxCEZEE6kegXqQZAdYNfZnwhRIJA0
+         cCKNbOBTQkGr1ffkQb91octpnWXWkcWvPjABNZKS2jP3azsRX3dnTjXwr9fgip9VKw2G
+         uiRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=XzjdGqC1KanFcesRBecTPozKcz3xVgLXZiKoPtdXfLQ=;
-        b=tgs/iXapveGYic8saRb6GLeZ7jp1U0i8EBsoR05iMEPsRJsiwVmtq449QxaN+EZ+5l
-         LLI5GNRCVZYVCVYqxInhvf24CIGxQJs4O1e9xhnFE86cJp1vZqmsuAVq4R6/nEneG+pi
-         QD0N2ydsdElIgVuOUWBgSp6mI9EZD/vltzibDDGgCCEVLIum/Z+zvqF/soPHhG4gOpq2
-         RvnaZqtsXgZGLB0SWSCEfPgXrjfB0QHOBYHGO8VLk7yM223tsVXDic+CPPk9nvIuACio
-         uiCVES4+E0x17W3nR1yCxhFU3xZGkxMZpTKQof5ZU7T865eXFauWZnE35ft0knuUEkwA
-         dGgw==
-X-Gm-Message-State: APjAAAWznfKVJna9pw09lpmdnjcDQArhK/VCwBGJFOSSfVGM/Rbj78yL
-        0P2CX1DD8ZAQ1i56PgmFPVbUxx/XV2u+uwVohCQ=
-X-Google-Smtp-Source: APXvYqxVeHgUtZr3g2omkLN2Ixlk+Mh+izDz6CjHC02+EydHhcvHTGyI31ttuRNSPp42UdH7BEv0v18FRIh/4DxbAoc=
-X-Received: by 2002:a25:9a08:: with SMTP id x8mr53552715ybn.439.1564069907073;
- Thu, 25 Jul 2019 08:51:47 -0700 (PDT)
+        bh=VBnHGF6HXMOX/5LSl7dC8ezm+mGlHqv8X21lq6WD2lA=;
+        b=qxYpZK6CZtS6xjmax7PpdDdVxvTQ1DM/4FiQCbnQLC8o3aMs8OsxCA/t67aKFghXmF
+         bywSm6CMRgTYxxnGFg/4je0erNBUrYN80cCXnUxaDlL08JjvLuksAzDBxQcVVf9PRJsV
+         6Qn4MS6J41tklQf7ID6ecG8MdXDRebbb788esAE7Z78ss1Ra3ILiaVEZX+J8krf2tKsE
+         zbsG3DbgkHQVmUfodLnBW0RZtIyryQg2yJEyihHRuqsVAWy70HScqhp4L6YcGlpMlt8+
+         aOZ3XNocKhQU5JDkEB0sqefIhcVpMUAgqI6Y914zRY6oTD6kXA+96VW08hHV96nWttm2
+         WVrA==
+X-Gm-Message-State: APjAAAX6IfnplgvjdfUvTjTija0ebtJ+FPt4v84jooxQFDioDDQqd40J
+        WCE5gD3nnUFdu6qEdExYqJZK7w2iEKHHKUc0/ho=
+X-Google-Smtp-Source: APXvYqyeJJXnvactTWL0eCr3YuihvP0ZY0PiUrfdrtNx8VK6guaz1BhHo8VqTUGiT9SKpVoA4dPCHhq10uGcOPnYsdQ=
+X-Received: by 2002:a25:7683:: with SMTP id r125mr54223449ybc.144.1564071155582;
+ Thu, 25 Jul 2019 09:12:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190724195719.218307-1-salyzyn@android.com> <20190724195719.218307-5-salyzyn@android.com>
- <CAOQ4uxhtASSymEOdh4XByXbxWO2_ZivzqjBrgK7jB3fWXLqr_w@mail.gmail.com> <20df8497-17ea-27db-43c8-fcd73633e7f3@android.com>
-In-Reply-To: <20df8497-17ea-27db-43c8-fcd73633e7f3@android.com>
+References: <20190724195719.218307-1-salyzyn@android.com> <20190724195719.218307-6-salyzyn@android.com>
+ <CAOQ4uxim8zZN5YHZs2OJz5A=3B0U10wyf371yadpe2B7hA8pZw@mail.gmail.com> <9acceab1-86af-758a-ec00-8f6d33f3da87@android.com>
+In-Reply-To: <9acceab1-86af-758a-ec00-8f6d33f3da87@android.com>
 From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 25 Jul 2019 18:51:36 +0300
-Message-ID: <CAOQ4uxhE77ZvUBv_ZLhSf8fdsWcJJkewjZAQKbgw3BdvgjRUOA@mail.gmail.com>
-Subject: Re: [PATCH v10 4/5] overlayfs: internal getxattr operations without
- sepolicy checking
+Date:   Thu, 25 Jul 2019 19:12:24 +0300
+Message-ID: <CAOQ4uxhLQGpG0=K46hAgPFgQ3KrDipUCqNs_=L6xNwG-dS_jtw@mail.gmail.com>
+Subject: Re: [PATCH v10 5/5] overlayfs: override_creds=off option bypass creator_cred
 To:     Mark Salyzyn <salyzyn@android.com>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        kernel-team@android.com, Miklos Szeredi <miklos@szeredi.hu>,
-        Jonathan Corbet <corbet@lwn.net>,
+Cc:     kernel-team@android.com, Miklos Szeredi <miklos@szeredi.hu>,
         Vivek Goyal <vgoyal@redhat.com>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-doc@vger.kernel.org
+        overlayfs <linux-unionfs@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Thu, Jul 25, 2019 at 5:37 PM Mark Salyzyn <salyzyn@android.com> wrote:
+[reduce CC list]
+
 >
-> Thanks for the review.
+> >
+> > I am fine with this patch, but would like to request that you add @sb arg
+> > to the ovl_revert_creds() helper, so it is more useful for other things in the
+> > future that scope the underlying layers access (like shutdown).
 >
-> On 7/25/19 4:00 AM, Amir Goldstein wrote:
-> > On Wed, Jul 24, 2019 at 10:57 PM Mark Salyzyn <salyzyn@android.com> wrote:
-> >> Check impure, opaque, origin & meta xattr with no sepolicy audit
-> >> (using __vfs_getxattr) since these operations are internal to
-> >> overlayfs operations and do not disclose any data.  This became
-> >> an issue for credential override off since sys_admin would have
-> >> been required by the caller; whereas would have been inherently
-> >> present for the creator since it performed the mount.
-> >>
-> >> This is a change in operations since we do not check in the new
-> >> ovl_vfs_getxattr function if the credential override is off or
-> >> not.  Reasoning is that the sepolicy check is unnecessary overhead,
-> >> especially since the check can be expensive.
-> > I don't know that this reasoning suffice to skip the sepolicy checks
-> > for overlayfs private xattrs.
-> > Can't sepolicy be defined to allow get access to trusted.overlay.*?
->
-> Because for override credentials off, _everyone_ would need it (at least
-> on Android, the sole user AFAIK, and only on userdebug builds, not user
-> builds), and if everyone is special, and possibly including the random
-> applications we add from the play store, then no one is ...
+> Will respin and retest.
 >
 
-OK. I am convinced.
+Apropos testing, I wanted to bring up this issue.
+I noticed that the test coverage I have for unprivileged user access to
+overlayfs is lacking.
 
-One weak argument in favor of the patch:
-ecryptfs also uses __vfs_getxattr for private xattrs.
+xfstests has several generic tests that use _runas and run on overlayfs,
+but that's only for pure upper files.
+
+unionmount-testsuite is always run as root, because it needs to
+mount/umount/etc.
+I am working on a new mode ./run --ov --runas=1
+to seteuid(1);setegid(1) before every test (after set_up and mount)
+That's fine for basic UNIX permission and capability checks, but does not cover
+more complex setups like with sepolicy.
+
+I was thinking maybe to execute "./run --ov --set-up" with mounter process
+credentials (e.g. initd) and then add a new mode "./run --ov --no-set-up"
+which uses the mount prepared by the mounter and runs the tests.
+
+I wanted to get feedback on the ideas above if they are useful for
+your use cases? Is that enough or is there more functionality required
+to cover more use cases?
 
 Thanks,
 Amir.
