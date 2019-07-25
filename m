@@ -2,186 +2,111 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C31C974C5D
-	for <lists+linux-unionfs@lfdr.de>; Thu, 25 Jul 2019 13:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AE5B74F74
+	for <lists+linux-unionfs@lfdr.de>; Thu, 25 Jul 2019 15:29:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389126AbfGYLA3 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 25 Jul 2019 07:00:29 -0400
-Received: from mail-yw1-f66.google.com ([209.85.161.66]:36403 "EHLO
-        mail-yw1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388173AbfGYLA3 (ORCPT
+        id S1726949AbfGYN3k (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 25 Jul 2019 09:29:40 -0400
+Received: from mail-yb1-f196.google.com ([209.85.219.196]:44675 "EHLO
+        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725944AbfGYN3k (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 25 Jul 2019 07:00:29 -0400
-Received: by mail-yw1-f66.google.com with SMTP id x67so17769218ywd.3;
-        Thu, 25 Jul 2019 04:00:28 -0700 (PDT)
+        Thu, 25 Jul 2019 09:29:40 -0400
+Received: by mail-yb1-f196.google.com with SMTP id a14so18478255ybm.11;
+        Thu, 25 Jul 2019 06:29:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=a/9tM/cnY197lNtKIbEGvdjoci5BadrTWQa+L94ekpI=;
-        b=TlXZqAqRzPpf3gfD8V0EvgwNAWlvyzJuGQp0qP4ZcQNUngpwSwvdyCMRR/7R9AHZAW
-         GuOMdzNyGDZMf0PNKbCk7y9QD3lXOCjkZr7ZBB7uDm0BgUiMCBBBr4MJNZ79HcfB7uRR
-         L35CzL1tUcFV3AhEfiKdHSqMddOjEGDIjA6oYlJUoxFhaBszEVXcNnY1+6ul3za+2x57
-         Fw4/Z16Ne3tTR/xwVvioVo+dBJGbQUwLLnbbtQnDKJW3nE8e/fdWobY8TyMHl8mHwfZ/
-         0iniDeqcvqEVhuMQ9FeziB6ZkiOj1k+jcPLpT3Xj5U/CRQtc0a+tjL6VOfSGfW7Slce9
-         17fA==
+        bh=NVu+S23Gv1yOG6EQW2R8cxaCUo15rcMvxts6vU6HpEM=;
+        b=Z6YactpJLSqzGorrC5H61mi+l2QDXmU1tZuYDEI4NstQVWsVHXQIMtHqQoictB+Azy
+         ikHoEzDoCHZLvq4Z8h4Dd1NWOVVPmB72iN0V9akY4Qc87f3pMAbqYEs6o7o+OOfoUsMl
+         ihbURjjk8nvW64kY3mt3oqHZlPI0pD7dpOi8O+14EY2Mo9atEheCddRoMN/VjabuPuHK
+         z8MlICk2z7UgWItSjhRpppOTgU7LJ4bm/TPw5BZr0Dn4iG9SInOI+wNw09lwqf1wiJk2
+         n4bDsOx/ZY0yPuwCDU7NxFlQmCLMSvjnb+JDn7e/oH/VNjQbkh6QfW/0GW1SUClqd9G7
+         RARQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=a/9tM/cnY197lNtKIbEGvdjoci5BadrTWQa+L94ekpI=;
-        b=nvXblKHCrMjppxmTQchwtsjy8LKtAywid0MU3HOcQaRcmUW6lhEGod4ArhyD3iXpmV
-         Ew8BduBMrxZTb3a2b/p9iiZhjJKTII4mG0Viom0JediX4K+HmHb03bnHYn4lXFKhhGVf
-         RAtIS5gMxeVhrwGIKw8lIcc1y83+0sbP5+drJaiuECxQvNPN/i4+qV7SssVrWoaYXD/+
-         roEhsx9i/udPdhdKCdEmyaG2EkAeo8huiSYd1QF4ehgob0+LghBJ8MU7/E3jDCg0fbjx
-         Vr5pTIANLvYCcJs42dZe6r6ikX52h833sC8K1olwT84pmg4rr/KKXa1jvNcOo4mYq1Rq
-         Pygg==
-X-Gm-Message-State: APjAAAXsspmd7cd185araiRC0hRaz2ROKpOW36whz6kEvElur/OAdyUx
-        hEzlz5N7pBZ6qI6QHQ4kO9Hs8c9QRRUyGQh3PYQ=
-X-Google-Smtp-Source: APXvYqyaI0ALNuRqjV/CcW0cJWZEl55/D3HnYB1O7bWKszwmgtyXizOwoXMN/aHq3bEU7U72mLKk3KOKlEXc/ZyRTMM=
-X-Received: by 2002:a81:13d4:: with SMTP id 203mr53284263ywt.181.1564052428064;
- Thu, 25 Jul 2019 04:00:28 -0700 (PDT)
+        bh=NVu+S23Gv1yOG6EQW2R8cxaCUo15rcMvxts6vU6HpEM=;
+        b=AkIpYmVqpip7yj/jkhInpMP1JFIJlPiQrR10p34/FwIrvsuW3YpHgewAZDlWc8Z/5p
+         vBF+IIMSVmlBATPjRkoy+B5oVFm1WFpvGMWjNv/Mm+fyD/aXSHLphB+yel/ZHoNrtwo8
+         k9RAi9GYfpLx45XNi5V7s+h6aGHAwMHKEyL0qRdIk9mCWbWroKAjjPEOqadmAhrGRqCL
+         VVYISplBQkwJc4yyfzxgMoDgdxOcwsbDeuqaIHVaz/Dit7uTWtL4+jKU51lpmmY0NT3j
+         Fl1OIXQ/EXXfXiPrfwL4gRcn5yoagxZy0AjcbM2Mb1V1y7mixDjQUD3pJIyH2jOU4rTN
+         BZOQ==
+X-Gm-Message-State: APjAAAXw8ocBlElBteBbJxx7VfynSA5tmDf6OIXaSkkefLkF/ZxuUl+4
+        SgvVeg/s/miRUrUZ5gIhEs1ajhO1wIoGk9eGstY=
+X-Google-Smtp-Source: APXvYqz7f1Ci0npqtyBiHcAFyrc/Uu1/8h6eibamhHeSo/YFbsxEEaq9E+39K305A1gpp77D8WQiAhCH6Xt1m1ZVsGE=
+X-Received: by 2002:a25:aaea:: with SMTP id t97mr52207466ybi.126.1564059845729;
+ Thu, 25 Jul 2019 06:04:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190724195719.218307-1-salyzyn@android.com> <20190724195719.218307-5-salyzyn@android.com>
-In-Reply-To: <20190724195719.218307-5-salyzyn@android.com>
+References: <20190725085732.15674-1-baijiaju1990@gmail.com>
+In-Reply-To: <20190725085732.15674-1-baijiaju1990@gmail.com>
 From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 25 Jul 2019 14:00:16 +0300
-Message-ID: <CAOQ4uxhtASSymEOdh4XByXbxWO2_ZivzqjBrgK7jB3fWXLqr_w@mail.gmail.com>
-Subject: Re: [PATCH v10 4/5] overlayfs: internal getxattr operations without
- sepolicy checking
-To:     Mark Salyzyn <salyzyn@android.com>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        kernel-team@android.com, Miklos Szeredi <miklos@szeredi.hu>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Vivek Goyal <vgoyal@redhat.com>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
+Date:   Thu, 25 Jul 2019 16:03:54 +0300
+Message-ID: <CAOQ4uxg1f3rgnc4sitF82FMftROHkubk+3s9=v1Bf47m-zVYBw@mail.gmail.com>
+Subject: Re: [PATCH] fs: overlayfs: Fix a possible null-pointer dereference in ovl_free_fs()
+To:     Jia-Ju Bai <baijiaju1990@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
         overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-doc@vger.kernel.org
+        linux-kernel <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, Jul 24, 2019 at 10:57 PM Mark Salyzyn <salyzyn@android.com> wrote:
+On Thu, Jul 25, 2019 at 3:48 PM Jia-Ju Bai <baijiaju1990@gmail.com> wrote:
 >
-> Check impure, opaque, origin & meta xattr with no sepolicy audit
-> (using __vfs_getxattr) since these operations are internal to
-> overlayfs operations and do not disclose any data.  This became
-> an issue for credential override off since sys_admin would have
-> been required by the caller; whereas would have been inherently
-> present for the creator since it performed the mount.
+> In ovl_fill_super(), there is an if statement on line 1607 to check
+> whether ofs->upper_mnt is NULL:
+>     if (!ofs->upper_mnt)
 >
-> This is a change in operations since we do not check in the new
-> ovl_vfs_getxattr function if the credential override is off or
-> not.  Reasoning is that the sepolicy check is unnecessary overhead,
-> especially since the check can be expensive.
-
-I don't know that this reasoning suffice to skip the sepolicy checks
-for overlayfs private xattrs.
-Can't sepolicy be defined to allow get access to trusted.overlay.*?
-
+> When ofs->upper_mnt is NULL and d_make_root() on line 1654 fails,
+> ovl_free_fs() on line 1683 is executed.
+> In ovl_free_fs(), ofs->upper_mnt is used on line 224:
+>     ovl_inuse_unlock(ofs->upper_mnt->mnt_root);
 >
-> Signed-off-by: Mark Salyzyn <salyzyn@android.com>
-> Cc: Miklos Szeredi <miklos@szeredi.hu>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Vivek Goyal <vgoyal@redhat.com>
-> Cc: Eric W. Biederman <ebiederm@xmission.com>
-> Cc: Amir Goldstein <amir73il@gmail.com>
-> Cc: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Stephen Smalley <sds@tycho.nsa.gov>
-> Cc: linux-unionfs@vger.kernel.org
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: kernel-team@android.com
+> Thus, a possible null-pointer dereference may occur.
+>
+> To fix this bug, ofs->upper_mnt is checked before being used in
+> ovl_free_fs().
+>
+> This bug is found by a static analysis tool STCheck written by us.
+>
+> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
 > ---
-> v10 - added to patch series
-> ---
->  fs/overlayfs/namei.c     | 12 +++++++-----
->  fs/overlayfs/overlayfs.h |  2 ++
->  fs/overlayfs/util.c      | 24 +++++++++++++++---------
->  3 files changed, 24 insertions(+), 14 deletions(-)
+>  fs/overlayfs/super.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
-> index 9702f0d5309d..fb6c0cd7b65f 100644
-> --- a/fs/overlayfs/namei.c
-> +++ b/fs/overlayfs/namei.c
-> @@ -106,10 +106,11 @@ int ovl_check_fh_len(struct ovl_fh *fh, int fh_len)
->
->  static struct ovl_fh *ovl_get_fh(struct dentry *dentry, const char *name)
->  {
-> -       int res, err;
-> +       ssize_t res;
-> +       int err;
->         struct ovl_fh *fh = NULL;
->
-> -       res = vfs_getxattr(dentry, name, NULL, 0);
-> +       res = ovl_vfs_getxattr(dentry, name, NULL, 0);
->         if (res < 0) {
->                 if (res == -ENODATA || res == -EOPNOTSUPP)
->                         return NULL;
-> @@ -123,7 +124,7 @@ static struct ovl_fh *ovl_get_fh(struct dentry *dentry, const char *name)
->         if (!fh)
->                 return ERR_PTR(-ENOMEM);
->
-> -       res = vfs_getxattr(dentry, name, fh, res);
-> +       res = ovl_vfs_getxattr(dentry, name, fh, res);
->         if (res < 0)
->                 goto fail;
->
-> @@ -141,10 +142,11 @@ static struct ovl_fh *ovl_get_fh(struct dentry *dentry, const char *name)
->         return NULL;
->
->  fail:
-> -       pr_warn_ratelimited("overlayfs: failed to get origin (%i)\n", res);
-> +       pr_warn_ratelimited("overlayfs: failed to get origin (%zi)\n", res);
->         goto out;
->  invalid:
-> -       pr_warn_ratelimited("overlayfs: invalid origin (%*phN)\n", res, fh);
-> +       pr_warn_ratelimited("overlayfs: invalid origin (%*phN)\n",
-> +                           (int)res, fh);
->         goto out;
->  }
->
-> diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
-> index 73a02a263fbc..82574684a9b6 100644
-> --- a/fs/overlayfs/overlayfs.h
-> +++ b/fs/overlayfs/overlayfs.h
-> @@ -205,6 +205,8 @@ int ovl_want_write(struct dentry *dentry);
->  void ovl_drop_write(struct dentry *dentry);
->  struct dentry *ovl_workdir(struct dentry *dentry);
->  const struct cred *ovl_override_creds(struct super_block *sb);
-> +ssize_t ovl_vfs_getxattr(struct dentry *dentry, const char *name, void *buf,
-> +                        size_t size);
->  struct super_block *ovl_same_sb(struct super_block *sb);
->  int ovl_can_decode_fh(struct super_block *sb);
->  struct dentry *ovl_indexdir(struct super_block *sb);
-> diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
-> index f5678a3f8350..672459c3cff7 100644
-> --- a/fs/overlayfs/util.c
-> +++ b/fs/overlayfs/util.c
-> @@ -40,6 +40,12 @@ const struct cred *ovl_override_creds(struct super_block *sb)
->         return override_creds(ofs->creator_cred);
->  }
->
-> +ssize_t ovl_vfs_getxattr(struct dentry *dentry, const char *name, void *buf,
-> +                        size_t size)
-> +{
-> +       return __vfs_getxattr(dentry, d_inode(dentry), name, buf, size);
-> +}
-> +
+> diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+> index b368e2e102fa..1d7c3d280834 100644
+> --- a/fs/overlayfs/super.c
+> +++ b/fs/overlayfs/super.c
+> @@ -220,7 +220,7 @@ static void ovl_free_fs(struct ovl_fs *ofs)
+>         if (ofs->workdir_locked)
+>                 ovl_inuse_unlock(ofs->workbasedir);
+>         dput(ofs->workbasedir);
+> -       if (ofs->upperdir_locked)
+> +       if (ofs->upperdir_locked && ofs->upper_mnt)
+>                 ovl_inuse_unlock(ofs->upper_mnt->mnt_root);
+>         mntput(ofs->upper_mnt);
+>         for (i = 0; i < ofs->numlower; i++) {
+> --
 
-When introducing a new ovl_ => vfs_ wrapper, please follow the
-ovl_do_XXX helpers
-convention in overlayfs.h.
+Can you teach STCheck to know that if upperdir_locked is only set this way:
+        ofs->upper_mnt = upper_mnt;
 
-Note that those wrappers do not generally bypass security checks and
-you have not
-convinced me yet that skipping security checks on the overlayfs
-private xattr get
-is the right thing to do.
+        err = -EBUSY;
+        if (ovl_inuse_trylock(ofs->upper_mnt->mnt_root)) {
+                ofs->upperdir_locked = true;
+
+Then upperdir_locked implies ofs->upper_mnt != NULL?
+
+Whether or not this patch should be applied is not my call,
+but the title "possible null-pointer dereference" is certainly not true.
 
 Thanks,
 Amir.
