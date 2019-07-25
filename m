@@ -2,72 +2,210 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3940D7443F
-	for <lists+linux-unionfs@lfdr.de>; Thu, 25 Jul 2019 06:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E2C07460D
+	for <lists+linux-unionfs@lfdr.de>; Thu, 25 Jul 2019 07:49:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726971AbfGYEYB (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 25 Jul 2019 00:24:01 -0400
-Received: from mail-io1-f69.google.com ([209.85.166.69]:37099 "EHLO
-        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725852AbfGYEYB (ORCPT
+        id S1727314AbfGYFsi (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 25 Jul 2019 01:48:38 -0400
+Received: from mail-yw1-f65.google.com ([209.85.161.65]:42659 "EHLO
+        mail-yw1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726312AbfGYFsi (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 25 Jul 2019 00:24:01 -0400
-Received: by mail-io1-f69.google.com with SMTP id v3so53525854ios.4
-        for <linux-unionfs@vger.kernel.org>; Wed, 24 Jul 2019 21:24:00 -0700 (PDT)
+        Thu, 25 Jul 2019 01:48:38 -0400
+Received: by mail-yw1-f65.google.com with SMTP id z63so18881623ywz.9;
+        Wed, 24 Jul 2019 22:48:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ydVv4zA+/+sIts4hNM+2vqi1osfpHO63Y+XbeZJumzQ=;
+        b=eMmatGNUa8boqLelfvO399Vaw7UDGMefdLOheQGuVFAtZRiS+0hM3D/WhDoEBh7LZF
+         5zqXwfBghsOS06xidCuUA6APv+qHY+sSnZZNDlzZJWYrqf2BiYXctFNS/yxmY711PtFG
+         IWgFWDmnuUgGwasEeMpv9eA7sjmLOJHA2+crDowIEgTLQsHo6Ekx92AUXEm1u5Yr8+mg
+         ihfj4O2KXWlwFHMo0sRA2CW8SrZoUoBYwhGbparm9CvKSMF2iW0vlVQXgK71q3PjawsP
+         WzXjORimQKp2Yw9LTumnIs2xfI9AKyZDG0NKck4F89IqTHwsYryJ4g1kLPlWo3UVAHEL
+         5bZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=4ykhyuiBMEbxqBLsBHdyDvPAOtbB9E2k09FumAP9piY=;
-        b=B5HaP2K6NRIxV4lanaT8I4dAvylXpueGqhsKwqB0FGyujczHmbYDjzSH9iJRBAkxMA
-         O5B8TdIwaVV4uEFe3JfncCDV5rhCVQ776Ijn24630UqZ3Drw3hBwX3VNjeL7JF9qplMm
-         jzeLyK8kT7DqW4C1V7Y+ELl78rN+6fcHscCJcGch1gBp6jV+LOrDq0+TWM3tuffCT8NG
-         XnlHIrYJ72VuQDR5DuhBslkDJfc5dyqQaiYJhAm1o0ilWA5KyzG1/+6+UGyK59vVlab0
-         6WerkAYoi/Ua1y3HedFF6dJJeiZkxhCi9FvwN9MRTVzuWqtjZfUEo1I98Dtiw7rPuOgL
-         /oxQ==
-X-Gm-Message-State: APjAAAVlOZMJBxUJNejiXs4PuEAg8aIQmaHBjUDnt/0uf+Z3hUuE7HG4
-        09ZNGNJ3rXP/+WyLTBtAsOkdwtfKh8oa+OxYQE+R6pJFqj5S
-X-Google-Smtp-Source: APXvYqzisP9svwAdUk2M7vpsY1nwZNJ9MmjI4tHYq0ELgBH3s/kK/fffQN/IDt9aWlEkMTECMVVjYMhh99FscjT9fYsgt99Ef1Bm
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ydVv4zA+/+sIts4hNM+2vqi1osfpHO63Y+XbeZJumzQ=;
+        b=kWZ0w7Czdt0yKWQsq+n1drCBXjgia9VgR9YEUK0PH4VxLQD83RrqtsbHQyeZv+z9fd
+         cYFxth9WMj9q+WbqQ+jD91gk8b1xc1lIU87/+6v0HfOEO2qLVRX97VmUSrgJifppHiJD
+         EmSps3PYNTd9kph5MPApJifpyON+p3PJo6CbwSG3czcS8irJMNKN54z0b0ScIYellM+B
+         IojP6Kp/s1SQzD9WKreyB1DITXSYJaFZRyfziGknVIJMQxUnH0hZJogA9q55XuNWdaIy
+         Tb3LPQ5OrzJgA0SRk9beUb+S+9M/S/ubIBboySmetqW69lJ2PuZe6LNbPdyfj1TDpc7B
+         +KAA==
+X-Gm-Message-State: APjAAAWVWPLXs2jrZjOOnhqZ158CN5eza3/nXbqz1IBki//JXzeIo82n
+        5oVBDCxd8+oYaXDNxRYZWWunrHyaR4XhaGV3PDU=
+X-Google-Smtp-Source: APXvYqwCWRfdEVOKSFGgonpy6tDpp/BmVqyzmoFoc2iB9nt8WEi3TpUUme9/UMcfFea8WSzFjJ6AXqz2ZkRNyM9GVXc=
+X-Received: by 2002:a81:13d4:: with SMTP id 203mr52608843ywt.181.1564033717094;
+ Wed, 24 Jul 2019 22:48:37 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a5d:94d0:: with SMTP id y16mr43188529ior.123.1564028640346;
- Wed, 24 Jul 2019 21:24:00 -0700 (PDT)
-Date:   Wed, 24 Jul 2019 21:24:00 -0700
-In-Reply-To: <0000000000004a3a63058e722b94@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000086c732058e79cb59@google.com>
-Subject: Re: WARNING in ovl_real_fdget_meta
-From:   syzbot <syzbot+032bc63605089a199d30@syzkaller.appspotmail.com>
-To:     amir73il@gmail.com, bfields@fieldses.org, jlayton@kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-unionfs@vger.kernel.org, miklos@szeredi.hu,
-        syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+References: <20190724195719.218307-1-salyzyn@android.com> <20190724195719.218307-4-salyzyn@android.com>
+In-Reply-To: <20190724195719.218307-4-salyzyn@android.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Thu, 25 Jul 2019 08:48:26 +0300
+Message-ID: <CAOQ4uxjizC1RhmLe3qmfASk2M-Y+QEiyLL1yJXa4zXAEby7Tig@mail.gmail.com>
+Subject: Re: [PATCH v10 3/5] overlayfs: add __get xattr method
+To:     Mark Salyzyn <salyzyn@android.com>
+Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
+        kernel-team@android.com, Miklos Szeredi <miklos@szeredi.hu>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Vivek Goyal <vgoyal@redhat.com>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-syzbot has bisected this bug to:
+On Wed, Jul 24, 2019 at 10:57 PM Mark Salyzyn <salyzyn@android.com> wrote:
+>
+> Because of the overlayfs getxattr recursion, the incoming inode fails
+> to update the selinux sid resulting in avc denials being reported
+> against a target context of u:object_r:unlabeled:s0.
 
-commit 387e3746d01c34457d6a73688acd90428725070b
-Author: Amir Goldstein <amir73il@gmail.com>
-Date:   Fri Jun 7 14:24:38 2019 +0000
+This description is too brief for me to understand the root problem.
+What's wring with the overlayfs getxattr recursion w.r.t the selinux
+security model?
 
-     locks: eliminate false positive conflicts for write lease
+Please give an example of your unprivileged mounter use case
+to explain.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=15a79594600000
-start commit:   c6dd78fc Merge branch 'x86-urgent-for-linus' of git://git...
-git tree:       upstream
-final crash:    https://syzkaller.appspot.com/x/report.txt?x=17a79594600000
-console output: https://syzkaller.appspot.com/x/log.txt?x=13a79594600000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3c8985c08e1f9727
-dashboard link: https://syzkaller.appspot.com/bug?extid=032bc63605089a199d30
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15855334600000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17fcc4c8600000
+CC Vivek because I could really never understand all this.
 
-Reported-by: syzbot+032bc63605089a199d30@syzkaller.appspotmail.com
-Fixes: 387e3746d01c ("locks: eliminate false positive conflicts for write  
-lease")
+>
+> Solution is to add a _get xattr method that calls the __vfs_getxattr
+> handler so that the context can be read in, rather than being denied
+> with an -EACCES when vfs_getxattr handler is called.
+>
+> Signed-off-by: Mark Salyzyn <salyzyn@android.com>
+> Cc: Miklos Szeredi <miklos@szeredi.hu>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Vivek Goyal <vgoyal@redhat.com>
+> Cc: Eric W. Biederman <ebiederm@xmission.com>
+> Cc: Amir Goldstein <amir73il@gmail.com>
+> Cc: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Stephen Smalley <sds@tycho.nsa.gov>
+> Cc: linux-unionfs@vger.kernel.org
+> Cc: linux-doc@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: kernel-team@android.com
+> ---
+> v10 - added to patch series
+> ---
+>  fs/overlayfs/inode.c     | 15 +++++++++++++++
+>  fs/overlayfs/overlayfs.h |  2 ++
+>  fs/overlayfs/super.c     | 18 ++++++++++++++++++
+>  3 files changed, 35 insertions(+)
+>
+> diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
+> index 7663aeb85fa3..d3b53849615c 100644
+> --- a/fs/overlayfs/inode.c
+> +++ b/fs/overlayfs/inode.c
+> @@ -362,6 +362,21 @@ int ovl_xattr_set(struct dentry *dentry, struct inode *inode, const char *name,
+>         return err;
+>  }
+>
+> +int __ovl_xattr_get(struct dentry *dentry, struct inode *inode,
+> +                   const char *name, void *value, size_t size)
+> +{
+> +       ssize_t res;
+> +       const struct cred *old_cred;
+> +       struct dentry *realdentry =
+> +               ovl_i_dentry_upper(inode) ?: ovl_dentry_lower(dentry);
+> +
+> +       old_cred = ovl_override_creds(dentry->d_sb);
+> +       res = __vfs_getxattr(realdentry, d_inode(realdentry), name, value,
+> +                            size);
+> +       ovl_revert_creds(old_cred);
+> +       return res;
+> +}
+> +
+>  int ovl_xattr_get(struct dentry *dentry, struct inode *inode, const char *name,
+>                   void *value, size_t size)
+>  {
+> diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+> index 6934bcf030f0..73a02a263fbc 100644
+> --- a/fs/overlayfs/overlayfs.h
+> +++ b/fs/overlayfs/overlayfs.h
+> @@ -357,6 +357,8 @@ int ovl_xattr_set(struct dentry *dentry, struct inode *inode, const char *name,
+>                   const void *value, size_t size, int flags);
+>  int ovl_xattr_get(struct dentry *dentry, struct inode *inode, const char *name,
+>                   void *value, size_t size);
+> +int __ovl_xattr_get(struct dentry *dentry, struct inode *inode,
+> +                   const char *name, void *value, size_t size);
+>  ssize_t ovl_listxattr(struct dentry *dentry, char *list, size_t size);
+>  struct posix_acl *ovl_get_acl(struct inode *inode, int type);
+>  int ovl_update_time(struct inode *inode, struct timespec64 *ts, int flags);
+> diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+> index b368e2e102fa..82e1130de206 100644
+> --- a/fs/overlayfs/super.c
+> +++ b/fs/overlayfs/super.c
+> @@ -859,6 +859,14 @@ ovl_posix_acl_xattr_get(const struct xattr_handler *handler,
+>         return ovl_xattr_get(dentry, inode, handler->name, buffer, size);
+>  }
+>
+> +static int __maybe_unused
+> +__ovl_posix_acl_xattr_get(const struct xattr_handler *handler,
+> +                         struct dentry *dentry, struct inode *inode,
+> +                         const char *name, void *buffer, size_t size)
+> +{
+> +       return __ovl_xattr_get(dentry, inode, handler->name, buffer, size);
+> +}
+> +
+>  static int __maybe_unused
+>  ovl_posix_acl_xattr_set(const struct xattr_handler *handler,
+>                         struct dentry *dentry, struct inode *inode,
+> @@ -939,6 +947,13 @@ static int ovl_other_xattr_get(const struct xattr_handler *handler,
+>         return ovl_xattr_get(dentry, inode, name, buffer, size);
+>  }
+>
+> +static int __ovl_other_xattr_get(const struct xattr_handler *handler,
+> +                                struct dentry *dentry, struct inode *inode,
+> +                                const char *name, void *buffer, size_t size)
+> +{
+> +       return __ovl_xattr_get(dentry, inode, name, buffer, size);
+> +}
+> +
+>  static int ovl_other_xattr_set(const struct xattr_handler *handler,
+>                                struct dentry *dentry, struct inode *inode,
+>                                const char *name, const void *value,
+> @@ -952,6 +967,7 @@ ovl_posix_acl_access_xattr_handler = {
+>         .name = XATTR_NAME_POSIX_ACL_ACCESS,
+>         .flags = ACL_TYPE_ACCESS,
+>         .get = ovl_posix_acl_xattr_get,
+> +       .__get = __ovl_posix_acl_xattr_get,
+>         .set = ovl_posix_acl_xattr_set,
+>  };
+>
+> @@ -960,6 +976,7 @@ ovl_posix_acl_default_xattr_handler = {
+>         .name = XATTR_NAME_POSIX_ACL_DEFAULT,
+>         .flags = ACL_TYPE_DEFAULT,
+>         .get = ovl_posix_acl_xattr_get,
+> +       .__get = __ovl_posix_acl_xattr_get,
+>         .set = ovl_posix_acl_xattr_set,
+>  };
+>
+> @@ -972,6 +989,7 @@ static const struct xattr_handler ovl_own_xattr_handler = {
+>  static const struct xattr_handler ovl_other_xattr_handler = {
+>         .prefix = "", /* catch all */
+>         .get = ovl_other_xattr_get,
+> +       .__get = __ovl_other_xattr_get,
+>         .set = ovl_other_xattr_set,
+>  };
+>
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+
+Not very professional of me to comment on the proposed solution
+without understanding the problem, but my nose says this cannot
+be the right solution and if it is, then you better find a much better
+name for the API then __get() and document it properly.
+
+Thanks,
+Amir.
