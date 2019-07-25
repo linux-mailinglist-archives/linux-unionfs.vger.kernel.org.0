@@ -2,53 +2,54 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AF2B75315
-	for <lists+linux-unionfs@lfdr.de>; Thu, 25 Jul 2019 17:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 949CB75337
+	for <lists+linux-unionfs@lfdr.de>; Thu, 25 Jul 2019 17:51:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389338AbfGYPnv (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 25 Jul 2019 11:43:51 -0400
-Received: from mail-yw1-f67.google.com ([209.85.161.67]:38811 "EHLO
-        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387941AbfGYPnv (ORCPT
+        id S1728523AbfGYPvs (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 25 Jul 2019 11:51:48 -0400
+Received: from mail-yb1-f196.google.com ([209.85.219.196]:44971 "EHLO
+        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726692AbfGYPvs (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 25 Jul 2019 11:43:51 -0400
-Received: by mail-yw1-f67.google.com with SMTP id f187so19386872ywa.5;
-        Thu, 25 Jul 2019 08:43:51 -0700 (PDT)
+        Thu, 25 Jul 2019 11:51:48 -0400
+Received: by mail-yb1-f196.google.com with SMTP id a14so18636273ybm.11;
+        Thu, 25 Jul 2019 08:51:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Y8u5tRtb2phALqFhx/N87c7RhwGYwIkCOlt6V+GWL8A=;
-        b=Yy8pfw/e7Rs8ai1udRsDDUjLgCb54tXT6y666uRoXningJ6b16Hfe4gPkFc5YCAq9m
-         ZhuJwie5gNx1vuOcfoAQlOxcCKmpVDoRNfeuHBAGyMjTHBGbz3NdXrcUgwS3Ow+XwiEn
-         q/ZTxO0NxWsrxibT7wxe8d6X3zuBiPWgJx5ezArl5AD3X3pnKKY4oVUvP8Vw4HrOSMqG
-         d/nAtPI0qr8qniTlqo9JTp4KBgn6Pl4UGlYFII3i83nBs/SPNRQ1ibfDlSsisW8hRKjz
-         P7m7VistXF1q7JPo00Q4xy8xKLwgzL6u/4lxgBtgHR0nV4a4HtOqHcb1x6oJv14rue6I
-         momA==
+        bh=XzjdGqC1KanFcesRBecTPozKcz3xVgLXZiKoPtdXfLQ=;
+        b=T9zktBfj+oIxSDxV7DWaLUAtH2lZn9X3qyEgmZLH8oxDJbdLzxZs8KVT5g71EiS24V
+         WUCGpIhvT1iOHx4m9D1eXKfWRkfoVDFIj+CvJggpIz4t3oMMCo0xEHDYkh069VVT5nrt
+         u1dom5QKGlXYL4Mob17aMXYResfKZIqi4lzTEoq8Hi4EsvMveNO3tULKiiO/v0b4sktB
+         8dOvUyeV00ZX9qOnMIku/9GFiUxW32mZCh5dzAPVkH7GK2Lc0f3Ywgq0SDHl99QLGvpz
+         LWKzv3AerCcDpkAmvjWZAAuBi0JpxoJ9eJFra0rDD5bPVbmcXJ6p4TMVGTxPy0BgK3t1
+         uYOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Y8u5tRtb2phALqFhx/N87c7RhwGYwIkCOlt6V+GWL8A=;
-        b=r4OIm54TcVvkNZsWHFMmr13aeruEEUvb1H0zKF+9JBpFjA++AfUqRfENV3RU42pTzk
-         FVe+Xwkf/Y4mYEE90gkB0yMN2pmzidt/gm/46wbygGEtgckxLTMsRnHtyVO4RgwtDVmR
-         gsgoRagm5w4gv05aouHOhNffZnbmaAGValD5cgz3lgSWjPJcAZr8oTXGw30aO1292Fv8
-         Nc/Nj4ZVIWduS0lGKgNjTjRnoXdkyaEHaJO6YumACt4bB9tuwcbHP+vMGEh55FQddppr
-         b+6k+jGcqmtAsGdiphLrbvy/ZreMBVlzGYJ5FDxjkvHvIxxejRnemDHmXw+0oxV8Yk4o
-         MxGQ==
-X-Gm-Message-State: APjAAAXs0Otu8ODVedZZb4oWKZq0AR5i1PErPkVptRLnBlrdEOUwbL3Z
-        +lY5J+2pfPTVtvqLsNf0jr47C5WZ2UQwv6D1Xlg=
-X-Google-Smtp-Source: APXvYqyCDiuMaRUJVGkdNaVLhab3/ROtmMU7HZ08ptYBHKPp450N+OQ9LKM1H5Oheuz1tEFA6tt6N/m8VlETffmMZD4=
-X-Received: by 2002:a81:49c3:: with SMTP id w186mr53593821ywa.31.1564069430642;
- Thu, 25 Jul 2019 08:43:50 -0700 (PDT)
+        bh=XzjdGqC1KanFcesRBecTPozKcz3xVgLXZiKoPtdXfLQ=;
+        b=tgs/iXapveGYic8saRb6GLeZ7jp1U0i8EBsoR05iMEPsRJsiwVmtq449QxaN+EZ+5l
+         LLI5GNRCVZYVCVYqxInhvf24CIGxQJs4O1e9xhnFE86cJp1vZqmsuAVq4R6/nEneG+pi
+         QD0N2ydsdElIgVuOUWBgSp6mI9EZD/vltzibDDGgCCEVLIum/Z+zvqF/soPHhG4gOpq2
+         RvnaZqtsXgZGLB0SWSCEfPgXrjfB0QHOBYHGO8VLk7yM223tsVXDic+CPPk9nvIuACio
+         uiCVES4+E0x17W3nR1yCxhFU3xZGkxMZpTKQof5ZU7T865eXFauWZnE35ft0knuUEkwA
+         dGgw==
+X-Gm-Message-State: APjAAAWznfKVJna9pw09lpmdnjcDQArhK/VCwBGJFOSSfVGM/Rbj78yL
+        0P2CX1DD8ZAQ1i56PgmFPVbUxx/XV2u+uwVohCQ=
+X-Google-Smtp-Source: APXvYqxVeHgUtZr3g2omkLN2Ixlk+Mh+izDz6CjHC02+EydHhcvHTGyI31ttuRNSPp42UdH7BEv0v18FRIh/4DxbAoc=
+X-Received: by 2002:a25:9a08:: with SMTP id x8mr53552715ybn.439.1564069907073;
+ Thu, 25 Jul 2019 08:51:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190724195719.218307-1-salyzyn@android.com> <20190724195719.218307-4-salyzyn@android.com>
- <CAOQ4uxjizC1RhmLe3qmfASk2M-Y+QEiyLL1yJXa4zXAEby7Tig@mail.gmail.com> <af254162-10bf-1fc5-2286-8d002a287400@android.com>
-In-Reply-To: <af254162-10bf-1fc5-2286-8d002a287400@android.com>
+References: <20190724195719.218307-1-salyzyn@android.com> <20190724195719.218307-5-salyzyn@android.com>
+ <CAOQ4uxhtASSymEOdh4XByXbxWO2_ZivzqjBrgK7jB3fWXLqr_w@mail.gmail.com> <20df8497-17ea-27db-43c8-fcd73633e7f3@android.com>
+In-Reply-To: <20df8497-17ea-27db-43c8-fcd73633e7f3@android.com>
 From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 25 Jul 2019 18:43:39 +0300
-Message-ID: <CAOQ4uxi5S9HTx+wR1U_8vQ-6nyCozykWBZbZwiHhnXBGhXRz8Q@mail.gmail.com>
-Subject: Re: [PATCH v10 3/5] overlayfs: add __get xattr method
+Date:   Thu, 25 Jul 2019 18:51:36 +0300
+Message-ID: <CAOQ4uxhE77ZvUBv_ZLhSf8fdsWcJJkewjZAQKbgw3BdvgjRUOA@mail.gmail.com>
+Subject: Re: [PATCH v10 4/5] overlayfs: internal getxattr operations without
+ sepolicy checking
 To:     Mark Salyzyn <salyzyn@android.com>
 Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
         kernel-team@android.com, Miklos Szeredi <miklos@szeredi.hu>,
@@ -65,40 +66,37 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Thu, Jul 25, 2019 at 6:03 PM Mark Salyzyn <salyzyn@android.com> wrote:
+On Thu, Jul 25, 2019 at 5:37 PM Mark Salyzyn <salyzyn@android.com> wrote:
 >
-> On 7/24/19 10:48 PM, Amir Goldstein wrote:
+> Thanks for the review.
+>
+> On 7/25/19 4:00 AM, Amir Goldstein wrote:
 > > On Wed, Jul 24, 2019 at 10:57 PM Mark Salyzyn <salyzyn@android.com> wrote:
-> >> Because of the overlayfs getxattr recursion, the incoming inode fails
-> >> to update the selinux sid resulting in avc denials being reported
-> >> against a target context of u:object_r:unlabeled:s0.
-> > This description is too brief for me to understand the root problem.
-> > What's wring with the overlayfs getxattr recursion w.r.t the selinux
-> > security model?
+> >> Check impure, opaque, origin & meta xattr with no sepolicy audit
+> >> (using __vfs_getxattr) since these operations are internal to
+> >> overlayfs operations and do not disclose any data.  This became
+> >> an issue for credential override off since sys_admin would have
+> >> been required by the caller; whereas would have been inherently
+> >> present for the creator since it performed the mount.
+> >>
+> >> This is a change in operations since we do not check in the new
+> >> ovl_vfs_getxattr function if the credential override is off or
+> >> not.  Reasoning is that the sepolicy check is unnecessary overhead,
+> >> especially since the check can be expensive.
+> > I don't know that this reasoning suffice to skip the sepolicy checks
+> > for overlayfs private xattrs.
+> > Can't sepolicy be defined to allow get access to trusted.overlay.*?
 >
-> __vfs_getxattr (the way the security layer acquires the target sid
-> without recursing back to security to check the access permissions)
-> calls get xattr method, which in overlayfs calls vfs_getxattr on the
-> lower layer (which then recurses back to security to check permissions)
-> and reports back -EACCES if there was a denial (which is OK) and _no_
-> sid copied to caller's inode security data, bubbles back to the security
-> layer caller, which reports an invalid avc: message for
-> u:object_r:unlabeled:s0 (the uninitialized sid instead of the sid for
-> the lower filesystem target). The blocked access is 100% valid, it is
-> supposed to be blocked. This does however result in a cosmetic issue
-> that makes it impossible to use audit2allow to construct a rule that
-> would be usable to fix the access problem.
+> Because for override credentials off, _everyone_ would need it (at least
+> on Android, the sole user AFAIK, and only on userdebug builds, not user
+> builds), and if everyone is special, and possibly including the random
+> applications we add from the play store, then no one is ...
 >
 
-Ahhh you are talking about getting the security.selinux.* xattrs?
-I was under the impression (Vivek please correct me if I wrong)
-that overlayfs objects cannot have individual security labels and
-the only way to label overlayfs objects is by mount options on the
-entire mount? Or is this just for lower layer objects?
+OK. I am convinced.
 
-Anyway, the API I would go for is adding a @flags argument to
-get() which can take XATTR_NOSECURITY akin to
-FMODE_NONOTIFY, GFP_NOFS, meant to avoid recursions.
+One weak argument in favor of the patch:
+ecryptfs also uses __vfs_getxattr for private xattrs.
 
 Thanks,
 Amir.
