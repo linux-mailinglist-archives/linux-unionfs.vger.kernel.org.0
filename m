@@ -2,139 +2,154 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2FB675E0E
-	for <lists+linux-unionfs@lfdr.de>; Fri, 26 Jul 2019 07:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10AFC75F60
+	for <lists+linux-unionfs@lfdr.de>; Fri, 26 Jul 2019 08:57:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725897AbfGZFEQ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 26 Jul 2019 01:04:16 -0400
-Received: from mail-yw1-f67.google.com ([209.85.161.67]:46711 "EHLO
-        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725836AbfGZFEP (ORCPT
+        id S1725925AbfGZG5s (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 26 Jul 2019 02:57:48 -0400
+Received: from mail-yb1-f195.google.com ([209.85.219.195]:33052 "EHLO
+        mail-yb1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725942AbfGZG5p (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 26 Jul 2019 01:04:15 -0400
-Received: by mail-yw1-f67.google.com with SMTP id z197so19967917ywd.13;
-        Thu, 25 Jul 2019 22:04:15 -0700 (PDT)
+        Fri, 26 Jul 2019 02:57:45 -0400
+Received: by mail-yb1-f195.google.com with SMTP id c202so17953682ybf.0;
+        Thu, 25 Jul 2019 23:57:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=9BNINAL8vtmfq8NfDjx0Dmq+IVT05q0DWb+PWa71nh0=;
-        b=SmOwl8V1wROFfAkIgrlEn+O0Ui9pNhekwRgt9i4amYp4tIMqUHpxlzwwEM6JDRU1iw
-         epQtQK9aIaxC2/Q+hmzNUDklqXMfJQiDi5/BkCns8afIB9OPV6CPOlVkdajgn4s75HkU
-         +hejw6Ez8Y7wdz83DcOrBgXJIC5kFM+7A7sZaVIFWMb1kE7GCVeYLw5Hhy+RyIa1OnEf
-         orSbxdhtNil7LrN+dJmUCANece+6Clk7JYriE7zLCJf720EPHMvvwXnUMGSFIHwJu9sG
-         v8rB9Vl6RJ8EHFvzJiQE0HqrYvj7JdvekuQZnaZzk9RRA0b6GjqzeVdJUcpHh+CyNrXn
-         TFfQ==
+        bh=ra3fpxWHFvLtRMMiUd9OFJua+AjFjAkm9k/vwnBYkKk=;
+        b=VyohNN1DhYTQ0+iW4429cNqwM4zP8mMpsqJJWhXJxwiAHA1Kqu5KbFN4ZZqCAcq6f1
+         HntDKKVZZcM/yjZfgudVx5jGIfpHL8Z2m8xAX/5iaNODDzLYALhHWuA5sOhAA3GF7E9q
+         FlSEnsjrYDFbqc+9iu7OF7KUwYqHNyskA+z1eOPXRXOtJSLxv58ZAjm1jIIKwGNb1D3w
+         gCZlZ7JiuCixjg5eaushQNBARWmGyT8N/rcvs/3/gnrlzeBLJs/xYPj+PXlP7jZlf2GO
+         PnkQn9q1DLvAlH0Be0VdE5eW9pymaUOTYqDwAgm23RqtZBLtjih7jihc0SxPdgwAMdy9
+         HgFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=9BNINAL8vtmfq8NfDjx0Dmq+IVT05q0DWb+PWa71nh0=;
-        b=Eg7M/BrKPWuf6UL38xcvfw/c6xq8kXI8riPQTBq7J5aDnEvHBctPmZKo7f2Zgs8jT1
-         xFqIjZfeukyrN/Hir8KRTNTO6jrkMblv8tG2KU8Yh90eSkFuqF8UDGfysfCl1RPLnh3b
-         W9Bdbm9o7pjgwKy78p/kmDAFmFsvOvt93QbK3Uenvc9PFRgnHDk+gsSew8p1Zalnn+X/
-         /FBExG2J5J9UhJy7EN/OQrrzwZgRpgQ8fPzfJuJ0RgshQZdNekd42O3Otk+4gmr1I7f4
-         pVzcN72dw7NPZymCKgYtNx5mYEYPs6T34s7ZmMeIvPzzu+A46CCiivPnbKGizxMhAWLI
-         z1Mg==
-X-Gm-Message-State: APjAAAUMTWlmxiANeaP2JyCHJOBpbbuI7F/J5caGkOd4+WXCDQoq4TA9
-        YVPb2zyilX66Qct8GB44oT0ZSL1/ZRmjalnWQVo=
-X-Google-Smtp-Source: APXvYqycEuetYlg8eMDjrLKNUCeBJY1btcEg9V/v3DFIathxqeL4dQ/DUoEzHgjsOnkTepzD/cD2+FI+JKkB5VlFnjI=
-X-Received: by 2002:a81:50d5:: with SMTP id e204mr54057700ywb.379.1564117454607;
- Thu, 25 Jul 2019 22:04:14 -0700 (PDT)
+        bh=ra3fpxWHFvLtRMMiUd9OFJua+AjFjAkm9k/vwnBYkKk=;
+        b=pU3zdR5BWUy3BTmafY1HQ0JtaTFqQBOJP219JRYynYWNJGaEr1WnTN+CAUg7x614gh
+         B7yXdQpaM0L+3iYr6YVeVJxtwFkHHr6gjWdOd12p9Fd268BMjlMTUgksuRmZcM8JhyUe
+         8945qNBrJ9EGS1JrfOC+/xZioOXhGJSkOkhqFA72VjUxBWlD5adjFssl44nJ2YPoX9Vc
+         6esddW2oPF/9K9/vVw7+zp9E0FIzjFowE3M3uYXnvib6DMmdq8luYhvsFuTALxH6MeZC
+         +foSZ6EDilolwFBV+yVhPb2sZj5ZDoAmTlsLUxGKNOV+1EcZfXq1QYuj9r8EghmB4puV
+         bpFQ==
+X-Gm-Message-State: APjAAAVaj7phsbnJJlJVJi1SLxnZ1bq22FcHZLkDfY7teS2uLbTZpkDc
+        leDG5sA0zf46FS7njeYWAipG3OpJfuCoMWwvZcCjDBSW
+X-Google-Smtp-Source: APXvYqwbJ5BQE3yQlkGcySgvRgVFiEZb+YkhRLN8KUrLAeKhUhckEbkNXOsgbB4H0H+8Z068E7aBqNkYnf+SpcAoZj0=
+X-Received: by 2002:a25:9a08:: with SMTP id x8mr55700016ybn.439.1564124264773;
+ Thu, 25 Jul 2019 23:57:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190724195719.218307-1-salyzyn@android.com> <20190724195719.218307-4-salyzyn@android.com>
- <CAOQ4uxjizC1RhmLe3qmfASk2M-Y+QEiyLL1yJXa4zXAEby7Tig@mail.gmail.com>
- <af254162-10bf-1fc5-2286-8d002a287400@android.com> <CAOQ4uxi5S9HTx+wR1U_8vQ-6nyCozykWBZbZwiHhnXBGhXRz8Q@mail.gmail.com>
- <35b70147-25ad-4c29-3972-418ebee5e7b8@android.com>
-In-Reply-To: <35b70147-25ad-4c29-3972-418ebee5e7b8@android.com>
+References: <20190715133839.9878-1-amir73il@gmail.com> <20190715133839.9878-2-amir73il@gmail.com>
+In-Reply-To: <20190715133839.9878-2-amir73il@gmail.com>
 From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Fri, 26 Jul 2019 08:04:03 +0300
-Message-ID: <CAOQ4uxg8k=4D5_VEBy61PwBo+2pCCakUPw3uCar2oQpi3yaLmA@mail.gmail.com>
-Subject: Re: [PATCH v10 3/5] overlayfs: add __get xattr method
-To:     Mark Salyzyn <salyzyn@android.com>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        kernel-team@android.com, Miklos Szeredi <miklos@szeredi.hu>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Vivek Goyal <vgoyal@redhat.com>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-doc@vger.kernel.org
+Date:   Fri, 26 Jul 2019 09:57:33 +0300
+Message-ID: <CAOQ4uxhRgL2sMok7xsAZN6cZXSfoPxx=O8ADE=72+Ta3hGoLbw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] ovl: support [S|G]ETFLAGS ioctl for directories
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     Vivek Goyal <vgoyal@redhat.com>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        overlayfs <linux-unionfs@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Thu, Jul 25, 2019 at 7:22 PM Mark Salyzyn <salyzyn@android.com> wrote:
+On Mon, Jul 15, 2019 at 4:38 PM Amir Goldstein <amir73il@gmail.com> wrote:
 >
-> On 7/25/19 8:43 AM, Amir Goldstein wrote:
-> > On Thu, Jul 25, 2019 at 6:03 PM Mark Salyzyn <salyzyn@android.com> wrote:
-> >> On 7/24/19 10:48 PM, Amir Goldstein wrote:
-> >>> On Wed, Jul 24, 2019 at 10:57 PM Mark Salyzyn <salyzyn@android.com> wrote:
-> >>>> Because of the overlayfs getxattr recursion, the incoming inode fails
-> >>>> to update the selinux sid resulting in avc denials being reported
-> >>>> against a target context of u:object_r:unlabeled:s0.
-> >>> This description is too brief for me to understand the root problem.
-> >>> What's wring with the overlayfs getxattr recursion w.r.t the selinux
-> >>> security model?
-> >> __vfs_getxattr (the way the security layer acquires the target sid
-> >> without recursing back to security to check the access permissions)
-> >> calls get xattr method, which in overlayfs calls vfs_getxattr on the
-> >> lower layer (which then recurses back to security to check permissions)
-> >> and reports back -EACCES if there was a denial (which is OK) and _no_
-> >> sid copied to caller's inode security data, bubbles back to the security
-> >> layer caller, which reports an invalid avc: message for
-> >> u:object_r:unlabeled:s0 (the uninitialized sid instead of the sid for
-> >> the lower filesystem target). The blocked access is 100% valid, it is
-> >> supposed to be blocked. This does however result in a cosmetic issue
-> >> that makes it impossible to use audit2allow to construct a rule that
-> >> would be usable to fix the access problem.
-> >>
-> > Ahhh you are talking about getting the security.selinux.* xattrs?
-> > I was under the impression (Vivek please correct me if I wrong)
-> > that overlayfs objects cannot have individual security labels and
+> [S|G]ETFLAGS and FS[S|G]ETXATTR ioctls are applicable to both files and
+> directories, so add ioctl operations to dir as well.
 >
-> They can, and we _need_ them for Android's use cases, upper and lower
-> filesystems.
+> ifdef away compat ioctl implementation to conform to standard practice.
 >
-> Some (most?) union filesystems (like Android's sdcardfs) set sepolicy
-> from the mount options, we did not need this adjustment there of course.
+> With this change, xfstest generic/079 which tests these ioctls on files
+> and directories passes.
 >
-> > the only way to label overlayfs objects is by mount options on the
-> > entire mount? Or is this just for lower layer objects?
-> >
-> > Anyway, the API I would go for is adding a @flags argument to
-> > get() which can take XATTR_NOSECURITY akin to
-> > FMODE_NONOTIFY, GFP_NOFS, meant to avoid recursions.
+> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> ---
+>  fs/overlayfs/file.c      | 10 ++++++----
+>  fs/overlayfs/overlayfs.h |  2 ++
+>  fs/overlayfs/readdir.c   |  4 ++++
+>  3 files changed, 12 insertions(+), 4 deletions(-)
 >
-> I do like it better (with the following 7 stages of grief below), best
-> for the future.
+> diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+> index e235a635d9ec..c6426e4d3f1f 100644
+> --- a/fs/overlayfs/file.c
+> +++ b/fs/overlayfs/file.c
+> @@ -502,7 +502,7 @@ static long ovl_ioctl_set_fsxflags(struct file *file, unsigned int cmd,
+>                                    ovl_fsxflags_to_iflags(fa.fsx_xflags));
+>  }
 >
-> The change in this handler's API will affect all filesystem drivers
-> (well, my change affects the ABI, so it is not as-if I saved the world
-> from a module recompile) touching all filesystem sources with an even
-> larger audience of stakeholders. Larger audience of stakeholders, the
-> harder to get the change in ;-/. This is also concerning since I would
-> like this change to go to stable 4.4, 4.9, 4.14 and 4.19 where this
-> regression got introduced. I can either craft specific stable patches or
-> just let it go and deal with them in the android-common distributions
-> rather than seeking stable merged down. ABI/API breaks are a problem for
-> stable anyway ...
+> -static long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+> +long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+>  {
+>         long ret;
+>
+> @@ -527,8 +527,8 @@ static long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+>         return ret;
+>  }
+>
+> -static long ovl_compat_ioctl(struct file *file, unsigned int cmd,
+> -                            unsigned long arg)
+> +#ifdef CONFIG_COMPAT
+> +long ovl_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+>  {
+>         switch (cmd) {
+>         case FS_IOC32_GETFLAGS:
+> @@ -545,6 +545,7 @@ static long ovl_compat_ioctl(struct file *file, unsigned int cmd,
+>
+>         return ovl_ioctl(file, cmd, arg);
+>  }
+> +#endif
+>
+>  enum ovl_copyop {
+>         OVL_COPY,
+> @@ -646,8 +647,9 @@ const struct file_operations ovl_file_operations = {
+>         .fallocate      = ovl_fallocate,
+>         .fadvise        = ovl_fadvise,
+>         .unlocked_ioctl = ovl_ioctl,
+> +#ifdef CONFIG_COMPAT
+>         .compat_ioctl   = ovl_compat_ioctl,
+> -
+> +#endif
+>         .copy_file_range        = ovl_copy_file_range,
+>         .remap_file_range       = ovl_remap_file_range,
+>  };
+> diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+> index 6934bcf030f0..7c94cc3521cb 100644
+> --- a/fs/overlayfs/overlayfs.h
+> +++ b/fs/overlayfs/overlayfs.h
+> @@ -416,6 +416,8 @@ struct dentry *ovl_create_temp(struct dentry *workdir, struct ovl_cattr *attr);
+>
+>  /* file.c */
+>  extern const struct file_operations ovl_file_operations;
+> +long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
+> +long ovl_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
+>
+>  /* copy_up.c */
+>  int ovl_copy_up(struct dentry *dentry);
+> diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
+> index 47a91c9733a5..eff8fbfccc7c 100644
+> --- a/fs/overlayfs/readdir.c
+> +++ b/fs/overlayfs/readdir.c
+> @@ -907,6 +907,10 @@ const struct file_operations ovl_dir_operations = {
+>         .llseek         = ovl_dir_llseek,
+>         .fsync          = ovl_dir_fsync,
+>         .release        = ovl_dir_release,
+> +       .unlocked_ioctl = ovl_ioctl,
+> +#ifdef CONFIG_COMPAT
+> +       .compat_ioctl   = ovl_compat_ioctl,
+> +#endif
+>  };
 >
 
-Use the memalloc_nofs_save/restore design pattern will avoid all that
-grief.
-As a matter of fact, this issue could and should be handled inside security
-subsystem without bothering any other subsystem.
-LSM have per task context right? That context could carry the recursion
-flags to know that the getxattr call is made by the security subsystem itself.
-The problem is not limited to union filesystems.
-In general its a stacking issue. ecryptfs is also a stacking fs, out-of-tree
-shiftfs as well. But it doesn't end there.
-A filesystem on top of a loop device inside another filesystem could
-also maybe result in security hook recursion (not sure if in practice).
+Big self NACK!!!
 
-Thanks,
+Cannot call ovl_ioctl => ovl_real_ioctl => ovl_real_fdget with a directory.
+If we do this need to implement ovl_dir_ioctl and refactor the ioctl helpers.
+
+Sorry,
 Amir.
