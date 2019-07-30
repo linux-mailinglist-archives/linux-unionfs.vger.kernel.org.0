@@ -2,212 +2,153 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B0997AE74
-	for <lists+linux-unionfs@lfdr.de>; Tue, 30 Jul 2019 18:55:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CC217AFDF
+	for <lists+linux-unionfs@lfdr.de>; Tue, 30 Jul 2019 19:29:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728806AbfG3QyM (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 30 Jul 2019 12:54:12 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:37557 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727086AbfG3QyM (ORCPT
+        id S1728818AbfG3R3M (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 30 Jul 2019 13:29:12 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:36288 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727716AbfG3R3L (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 30 Jul 2019 12:54:12 -0400
-Received: by mail-pg1-f194.google.com with SMTP id i70so19625817pgd.4
-        for <linux-unionfs@vger.kernel.org>; Tue, 30 Jul 2019 09:54:11 -0700 (PDT)
+        Tue, 30 Jul 2019 13:29:11 -0400
+Received: by mail-pg1-f193.google.com with SMTP id l21so30411404pgm.3
+        for <linux-unionfs@vger.kernel.org>; Tue, 30 Jul 2019 10:29:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=android.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=MoEcPapG/LaZOQvLzVcYcI0+tSlSIFm/nnjo7BAMJYY=;
-        b=LJ1ACSxNwZ4ucmYW2qV+p39Q4fQZB4udUE+Gb5JhiN9WVTHrtVNn57DveGs4GtPI3n
-         B5epm2IPXp40An7xqDJBGm0XoY1PmXj1Rut+znOsNuwrRaLuBFdQrJZ9k2JPlrP+NtLG
-         oJ+12iBSGbk30q0+nVlUGd5VPAhQJGh+LJQ4GDguc5upYwOJPbYaKswtruqWgBG0VSgH
-         nAMch25Fsk9puAGb1Zzta5+oq46qNG7b7GeSV4laBXV7jloeZicILLGRsHrdWbywCidw
-         zaqamLZFA+sjcKZ3TYylEaGXolN/DCjIp3GsIaVf9SGYyOuFUETPe5oipqtOtDJT7vYF
-         XKyw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=4RdmJMzJpJkE1tpwAcBC2lO5tLyCjdp9GTuTXQPYwuU=;
+        b=QAyuPC1xGgz2u4jqn8ZOqROMWt1+hlxJq/wFESXFu+V2ivcy4DD8nbNlM2uQeZLRPY
+         DO05rDvTm4wx+czIKgMNOM5luBifS2uQyT89Mupk/c2+P0RBaUhdLM+McSHZfDPmGht6
+         OD6k7FOwQYA7OrVOa+0s0CPKSixxquxU38pOd6ZhNbzX7yfNkYEMPJXvsjK6DuaLRRfk
+         bSFe6gvHEcaEJO2djvEuQqYkWI1HulSz4wNMhM7LWVsBBrbFdSJqjV62eGD8e1D/iF1R
+         HQlzGPY0X6bzWvPfRVxr2vPlCU2AoHtLdkRwmlLaNoyBpz9KTQxRpm2zeiSWp8w/SECX
+         X5pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=MoEcPapG/LaZOQvLzVcYcI0+tSlSIFm/nnjo7BAMJYY=;
-        b=IirP+Xt0yGyLsnWyrNpGgr4voE9tkmaKgORqmH8HvGC1XYKLyCuOjXjJ0/gw/DRuY1
-         mSLtxpxzlxTRpbQ08AZ8UPbXAFWGAVsUbp6pYnHeu3n9a+QWn0EesvMBUaPFxCYLN9v4
-         ZarR7l+16gKuwvclDyXcdNI8NJ6KqwYPoAykV0h3thAX5zkUgYOAAGCut4JwKUfzU1Pm
-         IoM4Cv+uQDb8NPPQm9IUAN/yDW4Xks1UCgzPjTjDseXwip3CaX1uyuVjyj/HkqzwjR9F
-         ADD8OjNH3UXYhggqdGZcpjPKrjrsE5/vV4Ld9t6nOSKNYbX2IRBC3hFbhdMrTy4m8rq3
-         lnfA==
-X-Gm-Message-State: APjAAAXlIP79xO+DJJKWC2yM66U6WyOktOH4WgKiIGv0Tt4uXNamZWW3
-        Lu39L4YSJehLhN9HgYiFoLU=
-X-Google-Smtp-Source: APXvYqz0Udc93f2NUCno3btIJo1gWg2Zn2ZNRhrkKJgoB2NOIXwhJrjLf52Ht1Zg8scOBQWTT4FwCw==
-X-Received: by 2002:aa7:9786:: with SMTP id o6mr41860393pfp.222.1564505651369;
-        Tue, 30 Jul 2019 09:54:11 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=4RdmJMzJpJkE1tpwAcBC2lO5tLyCjdp9GTuTXQPYwuU=;
+        b=b/FK2CRbrAB0fXPSs/DFPjxZ7Bxp6F3zCCnyzn6Dr/PmunycpvCGeS4fZevTsF0lRj
+         rPEq0SWS8MCdXQ2spXxa699wpi/x2MKGceRRrvwhCRQ6fhCU8JKN2+7t8Up2KCRufZ4Q
+         add7js4N2nL/N5/9JJcmcSFkyKb271XmiNdzeiqXIgFE09LYYiqCSgP3amwjqDI0hbPC
+         M8Io0oy/szWjwj9cLpkPgzvuvdWHUbYSQMlTrBtT6URh9fl6sNPCxiF4CpcHu1SjWnr7
+         2sqrE+pswWWIX9qjYLWUxzrigg/X1KCbE6R7lJwp0X2mEN5UCaY4VGm2b3lp1Gdtbvk1
+         ULGg==
+X-Gm-Message-State: APjAAAUn3Af/W37wlhjgJFC+pF/IaUh5H3P01EOIzvUoxOcIQXvgPkYq
+        PG9JdEVF70FqWlqetNv5s3I=
+X-Google-Smtp-Source: APXvYqwdJRnHrekFLzvk2dooQSyL2Uudf/MaUUGySMu5hQi+WTGuuvUsK9MJLLStp7OgcwuglRAgkw==
+X-Received: by 2002:a63:c442:: with SMTP id m2mr111810644pgg.286.1564507750887;
+        Tue, 30 Jul 2019 10:29:10 -0700 (PDT)
 Received: from nebulus.mtv.corp.google.com ([2620:15c:211:200:5404:91ba:59dc:9400])
-        by smtp.googlemail.com with ESMTPSA id g92sm83674919pje.11.2019.07.30.09.54.10
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 30 Jul 2019 09:54:10 -0700 (PDT)
-Subject: Re: [PATCH v10 3/5] overlayfs: add __get xattr method
-To:     Stephen Smalley <sds@tycho.nsa.gov>,
-        Amir Goldstein <amir73il@gmail.com>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        kernel-team@android.com, Miklos Szeredi <miklos@szeredi.hu>,
+        by smtp.gmail.com with ESMTPSA id o129sm39856293pfg.1.2019.07.30.10.29.09
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 30 Jul 2019 10:29:10 -0700 (PDT)
+From:   Mark Salyzyn <salyzyn@android.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     kernel-team@android.com, Mark Salyzyn <salyzyn@android.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
         Jonathan Corbet <corbet@lwn.net>,
         Vivek Goyal <vgoyal@redhat.com>,
         "Eric W . Biederman" <ebiederm@xmission.com>,
+        Amir Goldstein <amir73il@gmail.com>,
         Randy Dunlap <rdunlap@infradead.org>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-doc@vger.kernel.org
-References: <20190724195719.218307-1-salyzyn@android.com>
- <20190724195719.218307-4-salyzyn@android.com>
- <CAOQ4uxjizC1RhmLe3qmfASk2M-Y+QEiyLL1yJXa4zXAEby7Tig@mail.gmail.com>
- <af254162-10bf-1fc5-2286-8d002a287400@android.com>
- <CAOQ4uxi5S9HTx+wR1U_8vQ-6nyCozykWBZbZwiHhnXBGhXRz8Q@mail.gmail.com>
- <35b70147-25ad-4c29-3972-418ebee5e7b8@android.com>
- <CAOQ4uxg8k=4D5_VEBy61PwBo+2pCCakUPw3uCar2oQpi3yaLmA@mail.gmail.com>
- <f56cd45d-2926-094e-7f02-e2ca972214ba@android.com>
- <e83ceef6-70ae-fd9e-2087-50baf2fbd402@tycho.nsa.gov>
-From:   Mark Salyzyn <salyzyn@android.com>
-Message-ID: <05f7689d-ce00-cae1-4433-140eb6c12749@android.com>
-Date:   Tue, 30 Jul 2019 09:54:09 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        linux-unionfs@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: [PATCH v12 0/5] overlayfs override_creds=off
+Date:   Tue, 30 Jul 2019 10:28:57 -0700
+Message-Id: <20190730172904.79146-1-salyzyn@android.com>
+X-Mailer: git-send-email 2.22.0.770.g0f2c4a37fd-goog
 MIME-Version: 1.0
-In-Reply-To: <e83ceef6-70ae-fd9e-2087-50baf2fbd402@tycho.nsa.gov>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-GB
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On 7/30/19 8:55 AM, Stephen Smalley wrote:
-> On 7/26/19 2:30 PM, Mark Salyzyn wrote:
->> On 7/25/19 10:04 PM, Amir Goldstein wrote:
->>> On Thu, Jul 25, 2019 at 7:22 PM Mark Salyzyn <salyzyn@android.com> 
->>> wrote:
->>>> On 7/25/19 8:43 AM, Amir Goldstein wrote:
->>>>> On Thu, Jul 25, 2019 at 6:03 PM Mark Salyzyn <salyzyn@android.com> 
->>>>> wrote:
->>>>>> On 7/24/19 10:48 PM, Amir Goldstein wrote:
->>>>>>> On Wed, Jul 24, 2019 at 10:57 PM Mark Salyzyn 
->>>>>>> <salyzyn@android.com> wrote:
->>>>>>>> Because of the overlayfs getxattr recursion, the incoming inode 
->>>>>>>> fails
->>>>>>>> to update the selinux sid resulting in avc denials being reported
->>>>>>>> against a target context of u:object_r:unlabeled:s0.
->>>>>>> This description is too brief for me to understand the root 
->>>>>>> problem.
->>>>>>> What's wring with the overlayfs getxattr recursion w.r.t the 
->>>>>>> selinux
->>>>>>> security model?
->>>>>> __vfs_getxattr (the way the security layer acquires the target sid
->>>>>> without recursing back to security to check the access permissions)
->>>>>> calls get xattr method, which in overlayfs calls vfs_getxattr on the
->>>>>> lower layer (which then recurses back to security to check 
->>>>>> permissions)
->>>>>> and reports back -EACCES if there was a denial (which is OK) and 
->>>>>> _no_
->>>>>> sid copied to caller's inode security data, bubbles back to the 
->>>>>> security
->>>>>> layer caller, which reports an invalid avc: message for
->>>>>> u:object_r:unlabeled:s0 (the uninitialized sid instead of the sid 
->>>>>> for
->>>>>> the lower filesystem target). The blocked access is 100% valid, 
->>>>>> it is
->>>>>> supposed to be blocked. This does however result in a cosmetic issue
->>>>>> that makes it impossible to use audit2allow to construct a rule that
->>>>>> would be usable to fix the access problem.
->>>>>>
->>>>> Ahhh you are talking about getting the security.selinux.* xattrs?
->>>>> I was under the impression (Vivek please correct me if I wrong)
->>>>> that overlayfs objects cannot have individual security labels and
->>>> They can, and we _need_ them for Android's use cases, upper and lower
->>>> filesystems.
->>>>
->>>> Some (most?) union filesystems (like Android's sdcardfs) set sepolicy
->>>> from the mount options, we did not need this adjustment there of 
->>>> course.
->>>>
->>>>> the only way to label overlayfs objects is by mount options on the
->>>>> entire mount? Or is this just for lower layer objects?
->>>>>
->>>>> Anyway, the API I would go for is adding a @flags argument to
->>>>> get() which can take XATTR_NOSECURITY akin to
->>>>> FMODE_NONOTIFY, GFP_NOFS, meant to avoid recursions.
->>>> I do like it better (with the following 7 stages of grief below), best
->>>> for the future.
->>>>
->>>> The change in this handler's API will affect all filesystem drivers
->>>> (well, my change affects the ABI, so it is not as-if I saved the world
->>>> from a module recompile) touching all filesystem sources with an even
->>>> larger audience of stakeholders. Larger audience of stakeholders, the
->>>> harder to get the change in ;-/. This is also concerning since I would
->>>> like this change to go to stable 4.4, 4.9, 4.14 and 4.19 where this
->>>> regression got introduced. I can either craft specific stable 
->>>> patches or
->>>> just let it go and deal with them in the android-common distributions
->>>> rather than seeking stable merged down. ABI/API breaks are a 
->>>> problem for
->>>> stable anyway ...
->>>>
->>> Use the memalloc_nofs_save/restore design pattern will avoid all that
->>> grief.
->>> As a matter of fact, this issue could and should be handled inside 
->>> security
->>> subsystem without bothering any other subsystem.
->>> LSM have per task context right? That context could carry the recursion
->>> flags to know that the getxattr call is made by the security 
->>> subsystem itself.
->>> The problem is not limited to union filesystems.
->>> In general its a stacking issue. ecryptfs is also a stacking fs, 
->>> out-of-tree
->>> shiftfs as well. But it doesn't end there.
->>> A filesystem on top of a loop device inside another filesystem could
->>> also maybe result in security hook recursion (not sure if in practice).
->>>
->>> Thanks,
->>> Amir.
->>
->> Good point, back to Stephen Smalley?
->>
->> There are four __vfs_getxattr calls inside security, not sure I see 
->> any natural way to determine the recursion in security/selinux I can 
->> beg/borrow/steal from; but I get the strange feeling that it is 
->> better to detect recursion in __vfs_getxattr in this manner, and 
->> switch out checking in vfs_getxattr since it is localized to just 
->> fs/xattr.c. selinux might not be the only user of __vfs_getxattr 
->> nature ...
->>
->> I have implemented and tested the solution where we add a flag to the 
->> .get method, it works. I would be tempted to submit that instead in 
->> case someone in the future can imagine using that flag argument to 
->> solve other problem(s) (if you build it, they will come).
->>
->> <flips coin>
->>
->> Will add a new per-process flag that __vfs_getxattr and vfs_getxattr 
->> plays with and see how it works and what it looks like.
->
-> As you say, SELinux is not the only user of __vfs_getxattr; in 
-> addition to the other security modules, there is the integrity/evm 
-> subsystem and ecryptfs.  Further, __vfs_getxattr does not merely skip 
-> LSM/SELinux-related processing; it also skips xattr_permission().  As 
-> such, I don't believe this is something that can be solved entirely 
-> within the security subsystem.
->
-> Not excited about a process flag to implicitly disable LSM/SELinux and 
-> other security-related processing on a code path; potential for abuse 
-> is high.
+Patch series:
 
-So you will not like my solution in "[PATCH v11 2/5] fs: __vfs_getxattr 
-nesting paradigm"sent out this morning; so adding the flag option and 
-widespread touching of _all_ the filesystem xattr.c/acl.c/inode.c/etc 
-files to the calls is probably the easiest to stomach with the lowest 
-attack surface.
+overlayfs: check CAP_DAC_READ_SEARCH before issuing exportfs_decode_fh
+Add flags option to get xattr method paired to __vfs_getxattr
+overlayfs: handle XATTR_NOSECURITY flag for get xattr method
+overlayfs: internal getxattr operations without sepolicy checking
+overlayfs: override_creds=off option bypass creator_cred
 
-Any other ideas (with less impact to tons of API/ABI/filesystems) that 
-we have not thought about before I spin a v12 patch set?
+The first four patches address fundamental security issues that should
+be solved regardless of the override_creds=off feature.
+on them).
 
--- Mark
+The fifth adds the feature depends on these other fixes.
 
+By default, all access to the upper, lower and work directories is the
+recorded mounter's MAC and DAC credentials.  The incoming accesses are
+checked against the caller's credentials.
+
+If the principles of least privilege are applied for sepolicy, the
+mounter's credentials might not overlap the credentials of the caller's
+when accessing the overlayfs filesystem.  For example, a file that a
+lower DAC privileged caller can execute, is MAC denied to the
+generally higher DAC privileged mounter, to prevent an attack vector.
+
+We add the option to turn off override_creds in the mount options; all
+subsequent operations after mount on the filesystem will be only the
+caller's credentials.  The module boolean parameter and mount option
+override_creds is also added as a presence check for this "feature",
+existence of /sys/module/overlay/parameters/overlay_creds
+
+Signed-off-by: Mark Salyzyn <salyzyn@android.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Stephen Smalley <sds@tycho.nsa.gov>
+Cc: linux-unionfs@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+---
+v12:
+- Restore squished out patch 2 and 3 in the series,
+  then change algorithm to add flags argument.
+  Per-thread flag is a large security surface.
+
+v11:
+- Squish out v10 introduced patch 2 and 3 in the series,
+  then and use per-thread flag instead for nesting.
+- Switch name to ovl_do_vds_getxattr for __vds_getxattr wrapper.
+- Add sb argument to ovl_revert_creds to match future work.
+
+v10:
+- Return NULL on CAP_DAC_READ_SEARCH
+- Add __get xattr method to solve sepolicy logging issue
+- Drop unnecessary sys_admin sepolicy checking for administrative
+  driver internal xattr functions.
+
+v6:
+- Drop CONFIG_OVERLAY_FS_OVERRIDE_CREDS.
+- Do better with the documentation, drop rationalizations.
+- pr_warn message adjusted to report consequences.
+
+v5:
+- beefed up the caveats in the Documentation
+- Is dependent on
+  "overlayfs: check CAP_DAC_READ_SEARCH before issuing exportfs_decode_fh"
+  "overlayfs: check CAP_MKNOD before issuing vfs_whiteout"
+- Added prwarn when override_creds=off
+
+v4:
+- spelling and grammar errors in text
+
+v3:
+- Change name from caller_credentials / creator_credentials to the
+  boolean override_creds.
+- Changed from creator to mounter credentials.
+- Updated and fortified the documentation.
+- Added CONFIG_OVERLAY_FS_OVERRIDE_CREDS
+
+v2:
+- Forward port changed attr to stat, resulting in a build error.
+- altered commit message.
