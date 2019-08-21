@@ -2,87 +2,311 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFDB78E06A
-	for <lists+linux-unionfs@lfdr.de>; Thu, 15 Aug 2019 00:14:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0908398583
+	for <lists+linux-unionfs@lfdr.de>; Wed, 21 Aug 2019 22:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729895AbfHNWOW (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 14 Aug 2019 18:14:22 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:43584 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729915AbfHNWOV (ORCPT
+        id S1728969AbfHUUYD (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 21 Aug 2019 16:24:03 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:34686 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727998AbfHUUYC (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 14 Aug 2019 18:14:21 -0400
-Received: by mail-qt1-f194.google.com with SMTP id b11so340782qtp.10
-        for <linux-unionfs@vger.kernel.org>; Wed, 14 Aug 2019 15:14:21 -0700 (PDT)
+        Wed, 21 Aug 2019 16:24:02 -0400
+Received: by mail-io1-f67.google.com with SMTP id s21so7359787ioa.1;
+        Wed, 21 Aug 2019 13:24:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=p6m83mGjllDiHyeRTSS1oVMHX5M/xE6ILn6PPhzsgs4=;
-        b=l5PC+4msT+R1VOq1FIInu61dIh2STHPN9aSBt/Y5M3n644FfA169IT6wzP+sfbruwG
-         5vHd8QNfmmF7FOlV1OW4+1ls9+argQAW0MZ9696kjqRFjMtNiRxkPVvom8CpuMz6+P3J
-         lvnykAE+N5ClLjt8+21Oenlj55mmWn47h6bOufTUj3iAyACG+cL0ImoQgj5m6u3w1/lr
-         fVPm9fs++0X3Li7mpOQ13No26+jYpH9OobXYps5GGnrfpp0Xq6qTsPtsJRMHzlRsuSi2
-         Q5RuPSHMeFGhG1MzboDTj+tp2IBpQDy9TN5wUYjWC528WeGARQxpLHz2F9meUvIkEvkQ
-         sSPA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Cb34hvSHfTOaxOpUGV4SIJr+N2dm/IYSUfB2jrXQVXg=;
+        b=R7AmGmauC3ectTYZH11YkKXxlEkDtgSRea7ivjqEU1sjriQpEoNC+8g6e3NCp5kGYO
+         QtBhN7MdDCQ+bhuJCDFOMMp4p7c0CQbv2qZLZtL2QqXuWTneCL7c+CWygf1rNz4EfJRD
+         9yb/CmoLpOfIkhTZSBvpRuA3CYTTwtQmlaK+Ha8C4DQYv7/+vrWOP+ftOvYNPQf3zJzC
+         QUMDEHdKDgwYzoH0mTWZLq11NVJeMJGPMOzsVsczBb/OA+goqcRT3EUXgC1qj2bJUcBZ
+         A/i6ZSVBuUTBrZFnTJaAyLgP1tKsNFitYSdPZRZ4wku4xkm3gviLH6xKknkMhq7L8BX1
+         9Q8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=p6m83mGjllDiHyeRTSS1oVMHX5M/xE6ILn6PPhzsgs4=;
-        b=cUY0ssUNzLMoz/P07oic6Wwpl2GzSlSoqqJQOllzOn9Z9Az7MKmcFYSqlRwORbILEl
-         3PLiJf6vAQpLcnfFaCR/WMbXwAHyPZtQNxckJSvUaRh/DOyY16pw/QbMK6CFvMXj50Ex
-         ykKX4DcFrNtgV7S7OmDm9cb9W2pTgzUXY0H2UyL+dBmUH2lQOsKtj/5Rh7fM0eS7Ivyp
-         pNGlBzm+CkdVA795Z6U+0lJIHjWUE8ZzJdle2feLuQ5uzuLWSemw4oiqI867ZR4zLCtC
-         kaM+cLgmM0A/R64ZMPGR8Z5vcaqEWBfr/58X11TZZRN8ytgTvUW0haIVyo4BTXGlp+E7
-         hYww==
-X-Gm-Message-State: APjAAAW9xNe6mXc3xgDwcvpWJZikfJMO0QR1OVpNaYukGwfbVoyx+I4b
-        bgYBSGyWKP9kmtaZESlqqCbGRI4RNHCFK54Qs0A=
-X-Google-Smtp-Source: APXvYqwvEwq36YC/YcFdGthiFQqEswOUmu8y33AXL4ty34gsygcaTEjmhvj04/dFUfa1vFoE719aJcDSjuFoUwkSVes=
-X-Received: by 2002:aed:3826:: with SMTP id j35mr1333309qte.54.1565820860049;
- Wed, 14 Aug 2019 15:14:20 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Cb34hvSHfTOaxOpUGV4SIJr+N2dm/IYSUfB2jrXQVXg=;
+        b=G/ibJnvGJNUQL3VCo+lM8ziLoz9TpEvi+twaWhwzGSKkH91HMFdO1YKH+E09P6dsmn
+         6G6YQnmALiQJpU4JGwFwxkbUqpyEiWbqnYI1tBa9m0uuVDfvDniudUT0PM2qJIW1pzt8
+         FLd7bLCiG70hPWB3marBo2MWcxGeKZdMgzoFkV3P1W15/3Y6t/oOGHSkTnbgiiy8oM8h
+         LvgQ3sEjQPR0UxVM4rN65naaz5vvPeaSsjvL+3FkTU4LqeeT93dzkonvy5Z3z7SQ9oCu
+         71gjulLXHSy44ee/2eoF0xbtIO5/DgOyLF17i97jBz1NuGqRDTi4lHqNjLJ9V7PbUMYB
+         3SNQ==
+X-Gm-Message-State: APjAAAX8kR4Sf3McHy3jQxCw62pgQnXlx6rjWkxcHe0N/tre/+X2RL1o
+        m23+wr1DWJzIW2WQEz+dcFP6GuMbjkKymtbgJQY=
+X-Google-Smtp-Source: APXvYqxjzLlkq8RSOF/WoVkQLcH9qjKB3Sv1jKzLLZo41JXIeqoFPwHHK8vqjy10Mq//9Hm5Tj7VW7o0Gu49YTTPPps=
+X-Received: by 2002:a5e:9e42:: with SMTP id j2mr25963973ioq.133.1566419040923;
+ Wed, 21 Aug 2019 13:24:00 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:aed:3544:0:0:0:0:0 with HTTP; Wed, 14 Aug 2019 15:14:19
- -0700 (PDT)
-Reply-To: Katerinejones19@gmail.com
-From:   "MS. MARYANNA B. THOMASON" <westernunion.benin982@gmail.com>
-Date:   Wed, 14 Aug 2019 23:14:19 +0100
-Message-ID: <CAP=nHB+U+By16HzeUHiDfPT5KNtemGam6gniZhL2s7_itZ3F8w@mail.gmail.com>
-Subject: TODAY, Wed, Aug 14, 2019 I AM READY FOR COMING TO YOUR ADDRESS WITH
- THIS ATM CARD
-To:     undisclosed-recipients:;
+References: <20181202180832.GR8125@magnolia> <20181202181045.GS8125@magnolia>
+In-Reply-To: <20181202181045.GS8125@magnolia>
+From:   =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <andreas.gruenbacher@gmail.com>
+Date:   Wed, 21 Aug 2019 22:23:49 +0200
+Message-ID: <CAHpGcM+WQYFHOOC8SzKq+=DuHVZ4fw4RHLTMUDN-o6GX3YtGvQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] iomap: partially revert 4721a601099 (simulated
+ directio short read on EFAULT)
+To:     "Darrick J. Wong" <darrick.wong@oracle.com>
+Cc:     Amir Goldstein <amir73il@gmail.com>,
+        Dave Chinner <david@fromorbit.com>, jencce.kernel@gmail.com,
+        linux-xfs <linux-xfs@vger.kernel.org>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        Zorro Lang <zlang@redhat.com>,
+        fstests <fstests@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        cluster-devel <cluster-devel@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-ATTN DEAR PARCEL BENEFICIARY.
+Hi Darrick,
 
-I AM CATHY JONES,DIPLOMATIC AGENT ASIGNED ON THE DELIVERY OF YOUR ATM
-CARD THROUGH MS. MARYANNA B. THOMASON, DHL MANAGEMENT DIRECTOR NEW
-YORK.
-TODAY, Wed, Aug 14, 2019 I AM READY FOR COMING TO YOUR ADDRESS WITH
-THIS ATM CARD, So before i deliver I want you to send me.
-official diplomatic agent delivery fee sum of $150.00 us
- only. I am here at JFK Airport,Florida. USA
+Am So., 2. Dez. 2018 um 19:13 Uhr schrieb Darrick J. Wong
+<darrick.wong@oracle.com>:
+> From: Darrick J. Wong <darrick.wong@oracle.com>
+>
+> In commit 4721a601099, we tried to fix a problem wherein directio reads
+> into a splice pipe will bounce EFAULT/EAGAIN all the way out to
+> userspace by simulating a zero-byte short read.  This happens because
+> some directio read implementations (xfs) will call
+> bio_iov_iter_get_pages to grab pipe buffer pages and issue asynchronous
+> reads, but as soon as we run out of pipe buffers that _get_pages call
+> returns EFAULT, which the splice code translates to EAGAIN and bounces
+> out to userspace.
+>
+> In that commit, the iomap code catches the EFAULT and simulates a
+> zero-byte read, but that causes assertion errors on regular splice reads
+> because xfs doesn't allow short directio reads.  This causes infinite
+> splice() loops and assertion failures on generic/095 on overlayfs
+> because xfs only permit total success or total failure of a directio
+> operation.  The underlying issue in the pipe splice code has now been
+> fixed by changing the pipe splice loop to avoid avoid reading more data
+> than there is space in the pipe.
+>
+> Therefore, it's no longer necessary to simulate the short directio, so
+> remove the hack from iomap.
+>
+> Fixes: 4721a601099 ("iomap: dio data corruption and spurious errors when pipes fill")
+> Reported-by: Amir Goldstein <amir73il@gmail.com>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Darrick J. Wong <darrick.wong@oracle.com>
+> ---
+> v2: split into two patches per hch request
+> ---
+>  fs/iomap.c |    9 ---------
+>  1 file changed, 9 deletions(-)
+>
+> diff --git a/fs/iomap.c b/fs/iomap.c
+> index 3ffb776fbebe..d6bc98ae8d35 100644
+> --- a/fs/iomap.c
+> +++ b/fs/iomap.c
+> @@ -1877,15 +1877,6 @@ iomap_dio_rw(struct kiocb *iocb, struct iov_iter *iter,
+>                                 dio->wait_for_completion = true;
+>                                 ret = 0;
+>                         }
+> -
+> -                       /*
+> -                        * Splicing to pipes can fail on a full pipe. We have to
+> -                        * swallow this to make it look like a short IO
+> -                        * otherwise the higher splice layers will completely
+> -                        * mishandle the error and stop moving data.
+> -                        */
+> -                       if (ret == -EFAULT)
+> -                               ret = 0;
+>                         break;
+>                 }
+>                 pos += ret;
 
-SEND THIS FEE BY WESTERN UNION OR MONEY WITH RECEIVER'S NAME AND ADDRESS BELOW.
+I'm afraid this breaks the following test case on xfs and gfs2, the
+two current users of iomap_dio_rw.
 
-RECEIVER'S NAME-----------------ERROL PRINGLE
-ADDRESS----------------3500 OLD DENTON RD APT 208; CARROLLTON, TEXAS 75007
-COUNTRY----------------USA
-AMOUNT--------------------$150.00 ONLY
-TEST QUESTION----------------WHO IS THE CREATOR
-ANSWER------------------GOD
- meanwhile this $150.00 is required by the Custom Service,USA Homeland
-Security,for protection of your delivery, it will make the ATM CARD
-and funds worth $15.8MILLION US DOLLARS secure, Beleiev me, this is my
-word, remark my word,you will receive your delivery from me, Mrs.
-Cathy Jones once you send this only $150.00 today.
-I WAIT ON YOUR PAYMENT CONFIRMATION, ONCE I GOT YOUR PAYMENT, I WILL
-FINALLY ARRIVE TO YOUR NEAREST ADDRESS. today
-THANKS AND MAY GOD BLESS  YOU
-CATHY JONES,DIPLOMATIC AGENT
-EMAIL; katerinejones19@gmail.com
-CALL OR TEXT ME, DIPLOMATIC AGENT MS. CATHY JONES
-Phone Number; (408) 650-6103,
+Here, the splice system call fails with errno = EAGAIN when trying to
+"move data" from a file opened with O_DIRECT into a pipe.
+
+The test case can be run with option -d to not use O_DIRECT, which
+makes the test succeed.
+
+The -r option switches from reading from the pipe sequentially to
+reading concurrently with the splice, which doesn't change the
+behavior.
+
+Any thoughts?
+
+Thanks,
+Andreas
+
+=================================== 8< ===================================
+#define _GNU_SOURCE
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <err.h>
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <errno.h>
+
+#define SECTOR_SIZE 512
+#define BUFFER_SIZE (150 * SECTOR_SIZE)
+
+void read_from_pipe(int fd, const char *filename, size_t size)
+{
+    char buffer[SECTOR_SIZE];
+    size_t sz;
+    ssize_t ret;
+
+    while (size) {
+        sz = size;
+        if (sz > sizeof buffer)
+            sz = sizeof buffer;
+        ret = read(fd, buffer, sz);
+        if (ret < 0)
+            err(1, "read: %s", filename);
+        if (ret == 0) {
+            fprintf(stderr, "read: %s: unexpected EOF\n", filename);
+            exit(1);
+        }
+        size -= sz;
+    }
+}
+
+void do_splice1(int fd, const char *filename, size_t size)
+{
+    bool retried = false;
+    int pipefd[2];
+
+    if (pipe(pipefd) == -1)
+        err(1, "pipe");
+    while (size) {
+        ssize_t spliced;
+
+        spliced = splice(fd, NULL, pipefd[1], NULL, size, SPLICE_F_MOVE);
+        if (spliced == -1) {
+            if (errno == EAGAIN && !retried) {
+                retried = true;
+                fprintf(stderr, "retrying splice\n");
+                sleep(1);
+                continue;
+            }
+            err(1, "splice");
+        }
+        read_from_pipe(pipefd[0], filename, spliced);
+        size -= spliced;
+    }
+    close(pipefd[0]);
+    close(pipefd[1]);
+}
+
+void do_splice2(int fd, const char *filename, size_t size)
+{
+    bool retried = false;
+    int pipefd[2];
+    int pid;
+
+    if (pipe(pipefd) == -1)
+        err(1, "pipe");
+
+    pid = fork();
+    if (pid == 0) {
+        close(pipefd[1]);
+        read_from_pipe(pipefd[0], filename, size);
+        exit(0);
+    } else {
+        close(pipefd[0]);
+        while (size) {
+            ssize_t spliced;
+
+            spliced = splice(fd, NULL, pipefd[1], NULL, size, SPLICE_F_MOVE);
+            if (spliced == -1) {
+                if (errno == EAGAIN && !retried) {
+                    retried = true;
+                    fprintf(stderr, "retrying splice\n");
+                    sleep(1);
+                    continue;
+                }
+                err(1, "splice");
+            }
+            size -= spliced;
+        }
+        close(pipefd[1]);
+        waitpid(pid, NULL, 0);
+    }
+}
+
+void usage(const char *argv0)
+{
+    fprintf(stderr, "USAGE: %s [-rd] {filename}\n", basename(argv0));
+    exit(2);
+}
+
+int main(int argc, char *argv[])
+{
+    void (*do_splice)(int fd, const char *filename, size_t size);
+    const char *filename;
+    char *buffer;
+    int opt, open_flags, fd;
+    ssize_t ret;
+
+    do_splice = do_splice1;
+    open_flags = O_CREAT | O_TRUNC | O_RDWR | O_DIRECT;
+
+    while ((opt = getopt(argc, argv, "rd")) != -1) {
+        switch(opt) {
+        case 'r':
+            do_splice = do_splice2;
+            break;
+        case 'd':
+            open_flags &= ~O_DIRECT;
+            break;
+        default:  /* '?' */
+            usage(argv[0]);
+        }
+    }
+
+    if (optind >= argc)
+        usage(argv[0]);
+    filename = argv[optind];
+
+    printf("%s reader %s O_DIRECT\n",
+           do_splice == do_splice1 ? "sequential" : "concurrent",
+           (open_flags & O_DIRECT) ? "with" : "without");
+
+    buffer = aligned_alloc(SECTOR_SIZE, BUFFER_SIZE);
+    if (buffer == NULL)
+        err(1, "aligned_alloc");
+
+    fd = open(filename, open_flags, 0666);
+    if (fd == -1)
+        err(1, "open: %s", filename);
+
+    memset(buffer, 'x', BUFFER_SIZE);
+    ret = write(fd, buffer, BUFFER_SIZE);
+    if (ret < 0)
+        err(1, "write: %s", filename);
+    if (ret != BUFFER_SIZE) {
+        fprintf(stderr, "%s: short write\n", filename);
+        exit(1);
+    }
+
+    ret = lseek(fd, 0, SEEK_SET);
+    if (ret != 0)
+        err(1, "lseek: %s", filename);
+
+    do_splice(fd, filename, BUFFER_SIZE);
+
+    if (unlink(filename) == -1)
+        err(1, "unlink: %s", filename);
+
+    return 0;
+}
+=================================== 8< ===================================
