@@ -2,158 +2,98 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4E6BA1954
-	for <lists+linux-unionfs@lfdr.de>; Thu, 29 Aug 2019 13:49:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F068A256D
+	for <lists+linux-unionfs@lfdr.de>; Thu, 29 Aug 2019 20:30:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726985AbfH2Ltm (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 29 Aug 2019 07:49:42 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:44999 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726637AbfH2Ltl (ORCPT
+        id S1730031AbfH2Sac (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 29 Aug 2019 14:30:32 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:39805 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729158AbfH2Saa (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 29 Aug 2019 07:49:41 -0400
-Received: by mail-io1-f68.google.com with SMTP id j4so6197035iog.11;
-        Thu, 29 Aug 2019 04:49:41 -0700 (PDT)
+        Thu, 29 Aug 2019 14:30:30 -0400
+Received: by mail-pf1-f193.google.com with SMTP id y200so2630568pfb.6
+        for <linux-unionfs@vger.kernel.org>; Thu, 29 Aug 2019 11:30:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ebi6DvryipDbJMt7Vs5Y6UzNPCCfjozPAm+m3gRZ1cY=;
-        b=HnQVcABTef4wmDs+EEBqAROiuUJ/fDy5haGSBWNMqg0NyQEcuu3kMeOtyJK3LLYX87
-         97PGFzvGKf5em+PrI8Q4mUkHKPD3A6Wps0Wb6HJM5OpKbp8tlsekl5obLa6vti/pUQv8
-         k4rwFFOJcg5+v/GQUbRaOXaQcTwfidXLu8zkeLfERuauyWsazilRoiBkD1RrercIaaU+
-         IsgvbSbifqYV70hFWGZP7QXrGk3GBSTON+oM6ft4TQM63fOm7IYqOL6X3iSGQ9oCHdE7
-         JAuoLdWYFiS4VQgFsP2lDQbZza3261q60moRPMIsTdBCAW6LRqrvYOB0mC683lLWiiNu
-         ZTWQ==
+        d=android.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=t7rGaqUzAk36ILWcKr/jrH6Y9v6WlXTDUlDGIYS/FWg=;
+        b=isJCPHV3UCx5mYklMoclrNYYLuiDQl8rOsozhV+AOuvC+A2RL6Of1dXi59VVYyJ8Yh
+         nbEhIdofSeqRVf4HCfoE6ntd1M93ZOHul+nGhedXl4X/3a2yARQ0GOzfEQ15nzNgQYPB
+         1qKP8GgA9JnCgMRJQUtSXxcy4vfrkx21r3RNVe3qyvObBnL8kD7niQLjxUF4okFXNipE
+         xH4SbLpar4QTNbuR639sRK9Rl7AjtvDaXh7RxA2QQ5TQMMwH7Jvn/lt+jb0pKjCbx2kA
+         nIW6xVEvasZpHC5rUvv6GxUt4FvYgKMyRkjbLb/Yai1SwPEGGgtc9v1G/s23AMVOJplX
+         pIfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ebi6DvryipDbJMt7Vs5Y6UzNPCCfjozPAm+m3gRZ1cY=;
-        b=uV1coI3ZnELNVqwW6qLAov4HxfoN8rWneufAyDsFxJxvcORFnxnE7L8EfGrCkomT8l
-         egmsuIUukfI6icdvo3gDEwHjw7wkTOm3N8isxz3hjhMrETIDOzfdYqJM/BJkqg5lTHAA
-         T/R9Nsz2JboeXElMctj/xcph/UA5XUaRS8c4WjwTdK1FZalRVQCVvrxqeddopjX7JVzs
-         NSLnFPZUytZzZvWJBPAFboRcA5/+vyGIN8aXHojXmfOmbWfbFvEjJQoSf58hKDcdlGDO
-         3Kh6i2lQ+FaqRpNeWXEgKQEBKl2kdIjNSbXSlUzTBWWQoq1zmPexZBGGjXOBwS0zoVQv
-         DTpw==
-X-Gm-Message-State: APjAAAVExV0hzGS50yxOeAGlV3398O11bvN89A+C7dh4KIAs5sCdUoDS
-        RXXLQ+f+C7ymXBXg619+ek0e9zk7Kjl1G1DnXmw=
-X-Google-Smtp-Source: APXvYqwENsRASBmSEOl6YE44hcCuRaYScqwow/qESu/tkVMsG2dt16pzNKaq9E5EKUIWbFl1OAlxQl2yEGWsVIScfz8=
-X-Received: by 2002:a6b:7002:: with SMTP id l2mr2304538ioc.300.1567079380885;
- Thu, 29 Aug 2019 04:49:40 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=t7rGaqUzAk36ILWcKr/jrH6Y9v6WlXTDUlDGIYS/FWg=;
+        b=d46fEs+5jFoLzB2PnkKRl3oprMYSC0JL2mHMztGwb9iZVBoacuCr91wcBa/TTWPTCO
+         +b6lBzWbRENIf9toR8pHhEd1KkNYRdjpHRa3tdmtx0Fum95xs3rMFJ+nRJ0bau9dimtQ
+         L/gKKvfEUSonuWDqQB2+jCIIzz3eU+R8Hhkc7PHyFsMybKJfxxviS+WJw+CdLimSLAVT
+         SSdHqACUg28GXyQIA5WLgh6jiAKsSo9FmQDA0KWH1ly4wK+S/oUaVB2nLUwIhzgNDWTo
+         Rw/r21QfGLAQ2KORY3DlwW/B0xpIPgal72qGagPvp/MjkemcyIVpRbtEjB2ANFHORP6x
+         3tvA==
+X-Gm-Message-State: APjAAAWbCzx4DkvDhsbp55YgIaDcIWIBZr2MclIEDxdri0SAY0lDfg3H
+        bGuwVDv/CZNWM3UocC7kwHIbBw==
+X-Google-Smtp-Source: APXvYqw/vXkr0PEX/jzpgnhtbh7cvLECq0WihqgmP+dtE4STT7/cXn7PqLsTujfn/flbDd+wdX6iYg==
+X-Received: by 2002:a63:c84d:: with SMTP id l13mr9620053pgi.154.1567103429436;
+        Thu, 29 Aug 2019 11:30:29 -0700 (PDT)
+Received: from nebulus.mtv.corp.google.com ([2620:15c:211:200:5404:91ba:59dc:9400])
+        by smtp.gmail.com with ESMTPSA id y16sm4090168pfc.36.2019.08.29.11.30.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Aug 2019 11:30:28 -0700 (PDT)
+From:   Mark Salyzyn <salyzyn@android.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     kernel-team@android.com, Mark Salyzyn <salyzyn@android.com>,
+        linux-kernel@vger.kernel.orga,
+        linux-security-module@vger.kernel.org, stable@vger.kernel.org,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        linux-unionfs@vger.kernel.org
+Subject: [PATCH] overlayfs: filter of trusted xattr results in audit.
+Date:   Thu, 29 Aug 2019 11:30:14 -0700
+Message-Id: <20190829183021.87586-1-salyzyn@android.com>
+X-Mailer: git-send-email 2.23.0.187.g17f5b7556c-goog
 MIME-Version: 1.0
-References: <20181202180832.GR8125@magnolia> <20181202181045.GS8125@magnolia>
- <CAHpGcM+WQYFHOOC8SzKq+=DuHVZ4fw4RHLTMUDN-o6GX3YtGvQ@mail.gmail.com>
- <20190828142332.GT1037422@magnolia> <CAHpGcMLGWVssWAC1PqBJevr1+1rE_hj4QN27D26j7-Fp_Kzpsg@mail.gmail.com>
- <20190829031216.GW1037422@magnolia>
-In-Reply-To: <20190829031216.GW1037422@magnolia>
-From:   =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <andreas.gruenbacher@gmail.com>
-Date:   Thu, 29 Aug 2019 13:49:29 +0200
-Message-ID: <CAHpGcM+Aq+BxD0_TPx9sqTCt8N6X3Q+UO6CkyfV3NZMaN8AU8w@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] iomap: partially revert 4721a601099 (simulated
- directio short read on EFAULT)
-To:     "Darrick J. Wong" <darrick.wong@oracle.com>
-Cc:     Amir Goldstein <amir73il@gmail.com>,
-        Dave Chinner <david@fromorbit.com>, jencce.kernel@gmail.com,
-        linux-xfs <linux-xfs@vger.kernel.org>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Zorro Lang <zlang@redhat.com>,
-        fstests <fstests@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        cluster-devel <cluster-devel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Hi Darrick,
+When filtering xattr list for reading, presence of trusted xattr
+results in a security audit log.  However, if there is other content
+no errno will be set, and if there isn't, the errno will be -ENODATA
+and not -EPERM as is usually associated with a lack of capability.
+The check does not block the request to list the xattrs present.
 
-Am Do., 29. Aug. 2019 um 05:12 Uhr schrieb Darrick J. Wong
-<darrick.wong@oracle.com>:
-> Hm, so I made an xfstest out of the program you sent me, and indeed
-> reverting that chunk makes the failure go away, but that got me
-> wondering -- that iomap kludge was a workaround for the splice code
-> telling iomap to try to stuff XXXX bytes into a pipe that only has X
-> bytes of free buffer space.  We fixed splice_direct_to_actor to clamp
-> the length parameter to the available pipe space, but we never did the
-> same to do_splice:
->
->         /* Don't try to read more the pipe has space for. */
->         read_len = min_t(size_t, len,
->                          (pipe->buffers - pipe->nrbufs) << PAGE_SHIFT);
->         ret = do_splice_to(in, &pos, pipe, read_len, flags);
->
-> Applying similar logic to the two (opipe != NULL) cases of do_splice()
-> seem to make the EAGAIN problem go away too.  So why don't we teach
-> do_splice to only ask for as many bytes as the pipe has space here too?
->
-> Does the following patch fix it for you?
+Switch to ns_capable_noaudit to reflect a more appropriate check.
 
-Yes, that works, thank you.
+Signed-off-by: Mark Salyzyn <salyzyn@android.com>
+Cc: linux-kernel@vger.kernel.orga
+Cc: linux-security-module@vger.kernel.org
+Cc: kernel-team@android.com
+Cc: stable@vger.kernel.org # 4.4, 4.9, 4.14 & 4.19
+---
+ fs/overlayfs/inode.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> From: Darrick J. Wong <darrick.wong@oracle.com>
-> Subject: [PATCH] splice: only read in as much information as there is pipe buffer space
->
-> Andreas Gruenbacher reports that on the two filesystems that support
-> iomap directio, it's possible for splice() to return -EAGAIN (instead of
-> a short splice) if the pipe being written to has less space available in
-> its pipe buffers than the length supplied by the calling process.
->
-> Months ago we fixed splice_direct_to_actor to clamp the length of the
-> read request to the size of the splice pipe.  Do the same to do_splice.
+diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
+index 7663aeb85fa3..bc14781886bf 100644
+--- a/fs/overlayfs/inode.c
++++ b/fs/overlayfs/inode.c
+@@ -383,7 +383,8 @@ static bool ovl_can_list(const char *s)
+ 		return true;
+ 
+ 	/* Never list trusted.overlay, list other trusted for superuser only */
+-	return !ovl_is_private_xattr(s) && capable(CAP_SYS_ADMIN);
++	return !ovl_is_private_xattr(s) &&
++	       ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN);
+ }
+ 
+ ssize_t ovl_listxattr(struct dentry *dentry, char *list, size_t size)
+-- 
+2.23.0.187.g17f5b7556c-goog
 
-Can you add a reference to that commit here (17614445576b6)?
-
-> Signed-off-by: Darrick J. Wong <darrick.wong@oracle.com>
-> ---
->  fs/splice.c |   12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/splice.c b/fs/splice.c
-> index 98412721f056..50335515d7c1 100644
-> --- a/fs/splice.c
-> +++ b/fs/splice.c
-> @@ -1101,6 +1101,7 @@ static long do_splice(struct file *in, loff_t __user *off_in,
->         struct pipe_inode_info *ipipe;
->         struct pipe_inode_info *opipe;
->         loff_t offset;
-> +       unsigned int pipe_pages;
->         long ret;
->
->         ipipe = get_pipe_info(in);
-> @@ -1123,6 +1124,10 @@ static long do_splice(struct file *in, loff_t __user *off_in,
->                 if ((in->f_flags | out->f_flags) & O_NONBLOCK)
->                         flags |= SPLICE_F_NONBLOCK;
->
-> +               /* Don't try to read more the pipe has space for. */
-> +               pipe_pages = opipe->buffers - opipe->nrbufs;
-> +               len = min_t(size_t, len, pipe_pages << PAGE_SHIFT);
-
-This should probably be min(len, (size_t)pipe_pages << PAGE_SHIFT).
-Same for the second min_t here and the one added by commit
-17614445576b6.
-
-> +
->                 return splice_pipe_to_pipe(ipipe, opipe, len, flags);
->         }
->
-> @@ -1180,8 +1185,13 @@ static long do_splice(struct file *in, loff_t __user *off_in,
->
->                 pipe_lock(opipe);
->                 ret = wait_for_space(opipe, flags);
-> -               if (!ret)
-> +               if (!ret) {
-> +                       /* Don't try to read more the pipe has space for. */
-> +                       pipe_pages = opipe->buffers - opipe->nrbufs;
-> +                       len = min_t(size_t, len, pipe_pages << PAGE_SHIFT);
-> +
->                         ret = do_splice_to(in, &offset, opipe, len, flags);
-> +               }
->                 pipe_unlock(opipe);
->                 if (ret > 0)
->                         wakeup_pipe_readers(opipe);
-
-Thanks,
-Andreas
