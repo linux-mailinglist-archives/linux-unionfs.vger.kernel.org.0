@@ -2,99 +2,62 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A288AFD5E
-	for <lists+linux-unionfs@lfdr.de>; Wed, 11 Sep 2019 15:04:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DFDBB0839
+	for <lists+linux-unionfs@lfdr.de>; Thu, 12 Sep 2019 07:19:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728027AbfIKNEt (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 11 Sep 2019 09:04:49 -0400
-Received: from mail-yw1-f68.google.com ([209.85.161.68]:41887 "EHLO
-        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727302AbfIKNEt (ORCPT
+        id S1726308AbfILFTG (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 12 Sep 2019 01:19:06 -0400
+Received: from cmccmta1.chinamobile.com ([221.176.66.79]:3068 "EHLO
+        cmccmta1.chinamobile.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726222AbfILFTG (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 11 Sep 2019 09:04:49 -0400
-Received: by mail-yw1-f68.google.com with SMTP id 129so7776344ywb.8
-        for <linux-unionfs@vger.kernel.org>; Wed, 11 Sep 2019 06:04:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=w5pAHYb/wQH2+99Nyxjw8D+WsWtZH2AWCEPBIx4BETM=;
-        b=ZDvx39ilqMFDwrDAVQHw/+V/NRwJq0J7cMGcGib3r/pd3FR8gUH5+DZ+tWGZOGFvFh
-         WgGc/Y3J0j/Wzr2NIc7b6KPxUYd3WFXSQUI5eHkX06Vzj7CbPwJozgTwbFTDyXqeaJ60
-         Vi1CIYSh4Zj42RPqlLfhIdYzNF+WRH6/Bg1eH6MLc/iMJ1La/IB4qX3VXu9pfFHE371I
-         YhT60wFPDVbXhdLwoU5bV57NL7czHPLimwo/muxhj2qwrYMTTywuyI64v0fLLxr6sLi+
-         DSWFpA9bX+wps4Qul0W1LfQ1a1MwIlKOUYHczqu4QwCp9YFXJnZB9JZlk086e86yrFuL
-         nj/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=w5pAHYb/wQH2+99Nyxjw8D+WsWtZH2AWCEPBIx4BETM=;
-        b=FsHEt1T2ms41V4pDg3HRwrQor3t/XpUzWlLLmHwcdgmMUzDhknvOukIT3pzRlJWjmv
-         3g2k9Hlc4NxL5NgbU6+ivSMozYTFJ9VzW8AmTMdqfHymXKpUTML4JHRWSqX4xrKdlCVG
-         pFhtIkVPxOv/y8QVEtrXuBmNnjwLj2mphtZEDt8T3iKpQI0Vsr9oWNTXfTQOaOHWWDiG
-         ceeonbUVsFMvqAxnHFilBC24AFQC2+/GE/7TDBAc/8oJGwAGEzdEyiRISvm7EvoEJoSD
-         UvcNwAhagMUkU9UYcuaSj8ZWjDf8ui/WdzoVGl1TmCOvPVafkW2gSLF/mrNH6dAw7h0a
-         G43w==
-X-Gm-Message-State: APjAAAXrAJ1RClvGnq1ja1JzJRW61VaGdOQdcM4UKIz7JuMq8FKBvY5t
-        DKW6BQ7EtxH25x3O/eHtgxzwW2krnTvGypnVLkc=
-X-Google-Smtp-Source: APXvYqxKamOj1eg9B1YZjq65aJ3c5IFS3WkERueDw+M04VbqZdelTTCKVSykH0eSZ4EQYyzkugjvwCKgvOL4+lPgMt8=
-X-Received: by 2002:a0d:f5c4:: with SMTP id e187mr11530672ywf.294.1568207088275;
- Wed, 11 Sep 2019 06:04:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190712122434.14809-1-amir73il@gmail.com> <CAOQ4uxg+equ2vt3xqsC_v=m=YMFSAj2ywk2pga=BGZWgOQcVoA@mail.gmail.com>
- <CAOQ4uxhC_=oPcjwpzgq7YvZuFL=HWJ=9hXwcY=EupcAnLobcsA@mail.gmail.com> <CAJfpegvQzAmDHhoXh-aSPjmkqLSpP_KWOf08YED4H7uwqa-oVg@mail.gmail.com>
-In-Reply-To: <CAJfpegvQzAmDHhoXh-aSPjmkqLSpP_KWOf08YED4H7uwqa-oVg@mail.gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Wed, 11 Sep 2019 16:04:37 +0300
-Message-ID: <CAOQ4uxjwwxosfzkjjxUhBjizHGOx1wJ9zzFPmxVzLJx-ZFud+w@mail.gmail.com>
-Subject: Re: [PATCH] ovl: fix regression caused by overlapping layers detection
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Vivek Goyal <vgoyal@redhat.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Colin Walters <walters@verbum.org>
-Content-Type: text/plain; charset="UTF-8"
+        Thu, 12 Sep 2019 01:19:06 -0400
+Received: from spf.mail.chinamobile.com (unknown[172.16.121.11]) by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee35d79d533104-04883; Thu, 12 Sep 2019 13:18:47 +0800 (CST)
+X-RM-TRANSID: 2ee35d79d533104-04883
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG: 00000000
+Received: from localhost.localdomain (unknown[223.105.0.243])
+        by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee65d79d536400-208ae;
+        Thu, 12 Sep 2019 13:18:47 +0800 (CST)
+X-RM-TRANSID: 2ee65d79d536400-208ae
+From:   Ding Xiang <dingxiang@cmss.chinamobile.com>
+To:     miklos@szeredi.hu, linux-unionfs@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, sfr@canb.auug.org.au
+Subject: [PATCH V2] ovl: Fix dereferencing possible ERR_PTR()
+Date:   Thu, 12 Sep 2019 13:18:31 +0800
+Message-Id: <1568265511-1622-1-git-send-email-dingxiang@cmss.chinamobile.com>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, Sep 11, 2019 at 2:50 PM Miklos Szeredi <miklos@szeredi.hu> wrote:
->
-> On Tue, Sep 10, 2019 at 3:53 PM Amir Goldstein <amir73il@gmail.com> wrote:
->
-> > This patch got stuck in overlayfs-next.
-> > Could you push it to Linus please?
->
-> Just tested applied on top of -linus, and it fails overlayfs/065 with this:
->
-> --- /root/xfstests-dev/tests/overlay/065.out    2019-06-18
-> 15:12:19.147000000 +0200
-> +++ /root/xfstests-dev/results//overlay/065.out.bad    2019-09-11
-> 13:22:34.612000000 +0200
-> @@ -1,8 +1,8 @@
->  QA output created by 065
->  Conflicting upperdir/lowerdir
-> -mount: device already mounted or mount point busy
-> +mount: /scratch/ovl-mnt: mount(2) system call failed: Too many levels
-> of symbolic links
->  Conflicting workdir/lowerdir
-> -mount: device already mounted or mount point busy
-> +mount: /scratch/ovl-mnt: mount(2) system call failed: Too many levels
-> of symbolic links
->  Overlapping upperdir/lowerdir
->  mount: Too many levels of symbolic links
->  Conflicting lower layers
->
-> So the mount seems to fail, but with a different than expected error
-> value.  Do you know what might be happening?
->
+if ovl_encode_real_fh() fails, no memory was allocated
+and the error in the error-valued pointer should be returned.
 
-Yes, intentional. I have an update for  the test.
-Was waiting with it until patch is merged upstream.
+V1->V2: fix SHA1 length problem
 
-I also have a test for the regression, see:
-https://github.com/amir73il/xfstests/commits/overlayfs-devel
+Fixes: 9b6faee07470 ("ovl: check ERR_PTR() return value from ovl_encode_fh()")
+Signed-off-by: Ding Xiang <dingxiang@cmss.chinamobile.com>
+---
+ fs/overlayfs/export.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-Amir.
+diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+index cb8ec1f..50ade19 100644
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -229,7 +229,7 @@ static int ovl_d_to_fh(struct dentry *dentry, char *buf, int buflen)
+ 				ovl_dentry_upper(dentry), !enc_lower);
+ 	err = PTR_ERR(fh);
+ 	if (IS_ERR(fh))
+-		goto fail;
++		return err;
+ 
+ 	err = -EOVERFLOW;
+ 	if (fh->len > buflen)
+-- 
+1.9.1
+
+
+
