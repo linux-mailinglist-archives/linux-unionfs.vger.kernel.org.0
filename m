@@ -2,105 +2,157 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E953EB0C73
-	for <lists+linux-unionfs@lfdr.de>; Thu, 12 Sep 2019 12:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92B7DB3B71
+	for <lists+linux-unionfs@lfdr.de>; Mon, 16 Sep 2019 15:32:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730811AbfILKRi (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 12 Sep 2019 06:17:38 -0400
-Received: from mail-yw1-f67.google.com ([209.85.161.67]:40155 "EHLO
-        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730454AbfILKRi (ORCPT
+        id S1727977AbfIPNcd (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 16 Sep 2019 09:32:33 -0400
+Received: from kueppers.informatik.uni-koeln.de ([134.95.9.149]:39428 "EHLO
+        kueppers.informatik.uni-Koeln.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727826AbfIPNcd (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 12 Sep 2019 06:17:38 -0400
-Received: by mail-yw1-f67.google.com with SMTP id e205so5776969ywc.7;
-        Thu, 12 Sep 2019 03:17:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9T1y2+STaahr7t0hlBPZawaXpmUrjDhCr4ONlZ1Ftns=;
-        b=CcKTC2ycU+pSSU71sVSvNiuzRtnriuYWnJfCtTNVgP80JNYLninibRIzatp1LebYoT
-         asHNM/0h+Jr9AjH7UOGS0ZixUFWSN+8qh1XG0LYTyJ6++kExpQcihJVBNWPvls4JWxa4
-         P6DgiYZlGkbv/+lHgOE+5y0HVbmdzDUhwjAouRrwnQOgC7uo+JgYRYiTsXNYB4kSpETF
-         hZ/vUH5NRaGxOG93T7+aukmhqVZryjLRcXzG3BFnc7SZU72I9ex+SR7NS+ONf/Fpn4eX
-         BNdE+nqRD3f4j/YK3EGOwnnv+LgwwmKt0Me6fafsIerpr8RBT31FhdKNjA5HtxcQvjsj
-         RV+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9T1y2+STaahr7t0hlBPZawaXpmUrjDhCr4ONlZ1Ftns=;
-        b=DQ+Xk5R51yicW7/bIGdc2QbuE70QcOwYMPGB0/h6MBwy+BAPPAt5J1BbqdwlFWhxql
-         UE6UGXr5nrC5I2DZj00P0VmKfjD5QQCfM5iIOFFTL4Wibz3FuCrrpB8ue2tSNhtavgy6
-         8OdATPU3ZB94tS9t8hbEY2JWsJvsXe0AqUsXQ+SltM8oij8x/wJblTjBPTFCc3F0xQa+
-         BShiAfh737LG23VFBaWNWk4D+Q1a21jSTiiGHTK4sHorDWuIUBDHxtNE09XDOg2vVJrR
-         5L1ZtoCH66+Yn7wv1juaVtz/1QFAzL9JdiCEpdNFccyrG6AMLeOavyhBhDSjUTpHwhm7
-         TMnw==
-X-Gm-Message-State: APjAAAXLRUr78GaN+/KomMOHlDWv+PbLyMV5UwtaqRWmqjvJCTouNuIj
-        WwyUcLD5yKEZAPmCEh8T7d0ZkOfQDTogXERMGROzYA==
-X-Google-Smtp-Source: APXvYqyDLxIi91H7D+imxbHKi3wKBGCFHHwsYxxPv5KvWgXbM2jhhqvlGhyrQ/VZhHOsI79ue54Wc8dbaveNMM0NTx4=
-X-Received: by 2002:a81:6c8:: with SMTP id 191mr28832594ywg.181.1568283456917;
- Thu, 12 Sep 2019 03:17:36 -0700 (PDT)
+        Mon, 16 Sep 2019 09:32:33 -0400
+X-Greylist: delayed 400 seconds by postgrey-1.27 at vger.kernel.org; Mon, 16 Sep 2019 09:32:31 EDT
+Received: from paeffgen.informatik.uni-Koeln.de (paeffgen [134.95.9.130])
+        by kueppers.informatik.uni-Koeln.de (8.15.2/8.15.2/Debian-8) with ESMTP id x8GDPnIe018949;
+        Mon, 16 Sep 2019 15:25:49 +0200
+Received: from paeffgen.informatik.uni-Koeln.de (localhost [127.0.0.1])
+        by paeffgen.informatik.uni-Koeln.de (8.15.2/8.15.2/Debian-14~deb10u1) with ESMTP id x8GDPnsD017303;
+        Mon, 16 Sep 2019 15:25:49 +0200
+Received: (from lange@localhost)
+        by paeffgen.informatik.uni-Koeln.de (8.15.2/8.15.2/Submit) id x8GDPn6P017302;
+        Mon, 16 Sep 2019 15:25:49 +0200
 MIME-Version: 1.0
-References: <1568265511-1622-1-git-send-email-dingxiang@cmss.chinamobile.com>
- <CAOQ4uxjNK9BQxmNqbx8Hix0yd5op-i17BiqvOmmEmr=3bHtm_A@mail.gmail.com> <CAJfpeguVGk7Fpusx83YDstBgNtFZbVwP61aDin6kvA1f5CKCcA@mail.gmail.com>
-In-Reply-To: <CAJfpeguVGk7Fpusx83YDstBgNtFZbVwP61aDin6kvA1f5CKCcA@mail.gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 12 Sep 2019 13:17:25 +0300
-Message-ID: <CAOQ4uxjZefwTki=ojQuTT1RC8-ce+o=XZtzyUQ=0iFi6Q757Qg@mail.gmail.com>
-Subject: Re: [PATCH V2] ovl: Fix dereferencing possible ERR_PTR()
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <23935.36189.612024.342204@informatik.uni-koeln.de>
+Date:   Mon, 16 Sep 2019 15:25:49 +0200
+From:   lange@debian.org
 To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Ding Xiang <dingxiang@cmss.chinamobile.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Content-Type: text/plain; charset="UTF-8"
+Subject: can overlayfs work wit NFS v4 as lower fs?
+X-Mailer: VM 8.2.0b under 26.1 (x86_64-pc-linux-gnu)
+CC:     linux-unionfs@vger.kernel.org
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Thu, Sep 12, 2019 at 12:28 PM Miklos Szeredi <miklos@szeredi.hu> wrote:
->
-> On Thu, Sep 12, 2019 at 8:02 AM Amir Goldstein <amir73il@gmail.com> wrote:
-> >
-> > On Thu, Sep 12, 2019 at 8:24 AM Ding Xiang
-> > <dingxiang@cmss.chinamobile.com> wrote:
-> > >
-> > > if ovl_encode_real_fh() fails, no memory was allocated
-> > > and the error in the error-valued pointer should be returned.
-> > >
-> > > V1->V2: fix SHA1 length problem
-> > >
-> > > Fixes: 9b6faee07470 ("ovl: check ERR_PTR() return value from ovl_encode_fh()")
-> > > Signed-off-by: Ding Xiang <dingxiang@cmss.chinamobile.com>
-> > > ---
-> > >  fs/overlayfs/export.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-> > > index cb8ec1f..50ade19 100644
-> > > --- a/fs/overlayfs/export.c
-> > > +++ b/fs/overlayfs/export.c
-> > > @@ -229,7 +229,7 @@ static int ovl_d_to_fh(struct dentry *dentry, char *buf, int buflen)
-> > >                                 ovl_dentry_upper(dentry), !enc_lower);
-> > >         err = PTR_ERR(fh);
-> > >         if (IS_ERR(fh))
-> > > -               goto fail;
-> > > +               return err;
-> > >
-> >
-> > Please fix the code in warning message instead of skipping the warning.
->
-> Not sure that makes sense.   ovl_encode_real_fh() will either return
-> -EIO in case of an internal error with WARN_ON() or it will return
-> -ENOMEM on memory allocation failure, which doesn't warrant a debug
-> message.
->
+Hi,
 
-Very well. I did not look that deep.
+I'm using overlayfs with NFS v3 as a lower (mounted read-only) and a
+tmpfs as an upper filesystem. This works nicely since several years.
+So I get a writeable directory tree on an nfs client even the nfs was
+mounted ro.
 
-No objections then.
+But then I mount the lower filesystem as NFS v4 (4.2) it does not
+work. Is this combination supposed to work?
+I tested this with kernels up to 5.2 yet but still no success.
 
-Thanks,
-Amir.
+
+Here's my current test setup:
+
+NFS server kernel 5.2.0-0.bpo.2-amd64 (Debian 10 with newer kernel)
+NFS client kernel 5.2.0-0.bpo.2-amd64 (Debian 10 with newer kernel)
+
+On the NFS server I did once
+# mkdir /files/scratch/t/etc; echo test-buster > /files/scratch/t/etc/test1
+
+/etc/exports: /files/scratch  11.22.33.128/25(async,ro,no_subtree_check,no_root_squash)
+
+I can do more tests if you tell me what I can change.
+Here are the two tests result, one using nfs v3 the other using NFS v4.
+
+P.S.: After more research I think this may be a problem of a
+      filesystem missing xattr support. Do you have any experiences
+      using overlayfs using NFS v4 as lower fs?
+
+Any hints would be appreciated.
+
+regards Thomas
+
+
+
+
+
+
+NFS v3 mount
+============
+Result: read and write works
+
+
++ mkdir -p /b/lower /a/upper /a/work /b/merged
++ mount -t nfs -overs=3,ro,noatime buster:/files/scratch/t /b/lower
+mount -t overlay -olowerdir=$lower,upperdir=$upper,workdir=$work,default_permissions overlay $merged || exit 88
++ cat /b/merged/etc/test1
+test-buster
++ sleep 3
+echo "write to merged" > $merged/etc/test1
++ echo 'write to merged'
++ sleep 3
+echo "write new file" > $merged/etc/test3
++ echo 'write new file'
+
+both files test1 and test3 exists with corect content.
+
+Here's the journalctl output of the overlayfs debug messages:
+Sep 16 13:45:04 suenner kernel: overlay: mkdir(work/work, 040000) = 0
+Sep 16 13:45:04 suenner kernel: overlay: tmpfile(work/work, 0100000) = 0
+Sep 16 13:45:04 suenner kernel: overlay: setxattr(work/work, "trusted.overlay.opaque", "0", 1, 0x0) = 0
+Sep 16 13:45:04 suenner kernel: overlay: open(00000000b7f8278e[etc/test1/l], 0100000) -> (00000000df256fc7, 0401100000)
+Sep 16 13:45:07 suenner kernel: overlay: setxattr(a/upper, "trusted.overlay.impure", "y", 1, 0x0) = 0
+Sep 16 13:45:07 suenner kernel: overlay: mkdir(work/#7, 040000) = 0
+Sep 16 13:45:07 suenner kernel: [168B blob data]
+Sep 16 13:45:07 suenner kernel: overlay: rename(work/#7, upper/etc, 0x0)
+Sep 16 13:45:07 suenner kernel: overlay: setxattr(upper/etc, "trusted.overlay.impure", "y", 1, 0x0) = 0
+Sep 16 13:45:07 suenner kernel: overlay: tmpfile(work/work, 0100644) = 0
+Sep 16 13:45:07 suenner kernel: [174B blob data]
+Sep 16 13:45:07 suenner kernel: overlay: link(work/#150994, etc/test1) = 0
+Sep 16 13:45:07 suenner kernel: overlay: open(000000001998a069[etc/test1/u], 0100001) -> (0000000009d1ebd4, 0401100001)
+Sep 16 13:45:10 suenner kernel: overlay: create(etc/test3, 0100666) = 0
+Sep 16 13:45:10 suenner kernel: overlay: open(0000000009d1ebd4[etc/test3/u], 0100001) -> (000000001998a069, 0401100001)
+
+
+The mount info
+buster:/files/scratch/t on /b/lower type nfs (ro,noatime,vers=3,rsize=1048576,wsize=1048576,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,mountaddr=11.22.33.211,mountvers=3,mountport=45356,mountproto=udp,local_lock=none,addr=11.22.33.211)
+overlay on /b/merged type overlay (rw,relatime,lowerdir=/b/lower,upperdir=/a/upper,workdir=/a/work,default_permissions)
+
+
+-----------------------------------------------------------------------------------------------
+NFS v4 mount
+============
+Result: read works, write does not work
+
++ mkdir -p /b/lower /a/upper /a/work /b/merged
++ mount -t nfs -oro,noatime buster:/files/scratch/t /b/lower
++ mount -t overlay -olowerdir=/b/lower,upperdir=/a/upper,workdir=/a/work,default_permissions overlay /b/merged
+
++ cat /b/merged/etc/test1
+test-buster
++ sleep 3
+echo "write to merged" > $merged/etc/test1
++ echo 'write to merged'
+/home/lange/fairesearch/xfai/overlay-test: line 32: /b/merged/etc/test1: Operation not supported
++ sleep 3
+echo "write new file" > $merged/etc/test3
++ echo 'write new file'
+/home/lange/fairesearch/xfai/overlay-test: line 34: /b/merged/etc/test3: Operation not supported
+
+
+Here's the journalctl output of the overlayfs debug messages:
+Sep 16 13:40:57 suenner kernel: overlay: mkdir(work/work, 040000) = 0
+Sep 16 13:40:57 suenner kernel: overlay: tmpfile(work/work, 0100000) = 0
+Sep 16 13:40:57 suenner kernel: overlay: setxattr(work/work, "trusted.overlay.opaque", "0", 1, 0x0) = 0
+Sep 16 13:40:57 suenner kernel: overlay: open(00000000ca5c0310[etc/test1/l], 0100000) -> (0000000023701f29, 0401100000)
+Sep 16 13:41:00 suenner kernel: overlay: setxattr(a/upper, "trusted.overlay.impure", "y", 1, 0x0) = 0
+Sep 16 13:41:00 suenner kernel: overlay: mkdir(work/#3, 040000) = 0
+Sep 16 13:41:00 suenner kernel: overlay: rmdir(work/#3) = 0
+Sep 16 13:41:03 suenner kernel: overlay: mkdir(work/#4, 040000) = 0
+Sep 16 13:41:03 suenner kernel: overlay: rmdir(work/#4) = 0
+
+The mount info:
+buster:/files/scratch/t on /b/lower type nfs4 (ro,noatime,vers=4.2,rsize=1048576,wsize=1048576,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=11.22.33.136,local_lock=none,addr=11.22.33.211)
+overlay on /b/merged type overlay (rw,relatime,lowerdir=/b/lower,upperdir=/a/upper,workdir=/a/work,default_permissions)
+
+A manual test writing to the files using strace shows:
+openat(AT_FDCWD, "/b/merged/etc/test1", O_WRONLY|O_CREAT|O_TRUNC, 0666) = -1 EOPNOTSUPP (Operation not supported)
+openat(AT_FDCWD, "/b/merged/etc/test3", O_WRONLY|O_CREAT|O_TRUNC, 0666) = -1 EOPNOTSUPP (Operation not supported)
