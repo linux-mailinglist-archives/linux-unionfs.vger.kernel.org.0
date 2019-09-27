@@ -2,80 +2,63 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5944B8127
-	for <lists+linux-unionfs@lfdr.de>; Thu, 19 Sep 2019 21:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00408C0262
+	for <lists+linux-unionfs@lfdr.de>; Fri, 27 Sep 2019 11:30:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389807AbfISTEZ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 19 Sep 2019 15:04:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52190 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392196AbfISTEY (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 19 Sep 2019 15:04:24 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 084BD2067B;
-        Thu, 19 Sep 2019 19:04:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568919862;
-        bh=Rmn1JiN1N4HM/Q7+e5y+1ogOJoUuotKY8vvho2xkxts=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eSrDCgE1dQTDYfB+9cjq89fjEwNY4Ot8tZKpKMlb1Zq3WM469h5+yAuLQxIlKAqcs
-         K1LyMZ1tprjQhK5amJffqEjxNxKOzkLq95Yk8c3IfyhBSF4JTnr8wsymoTMbSZc5tq
-         y0/cajf0K4A9MXjL5rK7dCEFWxV215yS6DzqYNB8=
-Date:   Thu, 19 Sep 2019 21:04:20 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Sasha Levin <sashal@kernel.org>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        stable <stable@vger.kernel.org>,
-        overlayfs <linux-unionfs@vger.kernel.org>
-Subject: Re: FAILED: patch "[PATCH] ovl: support the FS_IOC_FS[SG]ETXATTR
- ioctls" failed to apply to 5.1-stable tree
-Message-ID: <20190919190420.GA4183040@kroah.com>
-References: <1560073529193139@kroah.com>
- <CAOQ4uxiTrsOs3KWOxedZicXNMJJharmWo=TDXDnxSC1XMNVKBg@mail.gmail.com>
- <CAOQ4uxiTTuOESvZ2Y5cSebqKs+qeU3q6ZMReBDro0Qv7aRBhpw@mail.gmail.com>
- <20190623010345.GJ2226@sasha-vm>
- <20190623202916.GA10957@kroah.com>
- <20190624003409.GO2226@sasha-vm>
- <CAOQ4uxiz5CkGojr5yquUd__TS_eae+ZapqyGaojiOUGniFPMsg@mail.gmail.com>
- <20190724115714.GA3244@kroah.com>
- <CAOQ4uxiEVsBp6qojO9K1TqzpETtdqDPzqTaFQGjr8woJ2WQP=g@mail.gmail.com>
+        id S1725946AbfI0Jaj (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 27 Sep 2019 05:30:39 -0400
+Received: from sender3-pp-o92.zoho.com.cn ([124.251.121.251]:25986 "EHLO
+        sender3-pp-o92.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725890AbfI0Jaj (ORCPT
+        <rfc822;linux-unionfs@vger.kernel.org>);
+        Fri, 27 Sep 2019 05:30:39 -0400
+X-Greylist: delayed 906 seconds by postgrey-1.27 at vger.kernel.org; Fri, 27 Sep 2019 05:30:38 EDT
+ARC-Seal: i=1; a=rsa-sha256; t=1569575724; cv=none; 
+        d=zoho.com.cn; s=zohoarc; 
+        b=eb17F1Non85XNfYIqLt3sACZd0m4e6u+0bxnj4+oGDKhJGZEU1XXMytQBH3hfYPmnTASnO3uJind0vn4+ImuW+JtmG7ju9V3dCjyN+lQ8yGKSZZYFDTASQ8C3XoZiQXmn29k6jj2eI7n4aeWfH4GFffMXyiX5Ig4MIzKTWyJG4w=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
+        t=1569575724; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Reply-To:Subject:To:ARC-Authentication-Results; 
+        bh=JVXdfnH1h9+CN+0ofoEsDBsbbJT4lnn6Jr8SBMPUsNU=; 
+        b=ioZ2H5iWn7XOtaJaF9ptzrOTv6HEPNkc4g4saO794ikI9wWK1a6rHJQaO+5GDnKdBdF87mvjcG4Ka3ful/Fh6ornQA4mFBy2hIb12mDHuZs6Z3zo0J0kxsUXAU7G3rqrEEDeCUosnN71FTQB3Nig+IhQs4XcWEsWrjtnGnDMP5A=
+ARC-Authentication-Results: i=1; mx.zoho.com.cn;
+        dkim=pass  header.i=zoho.com.cn;
+        spf=pass  smtp.mailfrom=cgxu519@zoho.com.cn;
+        dmarc=pass header.from=<cgxu519@zoho.com.cn> header.from=<cgxu519@zoho.com.cn>
+Received: from mail.baihui.com by mx.zoho.com.cn
+        with SMTP id 1569575724128201.5293655946234; Fri, 27 Sep 2019 17:15:24 +0800 (CST)
+Received: from  [218.18.229.179] by mail.zoho.com.cn
+        with HTTP;Fri, 27 Sep 2019 17:15:24 +0800 (CST)
+Date:   Fri, 27 Sep 2019 17:15:24 +0800
+From:   admin <cgxu519@zoho.com.cn>
+Reply-To: cgxu519@zoho.com.cn
+To:     "miklos" <miklos@szeredi.hu>
+Cc:     "linux-unionfs" <linux-unionfs@vger.kernel.org>,
+        "cgxu519" <cgxu519@zoho.com.cn>
+Message-ID: <16d7200e45c.1398c37e020790.5506577327176178828@zoho.com.cn>
+In-Reply-To: 
+Subject: syncfs improvement for overlayfs
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOQ4uxiEVsBp6qojO9K1TqzpETtdqDPzqTaFQGjr8woJ2WQP=g@mail.gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Priority: Medium
+User-Agent: ZohoCN Mail
+X-Mailer: ZohoCN Mail
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, Jul 24, 2019 at 04:46:36PM +0300, Amir Goldstein wrote:
-> > > I don't think syzkaller ones are more relevant to 5.1 then the rest of
-> > > the patches applied to 4.19. If anything, its the other way around.
-> > > According to syzbot dashboard, it is being run on LTS kernels, not on
-> > > latest stable.
-> > >
-> > > Please forgive me if my language caused confusion, when I said
-> > > "please apply to 4.19" I meant 4.19+.
-> >
-> > So is anything else needed to be done here, or are we all caught up and
-> > everything merged properly?
-> >
-> 
-> All the needed patches have been merged, but
-> Upstream commit 146d62e5a5867fbf84490d82455718bfb10fe824
-> ("ovl: detect overlapping layers") did introduce a regression to
-> docker and friends into stable kernels :-/
-> 
-> The fix commit is already tested and waiting in linux-next:
-> 0be0bfd2de9d ("ovl: fix regression caused by overlapping layers detection")
-> but did not hit upstream yet. When it does, will need to apply it to v4.19+
+Hi Miklos,
 
-That is now in Linus's tree and I've queued it up now.
+It's been a while since I posted my last version of syncfs improvement patch[1]
+and I noticed it isn't get merged yet. If you think this patch is still valuable then
+I would like to do rebase on latest overlayfs tree and resend for review.
+What do you think?
 
-thanks,
 
-greg k-h
+[1]
+https://www.spinics.net/lists/linux-unionfs/msg04174.html
+
+Thanks,
+Chengguang
+
