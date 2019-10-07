@@ -2,114 +2,105 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BDE74CBBDF
-	for <lists+linux-unionfs@lfdr.de>; Fri,  4 Oct 2019 15:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48D22CE8B0
+	for <lists+linux-unionfs@lfdr.de>; Mon,  7 Oct 2019 18:09:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388321AbfJDNg1 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 4 Oct 2019 09:36:27 -0400
-Received: from sender2-of-o52.zoho.com.cn ([163.53.93.247]:21626 "EHLO
-        sender2-of-o52.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388244AbfJDNg1 (ORCPT
+        id S1727711AbfJGQJ3 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 7 Oct 2019 12:09:29 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:38375 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728828AbfJGQJ2 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 4 Oct 2019 09:36:27 -0400
-X-Greylist: delayed 912 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Oct 2019 09:36:25 EDT
-ARC-Seal: i=1; a=rsa-sha256; t=1570195248; cv=none; 
-        d=zoho.com.cn; s=zohoarc; 
-        b=dmgC1R8P/pDyx8JUvBR6XMsaeZ0SmzLZSO/J0EvOl/NySRLnoZm9xSLoYeK6Ifv6dj3biyseFRQOqlTJodT4rR/tCgNQ5/T65TT0171XYonHf4OmwpMqxBDtsh+th519sz30d3FqG7cKRBONvp0ifd7CRlcIU8+i2pz/awjtgeA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
-        t=1570195248; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To:ARC-Authentication-Results; 
-        bh=yCzUkIfe//ibW7atC0MU+OHkZ64NinB+KwQXe7H2h3k=; 
-        b=QUAuuNyNu6BoIKUMWjoqBNj3rKcKQ6satgwcPAZWQF8rNsevXLezbPscF2+HpAALolhV9niq0wUUZPJWiR3rkdHGimqE0n37MuogtjyhRbXaIErI3WahQ1SmLl3XmeSqoFK5KXjqdS4HU1XTy4DTh3f2rtxttBdcRvG45BNxLqo=
-ARC-Authentication-Results: i=1; mx.zoho.com.cn;
-        dkim=pass  header.i=mykernel.net;
-        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
-        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1570195248;
-        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
-        h=From:To:Cc:Message-ID:Subject:Date:MIME-Version:Content-Transfer-Encoding:Content-Type;
-        l=2139; bh=yCzUkIfe//ibW7atC0MU+OHkZ64NinB+KwQXe7H2h3k=;
-        b=cMKt7DOgxYGTfNMKlvto/F2h/DXgwGGW4QCJSD9L8igzgVVEQSP10PEb+zyfo5MA
-        DW4zHRwYhvzkC10LZf+9zfAHLrEDPXwEMqjaFWUQ6QZFFUJv0EXDm1leqlVUCmPh2/m
-        ON5LMwUz1tgYGPWxfA1/Fxox42v/w2L7Jpul43sc=
-Received: from localhost.localdomain (113.87.91.134 [113.87.91.134]) by mx.zoho.com.cn
-        with SMTPS id 157019524446510.220044819845384; Fri, 4 Oct 2019 21:20:44 +0800 (CST)
-From:   Chengguang Xu <cgxu519@mykernel.net>
-To:     miklos@szeredi.hu
-Cc:     linux-unionfs@vger.kernel.org, Chengguang Xu <cgxu519@mykernel.net>
-Message-ID: <20191004132030.28353-1-cgxu519@mykernel.net>
-Subject: [PATCH] ovl: improving copy-up efficiency for sparse file
-Date:   Fri,  4 Oct 2019 21:20:30 +0800
-X-Mailer: git-send-email 2.21.0
+        Mon, 7 Oct 2019 12:09:28 -0400
+Received: by mail-pg1-f193.google.com with SMTP id x10so8498048pgi.5
+        for <linux-unionfs@vger.kernel.org>; Mon, 07 Oct 2019 09:09:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=android.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=aeEaJtarLqJ/0FUJVYNbwn+6HPdzfTKq5CySN2cpkL8=;
+        b=WclQk7CqmZhdOvOLCv7bcbzhzQmzjahDqMBGbnnQMbfR+9Qr5Xtu2s4Pq3udBWYK3e
+         GoWCLwm019+p9dKJnQT6RlhXwMB+3RrjdnZn6tx2kl/ylqM4mc/PyUyNj+lU7/yQ9NZJ
+         KxYS/aSvd4bWsbKruGsMqIUZefM9aluM+5oFIv3S1DJ10bNO52A06lGf57EBsnVJKZ0w
+         XMcJ9xAC8U2/pLfmvcFKcJzaUjo3yIi/b5PT2TuOq3N4yoK93MDj3/3JFcpF/FkTgRJz
+         KovVEYC9Ir32aKghqE1WmmCNMId/lP6/3CiNDL0nw91hNfed+TIH1o2+/PCmnwpeNlCh
+         ZRpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=aeEaJtarLqJ/0FUJVYNbwn+6HPdzfTKq5CySN2cpkL8=;
+        b=Bptx5QV0Eg2jjbDMHhWd8jRo5mj9Jt7NSre2AqMJH6Y1Na8vWqzQqAqe3nEJTSnKeD
+         YTWBzpqTqbjUIhcpBZS/dED57KUPn3YsvuHhrtv7JPOHr91c3mcxxnY+SjiZqrmCjdr4
+         ECGTMnGOGmFnoT3lM3kMxVq/4oA5pqvUvu0Qt6OPZ38U+ym0qaKRAWJWpwQQFrDLRI92
+         wZQsjFhet232M1nUduuqpzHQ3Vot0bgn8wHp+q8PSdwDW78ySiS9GhdYPGO/rpj1UvJ6
+         OuBPTzRoBTJNWItOK2v6cs8TWUqS2DAxC6JakER+ccr6ooli9vIZgz8KOyyF7iMblxIG
+         Xjyw==
+X-Gm-Message-State: APjAAAWX7HbMMltLxXbaXh+hihg4CoE0Bikrg9kHI3j4ciR79uW4Yw/h
+        QkmjtgmmrpcnfKSWE25ywTxGSQ==
+X-Google-Smtp-Source: APXvYqxOwvzzrjEtteWgmzgIWO6ke9wfqYA06v+6RaJ5Zxl0ufcPdavUTQcVgAmJgyYhl4ADnqIDlA==
+X-Received: by 2002:a17:90a:e008:: with SMTP id u8mr81782pjy.46.1570464566766;
+        Mon, 07 Oct 2019 09:09:26 -0700 (PDT)
+Received: from nebulus.mtv.corp.google.com ([2620:15c:211:200:5404:91ba:59dc:9400])
+        by smtp.gmail.com with ESMTPSA id v13sm17660512pgo.79.2019.10.07.09.09.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Oct 2019 09:09:26 -0700 (PDT)
+From:   Mark Salyzyn <salyzyn@android.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     kernel-team@android.com, Mark Salyzyn <salyzyn@android.com>,
+        linux-security-module@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>,
+        linux-unionfs@vger.kernel.org
+Subject: [PATCH] ovl: filter of trusted xattr results in audit
+Date:   Mon,  7 Oct 2019 09:09:16 -0700
+Message-Id: <20191007160918.29504-1-salyzyn@android.com>
+X-Mailer: git-send-email 2.23.0.581.g78d2f28ef7-goog
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-ZohoCNMailClient: External
-Content-Type: text/plain; charset=utf8
+Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Current copy-up is not efficient for sparse file,
-It's not only slow but also wasting more disk space
-when the target lower file has huge hole inside.
-This patch tries to recognize file hole and skip it
-during copy-up.
+When filtering xattr list for reading, presence of trusted xattr
+results in a security audit log.  However, if there is other content
+no errno will be set, and if there isn't, the errno will be -ENODATA
+and not -EPERM as is usually associated with a lack of capability.
+The check does not block the request to list the xattrs present.
 
-In detail, this optimization checks the hole according
-to copy-up chunk size so it may not recognize all kind
-of holes in the file. However, it is easy to implement
-and will be enough for most of the time.
+Switch to has_capability_noaudit to reflect a more appropriate check.
 
-Additionally, this optimization relies on lseek(2)
-SEEK_DATA implementation, so for some specific
-filesystems which do not support this feature
-will behave as before on copy-up.
-
-Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
+Signed-off-by: Mark Salyzyn <salyzyn@android.com>
+Cc: linux-security-module@vger.kernel.org
+Cc: kernel-team@android.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org # v3.18
+Fixes: upstream a082c6f680da ("ovl: filter trusted xattr for non-admin")
+Fixes: 3.18 4bcc9b4b3a0a ("ovl: filter trusted xattr for non-admin")
 ---
- fs/overlayfs/copy_up.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+Replaced ns_capable_noaudit with 3.18.y tree specific
+has_capability_noaudit present in original submission to kernel.org
+commit 5c2e9f346b815841f9bed6029ebcb06415caf640
+("ovl: filter of trusted xattr results in audit")
 
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index b801c6353100..028033c9f021 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -144,10 +144,11 @@ static int ovl_copy_up_data(struct path *old, struct =
-path *new, loff_t len)
- =09=09goto out;
- =09/* Couldn't clone, so now we try to copy the data */
-=20
--=09/* FIXME: copy up sparse files efficiently */
- =09while (len) {
- =09=09size_t this_len =3D OVL_COPY_UP_CHUNK_SIZE;
- =09=09long bytes;
-+=09=09loff_t old_next_data_pos;
-+=09=09loff_t hole_len;
-=20
- =09=09if (len < this_len)
- =09=09=09this_len =3D len;
-@@ -157,6 +158,18 @@ static int ovl_copy_up_data(struct path *old, struct p=
-ath *new, loff_t len)
- =09=09=09break;
- =09=09}
-=20
-+=09=09old_next_data_pos =3D vfs_llseek(old_file, old_pos, SEEK_DATA);
-+=09=09if (old_next_data_pos >=3D old_pos + OVL_COPY_UP_CHUNK_SIZE) {
-+=09=09=09hole_len =3D (old_next_data_pos - old_pos) /
-+=09=09=09=09OVL_COPY_UP_CHUNK_SIZE * OVL_COPY_UP_CHUNK_SIZE;
-+=09=09=09old_pos +=3D hole_len;
-+=09=09=09new_pos +=3D hole_len;
-+=09=09=09len -=3D hole_len;
-+=09=09=09continue;
-+=09=09} else if (old_next_data_pos =3D=3D -ENXIO) {
-+=09=09=09break;
-+=09=09}
-+
- =09=09bytes =3D do_splice_direct(old_file, &old_pos,
- =09=09=09=09=09 new_file, &new_pos,
- =09=09=09=09=09 this_len, SPLICE_F_MOVE);
---=20
-2.21.0
+ fs/overlayfs/inode.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-
+diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
+index a01ec1836a72..1175efa5e956 100644
+--- a/fs/overlayfs/inode.c
++++ b/fs/overlayfs/inode.c
+@@ -265,7 +265,8 @@ static bool ovl_can_list(const char *s)
+ 		return true;
+ 
+ 	/* Never list trusted.overlay, list other trusted for superuser only */
+-	return !ovl_is_private_xattr(s) && capable(CAP_SYS_ADMIN);
++	return !ovl_is_private_xattr(s) &&
++	       has_capability_noaudit(current, CAP_SYS_ADMIN);
+ }
+ 
+ ssize_t ovl_listxattr(struct dentry *dentry, char *list, size_t size)
+-- 
+2.23.0.581.g78d2f28ef7-goog
 
