@@ -2,237 +2,230 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7897FE051A
-	for <lists+linux-unionfs@lfdr.de>; Tue, 22 Oct 2019 15:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A23CE0D6A
+	for <lists+linux-unionfs@lfdr.de>; Tue, 22 Oct 2019 22:45:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732067AbfJVNbq (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 22 Oct 2019 09:31:46 -0400
-Received: from mail-yb1-f193.google.com ([209.85.219.193]:45560 "EHLO
-        mail-yb1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725788AbfJVNbq (ORCPT
+        id S1732208AbfJVUpD (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 22 Oct 2019 16:45:03 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:46875 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732168AbfJVUpD (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 22 Oct 2019 09:31:46 -0400
-Received: by mail-yb1-f193.google.com with SMTP id q143so5124725ybg.12;
-        Tue, 22 Oct 2019 06:31:45 -0700 (PDT)
+        Tue, 22 Oct 2019 16:45:03 -0400
+Received: by mail-pf1-f193.google.com with SMTP id q5so11357595pfg.13
+        for <linux-unionfs@vger.kernel.org>; Tue, 22 Oct 2019 13:45:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=m/WO+vAGlo2soHc4G9e3wdg+6WHR5f2PbBSD5EHKkk8=;
-        b=N0CeWZtn1MsiDdc0HEbU4GTTqO2tfr2pP4tZZSHFFXqyIw6hcJG3eA45pB3ByIOml/
-         M6iFY0Vl5G0zY1H7RE3jEPC8b/TV7IXuwiaFTP05WEnhWQ3OdS3z0XdF04ImOsRLNpqm
-         pH6LtPyWkO+eeZFx42tgoderEJtIVa+lJxuSlon8SrC7nXCgTsffqUo8nY+Q16NKyMDP
-         JBkPhshDAukjAIqkMGskBZl44juq1meeZ5TnR2Qcn2bEopvKlIA6psbZq1r0Sz2TgAdx
-         SABi2zgJGxdaT8cByOXvFeb3iQnoCiAlLaO4ZwE9H2JUbRMWUHYaZzolurRU/ljcFLOP
-         S9AA==
+        d=android.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zQi/xJJwAqDZGEt9P00eL5cdkNEDylnd0lg9q6mQJHw=;
+        b=pXO9HhSmD6xovUlEhY0LV4yCUtX33MQ1Wn1DWL/2qiereG48iqg8C1mmGc2vlujR+a
+         TDBIAPtz309ZUIe5vY7r6+cJAuajEJD37Ebb9W6svo2VaftLgZPW8TAZSyeRJK/Pp2P2
+         SHn7Pr4wIV2CNk2Urtv5a151FI4ZdfGVosVrWX3ioYuPb8vKm2wPMnZVvCHqnUTnamX3
+         4Xj5QtKjII58x0mBefkmsPWbXysjM/VPB59grCp69k809dIS2INjD6XqWXBGPa6XyeSD
+         VnJRQZNl3tKLlOk36+BMjBS6XT2KlB0VT3/lu5ayI5SDhkENXmRAXceVeEoraTV0NsKG
+         p4rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=m/WO+vAGlo2soHc4G9e3wdg+6WHR5f2PbBSD5EHKkk8=;
-        b=Qcuetzv2KTl9UjeNUEuzo2N0+9n0Gc/BczmRaGV65QPyaXDikYS+sDUXDViky8LUh1
-         N5uBqT4c10/CfbqNa2muIXge8W/2+MGX44yL6/+0JesnioPAzZAgNcVyIor2KJYIKN3n
-         Pa8Avdr/RABhSGusISMmhM6vYz/ny77C9rDqoQrDO3VMbUXXwTcTtKUjTlIUEaVX9dZh
-         /Wjr5cvd+Eeua82wMGoX1Ei7cU1s5w4iREUYwB2oxDrZ3vWAD4gHQ+8nPFp7ZfBwLfwm
-         j6MZEwn+xhSjP4e4IzgC0M4twJ0baLBmKxdsNvEjq6PilgspwYrbQx9y96YYQSFogRpa
-         tSpQ==
-X-Gm-Message-State: APjAAAUa86sQ+q7yvq8EaCMlXji2jiBDewZgSW8zI/k++Tq8Po/EPUsr
-        oRi5hYkFx0VbIkd0qImgEThudCaqD9vcxWFhbmBhwp7J
-X-Google-Smtp-Source: APXvYqyqyr0Q8iIUbIxst9ZZM7Dq02b3swxnLYMQ+mzDISrr5Lt25p8rI4FzqycGM8XLtSZIXwWFhsS2FkbhzWMpKDM=
-X-Received: by 2002:a25:8308:: with SMTP id s8mr2333163ybk.126.1571751104822;
- Tue, 22 Oct 2019 06:31:44 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zQi/xJJwAqDZGEt9P00eL5cdkNEDylnd0lg9q6mQJHw=;
+        b=rQIYsx9niF5z4J7TlbCbecVZivSbMiPE0ZZpspIVRGrJJYoYjZbcVndqPxiHy5XF6h
+         T4M5+ZLkXL8GoSTujED2En0CRP++ttXbLojs7EnfKLhkMFmtq4vVz4Fios5GzzltLPcl
+         moZy81B8jGFIoDqt/+dCJHlSachWK+5e+MqWLMuWhDEkOZPJgcxF7giT7ZOZOA1BEc3R
+         T61xuc91/8t70Ob5pbYgrvIJfUHVLVdZuUwkAdx4WdTIoA14Cy9VFfnBbeefv1ytB2ER
+         fVJ/BRAFvp9YWp5d7GlnY4+KVibmKyFN5sxYJQ1ej8g2B4fgaTA4RdkiTBiLf07U/jfq
+         6e4g==
+X-Gm-Message-State: APjAAAXxVpyc+Dmh1b1jVkXuMZ1CRWbkrqD/IPO3opEpmR0wV9aAAXP6
+        /hmfCYVtfCGCLxBsh96XRPIhaQ==
+X-Google-Smtp-Source: APXvYqz7Lnbo1Tu208xh3nUpXQolvr6tWY9J/kPutn7UlzVjPZoPJnb5iaMDb1wW+Sv9LLRb5h4xvg==
+X-Received: by 2002:aa7:9525:: with SMTP id c5mr6374626pfp.22.1571777101925;
+        Tue, 22 Oct 2019 13:45:01 -0700 (PDT)
+Received: from nebulus.mtv.corp.google.com ([2620:15c:211:200:5404:91ba:59dc:9400])
+        by smtp.gmail.com with ESMTPSA id l184sm19810903pfl.76.2019.10.22.13.45.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Oct 2019 13:45:01 -0700 (PDT)
+From:   Mark Salyzyn <salyzyn@android.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     kernel-team@android.com, Mark Salyzyn <salyzyn@android.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Vivek Goyal <vgoyal@redhat.com>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        linux-unionfs@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: [PATCH v14 0/5] overlayfs override_creds=off & nested get xattr fix
+Date:   Tue, 22 Oct 2019 13:44:45 -0700
+Message-Id: <20191022204453.97058-1-salyzyn@android.com>
+X-Mailer: git-send-email 2.23.0.866.gb869b98d4c-goog
 MIME-Version: 1.0
-References: <20191022122621.27374-1-cgxu519@mykernel.net>
-In-Reply-To: <20191022122621.27374-1-cgxu519@mykernel.net>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Tue, 22 Oct 2019 16:31:32 +0300
-Message-ID: <CAOQ4uxiXwJp4dh_yENsxskbSvuGew2ZqRFyKccdFUMLGWUaz3Q@mail.gmail.com>
-Subject: Re: [PATCH] overlay/066: copy-up test for variant sparse files
-To:     Chengguang Xu <cgxu519@mykernel.net>
-Cc:     fstests <fstests@vger.kernel.org>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Eryu Guan <guaneryu@gmail.com>,
-        Miklos Szeredi <miklos@szeredi.hu>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Tue, Oct 22, 2019 at 3:26 PM Chengguang Xu <cgxu519@mykernel.net> wrote:
->
-> This is intensive copy-up test for sparse files,
-> these cases are mainly used for regression test
-> of copy-up improvement for sparse files.
->
-> Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
-> ---
->  tests/overlay/066     | 108 ++++++++++++++++++++++++++++++++++++++++++
->  tests/overlay/066.out |   2 +
->  tests/overlay/group   |   1 +
->  3 files changed, 111 insertions(+)
->  create mode 100755 tests/overlay/066
->  create mode 100644 tests/overlay/066.out
->
-> diff --git a/tests/overlay/066 b/tests/overlay/066
-> new file mode 100755
-> index 00000000..0394b14e
-> --- /dev/null
-> +++ b/tests/overlay/066
-> @@ -0,0 +1,108 @@
-> +#! /bin/bash
-> +# SPDX-License-Identifier: GPL-2.0
-> +# Copyright (c) 2019 Chengguang Xu <cgxu519@mykernel.net>. All Rights Reserved.
-> +#
-> +# FS QA Test 066
-> +#
-> +# Test overlayfs copy-up function for variant sparse files.
-> +#
-> +seq=`basename $0`
-> +seqres=$RESULT_DIR/$seq
-> +echo "QA output created by $seq"
-> +
-> +here=`pwd`
-> +tmp=/tmp/$$
-> +status=1       # failure is the default!
-> +trap "_cleanup; exit \$status" 0 1 2 3 15
-> +
-> +_cleanup()
-> +{
-> +       cd /
-> +       rm -f $tmp.*
-> +}
-> +
-> +# get standard environment, filters and checks
-> +. ./common/rc
-> +. ./common/filter
-> +
-> +# remove previous $seqres.full before test
-> +rm -f $seqres.full
-> +
-> +# real QA test starts here
-> +
-> +# Modify as appropriate.
-> +_supported_fs generic
-> +_supported_os Linux
-> +_require_test
-> +_require_scratch
-> +
-> +# Remove all files from previous tests
-> +_scratch_mkfs
-> +_require_fs_space $OVL_BASE_SCRATCH_MNT $((10*1024*13 + 100*1024))
+Patch series:
 
-Please add a comment about how the above is calculated.
-Should it depend on fs reported iosize or blocksize?
+Mark Salyzyn (5):
+  Add flags option to get xattr method paired to __vfs_getxattr
+  overlayfs: check CAP_DAC_READ_SEARCH before issuing exportfs_decode_fh
+  overlayfs: handle XATTR_NOSECURITY flag for get xattr method
+  overlayfs: internal getxattr operations without sepolicy checking
+  overlayfs: override_creds=off option bypass creator_cred
 
-> +
-> +lowerdir=$OVL_BASE_SCRATCH_MNT/$OVL_LOWER
-> +upperdir=$OVL_BASE_SCRATCH_MNT/$OVL_UPPER
-> +testfile="copyup_sparse_test"
-> +mkdir -p $lowerdir
-> +
-> +# Create a completely empty hole file.
-> +$XFS_IO_PROG -fc "truncate 10M" "${lowerdir}/${testfile}_empty_holefile" >>$seqres.full
-> +
-> +iosize=`stat -c %o "${lowerdir}/${testfile}_empty_holefile"`
+The first four patches address fundamental security issues that should
+be solved regardless of the override_creds=off feature.
 
-I am not sure why fs reported iosize is interesting for this test case.
-If anything you need _get_file_block_size
+The fifth adds the feature depends on these other fixes.
 
-> +if [ $iosize -le 1024 ]; then
-> +       ioszie=1
+By default, all access to the upper, lower and work directories is the
+recorded mounter's MAC and DAC credentials.  The incoming accesses are
+checked against the caller's credentials.
 
-typo: ioszie
+If the principles of least privilege are applied for sepolicy, the
+mounter's credentials might not overlap the credentials of the caller's
+when accessing the overlayfs filesystem.  For example, a file that a
+lower DAC privileged caller can execute, is MAC denied to the
+generally higher DAC privileged mounter, to prevent an attack vector.
 
-> +else
-> +       iosize=`expr $iosize / 1024`
-> +fi
-> +
-> +# Create test files with different hole size patterns.
-> +while [ $iosize -le 2048 ]; do
-> +       pos=$iosize
-> +       $XFS_IO_PROG -fc "truncate 10M" "${lowerdir}/${testfile}_iosize${iosize}K_holefile" >>$seqres.full
-> +       while [ $pos -lt 8192 ]; do
-> +               $XFS_IO_PROG -fc "pwrite ${pos}K ${iosize}K" "${lowerdir}/${testfile}_iosize${iosize}K_holefile" >>$seqres.full
-> +               pos=`expr $pos + $iosize + $iosize`
-> +       done
-> +       iosize=`expr $iosize + $iosize`
-> +done
-> +
-> +# Create test file with many random holes(1M~2M).
-> +$XFS_IO_PROG -fc "truncate 100M" "${lowerdir}/${testfile}_random_holefile" >>$seqres.full
-> +pos=2048
-> +while [ $pos -le 81920 ]; do
-> +       iosize=`expr $RANDOM % 2048`
-> +       if [ $iosize -lt 1024 ]; then
-> +               iosize=`expr $iosize + 1024`
-> +       fi
+We add the option to turn off override_creds in the mount options; all
+subsequent operations after mount on the filesystem will be only the
+caller's credentials.  The module boolean parameter and mount option
+override_creds is also added as a presence check for this "feature",
+existence of /sys/module/overlay/parameters/overlay_creds
 
-IOW: iosize=`expr $RANDOM % 1024 + 1024`
+Signed-off-by: Mark Salyzyn <salyzyn@android.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Stephen Smalley <sds@tycho.nsa.gov>
+Cc: linux-unionfs@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 
-> +       $XFS_IO_PROG -fc "pwrite ${pos}K ${iosize}K" "${lowerdir}/${testfile}_random_holefile" >>$seqres.full
-> +       pos=`expr $pos + $iosize + $iosize`
-> +done
-> +
-> +_scratch_mount
-> +
-> +# Open the files should succeed, no errors are expected.
-> +for f in $SCRATCH_MNT/*; do
-> +       $XFS_IO_PROG -c "open" $f >>$seqres.full
-> +done
-> +
-> +echo "Silence is golden"
-> +
-> +# Check all copy-up files in upper layer.
-> +iosize=`stat -c %o "${lowerdir}/${testfile}_empty_holefile"`
-> +if [ $iosize -le 1024 ]; then
-> +       ioszie=1
+---
+v14:
+- Rejoin, rebase and a few adjustments.
 
-typo: ioszie
+v13:
+- Pull out first patch and try to get it in alone feedback, some
+  Acks, and then <crickets> because people forgot why we were doing i.
 
-> +else
-> +       iosize=`expr $iosize / 1024`
-> +fi
-> +
-> +while [ $iosize -le 2048 ]; do
-> +       diff "${lowerdir}/${testfile}_iosize${iosize}K_holefile" "${upperdir}/${testfile}_iosize${iosize}K_holefile" >>$seqres.full
-> +       iosize=`expr $iosize + $iosize`
-> +done
-> +
-> +diff "${lowerdir}/${testfile}_empty_holefile"  "${upperdir}/${testfile}_empty_holefile"  >>$seqres.full
-> +diff "${lowerdir}/${testfile}_random_holefile" "${upperdir}/${testfile}_random_holefile" >>$seqres.full
+v12:
+- Restore squished out patch 2 and 3 in the series,
+  then change algorithm to add flags argument.
+  Per-thread flag is a large security surface.
 
-This expression does not fail the test if file differ?
-Did you mean:
+v11:
+- Squish out v10 introduced patch 2 and 3 in the series,
+  then and use per-thread flag instead for nesting.
+- Switch name to ovl_do_vds_getxattr for __vds_getxattr wrapper.
+- Add sb argument to ovl_revert_creds to match future work.
 
-diff "${lowerdir}/${testfile}_empty_holefile"
-"${upperdir}/${testfile}_empty_holefile"  >>$seqres.full || \
-    echo ${testfile}_empty_holefile" copy up failed
+v10:
+- Return NULL on CAP_DAC_READ_SEARCH
+- Add __get xattr method to solve sepolicy logging issue
+- Drop unnecessary sys_admin sepolicy checking for administrative
+  driver internal xattr functions.
 
-> +
-> +# success, all done
-> +status=0
-> +exit
-> diff --git a/tests/overlay/066.out b/tests/overlay/066.out
-> new file mode 100644
-> index 00000000..b60cc24c
-> --- /dev/null
-> +++ b/tests/overlay/066.out
-> @@ -0,0 +1,2 @@
-> +QA output created by 066
-> +Silence is golden
-> diff --git a/tests/overlay/group b/tests/overlay/group
-> index ef8517a1..1dec7db9 100644
-> --- a/tests/overlay/group
-> +++ b/tests/overlay/group
-> @@ -68,3 +68,4 @@
->  063 auto quick whiteout
->  064 auto quick copyup
->  065 auto quick mount
-> +066 auto quick copyup
+v6:
+- Drop CONFIG_OVERLAY_FS_OVERRIDE_CREDS.
+- Do better with the documentation, drop rationalizations.
+- pr_warn message adjusted to report consequences.
 
-I'm curious, how long does the test run with and without copy up hole
-optimization patch?
+v5:
+- beefed up the caveats in the Documentation
+- Is dependent on
+  "overlayfs: check CAP_DAC_READ_SEARCH before issuing exportfs_decode_fh"
+  "overlayfs: check CAP_MKNOD before issuing vfs_whiteout"
+- Added prwarn when override_creds=off
 
-Thanks,
-Amir.
+v4:
+- spelling and grammar errors in text
+
+v3:
+- Change name from caller_credentials / creator_credentials to the
+  boolean override_creds.
+- Changed from creator to mounter credentials.
+- Updated and fortified the documentation.
+- Added CONFIG_OVERLAY_FS_OVERRIDE_CREDS
+
+v2:
+- Forward port changed attr to stat, resulting in a build error.
+- altered commit message.
+
+
+ Documentation/filesystems/locking.rst   |  10 +--
+ Documentation/filesystems/overlayfs.txt |  23 +++++
+ fs/9p/acl.c                             |  51 ++++++-----
+ fs/9p/xattr.c                           |  19 ++--
+ fs/afs/xattr.c                          | 112 +++++++++++-------------
+ fs/btrfs/xattr.c                        |  36 ++++----
+ fs/ceph/xattr.c                         |  17 ++--
+ fs/cifs/xattr.c                         |  72 +++++++--------
+ fs/ecryptfs/crypto.c                    |  20 +++--
+ fs/ecryptfs/inode.c                     |  36 +++++---
+ fs/ecryptfs/mmap.c                      |  39 +++++----
+ fs/erofs/xattr.c                        |   8 +-
+ fs/ext2/xattr_security.c                |  16 ++--
+ fs/ext2/xattr_trusted.c                 |  15 ++--
+ fs/ext2/xattr_user.c                    |  19 ++--
+ fs/ext4/xattr_security.c                |  15 ++--
+ fs/ext4/xattr_trusted.c                 |  15 ++--
+ fs/ext4/xattr_user.c                    |  19 ++--
+ fs/f2fs/xattr.c                         |  42 ++++-----
+ fs/fuse/xattr.c                         |  23 ++---
+ fs/gfs2/xattr.c                         |  18 ++--
+ fs/hfs/attr.c                           |  15 ++--
+ fs/hfsplus/xattr.c                      |  17 ++--
+ fs/hfsplus/xattr_security.c             |  13 ++-
+ fs/hfsplus/xattr_trusted.c              |  13 ++-
+ fs/hfsplus/xattr_user.c                 |  13 ++-
+ fs/jffs2/security.c                     |  16 ++--
+ fs/jffs2/xattr_trusted.c                |  16 ++--
+ fs/jffs2/xattr_user.c                   |  16 ++--
+ fs/jfs/xattr.c                          |  33 ++++---
+ fs/kernfs/inode.c                       |  23 +++--
+ fs/nfs/nfs4proc.c                       |  28 +++---
+ fs/ocfs2/xattr.c                        |  52 +++++------
+ fs/orangefs/xattr.c                     |  19 ++--
+ fs/overlayfs/copy_up.c                  |   2 +-
+ fs/overlayfs/dir.c                      |  17 ++--
+ fs/overlayfs/file.c                     |  20 ++---
+ fs/overlayfs/inode.c                    |  66 +++++++-------
+ fs/overlayfs/namei.c                    |  21 +++--
+ fs/overlayfs/overlayfs.h                |   9 +-
+ fs/overlayfs/ovl_entry.h                |   1 +
+ fs/overlayfs/readdir.c                  |   4 +-
+ fs/overlayfs/super.c                    |  75 +++++++++-------
+ fs/overlayfs/util.c                     |  44 +++++++---
+ fs/posix_acl.c                          |  23 +++--
+ fs/reiserfs/xattr.c                     |   2 +-
+ fs/reiserfs/xattr_security.c            |  22 +++--
+ fs/reiserfs/xattr_trusted.c             |  22 +++--
+ fs/reiserfs/xattr_user.c                |  22 +++--
+ fs/squashfs/xattr.c                     |  10 +--
+ fs/ubifs/xattr.c                        |  33 ++++---
+ fs/xattr.c                              | 112 +++++++++++++++---------
+ fs/xfs/libxfs/xfs_attr.c                |   4 +-
+ fs/xfs/libxfs/xfs_attr.h                |   2 +-
+ fs/xfs/xfs_xattr.c                      |  35 ++++----
+ include/linux/xattr.h                   |  26 ++++--
+ include/uapi/linux/xattr.h              |   7 +-
+ mm/shmem.c                              |  21 +++--
+ net/socket.c                            |  16 ++--
+ security/commoncap.c                    |  29 ++++--
+ security/integrity/evm/evm_main.c       |  13 ++-
+ security/selinux/hooks.c                |  28 ++++--
+ security/smack/smack_lsm.c              |  38 +++++---
+ 63 files changed, 852 insertions(+), 771 deletions(-)
+
+-- 
+2.23.0.866.gb869b98d4c-goog
+
