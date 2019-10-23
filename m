@@ -2,284 +2,128 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58E84E1011
-	for <lists+linux-unionfs@lfdr.de>; Wed, 23 Oct 2019 04:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 116DEE11F8
+	for <lists+linux-unionfs@lfdr.de>; Wed, 23 Oct 2019 08:17:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730808AbfJWCgI (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 22 Oct 2019 22:36:08 -0400
-Received: from sender3-pp-o92.zoho.com.cn ([124.251.121.251]:25725 "EHLO
-        sender3-pp-o92.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388969AbfJWCgI (ORCPT
+        id S1731266AbfJWGRN (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 23 Oct 2019 02:17:13 -0400
+Received: from mail-yb1-f196.google.com ([209.85.219.196]:39620 "EHLO
+        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725874AbfJWGRN (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 22 Oct 2019 22:36:08 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1571798146; cv=none; 
-        d=zoho.com.cn; s=zohoarc; 
-        b=SRDUfn1F5ISOg9WQ090kCGSc7qjRonw7/18d9kQcrtKrjJuA3+P9wH26T4JtTHe7rP3f2zKVA8IlSAHUDgXwtaIa0ZrWHTrVrkBX+I4umc2jinEZ0WHe3r+tnyMZW22SV8lzT8fDwK8ugAD+A+eKAO+nqAzMmQVo41FA+vA93pc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
-        t=1571798146; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:Reply-To:References:Subject:To:ARC-Authentication-Results; 
-        bh=i9Gm5YNnthNWQFsTAvgpartk6iJmywHmbyaQYAzVrWM=; 
-        b=g+8FvJ1qK3e5g8P8dmdybMpF1Xwiq6s9kr4eNSUZEiDSVrvCEz681etU9eALTCH5y4NTb2zVw4ME0JazbIn3JzOeGjIIGkT4yYLG10oBy+cpYk2v4d2eCqcusDFdA4uyJi3Df5gNS4QNqudaqaDEsnaZTzyTU8SS2W2TjctWVvI=
-ARC-Authentication-Results: i=1; mx.zoho.com.cn;
-        dkim=pass  header.i=mykernel.net;
-        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
-        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1571798146;
-        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
-        h=Date:From:Reply-To:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        l=6815; bh=i9Gm5YNnthNWQFsTAvgpartk6iJmywHmbyaQYAzVrWM=;
-        b=UniVkE+WteLeLQa2oPVf07zkkSB258VWsYe9AGiQJUfeTaUi+MvHoPenWL+64maU
-        fVL/lUtVjP8Arg2l9feJrcb4eFskPqVrw1zrguE6hBNyFy6ymZsuxTBYx4qNZir9qIk
-        TqcUwjZYNTy4JxaGyBPLcIjYZdEpc7YXVbdGTU18=
-Received: from mail.baihui.com by mx.zoho.com.cn
-        with SMTP id 1571798143907963.5163989350823; Wed, 23 Oct 2019 10:35:43 +0800 (CST)
-Date:   Wed, 23 Oct 2019 10:35:43 +0800
-From:   Chengguang Xu <cgxu519@mykernel.net>
-Reply-To: cgxu519@mykernel.net
-To:     "Amir Goldstein" <amir73il@gmail.com>
-Cc:     "fstests" <fstests@vger.kernel.org>,
-        "overlayfs" <linux-unionfs@vger.kernel.org>,
-        "Eryu Guan" <guaneryu@gmail.com>,
-        "Miklos Szeredi" <miklos@szeredi.hu>
-Message-ID: <16df67853a0.cbb0025c28387.6494870826455764764@mykernel.net>
-In-Reply-To: <CAOQ4uxiXwJp4dh_yENsxskbSvuGew2ZqRFyKccdFUMLGWUaz3Q@mail.gmail.com>
-References: <20191022122621.27374-1-cgxu519@mykernel.net> <CAOQ4uxiXwJp4dh_yENsxskbSvuGew2ZqRFyKccdFUMLGWUaz3Q@mail.gmail.com>
-Subject: Re: [PATCH] overlay/066: copy-up test for variant sparse files
+        Wed, 23 Oct 2019 02:17:13 -0400
+Received: by mail-yb1-f196.google.com with SMTP id z2so5968352ybn.6;
+        Tue, 22 Oct 2019 23:17:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KLkh02vIJIgxySVp9Q68tYDjyHpgGV6EkLbEdLdfLuI=;
+        b=M8R1L87sFQHU+HG29k8mfHzwK69D6ouADvtEPe+CMRRkYahS7FcvxzrxNoOrAscwPM
+         wjYpwORmHF7Ar2V50TbmeZIw0biYZ3wResEXrDZhdkapWFsqKger13OalQ52b7Q1bRDt
+         a3azbJNkm4eHBmalSyF6EZfYzzQ/rN+4LWxTlM7nSUjMOkE7bW0o0GV3OFSy0ZRHcn5h
+         OiI7OpZD7zky4t51fwtYJJqIwferNmVZBsL4+3nxsf8fpt/khpzv3a/2Q0ImcSmRlnuX
+         A8uabGxrzYdsv1UnmDpjSR4xNrBYN+F7oeWsnl7UTQmhAEycOV0AeHUIkvVS1UGNCQmP
+         FPtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KLkh02vIJIgxySVp9Q68tYDjyHpgGV6EkLbEdLdfLuI=;
+        b=Xxz12TM647iNG1OlUMi478zJhyMFa+lCvEoJJu3SlfejX+3ND7oemyF1z4N3IUm8Sq
+         TCV92J3hBTEMWQeVUBZbyosIe/D47EUtS99rJzOrMpAH4QLNaj8ORbSP8ITweHmKuTgC
+         wVGV1iT+NImhDqMJ0YdFujzaCMI4GYlcc5BSYOpB8/l47q+2uHpGzcLOTqHEYakrTKAT
+         ZJrece3sK8QOINBL/lQuvJryZoGgM3lAONS9VXfFqXzzkl3Q5mWS1OAPr2Ld3EJHoa30
+         yYbKAKOpcEiiaXMkav6UpSiLgzTDy6A9i16O+kvpu52pX0W7HDYmZistISLicuv2rgXB
+         CSOQ==
+X-Gm-Message-State: APjAAAWpKpUwBo9tfh0FJ5HPNaryulBBg44o7N5a91dGwAx/fpw1UtTC
+        l7B6anwFGGkkoG7jglRuKRqMvTjmRWEECR8SHMca5w==
+X-Google-Smtp-Source: APXvYqy4K8MYCexmIJSeNfWLA/Pezbb73cQldLMLRPdlTceKzXGAr2yvmL5j0lucyA05eIW9+O9Q7wuCCpjII2mbMyU=
+X-Received: by 2002:a25:6607:: with SMTP id a7mr5121295ybc.144.1571811432012;
+ Tue, 22 Oct 2019 23:17:12 -0700 (PDT)
 MIME-Version: 1.0
+References: <20191022204453.97058-1-salyzyn@android.com> <20191022204453.97058-3-salyzyn@android.com>
+In-Reply-To: <20191022204453.97058-3-salyzyn@android.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Wed, 23 Oct 2019 09:17:00 +0300
+Message-ID: <CAOQ4uxgE_HmVFHJ0ZEoTMotnFokD3X-TR-PiO3By84ShbSfS_Q@mail.gmail.com>
+Subject: Re: [PATCH v14 2/5] overlayfs: check CAP_DAC_READ_SEARCH before
+ issuing exportfs_decode_fh
+To:     Mark Salyzyn <salyzyn@android.com>
+Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
+        kernel-team@android.com, Miklos Szeredi <miklos@szeredi.hu>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Vivek Goyal <vgoyal@redhat.com>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Priority: Medium
-User-Agent: ZohoCN Mail
-X-Mailer: ZohoCN Mail
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
- ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=BA=8C, 2019-10-22 21:31:32 Amir Golds=
-tein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
- > On Tue, Oct 22, 2019 at 3:26 PM Chengguang Xu <cgxu519@mykernel.net> wro=
-te:
- > >
- > > This is intensive copy-up test for sparse files,
- > > these cases are mainly used for regression test
- > > of copy-up improvement for sparse files.
- > >
- > > Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
- > > ---
- > >  tests/overlay/066     | 108 +++++++++++++++++++++++++++++++++++++++++=
-+
- > >  tests/overlay/066.out |   2 +
- > >  tests/overlay/group   |   1 +
- > >  3 files changed, 111 insertions(+)
- > >  create mode 100755 tests/overlay/066
- > >  create mode 100644 tests/overlay/066.out
- > >
- > > diff --git a/tests/overlay/066 b/tests/overlay/066
- > > new file mode 100755
- > > index 00000000..0394b14e
- > > --- /dev/null
- > > +++ b/tests/overlay/066
- > > @@ -0,0 +1,108 @@
- > > +#! /bin/bash
- > > +# SPDX-License-Identifier: GPL-2.0
- > > +# Copyright (c) 2019 Chengguang Xu <cgxu519@mykernel.net>. All Rights=
- Reserved.
- > > +#
- > > +# FS QA Test 066
- > > +#
- > > +# Test overlayfs copy-up function for variant sparse files.
- > > +#
- > > +seq=3D`basename $0`
- > > +seqres=3D$RESULT_DIR/$seq
- > > +echo "QA output created by $seq"
- > > +
- > > +here=3D`pwd`
- > > +tmp=3D/tmp/$
- > > +status=3D1       # failure is the default!
- > > +trap "_cleanup; exit \$status" 0 1 2 3 15
- > > +
- > > +_cleanup()
- > > +{
- > > +       cd /
- > > +       rm -f $tmp.*
- > > +}
- > > +
- > > +# get standard environment, filters and checks
- > > +. ./common/rc
- > > +. ./common/filter
- > > +
- > > +# remove previous $seqres.full before test
- > > +rm -f $seqres.full
- > > +
- > > +# real QA test starts here
- > > +
- > > +# Modify as appropriate.
- > > +_supported_fs generic
- > > +_supported_os Linux
- > > +_require_test
- > > +_require_scratch
- > > +
- > > +# Remove all files from previous tests
- > > +_scratch_mkfs
- > > +_require_fs_space $OVL_BASE_SCRATCH_MNT $((10*1024*13 + 100*1024))
- >=20
- > Please add a comment about how the above is calculated.
- > Should it depend on fs reported iosize or blocksize?
+On Tue, Oct 22, 2019 at 11:46 PM Mark Salyzyn <salyzyn@android.com> wrote:
+>
+> Assumption never checked, should fail if the mounter creds are not
+> sufficient.
+>
+> Signed-off-by: Mark Salyzyn <salyzyn@android.com>
+> Cc: Miklos Szeredi <miklos@szeredi.hu>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Vivek Goyal <vgoyal@redhat.com>
+> Cc: Eric W. Biederman <ebiederm@xmission.com>
+> Cc: Amir Goldstein <amir73il@gmail.com>
+> Cc: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Stephen Smalley <sds@tycho.nsa.gov>
+> Cc: linux-unionfs@vger.kernel.org
+> Cc: linux-doc@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: kernel-team@android.com
+>
+> ---
+> v11 + v12 +v13 + v14 - rebase
+>
+> v10:
+> - return NULL rather than ERR_PTR(-EPERM)
+> - did _not_ add it ovl_can_decode_fh() because of changes since last
+>   review, suspect needs to be added to ovl_lower_uuid_ok()?
+>
+> v8 + v9:
+> - rebase
+>
+> v7:
+> - This time for realz
+>
+> v6:
+> - rebase
+>
+> v5:
+> - dependency of "overlayfs: override_creds=off option bypass creator_cred"
+>
+> ---
+>  fs/overlayfs/namei.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
+> index e9717c2f7d45..9702f0d5309d 100644
+> --- a/fs/overlayfs/namei.c
+> +++ b/fs/overlayfs/namei.c
+> @@ -161,6 +161,9 @@ struct dentry *ovl_decode_real_fh(struct ovl_fh *fh, struct vfsmount *mnt,
+>         if (!uuid_equal(&fh->uuid, &mnt->mnt_sb->s_uuid))
+>                 return NULL;
+>
+> +       if (!capable(CAP_DAC_READ_SEARCH))
+> +               return NULL;
+> +
 
-The calculation based on file size * file num, in other word,
-we have 13 10M files and one 100M file. I'll add explanation
-for it.
+Shouldn't this return EPERM?
 
- >=20
- > > +
- > > +lowerdir=3D$OVL_BASE_SCRATCH_MNT/$OVL_LOWER
- > > +upperdir=3D$OVL_BASE_SCRATCH_MNT/$OVL_UPPER
- > > +testfile=3D"copyup_sparse_test"
- > > +mkdir -p $lowerdir
- > > +
- > > +# Create a completely empty hole file.
- > > +$XFS_IO_PROG -fc "truncate 10M" "${lowerdir}/${testfile}_empty_holefi=
-le" >>$seqres.full
- > > +
- > > +iosize=3D`stat -c %o "${lowerdir}/${testfile}_empty_holefile"`
- >=20
- > I am not sure why fs reported iosize is interesting for this test case.
- > If anything you need _get_file_block_size
-
-If hole size is smaller than fs block size, then the block will still be al=
-located,
-let me check _get_file_block_size.
-
-
- >=20
- > > +if [ $iosize -le 1024 ]; then
- > > +       ioszie=3D1
- >=20
- > typo: ioszie
-
-I'll fix in v2.
-
- >=20
- > > +else
- > > +       iosize=3D`expr $iosize / 1024`
- > > +fi
- > > +
- > > +# Create test files with different hole size patterns.
- > > +while [ $iosize -le 2048 ]; do
- > > +       pos=3D$iosize
- > > +       $XFS_IO_PROG -fc "truncate 10M" "${lowerdir}/${testfile}_iosiz=
-e${iosize}K_holefile" >>$seqres.full
- > > +       while [ $pos -lt 8192 ]; do
- > > +               $XFS_IO_PROG -fc "pwrite ${pos}K ${iosize}K" "${lowerd=
-ir}/${testfile}_iosize${iosize}K_holefile" >>$seqres.full
- > > +               pos=3D`expr $pos + $iosize + $iosize`
- > > +       done
- > > +       iosize=3D`expr $iosize + $iosize`
- > > +done
- > > +
- > > +# Create test file with many random holes(1M~2M).
- > > +$XFS_IO_PROG -fc "truncate 100M" "${lowerdir}/${testfile}_random_hole=
-file" >>$seqres.full
- > > +pos=3D2048
- > > +while [ $pos -le 81920 ]; do
- > > +       iosize=3D`expr $RANDOM % 2048`
- > > +       if [ $iosize -lt 1024 ]; then
- > > +               iosize=3D`expr $iosize + 1024`
- > > +       fi
- >=20
- > IOW: iosize=3D`expr $RANDOM % 1024 + 1024`
-
-Yeah, good suggestion but maybe 1M~2M hole size is not sufficient,
-I plan to extend to 5M(max) in next version.
-
- >=20
- > > +       $XFS_IO_PROG -fc "pwrite ${pos}K ${iosize}K" "${lowerdir}/${te=
-stfile}_random_holefile" >>$seqres.full
- > > +       pos=3D`expr $pos + $iosize + $iosize`
- > > +done
- > > +
- > > +_scratch_mount
- > > +
- > > +# Open the files should succeed, no errors are expected.
- > > +for f in $SCRATCH_MNT/*; do
- > > +       $XFS_IO_PROG -c "open" $f >>$seqres.full
- > > +done
- > > +
- > > +echo "Silence is golden"
- > > +
- > > +# Check all copy-up files in upper layer.
- > > +iosize=3D`stat -c %o "${lowerdir}/${testfile}_empty_holefile"`
- > > +if [ $iosize -le 1024 ]; then
- > > +       ioszie=3D1
- >=20
- > typo: ioszie
-
-I'll fix in v2.
-
- >=20
- > > +else
- > > +       iosize=3D`expr $iosize / 1024`
- > > +fi
- > > +
- > > +while [ $iosize -le 2048 ]; do
- > > +       diff "${lowerdir}/${testfile}_iosize${iosize}K_holefile" "${up=
-perdir}/${testfile}_iosize${iosize}K_holefile" >>$seqres.full
- > > +       iosize=3D`expr $iosize + $iosize`
- > > +done
- > > +
- > > +diff "${lowerdir}/${testfile}_empty_holefile"  "${upperdir}/${testfil=
-e}_empty_holefile"  >>$seqres.full
- > > +diff "${lowerdir}/${testfile}_random_holefile" "${upperdir}/${testfil=
-e}_random_holefile" >>$seqres.full
- >=20
- > This expression does not fail the test if file differ?
- > Did you mean:
- >=20
- > diff "${lowerdir}/${testfile}_empty_holefile"
- > "${upperdir}/${testfile}_empty_holefile"  >>$seqres.full || \
- >     echo ${testfile}_empty_holefile" copy up failed
-
-Yeah, it's more useful for investigating problem.
-
-
- >=20
- > > +
- > > +# success, all done
- > > +status=3D0
- > > +exit
- > > diff --git a/tests/overlay/066.out b/tests/overlay/066.out
- > > new file mode 100644
- > > index 00000000..b60cc24c
- > > --- /dev/null
- > > +++ b/tests/overlay/066.out
- > > @@ -0,0 +1,2 @@
- > > +QA output created by 066
- > > +Silence is golden
- > > diff --git a/tests/overlay/group b/tests/overlay/group
- > > index ef8517a1..1dec7db9 100644
- > > --- a/tests/overlay/group
- > > +++ b/tests/overlay/group
- > > @@ -68,3 +68,4 @@
- > >  063 auto quick whiteout
- > >  064 auto quick copyup
- > >  065 auto quick mount
- > > +066 auto quick copyup
- >=20
- > I'm curious, how long does the test run with and without copy up hole
- > optimization patch?
-
-I'm using NVMe SSD disk so the performance(bw & iops) is quite good,
-below figure from the result of xfstest  for test case overlay/066.
-
-xfs: 7s(before) =3D> 6s(after)
-ext4: 7s(before) =3D> 6s(after)
-
-Maybe there will be remarkable difference on bigger sparse file,=20
-if anyone interested on this I can add more test files(big) but it will als=
-o
-increase  test time significantly.
-
-Thanks,
-Chengguang
-
-
+>         bytes = (fh->len - offsetof(struct ovl_fh, fid));
+>         real = exportfs_decode_fh(mnt, (struct fid *)fh->fid,
+>                                   bytes >> 2, (int)fh->type,
+> --
+> 2.23.0.866.gb869b98d4c-goog
+>
