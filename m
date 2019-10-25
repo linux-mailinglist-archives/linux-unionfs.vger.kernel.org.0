@@ -2,106 +2,106 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3957E40F0
-	for <lists+linux-unionfs@lfdr.de>; Fri, 25 Oct 2019 03:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C719E49EA
+	for <lists+linux-unionfs@lfdr.de>; Fri, 25 Oct 2019 13:29:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388566AbfJYBT7 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 24 Oct 2019 21:19:59 -0400
-Received: from sender3-pp-o92.zoho.com.cn ([124.251.121.251]:25753 "EHLO
-        sender3-pp-o92.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388428AbfJYBT7 (ORCPT
+        id S2438603AbfJYL3Y (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 25 Oct 2019 07:29:24 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:21533 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726539AbfJYL3Y (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 24 Oct 2019 21:19:59 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1571966385; cv=none; 
-        d=zoho.com.cn; s=zohoarc; 
-        b=AToqAZ0DR7EFSQMUB/+lDZuV/0TI+GGhWr9ubcN2TTxqMFKzb3e0priVyhfVLQat+bkgb/q3gqqU1trkZwqXMm13ePy2EwSey8g4dTD1t5lSHBioJQYk8R0ew6CZNOiKZ8BzETlMJD3zO7WIkT8NH924F1GrsucLrmFkMqQwlBU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
-        t=1571966385; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:Reply-To:References:Subject:To:ARC-Authentication-Results; 
-        bh=691KnDZU7G6hhslhY8RrezGBxWKbZ6Abu2wExqadBBs=; 
-        b=ZJtS5GT4hwo065jCMOUqd/JNbCacGCczqSq3mmBG6ixYzvOvwdhMEwV5quC6rJAYAzvY6lZNdmu3BpTAruFdEYePmzXq7RDwI5LF2YbSvTmUZF462PN+rLRyYqiWZ5DuOiaG1T1EYMBS6twrMU7rDW90O/Cu2VsE+6i5AJlophs=
-ARC-Authentication-Results: i=1; mx.zoho.com.cn;
-        dkim=pass  header.i=mykernel.net;
-        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
-        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1571966385;
-        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
-        h=Date:From:Reply-To:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        l=1728; bh=691KnDZU7G6hhslhY8RrezGBxWKbZ6Abu2wExqadBBs=;
-        b=FSjL0AneoS/OYxIhksYiFui1xh9Gnh9Ge2oRXl25mI5ef0zwKACFWgZFKhMU0bg6
-        8wBci20JboAovvfIOB0q0HPi8AbIIx0AYtcCyx/2iF7tA+oU+VyCFvXiyn/vL9WcRwU
-        g5AhvR9O1l2PS/9AeNIcp+VzUD1R9qN4JCK55LCI=
-Received: from mail.baihui.com by mx.zoho.com.cn
-        with SMTP id 15719663843806.173763921250384; Fri, 25 Oct 2019 09:19:44 +0800 (CST)
-Date:   Fri, 25 Oct 2019 09:19:44 +0800
-From:   Chengguang Xu <cgxu519@mykernel.net>
-Reply-To: cgxu519@mykernel.net
-To:     "Amir Goldstein" <amir73il@gmail.com>
-Cc:     "fstests" <fstests@vger.kernel.org>,
-        "overlayfs" <linux-unionfs@vger.kernel.org>,
-        "Eryu Guan" <guaneryu@gmail.com>,
-        "Miklos Szeredi" <miklos@szeredi.hu>
-Message-ID: <16e007f78f9.12a9e815231850.7849365151361114799@mykernel.net>
-In-Reply-To: <CAOQ4uxidZ=g29hGmKxinRA4Gp6CiWbOB9RqLWPPFXwtCB4DWog@mail.gmail.com>
-References: <20191024122923.24689-1-cgxu519@mykernel.net> <CAOQ4uxidZ=g29hGmKxinRA4Gp6CiWbOB9RqLWPPFXwtCB4DWog@mail.gmail.com>
-Subject: Re: [PATCH v3] overlay/066: copy-up test for variant sparse files
+        Fri, 25 Oct 2019 07:29:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1572002963;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Tawb+nccujPimrWiHS9Aa32LfRsfrtEJbJYur7m9f88=;
+        b=Ja2wLQeWVQJrin19JM6+yPFiicY0vegf5CZo5wOP8muVf8kf7gf/9QrSqltn47Bm28g3Si
+        tqiQb6AUbcwifnrwrQqGp09meZdoAZ3WfDiSfpACz/bEyggZ3p4P4vGPCRtLtW4Fn2/ASn
+        VZm1KyIeLl43sJtkJ/xezO5TXR3em/Q=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-270-BM2qPMqDOeWAuOzIP9fkJQ-1; Fri, 25 Oct 2019 07:29:22 -0400
+Received: by mail-wm1-f71.google.com with SMTP id m16so785901wmg.8
+        for <linux-unionfs@vger.kernel.org>; Fri, 25 Oct 2019 04:29:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+LV2TveLTnx1fiN/bkmnJtZ0B+hWPbHsr/HLlAeKi1Y=;
+        b=hHkLZgtRhO/qAAeGMISDgwr4/qVy5rSes+7ytJUlN6/s/yi8JNVNrcBoebgnWWHGKn
+         WFAz6sYs5I9Z73FctHLM8wYOcv/ZdwoUAtn4BhB9KWG2qr8HNRGVaxAL6cSnOELJ4DQL
+         LG7L21dDhFzH2Rw/3wQBSYivnwkQNiZsyxon7AifeaDFyCKjrCqVnyxhjaVOtbqwd36U
+         ZeAA3tQYHZoIfzD/PUkWYUKBW2xrUPqX61CMyRdBsZ1anVIe4TXIJ2Bt8cPGDdr+fcjo
+         Z/A//8N1TsLBBFXoV5U9qLiCIcEaCexOnMrhw8LQb8EACV5GbLx4By9xAmszw93y0z/v
+         QhLg==
+X-Gm-Message-State: APjAAAWY4S2R2ksWSbhQ9O5HRl4V+FqH7dhgz7+L9nAzbiLgQq5JzOo1
+        HCv+dYoJ2/E1VUP+7nplyqFPK6stIhUjit1d9xcij1fwg8pjsckrNkqz1D/27gwnCBbj4PBr8M2
+        uscNEZXGpB/KFckJeOCVZ/j3LjA==
+X-Received: by 2002:adf:b1d1:: with SMTP id r17mr2546009wra.201.1572002960743;
+        Fri, 25 Oct 2019 04:29:20 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqzq6KqqiDo1k9UizmtJKHpklyWh4CoC38j2QsAc29ZM9Kley/036A6fB9ibAZsda5ZgBfW13A==
+X-Received: by 2002:adf:b1d1:: with SMTP id r17mr2545995wra.201.1572002960542;
+        Fri, 25 Oct 2019 04:29:20 -0700 (PDT)
+Received: from miu.piliscsaba.redhat.com (185-79-95-246.pool.digikabel.hu. [185.79.95.246])
+        by smtp.gmail.com with ESMTPSA id l18sm3974080wrn.48.2019.10.25.04.29.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Oct 2019 04:29:19 -0700 (PDT)
+From:   Miklos Szeredi <mszeredi@redhat.com>
+To:     "Eric W . Biederman" <ebiederm@xmission.com>
+Cc:     linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/5] allow unprivileged overlay mounts
+Date:   Fri, 25 Oct 2019 13:29:12 +0200
+Message-Id: <20191025112917.22518-1-mszeredi@redhat.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+X-MC-Unique: BM2qPMqDOeWAuOzIP9fkJQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
-X-Priority: Medium
-User-Agent: ZohoCN Mail
-X-Mailer: ZohoCN Mail
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
- ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=BA=94, 2019-10-25 05:02:07 Amir Golds=
-tein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
- > On Thu, Oct 24, 2019 at 3:29 PM Chengguang Xu <cgxu519@mykernel.net> wro=
-te:
- > >
- > > This is intensive copy-up test for sparse files,
- > > these cases will be mainly used for regression test
- > > of copy-up improvement for sparse files.
- > >
- > > Reviewed-by: Amir Goldstein <amir73il@gmail.com>
- > > Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
- > >
- > > ---
- > > v1->v2:
- > > - Call _get_block_size to get fs block size.
- > > - Add comment for test space requirement.
- > > - Print meaningful error message when copy-up fail.
- > > - Adjust random hole range to 1M~5M.
- > > - Fix typo.
- > >
- > > v2->v3:
- > > - Fix space requiremnt for test.
- > > - Add more descriptions for test files and hole patterns.
- > > - Define well named variables to replace unexplained numbers.
- > > - Fix random hole algorithm to what Amir suggested.
- > > - Adjust iosize to start from 1K.
- > > - Remove from quick test group.
- >=20
- > Why? you said it takes 7s without the kernel patch.
- > The test overlay/001 is in quick group and it copies up 2*4GB
- > sparse files.
+Hi Eric,
 
-I noticed that after changed to start from 1K iosize the test took about 23=
-s.
-I'm afraid maybe it will take more time on low performance VM env.
+Can you please have a look at this patchset?
 
-The test overlay/001 took 8s/1s with/without kernel patch, so mainly test t=
-ime
-wasted on creating test files on test overlay/066.
-
- >=20
- > Tests that are not in quick group are far less likely to be run
- > regularly by developers.
-
-hmm...well, lets add 'quick' group again and remove it  if anyone complains=
- later.=20
+The most interesting one is the last oneliner adding FS_USERNS_MOUNT;
+whether I'm correct in stating that this isn't going to introduce any
+holes, or not...
 
 Thanks,
-Chengguang
+Miklos
+
+---
+Miklos Szeredi (5):
+  ovl: document permission model
+  ovl: ignore failure to copy up unknown xattrs
+  vfs: allow unprivileged whiteout creation
+  ovl: user xattr
+  ovl: unprivieged mounts
+
+ Documentation/filesystems/overlayfs.txt | 44 +++++++++++++
+ fs/char_dev.c                           |  3 +
+ fs/namei.c                              | 17 ++---
+ fs/overlayfs/copy_up.c                  | 34 +++++++---
+ fs/overlayfs/dir.c                      |  2 +-
+ fs/overlayfs/export.c                   |  2 +-
+ fs/overlayfs/inode.c                    | 39 ++++++------
+ fs/overlayfs/namei.c                    | 56 +++++++++--------
+ fs/overlayfs/overlayfs.h                | 81 +++++++++++++++---------
+ fs/overlayfs/ovl_entry.h                |  1 +
+ fs/overlayfs/readdir.c                  |  5 +-
+ fs/overlayfs/super.c                    | 53 +++++++++++-----
+ fs/overlayfs/util.c                     | 82 +++++++++++++++++++++----
+ include/linux/device_cgroup.h           |  3 +
+ 14 files changed, 298 insertions(+), 124 deletions(-)
+
+--=20
+2.21.0
 
