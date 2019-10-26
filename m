@@ -2,119 +2,78 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95E29E4C8C
-	for <lists+linux-unionfs@lfdr.de>; Fri, 25 Oct 2019 15:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD468E5D86
+	for <lists+linux-unionfs@lfdr.de>; Sat, 26 Oct 2019 15:50:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439627AbfJYNnb (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 25 Oct 2019 09:43:31 -0400
-Received: from out01.mta.xmission.com ([166.70.13.231]:56345 "EHLO
-        out01.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726453AbfJYNna (ORCPT
+        id S1726363AbfJZNus (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 26 Oct 2019 09:50:48 -0400
+Received: from mail-yb1-f196.google.com ([209.85.219.196]:34427 "EHLO
+        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726173AbfJZNus (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 25 Oct 2019 09:43:30 -0400
-Received: from in01.mta.xmission.com ([166.70.13.51])
-        by out01.mta.xmission.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.87)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1iNzsH-00072g-Pn; Fri, 25 Oct 2019 07:43:29 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
-        by in01.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.87)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1iNzsG-0006vL-SW; Fri, 25 Oct 2019 07:43:29 -0600
-From:   ebiederm@xmission.com (Eric W. Biederman)
-To:     Miklos Szeredi <mszeredi@redhat.com>
-Cc:     linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20191025112917.22518-1-mszeredi@redhat.com>
-Date:   Fri, 25 Oct 2019 08:42:24 -0500
-In-Reply-To: <20191025112917.22518-1-mszeredi@redhat.com> (Miklos Szeredi's
-        message of "Fri, 25 Oct 2019 13:29:12 +0200")
-Message-ID: <87r231rlfj.fsf@x220.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Sat, 26 Oct 2019 09:50:48 -0400
+Received: by mail-yb1-f196.google.com with SMTP id m1so2245654ybm.1;
+        Sat, 26 Oct 2019 06:50:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=oJVQ7Mv09uXIyzKs7wvvXIukFTb4yLcpL99WuS5X+PA=;
+        b=ouYblJ5P3exdNPneKy0LQdLJ2nFgt2ffrWomDcmlW8pCIOG2kefa7xDF0XHJfPWhV0
+         jsEaCnQKfYbMSmnf9/C5Zd6pmbse0JijToddl3pRQQEvUJmuetf1QAkJe9rT9R20J7FK
+         dseET/3Kckitq+aaBY7yk4qSiULvSbbfRHRIBXra1XX6JF+3nNbNTe9rRZAFkzXlVRvH
+         CFREbaCnDVEcI2OLYQQ3Nyg2H2UUwU1f6bujAhYrbGuw2Fvv1QkWGp1osM7CWH+vKWN2
+         3xzP+Cs0oKZ1IFa5dmhptUTGY7tNk7E3MzpqkWcfVwhTTbatlVFm0QvAY5sJYE1OIJ03
+         cb8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=oJVQ7Mv09uXIyzKs7wvvXIukFTb4yLcpL99WuS5X+PA=;
+        b=paLEUQ9ygZcH1Are1RkAwpLD8kn4CA6Eb+mSaffe2Pm3/6w00VFhUJwIoyDRzbWU6s
+         DFUxG8R6dlJCNORFsKC9n9ec2hh633ZoT++jfBsOzX5uYMg8zctu1PK3Xx3ODEbdEoz3
+         RoqSsqUTSy7DWVMeH7HDrIr6laHwZvQ9+wJwunv9A/mFUGw2QptRbyOexselRGlI7Y1a
+         JjjDWmKYf1ieHlMrOrwDt9SpiLbwJqOSrRwL+XYiLpuQDhTmHfWd0iajMBkQ5uLHqMMV
+         obq86Qxm1wgCoPjeHE6cgBNRp9Au4rLKKA21hpvNeo0Um79S512S4VWOF9FV/12DIU2c
+         8obg==
+X-Gm-Message-State: APjAAAXEemq1JsVJs0oEjY/+j7GEUGyqxDKENpAB35L7umZffcdJSFfe
+        HWbJZyVn8eHSuWb8yjOhjJpZnj9uXp14zni5VIU=
+X-Google-Smtp-Source: APXvYqw2bn2yJ4dFK6zr3Hlu16l33OFEV0IufFKMM0cFH1oFkBQZkL9mOnmytY6f3cGGelOryj7e6AQJEbsnTmux6Yo=
+X-Received: by 2002:a25:3744:: with SMTP id e65mr555429yba.126.1572097845998;
+ Sat, 26 Oct 2019 06:50:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1iNzsG-0006vL-SW;;;mid=<87r231rlfj.fsf@x220.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
-X-XM-AID: U2FsdGVkX19PFgdLj+d0f0xnbf++PpDtbqlJ7o3tTO0=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa05.xmission.com
-X-Spam-Level: *
-X-Spam-Status: No, score=1.3 required=8.0 tests=ALL_TRUSTED,BAYES_50,
-        DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,XMNoVowels autolearn=disabled
-        version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4944]
-        *  1.5 XMNoVowels Alpha-numberic number with no vowels
-        *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
-        * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
-        *      [sa05 1397; Body=1 Fuz1=1 Fuz2=1]
-X-Spam-DCC: XMission; sa05 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: *;Miklos Szeredi <mszeredi@redhat.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 365 ms - load_scoreonly_sql: 0.05 (0.0%),
-        signal_user_changed: 3.8 (1.0%), b_tie_ro: 2.5 (0.7%), parse: 1.31
-        (0.4%), extract_message_metadata: 4.8 (1.3%), get_uri_detail_list:
-        1.73 (0.5%), tests_pri_-1000: 6 (1.5%), tests_pri_-950: 1.88 (0.5%),
-        tests_pri_-900: 1.48 (0.4%), tests_pri_-90: 24 (6.5%), check_bayes: 22
-        (6.0%), b_tokenize: 8 (2.3%), b_tok_get_all: 6 (1.6%), b_comp_prob:
-        2.5 (0.7%), b_tok_touch_all: 2.7 (0.7%), b_finish: 0.75 (0.2%),
-        tests_pri_0: 300 (82.3%), check_dkim_signature: 0.62 (0.2%),
-        check_dkim_adsp: 2.4 (0.7%), poll_dns_idle: 0.52 (0.1%), tests_pri_10:
-        2.5 (0.7%), tests_pri_500: 8 (2.1%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [RFC PATCH 0/5] allow unprivileged overlay mounts
-X-Spam-Flag: No
-X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
+References: <20191025112917.22518-1-mszeredi@redhat.com> <20191025112917.22518-5-mszeredi@redhat.com>
+In-Reply-To: <20191025112917.22518-5-mszeredi@redhat.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Sat, 26 Oct 2019 16:50:34 +0300
+Message-ID: <CAOQ4uxhRfDq49s-NCP5JK5VSYCZ+LXv2oMeyOReoLqq8LePkuQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 4/5] ovl: user xattr
+To:     Miklos Szeredi <mszeredi@redhat.com>
+Cc:     "Eric W . Biederman" <ebiederm@xmission.com>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Miklos Szeredi <mszeredi@redhat.com> writes:
-
-> Hi Eric,
+On Fri, Oct 25, 2019 at 10:54 PM Miklos Szeredi <mszeredi@redhat.com> wrote:
 >
-> Can you please have a look at this patchset?
+> Optionally allow using "user.overlay" namespace instead
+> of"trusted.overlay".
 >
-> The most interesting one is the last oneliner adding FS_USERNS_MOUNT;
-> whether I'm correct in stating that this isn't going to introduce any
-> holes, or not...
-
-I will take some time and dig through this.
-
-From a robustness standpoint I worry about the stackable filesystem
-side.  As that is uniquely an attack vector with overlayfs.
-
-There is definitely demand for this.
-
-
-> Thanks,
-> Miklos
+> This is necessary for overlayfs to be able to be mounted in an unprivileged
+> namepsace.
 >
-> ---
-> Miklos Szeredi (5):
->   ovl: document permission model
->   ovl: ignore failure to copy up unknown xattrs
->   vfs: allow unprivileged whiteout creation
->   ovl: user xattr
->   ovl: unprivieged mounts
+> Make the option explicit, since it makes the filesystem format be
+> incompatible.
 >
->  Documentation/filesystems/overlayfs.txt | 44 +++++++++++++
->  fs/char_dev.c                           |  3 +
->  fs/namei.c                              | 17 ++---
->  fs/overlayfs/copy_up.c                  | 34 +++++++---
->  fs/overlayfs/dir.c                      |  2 +-
->  fs/overlayfs/export.c                   |  2 +-
->  fs/overlayfs/inode.c                    | 39 ++++++------
->  fs/overlayfs/namei.c                    | 56 +++++++++--------
->  fs/overlayfs/overlayfs.h                | 81 +++++++++++++++---------
->  fs/overlayfs/ovl_entry.h                |  1 +
->  fs/overlayfs/readdir.c                  |  5 +-
->  fs/overlayfs/super.c                    | 53 +++++++++++-----
->  fs/overlayfs/util.c                     | 82 +++++++++++++++++++++----
->  include/linux/device_cgroup.h           |  3 +
->  14 files changed, 298 insertions(+), 124 deletions(-)
 
-Eric
+Ach! this was tiring..
+If you get to resubmit, please consider separating the plumbing
+from the userxattr implementation.
+
+Thanks,
+Amir.
