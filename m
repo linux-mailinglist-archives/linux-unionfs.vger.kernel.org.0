@@ -2,78 +2,100 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD468E5D86
-	for <lists+linux-unionfs@lfdr.de>; Sat, 26 Oct 2019 15:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83393E6169
+	for <lists+linux-unionfs@lfdr.de>; Sun, 27 Oct 2019 08:25:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726363AbfJZNus (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 26 Oct 2019 09:50:48 -0400
-Received: from mail-yb1-f196.google.com ([209.85.219.196]:34427 "EHLO
-        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726173AbfJZNus (ORCPT
+        id S1726196AbfJ0HZF (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 27 Oct 2019 03:25:05 -0400
+Received: from mail-yb1-f195.google.com ([209.85.219.195]:44777 "EHLO
+        mail-yb1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726024AbfJ0HZE (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 26 Oct 2019 09:50:48 -0400
-Received: by mail-yb1-f196.google.com with SMTP id m1so2245654ybm.1;
-        Sat, 26 Oct 2019 06:50:46 -0700 (PDT)
+        Sun, 27 Oct 2019 03:25:04 -0400
+Received: by mail-yb1-f195.google.com with SMTP id w5so2693365ybs.11;
+        Sun, 27 Oct 2019 00:25:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=oJVQ7Mv09uXIyzKs7wvvXIukFTb4yLcpL99WuS5X+PA=;
-        b=ouYblJ5P3exdNPneKy0LQdLJ2nFgt2ffrWomDcmlW8pCIOG2kefa7xDF0XHJfPWhV0
-         jsEaCnQKfYbMSmnf9/C5Zd6pmbse0JijToddl3pRQQEvUJmuetf1QAkJe9rT9R20J7FK
-         dseET/3Kckitq+aaBY7yk4qSiULvSbbfRHRIBXra1XX6JF+3nNbNTe9rRZAFkzXlVRvH
-         CFREbaCnDVEcI2OLYQQ3Nyg2H2UUwU1f6bujAhYrbGuw2Fvv1QkWGp1osM7CWH+vKWN2
-         3xzP+Cs0oKZ1IFa5dmhptUTGY7tNk7E3MzpqkWcfVwhTTbatlVFm0QvAY5sJYE1OIJ03
-         cb8g==
+        bh=0++xSMUHY1b2ynJOJZbzscLl9Hvq7kC0p6PzVZGLpt8=;
+        b=O7JXupgbuixvTKzsH5NgxAZt1uCox/bzNuYd8FmjhOkZSEBiqrZP9TyI8XMRDHt4c7
+         KSUx8PND/3A/JrM78+k0s9EIqkx+svlB/VhbU7bfKQcQ2ZfMZk02v8RqvOn0mhMd8pBB
+         wEp/qHZWWlBFPBuHvsWi4DVOPWWh53lMxXAG1aHJPl6TnhvCag8NYO9qBm2VR4KMSjMc
+         st8PaeaJbLQyEZdWA7hvwZNQd/Lg9Xfs+kcVzxRR/nHjAoKwI3u7Oz1FBj0WXRqH1N76
+         WvFwl6tSakaOAV5D6g42Rtf+EDfFAvUFX7GO9ONyGpaROSEQZkgcIm2g5Ld5Wugx+ocA
+         CrQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=oJVQ7Mv09uXIyzKs7wvvXIukFTb4yLcpL99WuS5X+PA=;
-        b=paLEUQ9ygZcH1Are1RkAwpLD8kn4CA6Eb+mSaffe2Pm3/6w00VFhUJwIoyDRzbWU6s
-         DFUxG8R6dlJCNORFsKC9n9ec2hh633ZoT++jfBsOzX5uYMg8zctu1PK3Xx3ODEbdEoz3
-         RoqSsqUTSy7DWVMeH7HDrIr6laHwZvQ9+wJwunv9A/mFUGw2QptRbyOexselRGlI7Y1a
-         JjjDWmKYf1ieHlMrOrwDt9SpiLbwJqOSrRwL+XYiLpuQDhTmHfWd0iajMBkQ5uLHqMMV
-         obq86Qxm1wgCoPjeHE6cgBNRp9Au4rLKKA21hpvNeo0Um79S512S4VWOF9FV/12DIU2c
-         8obg==
-X-Gm-Message-State: APjAAAXEemq1JsVJs0oEjY/+j7GEUGyqxDKENpAB35L7umZffcdJSFfe
-        HWbJZyVn8eHSuWb8yjOhjJpZnj9uXp14zni5VIU=
-X-Google-Smtp-Source: APXvYqw2bn2yJ4dFK6zr3Hlu16l33OFEV0IufFKMM0cFH1oFkBQZkL9mOnmytY6f3cGGelOryj7e6AQJEbsnTmux6Yo=
-X-Received: by 2002:a25:3744:: with SMTP id e65mr555429yba.126.1572097845998;
- Sat, 26 Oct 2019 06:50:45 -0700 (PDT)
+        bh=0++xSMUHY1b2ynJOJZbzscLl9Hvq7kC0p6PzVZGLpt8=;
+        b=hhFetzG3xD7tpZQuw8Q6AETDtFCOsZO3XAyWWudIrgXrAyVj9z1qaG7wCdXb/Sg6++
+         U70QSR6+APHldMNDKERdEinvCnPYf7sbqIZdLABefE9K68YVJstvaEIoi0Dxd8BBmQGw
+         UytKn4JX9M1l2n1vgC67r3f6h+q1FrlF/9ObWuRAnC0LV1aciLDgQlqEWBHXrQrOmk30
+         2lu3urtHMYTDQyTiGN1hN8beJqpzlWdToVJdaIjWrkYmPDkhva/157DWw74j6MDyB5Iy
+         0bybfxBmkXx6Xwny0nZttokldvB6pOZvCVbY5pCtx0U/4KRhZipGtlygybb68uhH6Gox
+         NN6Q==
+X-Gm-Message-State: APjAAAWkOUnE+7VXvPFfyT76DgJRON9mIMxjqpw4gz0SJhW6Clssgmp5
+        sK7enp6hj3Y/GOhKGT2jouB4q2lxz+Qz7919s1U=
+X-Google-Smtp-Source: APXvYqyYhy4CH/Z7Nlg815OS/2z91s5DQvSZba10DJ00L5dfJlIE3NIpMH0a/LD0StWNrh9UDnpk8alGvxMvThdluKM=
+X-Received: by 2002:a25:1444:: with SMTP id 65mr9107267ybu.132.1572161103775;
+ Sun, 27 Oct 2019 00:25:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191025112917.22518-1-mszeredi@redhat.com> <20191025112917.22518-5-mszeredi@redhat.com>
-In-Reply-To: <20191025112917.22518-5-mszeredi@redhat.com>
+References: <20191022204453.97058-1-salyzyn@android.com> <20191022204453.97058-3-salyzyn@android.com>
+ <CAJfpegsCzwXF5fD1oA+XMrPQ7u8URsXRGOOHkB=ON7fLnd_gFQ@mail.gmail.com>
+In-Reply-To: <CAJfpegsCzwXF5fD1oA+XMrPQ7u8URsXRGOOHkB=ON7fLnd_gFQ@mail.gmail.com>
 From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Sat, 26 Oct 2019 16:50:34 +0300
-Message-ID: <CAOQ4uxhRfDq49s-NCP5JK5VSYCZ+LXv2oMeyOReoLqq8LePkuQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 4/5] ovl: user xattr
-To:     Miklos Szeredi <mszeredi@redhat.com>
-Cc:     "Eric W . Biederman" <ebiederm@xmission.com>,
+Date:   Sun, 27 Oct 2019 09:24:52 +0200
+Message-ID: <CAOQ4uxh_K=p7z+qbkjSf_+hhVsw9xBuNc61dYnpkHFVUfxJaCw@mail.gmail.com>
+Subject: Re: [PATCH v14 2/5] overlayfs: check CAP_DAC_READ_SEARCH before
+ issuing exportfs_decode_fh
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     Mark Salyzyn <salyzyn@android.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        kernel-team@android.com, Jonathan Corbet <corbet@lwn.net>,
+        Vivek Goyal <vgoyal@redhat.com>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
         overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
+        linux-doc@vger.kernel.org,
+        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Fri, Oct 25, 2019 at 10:54 PM Miklos Szeredi <mszeredi@redhat.com> wrote:
++ ebiederm and nfsd folks
+
+On Wed, Oct 23, 2019 at 11:08 AM Miklos Szeredi <miklos@szeredi.hu> wrote:
 >
-> Optionally allow using "user.overlay" namespace instead
-> of"trusted.overlay".
 >
-> This is necessary for overlayfs to be able to be mounted in an unprivileged
-> namepsace.
 >
-> Make the option explicit, since it makes the filesystem format be
-> incompatible.
+> On Tue, Oct 22, 2019 at 10:46 PM Mark Salyzyn <salyzyn@android.com> wrote:
+> >
+> > Assumption never checked, should fail if the mounter creds are not
+> > sufficient.
+>
+> A bit more explanation would be nice.  Like a pointer to the explanation given in the open_by_handle_at(2) code where this check was presumably taken from.
 >
 
-Ach! this was tiring..
-If you get to resubmit, please consider separating the plumbing
-from the userxattr implementation.
+Well, it's not that simple (TM).
+If you are considering unprivileged overlay mounts, then this should be
+ns_capable() check, even though open_by_handle_at(2) does not
+currently allow userspace nfsd to decode file handles.
+
+Unlike open_by_handle_at(2), overlayfs (currently) never exposes file
+data via decoded origin fh. AFAIK, it only exposes the origin st_ino
+st_dev and some nlink related accounting.
+
+I have been trying to understand from code if nfsd exports are allowed
+from non privileged containers and couldn't figure it out (?).
+If non privileged container is allowed to export nosubtreecheck export
+then non privileged container root can already decode file handles...
 
 Thanks,
 Amir.
