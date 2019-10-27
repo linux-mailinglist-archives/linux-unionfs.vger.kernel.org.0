@@ -2,100 +2,172 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83393E6169
-	for <lists+linux-unionfs@lfdr.de>; Sun, 27 Oct 2019 08:25:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F0F9E62CB
+	for <lists+linux-unionfs@lfdr.de>; Sun, 27 Oct 2019 14:59:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726196AbfJ0HZF (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 27 Oct 2019 03:25:05 -0400
-Received: from mail-yb1-f195.google.com ([209.85.219.195]:44777 "EHLO
-        mail-yb1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726024AbfJ0HZE (ORCPT
+        id S1726674AbfJ0N7u (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 27 Oct 2019 09:59:50 -0400
+Received: from mail-yw1-f66.google.com ([209.85.161.66]:42394 "EHLO
+        mail-yw1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725807AbfJ0N7u (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 27 Oct 2019 03:25:04 -0400
-Received: by mail-yb1-f195.google.com with SMTP id w5so2693365ybs.11;
-        Sun, 27 Oct 2019 00:25:04 -0700 (PDT)
+        Sun, 27 Oct 2019 09:59:50 -0400
+Received: by mail-yw1-f66.google.com with SMTP id d5so2889700ywk.9;
+        Sun, 27 Oct 2019 06:59:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0++xSMUHY1b2ynJOJZbzscLl9Hvq7kC0p6PzVZGLpt8=;
-        b=O7JXupgbuixvTKzsH5NgxAZt1uCox/bzNuYd8FmjhOkZSEBiqrZP9TyI8XMRDHt4c7
-         KSUx8PND/3A/JrM78+k0s9EIqkx+svlB/VhbU7bfKQcQ2ZfMZk02v8RqvOn0mhMd8pBB
-         wEp/qHZWWlBFPBuHvsWi4DVOPWWh53lMxXAG1aHJPl6TnhvCag8NYO9qBm2VR4KMSjMc
-         st8PaeaJbLQyEZdWA7hvwZNQd/Lg9Xfs+kcVzxRR/nHjAoKwI3u7Oz1FBj0WXRqH1N76
-         WvFwl6tSakaOAV5D6g42Rtf+EDfFAvUFX7GO9ONyGpaROSEQZkgcIm2g5Ld5Wugx+ocA
-         CrQQ==
+         :cc:content-transfer-encoding;
+        bh=poDWleOxwscAi1b6vGHml3VbL/qBFRh3NZaGbX0t3BU=;
+        b=Ec+8laEeYmf/x6OI5mvnPVNY2TL9yLXNLWoGnvMrB6E5hbpnlHGLvnvd41qYTZQhfQ
+         ypPg+E9fAtwZhMkkX4VPnOIeU6R5NxCvr2pbkr7X+du6QctthjNbLzUs/gBG++FAiFni
+         PIgRffMAHAYfnEsoCqRAYb7crAxzjif/OporEWTHJiSWxh5wrwJNJoHEL7GtnAbJFi3O
+         EAt+MUPlZXKO6loTZOCeCK4ajyDuulR/Hoib2jmmpB6PggfBrDG9TSdvWHagEjkiFvjX
+         oVhimrJDz1Lug77JukA20xT7HbtJzbRlOWHVGC9pDwuMfnyr1WU39HgLmlrZ4p8zQu9o
+         s3+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0++xSMUHY1b2ynJOJZbzscLl9Hvq7kC0p6PzVZGLpt8=;
-        b=hhFetzG3xD7tpZQuw8Q6AETDtFCOsZO3XAyWWudIrgXrAyVj9z1qaG7wCdXb/Sg6++
-         U70QSR6+APHldMNDKERdEinvCnPYf7sbqIZdLABefE9K68YVJstvaEIoi0Dxd8BBmQGw
-         UytKn4JX9M1l2n1vgC67r3f6h+q1FrlF/9ObWuRAnC0LV1aciLDgQlqEWBHXrQrOmk30
-         2lu3urtHMYTDQyTiGN1hN8beJqpzlWdToVJdaIjWrkYmPDkhva/157DWw74j6MDyB5Iy
-         0bybfxBmkXx6Xwny0nZttokldvB6pOZvCVbY5pCtx0U/4KRhZipGtlygybb68uhH6Gox
-         NN6Q==
-X-Gm-Message-State: APjAAAWkOUnE+7VXvPFfyT76DgJRON9mIMxjqpw4gz0SJhW6Clssgmp5
-        sK7enp6hj3Y/GOhKGT2jouB4q2lxz+Qz7919s1U=
-X-Google-Smtp-Source: APXvYqyYhy4CH/Z7Nlg815OS/2z91s5DQvSZba10DJ00L5dfJlIE3NIpMH0a/LD0StWNrh9UDnpk8alGvxMvThdluKM=
-X-Received: by 2002:a25:1444:: with SMTP id 65mr9107267ybu.132.1572161103775;
- Sun, 27 Oct 2019 00:25:03 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=poDWleOxwscAi1b6vGHml3VbL/qBFRh3NZaGbX0t3BU=;
+        b=Upn9Yprya3jaDnuHU38gvEjevz7Ue3c3l0JJVDHjCWe4dC386Yij6OF/u/L6Cj2HTO
+         9dY1o6FLl7D1qBl10juRDwhEs9+Kp4KMBGzTDfpnzCJe/LeJAblPrTsaIydqSQsgWov4
+         /iry5goas3lv2cLKfFNtvNPaVI/u3B2zfknSCF9QwEQd+tUjFa3ulVOKU25qcRcYcnCd
+         ygeYNR/QaKJxX4P5YiMddefPIOb7L98Gt3KB0KUA3jxQ2YKm3xjCCU8aKzdtZpBEVbbj
+         6PcRuJU6AnUUkxE18hYgXn5n8nsqarNyDgt9jzr8qWCxaJ713QjUdPwWtygFteDef1QZ
+         MN7w==
+X-Gm-Message-State: APjAAAXm5fXM0R97ce2W/Uslmhfyhi0DziGEiImVvrGzAqlasuuoJCbD
+        aV0MNhh1EBAzf6LlWP8OP1yoWlwNWTgJaSUa8CM=
+X-Google-Smtp-Source: APXvYqwULU4gXYRQRpmhVMr8NS0vNeSJGPNOU540Qf7LxS98LrRNTA+WPV9S2l+YL4wZX0EujbTQjXhht6L9/2isbkY=
+X-Received: by 2002:a81:3187:: with SMTP id x129mr10054062ywx.294.1572184787702;
+ Sun, 27 Oct 2019 06:59:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191022204453.97058-1-salyzyn@android.com> <20191022204453.97058-3-salyzyn@android.com>
- <CAJfpegsCzwXF5fD1oA+XMrPQ7u8URsXRGOOHkB=ON7fLnd_gFQ@mail.gmail.com>
-In-Reply-To: <CAJfpegsCzwXF5fD1oA+XMrPQ7u8URsXRGOOHkB=ON7fLnd_gFQ@mail.gmail.com>
+References: <20191024122923.24689-1-cgxu519@mykernel.net> <CAOQ4uxidZ=g29hGmKxinRA4Gp6CiWbOB9RqLWPPFXwtCB4DWog@mail.gmail.com>
+ <16e007f78f9.12a9e815231850.7849365151361114799@mykernel.net>
+In-Reply-To: <16e007f78f9.12a9e815231850.7849365151361114799@mykernel.net>
 From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Sun, 27 Oct 2019 09:24:52 +0200
-Message-ID: <CAOQ4uxh_K=p7z+qbkjSf_+hhVsw9xBuNc61dYnpkHFVUfxJaCw@mail.gmail.com>
-Subject: Re: [PATCH v14 2/5] overlayfs: check CAP_DAC_READ_SEARCH before
- issuing exportfs_decode_fh
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Mark Salyzyn <salyzyn@android.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        kernel-team@android.com, Jonathan Corbet <corbet@lwn.net>,
-        Vivek Goyal <vgoyal@redhat.com>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
+Date:   Sun, 27 Oct 2019 15:59:36 +0200
+Message-ID: <CAOQ4uxgZDKnMGB3pbCJpyH_RxWzbEHLQMB2Mpc10PK=7=xYLOg@mail.gmail.com>
+Subject: Re: [PATCH v3] overlay/066: copy-up test for variant sparse files
+To:     Chengguang Xu <cgxu519@mykernel.net>
+Cc:     fstests <fstests@vger.kernel.org>,
         overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-doc@vger.kernel.org,
-        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>
+        Eryu Guan <guaneryu@gmail.com>,
+        Miklos Szeredi <miklos@szeredi.hu>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-+ ebiederm and nfsd folks
+On Fri, Oct 25, 2019 at 4:19 AM Chengguang Xu <cgxu519@mykernel.net> wrote:
+>
+>  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=BA=94, 2019-10-25 05:02:07 Amir Gol=
+dstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
+>  > On Thu, Oct 24, 2019 at 3:29 PM Chengguang Xu <cgxu519@mykernel.net> w=
+rote:
+>  > >
+>  > > This is intensive copy-up test for sparse files,
+>  > > these cases will be mainly used for regression test
+>  > > of copy-up improvement for sparse files.
+>  > >
+>  > > Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+>  > > Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
+>  > >
+>  > > ---
+>  > > v1->v2:
+>  > > - Call _get_block_size to get fs block size.
+>  > > - Add comment for test space requirement.
+>  > > - Print meaningful error message when copy-up fail.
+>  > > - Adjust random hole range to 1M~5M.
+>  > > - Fix typo.
+>  > >
+>  > > v2->v3:
+>  > > - Fix space requiremnt for test.
+>  > > - Add more descriptions for test files and hole patterns.
+>  > > - Define well named variables to replace unexplained numbers.
+>  > > - Fix random hole algorithm to what Amir suggested.
+>  > > - Adjust iosize to start from 1K.
 
-On Wed, Oct 23, 2019 at 11:08 AM Miklos Szeredi <miklos@szeredi.hu> wrote:
+Chengguang,
+
+Sorry, I did't notice that you did that. Why?
+As you can see below, this change has a very bad impact on test run time.
+Any reason not to use _get_block_size?
+
+
+>  > > - Remove from quick test group.
+>  >
+>  > Why? you said it takes 7s without the kernel patch.
+>  > The test overlay/001 is in quick group and it copies up 2*4GB
+>  > sparse files.
 >
+> I noticed that after changed to start from 1K iosize the test took about =
+23s.
+> I'm afraid maybe it will take more time on low performance VM env.
 >
+> The test overlay/001 took 8s/1s with/without kernel patch, so mainly test=
+ time
+> wasted on creating test files on test overlay/066.
+
+You are correct about the time spent on creating the files, but...
+
+On my low perf VM, the test runs 95s with overlay over xfs+reflink
+
+But if I set start iosize=3D4 (which what my fs block size is) the test
+runs only 30s.
+
+IOW, most of the test time is spent on creating the files with small iosize
+below fs block size, which doesn't test copy up of holes at all.
+
+If I further change file size to be a multiply of iosize (x10),
+test run time drops to 6s!
+I don't think we loose too much test coverage if we do that?
+If anything we gain testing different file sizes.
+
+The disk space requirement formula for ${iosize}K_holefiles becomes:
+10*(2^0 + 2^11)K*12/2 =3D~ 10 * 1024 * 12
+same as before, just needs explaining.
+(the formula assumes the worst case of min_iosize=3D1)
+
+-------------
+ #
+ # |-- hole --|-- data --| ... |-- data --|-- hole --|
+
+-iosize=3D1
++min_iosize=3D$(($(_get_block_size "${lowerdir}") / 1024 ))
++iosize=3D$min_iosize
+ max_iosize=3D2048
+-file_size=3D10240
+-max_pos=3D`expr $file_size - $max_iosize`
+
+ while [ $iosize -le $max_iosize ]; do
++       file_size=3D$((10*$iosize))
++       max_pos=3D`expr $file_size - $iosize`
++       date >>$seqres.full
++       echo "Creating ${testfile}_iosize${iosize}K_holefile..." >>$seqres.=
+full
+        pos=3D$iosize
+        $XFS_IO_PROG -fc "truncate ${file_size}K" \
+                "${lowerdir}/${testfile}_iosize${iosize}K_holefile"
+>>$seqres.full
+-----------
+
+
 >
-> On Tue, Oct 22, 2019 at 10:46 PM Mark Salyzyn <salyzyn@android.com> wrote:
-> >
-> > Assumption never checked, should fail if the mounter creds are not
-> > sufficient.
+>  >
+>  > Tests that are not in quick group are far less likely to be run
+>  > regularly by developers.
 >
-> A bit more explanation would be nice.  Like a pointer to the explanation given in the open_by_handle_at(2) code where this check was presumably taken from.
+> hmm...well, lets add 'quick' group again and remove it  if anyone complai=
+ns later.
 >
 
-Well, it's not that simple (TM).
-If you are considering unprivileged overlay mounts, then this should be
-ns_capable() check, even though open_by_handle_at(2) does not
-currently allow userspace nfsd to decode file handles.
+I am now complaining ;-), but after fixes above, test is really quick
 
-Unlike open_by_handle_at(2), overlayfs (currently) never exposes file
-data via decoded origin fh. AFAIK, it only exposes the origin st_ino
-st_dev and some nlink related accounting.
-
-I have been trying to understand from code if nfsd exports are allowed
-from non privileged containers and couldn't figure it out (?).
-If non privileged container is allowed to export nosubtreecheck export
-then non privileged container root can already decode file handles...
+Please send a fix patch (to already merged test) to fir test runtime
+and possibly use _get_block_size.
 
 Thanks,
 Amir.
