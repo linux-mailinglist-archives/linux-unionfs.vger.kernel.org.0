@@ -2,95 +2,76 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA1A8E73B7
-	for <lists+linux-unionfs@lfdr.de>; Mon, 28 Oct 2019 15:34:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21B1AE760A
+	for <lists+linux-unionfs@lfdr.de>; Mon, 28 Oct 2019 17:27:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390115AbfJ1OeY (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 28 Oct 2019 10:34:24 -0400
-Received: from mail-yw1-f45.google.com ([209.85.161.45]:43184 "EHLO
-        mail-yw1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390052AbfJ1OeX (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 28 Oct 2019 10:34:23 -0400
-Received: by mail-yw1-f45.google.com with SMTP id g77so3832242ywb.10;
-        Mon, 28 Oct 2019 07:34:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rtlMkjR64JJLwLZ/TIFBO0e8u0IR5VRrgIWglRLqZPc=;
-        b=VICyGjd6V62n/KZ7RRHun+sgNYrZut2XCbE+vMWM8U3akDsp3kupIjqoUDqg2Bq4aG
-         vsJgZ+TSieqzxQdWHcE84WWHXupKeo3eoXX67NwcpXw/3W4Fs+OcV2nql1O37WTgsVln
-         fF+KN8nK8UbGXVBD0kYXxHkfWcG8EFHifZA8eYDDdZ/sVV5Q1ZVonjHcWDLn/rV6I+mv
-         C62tiD4ShXoVj9XPbWxQRjqXGng1h2+RXBfYBVp5r/23cccMc+c5UzXrzaiislMxkVqM
-         qxprAqMCzfXWElAwCdqTY1w8ksZMd6I/IQEDGv6jQ4RMMyQzjgU20exxVohMEw2l/J4k
-         GZIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rtlMkjR64JJLwLZ/TIFBO0e8u0IR5VRrgIWglRLqZPc=;
-        b=PgMmb9sS3r4oQn0OV/72o+4BHBlEWs4HGEdmsZWEkp2DTt+DGsvAmQoyYnELYX9xnu
-         6kbgjR4od0KSwvVYIm++YDUQp34864Ib3g/XNyZAR/Gtzzqy1SNHWSmFlknFLjo6//I5
-         BBuAK87ScHW7QZdb3HpZ3vxj2C2xs0c1ZPiccuEcq1nit0nkzjW4+DfRp4B7iUuqD3Ii
-         XwtAO92AZYF3gdqtczq+fnq+vDe8ZmtATrqutJE+R8gzVXASyZWVUB1DHB20Rup7PhqD
-         9HEHb3pF0H1g3makkFL/lDjq25407Yucjn+LUTmsFgcfVP8muYk2hCyfi3dojhNGFViv
-         StFg==
-X-Gm-Message-State: APjAAAX3WgFkKa0r6uvUbuFXjrinMydsvgUQ7BQ0gGQTLMC9KVseb1Qo
-        w59Z7xNx1uC2G/Htb8n+vXOW7MLFp6nN8hdFvEw=
-X-Google-Smtp-Source: APXvYqxp2svHkjweKKG+jdQQkVJe4plmW1sW0Uhrhl3k9N+S/B2KcLcEuCkLBbpp+sH8NsKfjEnmcwPOtz9HpZEH2QM=
-X-Received: by 2002:a0d:e347:: with SMTP id m68mr12940543ywe.181.1572273262738;
- Mon, 28 Oct 2019 07:34:22 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191024122923.24689-1-cgxu519@mykernel.net> <CAOQ4uxidZ=g29hGmKxinRA4Gp6CiWbOB9RqLWPPFXwtCB4DWog@mail.gmail.com>
- <16e007f78f9.12a9e815231850.7849365151361114799@mykernel.net>
- <CAOQ4uxgZDKnMGB3pbCJpyH_RxWzbEHLQMB2Mpc10PK=7=xYLOg@mail.gmail.com>
- <16e1244e1c9.ccaa038637864.8395134351025208019@mykernel.net>
- <CAOQ4uxjFvTTbKRW1BChnzfNSqg1yeyM3gjwjZ77i161D_XLFRg@mail.gmail.com> <16e12b4c2d4.107038d9f36138.3957762737837230842@mykernel.net>
-In-Reply-To: <16e12b4c2d4.107038d9f36138.3957762737837230842@mykernel.net>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Mon, 28 Oct 2019 16:34:11 +0200
-Message-ID: <CAOQ4uxiw2EoeEW4bDCAYypaVZM9Ecqz1w=HHrM4KLaXfZNBNgw@mail.gmail.com>
-Subject: Re: [PATCH v3] overlay/066: copy-up test for variant sparse files
-To:     Chengguang Xu <cgxu519@mykernel.net>
-Cc:     fstests <fstests@vger.kernel.org>,
+        id S1732571AbfJ1Q1S (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 28 Oct 2019 12:27:18 -0400
+Received: from fieldses.org ([173.255.197.46]:34636 "EHLO fieldses.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732424AbfJ1Q1S (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Mon, 28 Oct 2019 12:27:18 -0400
+Received: by fieldses.org (Postfix, from userid 2815)
+        id E2C0F1510; Mon, 28 Oct 2019 12:27:17 -0400 (EDT)
+Date:   Mon, 28 Oct 2019 12:27:17 -0400
+From:   "J. Bruce Fields" <bfields@fieldses.org>
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
+        Mark Salyzyn <salyzyn@android.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        kernel-team@android.com, Jonathan Corbet <corbet@lwn.net>,
+        Vivek Goyal <vgoyal@redhat.com>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
         overlayfs <linux-unionfs@vger.kernel.org>,
-        Eryu Guan <guaneryu@gmail.com>,
-        Miklos Szeredi <miklos@szeredi.hu>
-Content-Type: text/plain; charset="UTF-8"
+        linux-doc@vger.kernel.org,
+        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+        Jeff Layton <jlayton@kernel.org>
+Subject: Re: [PATCH v14 2/5] overlayfs: check CAP_DAC_READ_SEARCH before
+ issuing exportfs_decode_fh
+Message-ID: <20191028162717.GB5339@fieldses.org>
+References: <20191022204453.97058-1-salyzyn@android.com>
+ <20191022204453.97058-3-salyzyn@android.com>
+ <CAJfpegsCzwXF5fD1oA+XMrPQ7u8URsXRGOOHkB=ON7fLnd_gFQ@mail.gmail.com>
+ <CAOQ4uxh_K=p7z+qbkjSf_+hhVsw9xBuNc61dYnpkHFVUfxJaCw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOQ4uxh_K=p7z+qbkjSf_+hhVsw9xBuNc61dYnpkHFVUfxJaCw@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
->  >
->  > Not sure. I don't think we should target the test by what we know your
->  > patch does, but by maximizing test coverage in a cost effective way.
->  >
->  > Creating a 10M file with so many small holes doesn't add much to test
->  > coverage IMO. If you feel those are needed, you should use a C helper
->  > to create those files more efficiently.
->  >
->  > BTW I think what is missing from test coverage is small holes
->  > that are not aligned to 1M boundary.
->  >
->
-> Agreed.
->
-> So how about change test pattern to below, it will cover  most of the
-> cases that we want. I haven't done test for the performance(test time)
-> but I think it will be fast enough.
->
->
-> One 4K empty file.
-> One 4M empty file.
-> One 10M file with random small holes (4K~512K)
-> One 100M file with random big holes (1M~5M)
->
->
+On Sun, Oct 27, 2019 at 09:24:52AM +0200, Amir Goldstein wrote:
+> Well, it's not that simple (TM).
+> If you are considering unprivileged overlay mounts, then this should be
+> ns_capable() check, even though open_by_handle_at(2) does not
+> currently allow userspace nfsd to decode file handles.
+> 
+> Unlike open_by_handle_at(2), overlayfs (currently) never exposes file
+> data via decoded origin fh. AFAIK, it only exposes the origin st_ino
+> st_dev and some nlink related accounting.
+> 
+> I have been trying to understand from code if nfsd exports are allowed
+> from non privileged containers and couldn't figure it out (?).
+> If non privileged container is allowed to export nosubtreecheck export
+> then non privileged container root can already decode file handles...
 
-It sounds like a good addition, but maybe lets keep
-the files with aligned holes iosize*10 in size?
+I don't see any special checks in nfsctl_transaction_write() or
+write_threads().  I guess it's just depending on the (0600) file
+permissions.  I'm vague on how file permissions work in containers.
 
-Thanks,
-Amir.
+The issue with filehandles is that they allow you to bypass directory
+lookup permissions.  Keeping a file private by denying permission to
+look it up doesn't sound like a good idea to me, honestly, but it does
+work on local posix filesystems, so we don't want to break that.
+
+Filehandles are generally pretty easy to guess, and can't be revoked, so
+we're more worried about using them (with open_by_handle_at()) than
+reading them (with name_to_handle_at()), but we try to prevent the
+latter as well.
+
+--b.
