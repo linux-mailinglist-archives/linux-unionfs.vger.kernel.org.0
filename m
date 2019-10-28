@@ -2,172 +2,110 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F0F9E62CB
-	for <lists+linux-unionfs@lfdr.de>; Sun, 27 Oct 2019 14:59:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A150AE6C62
+	for <lists+linux-unionfs@lfdr.de>; Mon, 28 Oct 2019 07:21:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726674AbfJ0N7u (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 27 Oct 2019 09:59:50 -0400
-Received: from mail-yw1-f66.google.com ([209.85.161.66]:42394 "EHLO
-        mail-yw1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725807AbfJ0N7u (ORCPT
+        id S1731710AbfJ1GVZ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 28 Oct 2019 02:21:25 -0400
+Received: from out30-130.freemail.mail.aliyun.com ([115.124.30.130]:50020 "EHLO
+        out30-130.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728657AbfJ1GVZ (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 27 Oct 2019 09:59:50 -0400
-Received: by mail-yw1-f66.google.com with SMTP id d5so2889700ywk.9;
-        Sun, 27 Oct 2019 06:59:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=poDWleOxwscAi1b6vGHml3VbL/qBFRh3NZaGbX0t3BU=;
-        b=Ec+8laEeYmf/x6OI5mvnPVNY2TL9yLXNLWoGnvMrB6E5hbpnlHGLvnvd41qYTZQhfQ
-         ypPg+E9fAtwZhMkkX4VPnOIeU6R5NxCvr2pbkr7X+du6QctthjNbLzUs/gBG++FAiFni
-         PIgRffMAHAYfnEsoCqRAYb7crAxzjif/OporEWTHJiSWxh5wrwJNJoHEL7GtnAbJFi3O
-         EAt+MUPlZXKO6loTZOCeCK4ajyDuulR/Hoib2jmmpB6PggfBrDG9TSdvWHagEjkiFvjX
-         oVhimrJDz1Lug77JukA20xT7HbtJzbRlOWHVGC9pDwuMfnyr1WU39HgLmlrZ4p8zQu9o
-         s3+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=poDWleOxwscAi1b6vGHml3VbL/qBFRh3NZaGbX0t3BU=;
-        b=Upn9Yprya3jaDnuHU38gvEjevz7Ue3c3l0JJVDHjCWe4dC386Yij6OF/u/L6Cj2HTO
-         9dY1o6FLl7D1qBl10juRDwhEs9+Kp4KMBGzTDfpnzCJe/LeJAblPrTsaIydqSQsgWov4
-         /iry5goas3lv2cLKfFNtvNPaVI/u3B2zfknSCF9QwEQd+tUjFa3ulVOKU25qcRcYcnCd
-         ygeYNR/QaKJxX4P5YiMddefPIOb7L98Gt3KB0KUA3jxQ2YKm3xjCCU8aKzdtZpBEVbbj
-         6PcRuJU6AnUUkxE18hYgXn5n8nsqarNyDgt9jzr8qWCxaJ713QjUdPwWtygFteDef1QZ
-         MN7w==
-X-Gm-Message-State: APjAAAXm5fXM0R97ce2W/Uslmhfyhi0DziGEiImVvrGzAqlasuuoJCbD
-        aV0MNhh1EBAzf6LlWP8OP1yoWlwNWTgJaSUa8CM=
-X-Google-Smtp-Source: APXvYqwULU4gXYRQRpmhVMr8NS0vNeSJGPNOU540Qf7LxS98LrRNTA+WPV9S2l+YL4wZX0EujbTQjXhht6L9/2isbkY=
-X-Received: by 2002:a81:3187:: with SMTP id x129mr10054062ywx.294.1572184787702;
- Sun, 27 Oct 2019 06:59:47 -0700 (PDT)
+        Mon, 28 Oct 2019 02:21:25 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=jefflexu@linux.alibaba.com;NM=1;PH=DS;RN=2;SR=0;TI=SMTPD_---0TgSyXzG_1572243682;
+Received: from admindeMacBook-Pro-2.local(mailfrom:jefflexu@linux.alibaba.com fp:SMTPD_---0TgSyXzG_1572243682)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 28 Oct 2019 14:21:23 +0800
+To:     miklos@szeredi.hu
+Cc:     linux-unionfs@vger.kernel.org
+From:   JeffleXu <jefflexu@linux.alibaba.com>
+Subject: Performance regression caused by stack operation of regular file
+Message-ID: <ae928bd7-001a-061e-01f0-43b53a0adcd1@linux.alibaba.com>
+Date:   Mon, 28 Oct 2019 14:21:22 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20191024122923.24689-1-cgxu519@mykernel.net> <CAOQ4uxidZ=g29hGmKxinRA4Gp6CiWbOB9RqLWPPFXwtCB4DWog@mail.gmail.com>
- <16e007f78f9.12a9e815231850.7849365151361114799@mykernel.net>
-In-Reply-To: <16e007f78f9.12a9e815231850.7849365151361114799@mykernel.net>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Sun, 27 Oct 2019 15:59:36 +0200
-Message-ID: <CAOQ4uxgZDKnMGB3pbCJpyH_RxWzbEHLQMB2Mpc10PK=7=xYLOg@mail.gmail.com>
-Subject: Re: [PATCH v3] overlay/066: copy-up test for variant sparse files
-To:     Chengguang Xu <cgxu519@mykernel.net>
-Cc:     fstests <fstests@vger.kernel.org>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Eryu Guan <guaneryu@gmail.com>,
-        Miklos Szeredi <miklos@szeredi.hu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Fri, Oct 25, 2019 at 4:19 AM Chengguang Xu <cgxu519@mykernel.net> wrote:
->
->  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=BA=94, 2019-10-25 05:02:07 Amir Gol=
-dstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
->  > On Thu, Oct 24, 2019 at 3:29 PM Chengguang Xu <cgxu519@mykernel.net> w=
-rote:
->  > >
->  > > This is intensive copy-up test for sparse files,
->  > > these cases will be mainly used for regression test
->  > > of copy-up improvement for sparse files.
->  > >
->  > > Reviewed-by: Amir Goldstein <amir73il@gmail.com>
->  > > Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
->  > >
->  > > ---
->  > > v1->v2:
->  > > - Call _get_block_size to get fs block size.
->  > > - Add comment for test space requirement.
->  > > - Print meaningful error message when copy-up fail.
->  > > - Adjust random hole range to 1M~5M.
->  > > - Fix typo.
->  > >
->  > > v2->v3:
->  > > - Fix space requiremnt for test.
->  > > - Add more descriptions for test files and hole patterns.
->  > > - Define well named variables to replace unexplained numbers.
->  > > - Fix random hole algorithm to what Amir suggested.
->  > > - Adjust iosize to start from 1K.
+Hi, Miklos,
 
-Chengguang,
-
-Sorry, I did't notice that you did that. Why?
-As you can see below, this change has a very bad impact on test run time.
-Any reason not to use _get_block_size?
+I noticed a performance regression of reading/writing files in mergeddir 
+caused by commit a6518f73e60e5044656d1ba587e7463479a9381a (vfs: don't 
+open real), using unixbench fstime.
 
 
->  > > - Remove from quick test group.
->  >
->  > Why? you said it takes 7s without the kernel patch.
->  > The test overlay/001 is in quick group and it copies up 2*4GB
->  > sparse files.
->
-> I noticed that after changed to start from 1K iosize the test took about =
-23s.
-> I'm afraid maybe it will take more time on low performance VM env.
->
-> The test overlay/001 took 8s/1s with/without kernel patch, so mainly test=
- time
-> wasted on creating test files on test overlay/066.
+Reproduce Steps:
 
-You are correct about the time spent on creating the files, but...
+1. cd /mnt/lower/ && git clone 
+https://github.com/kdlucas/byte-unixbench.git
 
-On my low perf VM, the test runs 95s with overlay over xfs+reflink
+2. mount -t overlay overlay 
+-olowerdir=/mnt/lower,upperdir=/mnt/upper,workdir=/mnt/work /mnt/merge
 
-But if I set start iosize=3D4 (which what my fs block size is) the test
-runs only 30s.
-
-IOW, most of the test time is spent on creating the files with small iosize
-below fs block size, which doesn't test copy up of holes at all.
-
-If I further change file size to be a multiply of iosize (x10),
-test run time drops to 6s!
-I don't think we loose too much test coverage if we do that?
-If anything we gain testing different file sizes.
-
-The disk space requirement formula for ${iosize}K_holefiles becomes:
-10*(2^0 + 2^11)K*12/2 =3D~ 10 * 1024 * 12
-same as before, just needs explaining.
-(the formula assumes the worst case of min_iosize=3D1)
-
--------------
- #
- # |-- hole --|-- data --| ... |-- data --|-- hole --|
-
--iosize=3D1
-+min_iosize=3D$(($(_get_block_size "${lowerdir}") / 1024 ))
-+iosize=3D$min_iosize
- max_iosize=3D2048
--file_size=3D10240
--max_pos=3D`expr $file_size - $max_iosize`
-
- while [ $iosize -le $max_iosize ]; do
-+       file_size=3D$((10*$iosize))
-+       max_pos=3D`expr $file_size - $iosize`
-+       date >>$seqres.full
-+       echo "Creating ${testfile}_iosize${iosize}K_holefile..." >>$seqres.=
-full
-        pos=3D$iosize
-        $XFS_IO_PROG -fc "truncate ${file_size}K" \
-                "${lowerdir}/${testfile}_iosize${iosize}K_holefile"
->>$seqres.full
------------
+3. cd /mnt/merge/byte-unixbench/UnixBench && ./Run -c 1 -i 1 fstime
 
 
->
->  >
->  > Tests that are not in quick group are far less likely to be run
->  > regularly by developers.
->
-> hmm...well, lets add 'quick' group again and remove it  if anyone complai=
-ns later.
->
+The score is 2870 before applying the patch, while it is 1780 after 
+applying the patch, causing a 40% performance regression.
 
-I am now complaining ;-), but after fixes above, test is really quick
+The testcase repeatedly reads 1024 bytes from one file and writes the 
+readed data into another file, while both these two files
 
-Please send a fix patch (to already merged test) to fir test runtime
-and possibly use _get_block_size.
+are created under /mnt/merge/tmp.  I have testsed the latest kernel 
+5.4.0-rc4+, same results.
 
-Thanks,
-Amir.
+
+The perf shows that there's extra one call of file_remove_privs(), 
+override_creds() and revert_creds() every write() syscall,
+
+among which file_remove_privs() is pretty expensive.
+
+
+- perf data before applying the patch.
+
+```
+
+-   53.00%     0.93%  fstime    [kernel.kallsyms]   [k] __vfs_write
+    - 52.08% __vfs_write
+       - 51.94% ext4_file_write_iter
+          + 48.89% __generic_file_write_iter
+            0.83% down_write_trylock
+            0.79% up_write
+
+```
+
+
+- perf data after applying the patch.
+
+```
+
++   94.88%     0.00%  fstime    [kernel.kallsyms]   [k] 
+entry_SYSCALL_64_after_hwframe
++   94.88%     4.67%  fstime    [kernel.kallsyms]   [k] do_syscall_64
++   66.08%     1.60%  fstime    libc-2.17.so        [.] __GI___libc_write
++   62.37%     0.23%  fstime    [kernel.kallsyms]   [k] ksys_write
++   61.74%     0.62%  fstime    [kernel.kallsyms]   [k] vfs_write
+-   60.10%     0.49%  fstime    [kernel.kallsyms]   [k] __vfs_write
+    - 59.61% __vfs_write
+       - 59.56% ovl_write_iter
+          - 33.81% do_iter_write
+             - 32.50% do_iter_readv_writev
+                + ext4_file_write_iter
+          + 19.15% file_remove_privs
+            2.15% revert_creds
+            2.02% override_creds
+            0.64% down_write
+            0.63% up_write
+
+```
+
+
+Regards.
+
+Jeffle
+
