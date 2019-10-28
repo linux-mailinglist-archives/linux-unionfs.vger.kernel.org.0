@@ -2,110 +2,192 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A150AE6C62
-	for <lists+linux-unionfs@lfdr.de>; Mon, 28 Oct 2019 07:21:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BD27E70F3
+	for <lists+linux-unionfs@lfdr.de>; Mon, 28 Oct 2019 13:09:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731710AbfJ1GVZ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 28 Oct 2019 02:21:25 -0400
-Received: from out30-130.freemail.mail.aliyun.com ([115.124.30.130]:50020 "EHLO
-        out30-130.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728657AbfJ1GVZ (ORCPT
+        id S1727399AbfJ1MJQ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 28 Oct 2019 08:09:16 -0400
+Received: from sender3-pp-o92.zoho.com.cn ([124.251.121.251]:25962 "EHLO
+        sender3-pp-o92.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730055AbfJ1MJP (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 28 Oct 2019 02:21:25 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=jefflexu@linux.alibaba.com;NM=1;PH=DS;RN=2;SR=0;TI=SMTPD_---0TgSyXzG_1572243682;
-Received: from admindeMacBook-Pro-2.local(mailfrom:jefflexu@linux.alibaba.com fp:SMTPD_---0TgSyXzG_1572243682)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Mon, 28 Oct 2019 14:21:23 +0800
-To:     miklos@szeredi.hu
-Cc:     linux-unionfs@vger.kernel.org
-From:   JeffleXu <jefflexu@linux.alibaba.com>
-Subject: Performance regression caused by stack operation of regular file
-Message-ID: <ae928bd7-001a-061e-01f0-43b53a0adcd1@linux.alibaba.com>
-Date:   Mon, 28 Oct 2019 14:21:22 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.9.0
+        Mon, 28 Oct 2019 08:09:15 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1572264535; cv=none; 
+        d=zoho.com.cn; s=zohoarc; 
+        b=J2joaeQ02OiWRZNjw7rOWrtxcPLiehedFILB6Ap2MtdXW5UMC8xtlK7o8caerljQ15Nx9S8/ZVsce9vT3s2jJlpfRS5nyphF+T8tPW+CVFSpyQRnEjqR//rO8xewLJNESl8LgbTZ+8daVUz68gEi/dXHR3sDhXMoSWJxIUexk/E=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
+        t=1572264535; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:Reply-To:References:Subject:To:ARC-Authentication-Results; 
+        bh=0VgGO60u7XzUqXCZqziE99CPo1wN56hiR1Uf6p/WOTI=; 
+        b=I44wDFdY7/H7WHnpcKePhLo0mFsWv3f/i1O2RYIXqGslyMlvvTGZ2rY7v78xH7JE2yhlk9ZoLI/QkHsu7ZQWKMVEtnmDRBuTrErT1iDkSZcaIbYYf6lNpw8bnyMjAl+o3mtYLMLkYnPM2jyYmkN8jMk7thKeC1aMrSLqtIacYD8=
+ARC-Authentication-Results: i=1; mx.zoho.com.cn;
+        dkim=pass  header.i=mykernel.net;
+        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
+        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1572264535;
+        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
+        h=Date:From:Reply-To:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        l=4622; bh=0VgGO60u7XzUqXCZqziE99CPo1wN56hiR1Uf6p/WOTI=;
+        b=ZW8ZTDyhPuI2cQZSZmqbUDMZqvGpQD35SJUQoRhzqQo2rmrQ2VX81+zhTuPplcJ/
+        oHYdfzxAXzu2Sqg3+KUNxAETU/Sj4kYjhu8EgK3lwartCZzeHDFELvl8t0JtE39hnti
+        EP9PVxiuvLxUmpQa3PZT8XFc85UIFZq6fJ9WMqi8=
+Received: from mail.baihui.com by mx.zoho.com.cn
+        with SMTP id 1572264534481895.6922176473067; Mon, 28 Oct 2019 20:08:54 +0800 (CST)
+Date:   Mon, 28 Oct 2019 20:08:54 +0800
+From:   Chengguang Xu <cgxu519@mykernel.net>
+Reply-To: cgxu519@mykernel.net
+To:     "Amir Goldstein" <amir73il@gmail.com>
+Cc:     "fstests" <fstests@vger.kernel.org>,
+        "overlayfs" <linux-unionfs@vger.kernel.org>,
+        "Eryu Guan" <guaneryu@gmail.com>,
+        "Miklos Szeredi" <miklos@szeredi.hu>
+Message-ID: <16e1244e1c9.ccaa038637864.8395134351025208019@mykernel.net>
+In-Reply-To: <CAOQ4uxgZDKnMGB3pbCJpyH_RxWzbEHLQMB2Mpc10PK=7=xYLOg@mail.gmail.com>
+References: <20191024122923.24689-1-cgxu519@mykernel.net> <CAOQ4uxidZ=g29hGmKxinRA4Gp6CiWbOB9RqLWPPFXwtCB4DWog@mail.gmail.com>
+ <16e007f78f9.12a9e815231850.7849365151361114799@mykernel.net> <CAOQ4uxgZDKnMGB3pbCJpyH_RxWzbEHLQMB2Mpc10PK=7=xYLOg@mail.gmail.com>
+Subject: Re: [PATCH v3] overlay/066: copy-up test for variant sparse files
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Priority: Medium
+User-Agent: ZohoCN Mail
+X-Mailer: ZohoCN Mail
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Hi, Miklos,
+ ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E6=97=A5, 2019-10-27 21:59:36 Amir Golds=
+tein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
+ > On Fri, Oct 25, 2019 at 4:19 AM Chengguang Xu <cgxu519@mykernel.net> wro=
+te:
+ > >
+ > >  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=BA=94, 2019-10-25 05:02:07 Amir =
+Goldstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
+ > >  > On Thu, Oct 24, 2019 at 3:29 PM Chengguang Xu <cgxu519@mykernel.net=
+> wrote:
+ > >  > >
+ > >  > > This is intensive copy-up test for sparse files,
+ > >  > > these cases will be mainly used for regression test
+ > >  > > of copy-up improvement for sparse files.
+ > >  > >
+ > >  > > Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+ > >  > > Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
+ > >  > >
+ > >  > > ---
+ > >  > > v1->v2:
+ > >  > > - Call _get_block_size to get fs block size.
+ > >  > > - Add comment for test space requirement.
+ > >  > > - Print meaningful error message when copy-up fail.
+ > >  > > - Adjust random hole range to 1M~5M.
+ > >  > > - Fix typo.
+ > >  > >
+ > >  > > v2->v3:
+ > >  > > - Fix space requiremnt for test.
+ > >  > > - Add more descriptions for test files and hole patterns.
+ > >  > > - Define well named variables to replace unexplained numbers.
+ > >  > > - Fix random hole algorithm to what Amir suggested.
+ > >  > > - Adjust iosize to start from 1K.
+ >=20
+ > Chengguang,
+ >=20
+ > Sorry, I did't notice that you did that. Why?
+ > As you can see below, this change has a very bad impact on test run time=
+.
+ > Any reason not to use _get_block_size?
 
-I noticed a performance regression of reading/writing files in mergeddir 
-caused by commit a6518f73e60e5044656d1ba587e7463479a9381a (vfs: don't 
-open real), using unixbench fstime.
+Use _get_block_size cannot mitigate the effect perfectly,=20
+in the worst case that we formatted fs with blocksize=3D1K,
+the test will  take long time and also test time is not fixed.
+
+ >=20
+ >=20
+ > >  > > - Remove from quick test group.
+ > >  >
+ > >  > Why? you said it takes 7s without the kernel patch.
+ > >  > The test overlay/001 is in quick group and it copies up 2*4GB
+ > >  > sparse files.
+ > >
+ > > I noticed that after changed to start from 1K iosize the test took abo=
+ut 23s.
+ > > I'm afraid maybe it will take more time on low performance VM env.
+ > >
+ > > The test overlay/001 took 8s/1s with/without kernel patch, so mainly t=
+est time
+ > > wasted on creating test files on test overlay/066.
+ >=20
+ > You are correct about the time spent on creating the files, but...
+ >=20
+ > On my low perf VM, the test runs 95s with overlay over xfs+reflink
+ >=20
+ > But if I set start iosize=3D4 (which what my fs block size is) the test
+ > runs only 30s.
+ >=20
+ > IOW, most of the test time is spent on creating the files with small ios=
+ize
+ > below fs block size, which doesn't test copy up of holes at all.
+ >=20
+ > If I further change file size to be a multiply of iosize (x10),
+ > test run time drops to 6s!
+ > I don't think we loose too much test coverage if we do that?
+ > If anything we gain testing different file sizes.
+
+hmm, for small iosize the file size is even smaller than
+copy-up CHUNK SIZE(1M),  so that all contents(data+hole)
+will be passed at once, I'm not very sure is it helpful for
+hole copy-up logic in kernel patch. What do you think?=20
 
 
-Reproduce Steps:
+ >=20
+ > The disk space requirement formula for ${iosize}K_holefiles becomes:
+ > 10*(2^0 + 2^11)K*12/2 =3D~ 10 * 1024 * 12
 
-1. cd /mnt/lower/ && git clone 
-https://github.com/kdlucas/byte-unixbench.git
+That's the mean of 12/2 ?
 
-2. mount -t overlay overlay 
--olowerdir=/mnt/lower,upperdir=/mnt/upper,workdir=/mnt/work /mnt/merge
+ > same as before, just needs explaining.
+ > (the formula assumes the worst case of min_iosize=3D1)
+ >=20
+ > -------------
+ >  #
+ >  # |-- hole --|-- data --| ... |-- data --|-- hole --|
+ >=20
+ > -iosize=3D1
+ > +min_iosize=3D$(($(_get_block_size "${lowerdir}") / 1024 ))
+ > +iosize=3D$min_iosize
+ >  max_iosize=3D2048
+ > -file_size=3D10240
+ > -max_pos=3D`expr $file_size - $max_iosize`
+ >=20
+ >  while [ $iosize -le $max_iosize ]; do
+ > +       file_size=3D$((10*$iosize))
+ > +       max_pos=3D`expr $file_size - $iosize`
+ > +       date >>$seqres.full
 
-3. cd /mnt/merge/byte-unixbench/UnixBench && ./Run -c 1 -i 1 fstime
+That's the purpose for putting data info here?
 
-
-The score is 2870 before applying the patch, while it is 1780 after 
-applying the patch, causing a 40% performance regression.
-
-The testcase repeatedly reads 1024 bytes from one file and writes the 
-readed data into another file, while both these two files
-
-are created under /mnt/merge/tmp.  I have testsed the latest kernel 
-5.4.0-rc4+, same results.
-
-
-The perf shows that there's extra one call of file_remove_privs(), 
-override_creds() and revert_creds() every write() syscall,
-
-among which file_remove_privs() is pretty expensive.
-
-
-- perf data before applying the patch.
-
-```
-
--   53.00%     0.93%  fstime    [kernel.kallsyms]   [k] __vfs_write
-    - 52.08% __vfs_write
-       - 51.94% ext4_file_write_iter
-          + 48.89% __generic_file_write_iter
-            0.83% down_write_trylock
-            0.79% up_write
-
-```
-
-
-- perf data after applying the patch.
-
-```
-
-+   94.88%     0.00%  fstime    [kernel.kallsyms]   [k] 
-entry_SYSCALL_64_after_hwframe
-+   94.88%     4.67%  fstime    [kernel.kallsyms]   [k] do_syscall_64
-+   66.08%     1.60%  fstime    libc-2.17.so        [.] __GI___libc_write
-+   62.37%     0.23%  fstime    [kernel.kallsyms]   [k] ksys_write
-+   61.74%     0.62%  fstime    [kernel.kallsyms]   [k] vfs_write
--   60.10%     0.49%  fstime    [kernel.kallsyms]   [k] __vfs_write
-    - 59.61% __vfs_write
-       - 59.56% ovl_write_iter
-          - 33.81% do_iter_write
-             - 32.50% do_iter_readv_writev
-                + ext4_file_write_iter
-          + 19.15% file_remove_privs
-            2.15% revert_creds
-            2.02% override_creds
-            0.64% down_write
-            0.63% up_write
-
-```
-
-
-Regards.
-
-Jeffle
+ > +       echo "Creating ${testfile}_iosize${iosize}K_holefile..." >>$seqr=
+es.full
+ >         pos=3D$iosize
+ >         $XFS_IO_PROG -fc "truncate ${file_size}K" \
+ >                 "${lowerdir}/${testfile}_iosize${iosize}K_holefile"
+ > >>$seqres.full
+ > -----------
+ >=20
+ >=20
+ > >
+ > >  >
+ > >  > Tests that are not in quick group are far less likely to be run
+ > >  > regularly by developers.
+ > >
+ > > hmm...well, lets add 'quick' group again and remove it  if anyone comp=
+lains later.
+ > >
+ >=20
+ > I am now complaining ;-), but after fixes above, test is really quick
+ >=20
+ > Please send a fix patch (to already merged test) to fir test runtime
+ > and possibly use _get_block_size.
+ >=20
+ > Thanks,
+ > Amir.
+ >
 
