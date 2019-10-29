@@ -2,104 +2,56 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2691AE8840
-	for <lists+linux-unionfs@lfdr.de>; Tue, 29 Oct 2019 13:32:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F1F7E8DB6
+	for <lists+linux-unionfs@lfdr.de>; Tue, 29 Oct 2019 18:10:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731227AbfJ2Mcz (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 29 Oct 2019 08:32:55 -0400
-Received: from mail-yb1-f196.google.com ([209.85.219.196]:34229 "EHLO
-        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726048AbfJ2Mcz (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 29 Oct 2019 08:32:55 -0400
-Received: by mail-yb1-f196.google.com with SMTP id m1so5289483ybm.1;
-        Tue, 29 Oct 2019 05:32:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=28ufGyAX1PNyse9+jZuy/kBDfiVuiZHqQyF4Qdd/geo=;
-        b=fOrIR09xjODaRtdLjl8Q2wvtAw03dklCP6o85I20Bvr9cPajH06itEkOy4/VheGq+L
-         kYZijNkVB5inhn8vkKvhEPYSjX0m9M+uXu17rKPVI7/rSYp4KVQYO8WtrpB8ThkakDfL
-         tr3G6LsPCLaN5Dw669zytW8t5vUq7uiipjCzT/QOW35SPvykue9Htd9Wfj+pe+elF9w8
-         C0wHIVLg4Blhx5WMVNmnrDWblqocSuHNmO/LGycJ6pyUWjr6faG6366qi5Jz9VWzW1xG
-         8yPKDTybFymEW0Z/AD/VW+2IbUhtTjvZNwk6qGb03gP/J2cXa3L20jgLncP5SUxMgZYS
-         OwJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=28ufGyAX1PNyse9+jZuy/kBDfiVuiZHqQyF4Qdd/geo=;
-        b=NtEhA0LHA3MSPHWfHrl4xXMwPuYaaG/HikOawwQosKJTYvF7kO94JLjuXRRH/njjp1
-         9KuIP21zGLkDk8AxFPq/WEBU1mgnJ2Ac10iie1IgauctJUJ+rryC4NC771sLfsBmAt50
-         qaHLtAQ8Bx5rYuTgd++1/rVk16ZJMRl5JjpQyqUgDkeqxyY9yMnaret4gOoZtqYAjArh
-         S7v+4aV2IYkBhIgc0a+hr0xCsVZvU2LhWFycWbNAovgo64Hhyr7doc+IhZlIZvFoU72o
-         PygbDgbkcVu4qprL5xifU47m/gVRxAyAs6uOPuXgIwdxkKaBqSIlTmWER0O3MSdKcWLD
-         M1Ng==
-X-Gm-Message-State: APjAAAXru8m0YQTCDFAUsB6kfkkEb3xkdAOdMEITK6Zt1vYlY41GS894
-        cNhNMLkfqq/id7DvX5Nhil7DSWf1xD3ZJeCP38c=
-X-Google-Smtp-Source: APXvYqytnaWvcYXPrHKCjxFcbKkUSgzA0SHYHc/HX9VMMvQqWL36o4xubhcPVYw+PRnqrtYC6gFrI7Gqt/vKs+TaomU=
-X-Received: by 2002:a25:3344:: with SMTP id z65mr18488765ybz.439.1572352374378;
- Tue, 29 Oct 2019 05:32:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191029055713.28191-1-cgxu519@mykernel.net> <CAOQ4uxgzZHXOv7K++BArYmaTEHbYr5oCkgXw8WVUsQgh0uyqhg@mail.gmail.com>
- <16e173c434a.11f8ced8d40796.3954073574203284331@mykernel.net> <CAOQ4uxjddbot29=cYqLMLyqT=w=pWmLOPqVzvi-5mcXQ3AB3EQ@mail.gmail.com>
-In-Reply-To: <CAOQ4uxjddbot29=cYqLMLyqT=w=pWmLOPqVzvi-5mcXQ3AB3EQ@mail.gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Tue, 29 Oct 2019 14:32:43 +0200
-Message-ID: <CAOQ4uxiZgmA6Z8Lq=ac7O9f1+CMnSmyLoAA7TDu6Hyt=-pUctw@mail.gmail.com>
-Subject: Re: [PATCH] overlay/066: adjust test file size && add more test patterns
-To:     Chengguang Xu <cgxu519@mykernel.net>
-Cc:     fstests <fstests@vger.kernel.org>,
+        id S2390791AbfJ2RKQ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 29 Oct 2019 13:10:16 -0400
+Received: from mail.hallyn.com ([178.63.66.53]:37718 "EHLO mail.hallyn.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727763AbfJ2RKQ (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Tue, 29 Oct 2019 13:10:16 -0400
+X-Greylist: delayed 517 seconds by postgrey-1.27 at vger.kernel.org; Tue, 29 Oct 2019 13:10:15 EDT
+Received: by mail.hallyn.com (Postfix, from userid 1001)
+        id 8C8129AD; Tue, 29 Oct 2019 12:01:37 -0500 (CDT)
+Date:   Tue, 29 Oct 2019 12:01:37 -0500
+From:   "Serge E. Hallyn" <serge@hallyn.com>
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     "Eric W . Biederman" <ebiederm@xmission.com>,
         overlayfs <linux-unionfs@vger.kernel.org>,
-        Eryu Guan <guaneryu@gmail.com>,
-        Miklos Szeredi <miklos@szeredi.hu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/5] allow unprivileged overlay mounts
+Message-ID: <20191029170137.GA21633@mail.hallyn.com>
+References: <20191025112917.22518-1-mszeredi@redhat.com>
+ <CAJfpegv1SA7b45_2g-GFYrc7ZsOmcQ2qv602n=85L4RknkOvKQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJfpegv1SA7b45_2g-GFYrc7ZsOmcQ2qv602n=85L4RknkOvKQ@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Tue, Oct 29, 2019 at 1:58 PM Amir Goldstein <amir73il@gmail.com> wrote:
->
-> On Tue, Oct 29, 2019 at 1:17 PM Chengguang Xu <cgxu519@mykernel.net> wrot=
-e:
+On Fri, Oct 25, 2019 at 01:35:20PM +0200, Miklos Szeredi wrote:
+> On Fri, Oct 25, 2019 at 1:30 PM Miklos Szeredi <mszeredi@redhat.com> wrote:
 > >
-> >  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=BA=8C, 2019-10-29 16:32:32 Amir G=
-oldstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
-> >  > On Tue, Oct 29, 2019 at 7:57 AM Chengguang Xu <cgxu519@mykernel.net>=
- wrote:
-> >  > >
-> >  >
-> >  > Can you please send the patch as plain/text.
-> >  > Your mailer has sent it with quoted printable encoding and git am
-> >  > fails to apply the patch:
-> >  > https://lore.kernel.org/fstests/20191029055713.28191-1-cgxu519@myker=
-nel.net/raw
-> >  >
+> > Hi Eric,
 > >
-> > Sorry for that,  I'm not clear for the reason, so I send you the patch =
-in attachment first.
+> > Can you please have a look at this patchset?
 > >
->
+> > The most interesting one is the last oneliner adding FS_USERNS_MOUNT;
+> > whether I'm correct in stating that this isn't going to introduce any
+> > holes, or not...
+> 
+> Forgot the git tree:
+> 
+> git://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/vfs.git#ovl-unpriv
+> 
+> Thanks,
+> Miklos
 
-OK, I can verify that test runs quick (5s) on my VM.
+I've looked through it, seemed sensible to me.
 
-But there is one more issue that I think needs to be addressed, either
-in this fix patch or in a follow up patch.
-
-If the test ever fails on some run with a specific random holes sequence,
-it is going to be quite hard for reporter to report this sequence or for
-developers to reproduce the same random sequence.
-
-One way to fix this is to output the sequence of commands that
-generated the random files to full output, so it can be used as a recipe
-for reproducer in case of a failure.
-
-If you do that, please make sure that the recipe for creating
-small random file is clearly separated from recipe for creating
-big random file.
-
-Thanks,
-Amir.
+-serge
