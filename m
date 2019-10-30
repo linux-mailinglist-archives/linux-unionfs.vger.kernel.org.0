@@ -2,151 +2,271 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC1A6E961E
-	for <lists+linux-unionfs@lfdr.de>; Wed, 30 Oct 2019 06:34:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59A4CE9BBC
+	for <lists+linux-unionfs@lfdr.de>; Wed, 30 Oct 2019 13:45:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726747AbfJ3FeM (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 30 Oct 2019 01:34:12 -0400
-Received: from mail-yw1-f65.google.com ([209.85.161.65]:37146 "EHLO
-        mail-yw1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725855AbfJ3FeL (ORCPT
+        id S1726175AbfJ3Mpl (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 30 Oct 2019 08:45:41 -0400
+Received: from sender2-of-o52.zoho.com.cn ([163.53.93.247]:21409 "EHLO
+        sender2.zoho.com.cn" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726088AbfJ3Mpl (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 30 Oct 2019 01:34:11 -0400
-Received: by mail-yw1-f65.google.com with SMTP id v84so463794ywc.4;
-        Tue, 29 Oct 2019 22:34:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=awvmcllvoQxkws+t9hh1Rf782NhS4hoTdPuyYWHl1Qw=;
-        b=YJW8JEzo/gUWhW+GX6FjSrlkJx48NldVHVf3eECe63wV3efUovH7oz/X1ewVMfPAv3
-         rPy9BbZQFpaal7jfS72jf9l9KeGJBSeLstBGJfampKTlz9z4Y9/Sz9LGDIBadWHRoRvM
-         ZtmPri8egMeI0GTiWuPuton/WcAleFRL23OuuZpqCoeyhH69wIRuyDRz6QsPiKZCdzXq
-         7cOJnucaTDRfhowumzJN8aY64yYOP7zKpaerbn94KvscKW1thsJSKylBJCGrcng+oYwL
-         kUsKndoh8yawzMwnHls0UuRDM/bYxkADJFfI9f4P1zC8W9WG3/MYbwJ4BKtg04rVTqyh
-         7EOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=awvmcllvoQxkws+t9hh1Rf782NhS4hoTdPuyYWHl1Qw=;
-        b=AlQdb3XF0c6JFqCMBjMyth+6SXTrM/1gpX60DX+NnHDp+VqQ50Xogv4xjyv/aCfQPv
-         K/rDAAH+Fc7jCuqoajPz0eLF4/rQazmKdgg/dAcoYbiQ9XLsKH07Qt6M3KU8JMO/aUMp
-         5wiLivbb8nrRbhR1nXcl2TQRYo6W9oCx8iab8mCbBG/hmrDA7StsECdln7eSJfXRQf1M
-         p+dXjZrQFKnjVVQp3O+5V2bgswq/xAxqsxDumOCCrRv36FHedffL6q8/MLD2eKcKtiz9
-         gAs9ze7YKL1czv4MAvCVZikg/YbrxKlAUb+erzoj2raLNxZSwLt7WEXtRZT4N5oD8/Mx
-         PKtA==
-X-Gm-Message-State: APjAAAXLxsU6QTDT0SZQApZ7yGIlp7rwMJjJubLNl/ZwtbzLnQZZ3oGG
-        ZC5Js4idmiegmtp/Z3+/Bi6YWiz3YcZ5bEXob3o=
-X-Google-Smtp-Source: APXvYqzkhjwPX8DFKvX76CmDH5rDPGkFrl2rnqidDe/UX+00dduLxm9kM05f0UwNy2G0TUeUxHvbXk336DX1tSNb184=
-X-Received: by 2002:a81:4a02:: with SMTP id x2mr20329875ywa.31.1572413650729;
- Tue, 29 Oct 2019 22:34:10 -0700 (PDT)
+        Wed, 30 Oct 2019 08:45:41 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1572439506; cv=none; 
+        d=zoho.com.cn; s=zohoarc; 
+        b=MimcXCNXRAz+nZaInLIBY+SDbvQH//I/Q7k/p/O/KgGaqJKqGJKPf0Ni0utcerr10tKmNdSBnSeIW1Mf7NNog8oaY1ati4/uk0qq44m2jZIFZFdzKaT3brnrR75LGZ9Ill1i3HI6Hl1MnPBp9fBerxcmFBBj0Ko9/KOTbt7QBNY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
+        t=1572439506; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=KzD3PtVyHv85uDR0PO29PQx1YLvCajlDASgtm1bF7gI=; 
+        b=AqzMA2Th5ttNr//V+2CW1pNoa0B7dw8zzWeohRMe0huddAikos7GLdCq1EZ1OlOw8bZvlcJ59ASP22lLQwdb4JQXm1jzvxQhN9useEZPIyK8nwvKSLNH/Kl5OxQx/O4F9BOEha9+2Nt8ipeIyhbYh21yYknG6TEr0QPsL8pYqkw=
+ARC-Authentication-Results: i=1; mx.zoho.com.cn;
+        dkim=pass  header.i=mykernel.net;
+        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
+        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1572439506;
+        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
+        h=From:To:Cc:Message-ID:Subject:Date:MIME-Version:Content-Transfer-Encoding:Content-Type;
+        l=7318; bh=KzD3PtVyHv85uDR0PO29PQx1YLvCajlDASgtm1bF7gI=;
+        b=goxfvCnWr9IqWIPRxyN4P7kNDck0/0oXeimcYHGhfW8246qKMa8A4BjAre+yQSkU
+        vg/IT8m4Zya4Y+HQARvwN0hEjUBo8JHjrM+0wNGbJIlmUxqOW2D6BQgdADMKpwEdfLv
+        wCymhqHpIW+M7MKwNLkQ4tpjEeKnl+WZ8wCKL6Kw=
+Received: from localhost.localdomain (218.18.229.179 [218.18.229.179]) by mx.zoho.com.cn
+        with SMTPS id 1572439504321603.794610077304; Wed, 30 Oct 2019 20:45:04 +0800 (CST)
+From:   Chengguang Xu <cgxu519@mykernel.net>
+To:     miklos@szeredi.hu, amir73il@gmail.com
+Cc:     linux-unionfs@vger.kernel.org, Chengguang Xu <cgxu519@mykernel.net>
+Message-ID: <20191030124431.11242-1-cgxu519@mykernel.net>
+Subject: [PATCH v2] ovl: improving copy-up efficiency for big sparse file
+Date:   Wed, 30 Oct 2019 20:44:31 +0800
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20191029055713.28191-1-cgxu519@mykernel.net> <CAOQ4uxgzZHXOv7K++BArYmaTEHbYr5oCkgXw8WVUsQgh0uyqhg@mail.gmail.com>
- <16e173c434a.11f8ced8d40796.3954073574203284331@mykernel.net>
- <CAOQ4uxjddbot29=cYqLMLyqT=w=pWmLOPqVzvi-5mcXQ3AB3EQ@mail.gmail.com>
- <CAOQ4uxiZgmA6Z8Lq=ac7O9f1+CMnSmyLoAA7TDu6Hyt=-pUctw@mail.gmail.com> <16e1afc4097.118c98c8b43000.1263688409904269456@mykernel.net>
-In-Reply-To: <16e1afc4097.118c98c8b43000.1263688409904269456@mykernel.net>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Wed, 30 Oct 2019 07:33:59 +0200
-Message-ID: <CAOQ4uxjqMTFc-Fmpg3oGChy01X2JzQoG_jqxk5iEz+bR4yoQjg@mail.gmail.com>
-Subject: Re: [PATCH] overlay/066: adjust test file size && add more test patterns
-To:     Chengguang Xu <cgxu519@mykernel.net>
-Cc:     fstests <fstests@vger.kernel.org>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Eryu Guan <guaneryu@gmail.com>,
-        Miklos Szeredi <miklos@szeredi.hu>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-ZohoCNMailClient: External
+Content-Type: text/plain; charset=utf8
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, Oct 30, 2019 at 6:46 AM Chengguang Xu <cgxu519@mykernel.net> wrote:
->
->  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=BA=8C, 2019-10-29 20:32:43 Amir Gol=
-dstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
->  > On Tue, Oct 29, 2019 at 1:58 PM Amir Goldstein <amir73il@gmail.com> wr=
-ote:
->  > >
->  > > On Tue, Oct 29, 2019 at 1:17 PM Chengguang Xu <cgxu519@mykernel.net>=
- wrote:
->  > > >
->  > > >  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=BA=8C, 2019-10-29 16:32:32 A=
-mir Goldstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
->  > > >  > On Tue, Oct 29, 2019 at 7:57 AM Chengguang Xu <cgxu519@mykernel=
-.net> wrote:
->  > > >  > >
->  > > >  >
->  > > >  > Can you please send the patch as plain/text.
->  > > >  > Your mailer has sent it with quoted printable encoding and git =
-am
->  > > >  > fails to apply the patch:
->  > > >  > https://lore.kernel.org/fstests/20191029055713.28191-1-cgxu519@=
-mykernel.net/raw
->  > > >  >
->  > > >
->  > > > Sorry for that,  I'm not clear for the reason, so I send you the p=
-atch in attachment first.
->  > > >
->  > >
->  >
->  > OK, I can verify that test runs quick (5s) on my VM.
->  >
->  > But there is one more issue that I think needs to be addressed, either
->  > in this fix patch or in a follow up patch.
->  >
->  > If the test ever fails on some run with a specific random holes sequen=
-ce,
->  > it is going to be quite hard for reporter to report this sequence or f=
-or
->  > developers to reproduce the same random sequence.
->
-> IMO, it's not so hard as you thought,  I prefer to use filefrag to check =
-it.
->
-> I think below tidy info is very clear and easy to understand what had hap=
-pened.
->
-> [root@hades ovl-lower]# filefrag -k -e copyup_sparse_test_random_small_ho=
-lefile
-> Filesystem type is: 58465342
-> File size of copyup_sparse_test_random_small_holefile is 10485760 (10240 =
-blocks of 1024 bytes)
->  ext:     logical_offset:        physical_offset: length:   expected: fla=
-gs:
->    0:        4..     411:    2625148..   2625555:    408:          4:
->    1:      816..    1259:    2626172..   2626615:    444:    2625960:
->    2:     1696..    1783:    2627196..   2627283:     88:    2627052:
->    3:     1872..    2207:    2627372..   2627707:    336:
->    4:     2544..    3019:    2629244..   2629719:    476:    2628044:
->    5:     3496..    3599:    2629720..   2629823:    104:
->    6:     3704..    3819:    2629928..   2630043:    116:
->    7:     3936..    3959:    2630044..   2630067:     24:
->    8:     3980..    4487:    2631292..   2631799:    508:    2630088:
->    9:     4992..    5235:    2631800..   2632043:    244:
->   10:     5472..    5715:    2632044..   2632287:    244:
->   11:     5956..    6355:    2633340..   2633739:    400:    2632528:
->   12:     6752..    6787:    2633740..   2633775:     36:
->   13:     6820..    6907:    2633808..   2633895:     88:
->   14:     6996..    7447:    2633896..   2634347:    452:
->   15:     7900..    8211:    2637436..   2637747:    312:    2634800:
->   16:     8516..    8867:    2638052..   2638403:    352:
->   17:     9216..    9703:    2638752..   2639239:    488:             las=
-t
-> copyup_sparse_test_random_small_holefile: 7 extents found
->
+Current copy-up is not efficient for big sparse file,
+It's not only slow but also wasting more disk space
+when the target lower file has huge hole inside.
+This patch tries to recognize file hole and skip it
+during copy-up.
 
-There is a difference between understanding what happened and
-reproducing, but there is no reason to choose one method over
-the other.
+In detail, this optimization checks the hole according
+to copy-up chunk size so it may not recognize all kind
+of holes in the file. However, it is easy to implement
+and will be enough for most of the use case.
 
-As a developer, when I get a bug report I would rather have both
-an easy reproducer and all the postmortem  information available.
-Therefore, please echo xfs_io commands, at least for creation of
-random files to full log AND filefrag info, at least for the random
-files to full log.
+Additionally, this optimization relies on lseek(2)
+SEEK_DATA implementation, so for some specific
+filesystems which do not support this feature
+will behave as before on copy-up.
 
-Thanks,
-Amir.
+Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
+---
+
+Hi Miklos, Amir
+
+This is v2 version of hole copy-up improvement which
+addressed amir's concerns in previous email.
+
+Could you have a look at this patch?
+
+There is a checkpatch warning but that is
+false-positive warning, so you can ignore it.
+
+I've tested the patch with the cases under overlay dir
+(include overlay/066) in fstest for xfs/ext4 fstype,=20
+and passed most of the cases except below.
+
+overlay/045     [not run] fsck.overlay utility required, skipped this test
+overlay/046     [not run] fsck.overlay utility required, skipped this test
+overlay/056     [not run] fsck.overlay utility required, skipped this test
+
+Above three cases are fsck related cases,
+I think they are not important for copy-up.
+
+overlay/061     - output mismatch (see /home/cgxu/git/xfstests-dev/results/=
+/overlay/061.out.bad)
+    --- tests/overlay/061.out   2019-05-28 09:54:42.320874925 +0800
+    +++ /home/cgxu/git/xfstests-dev/results//overlay/061.out.bad        201=
+9-10-30 16:11:50.490848367 +0800
+    @@ -1,4 +1,4 @@
+     QA output created by 061
+    -00000000:  61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61  aaaaaaaaaa=
+aaaaaa
+    +00000000:  54 68 69 73 20 69 73 20 6f 6c 64 20 6e 65 77 73  This.is.ol=
+d.news
+     After mount cycle:
+     00000000:  61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61  aaaaaaaaaa=
+aaaaaa
+    ...
+    (Run 'diff -u /home/cgxu/git/xfstests-dev/tests/overlay/061.out /home/c=
+gxu/git/xfstests-dev/results//overlay/061.out.bad'  to see the entire diff)
+
+overlay/061 was failed with/without my patch and test results
+were just same. have something already broken for the test?
+
+
+v1->v2:
+- Set file size when the hole is in the end of the file.
+- Add a code comment for hole copy-up improvement.
+- Check SEEK_DATA support before doing hole skip.
+- Back to original copy-up when seek data fails(in error case).
+
+ fs/overlayfs/copy_up.c | 78 ++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 64 insertions(+), 14 deletions(-)
+
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index b801c6353100..7d8a34c480f4 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -116,13 +116,30 @@ int ovl_copy_xattr(struct dentry *old, struct dentry =
+*new)
+ =09return error;
+ }
+=20
+-static int ovl_copy_up_data(struct path *old, struct path *new, loff_t len=
+)
++static int ovl_set_size(struct dentry *upperdentry, struct kstat *stat)
++{
++=09struct iattr attr =3D {
++=09=09.ia_valid =3D ATTR_SIZE,
++=09=09.ia_size =3D stat->size,
++=09};
++
++=09return notify_change(upperdentry, &attr, NULL);
++}
++
++static int ovl_copy_up_data(struct path *old, struct path *new,
++=09=09=09    struct kstat *stat)
+ {
+ =09struct file *old_file;
+ =09struct file *new_file;
++=09loff_t len =3D stat->size;
+ =09loff_t old_pos =3D 0;
+ =09loff_t new_pos =3D 0;
+ =09loff_t cloned;
++=09loff_t old_next_data_pos;
++=09loff_t hole_len;
++=09bool seek_support =3D false;
++=09bool skip_hole =3D true;
++=09bool set_size =3D false;
+ =09int error =3D 0;
+=20
+ =09if (len =3D=3D 0)
+@@ -144,7 +161,12 @@ static int ovl_copy_up_data(struct path *old, struct p=
+ath *new, loff_t len)
+ =09=09goto out;
+ =09/* Couldn't clone, so now we try to copy the data */
+=20
+-=09/* FIXME: copy up sparse files efficiently */
++=09/* Check if lower fs supports seek operation */
++=09if (old_file->f_mode & FMODE_LSEEK &&
++=09    old_file->f_op->llseek) {
++=09=09seek_support =3D true;
++=09}
++
+ =09while (len) {
+ =09=09size_t this_len =3D OVL_COPY_UP_CHUNK_SIZE;
+ =09=09long bytes;
+@@ -157,6 +179,38 @@ static int ovl_copy_up_data(struct path *old, struct p=
+ath *new, loff_t len)
+ =09=09=09break;
+ =09=09}
+=20
++=09=09/*
++=09=09 * Fill zero for hole will cost unnecessary disk space
++=09=09 * and meanwhile slow down the copy-up speed, so we do
++=09=09 * an optimization for hole during copy-up, it relies
++=09=09 * on SEEK_DATA implementation and the hole check is
++=09=09 * aligned to OVL_COPY_UP_CHUNK_SIZE. In other word,
++=09=09 * we do not try to recognize all kind of holes here,
++=09=09 * we just skip big enough hole for simplicity to
++=09=09 * implement. If lower fs does not support SEEK_DATA
++=09=09 * operation, the copy-up will behave as before.
++=09=09 */
++
++=09=09if (seek_support && skip_hole) {
++=09=09=09old_next_data_pos =3D vfs_llseek(old_file,
++=09=09=09=09=09=09old_pos, SEEK_DATA);
++=09=09=09if (old_next_data_pos >=3D old_pos +
++=09=09=09=09=09=09OVL_COPY_UP_CHUNK_SIZE) {
++=09=09=09=09hole_len =3D (old_next_data_pos - old_pos) /
++=09=09=09=09=09=09OVL_COPY_UP_CHUNK_SIZE *
++=09=09=09=09=09=09OVL_COPY_UP_CHUNK_SIZE;
++=09=09=09=09old_pos +=3D hole_len;
++=09=09=09=09new_pos +=3D hole_len;
++=09=09=09=09len -=3D hole_len;
++=09=09=09=09continue;
++=09=09=09} else if (old_next_data_pos =3D=3D -ENXIO) {
++=09=09=09=09set_size =3D true;
++=09=09=09=09break;
++=09=09=09} else if (old_next_data_pos < 0) {
++=09=09=09=09skip_hole =3D false;
++=09=09=09}
++=09=09}
++
+ =09=09bytes =3D do_splice_direct(old_file, &old_pos,
+ =09=09=09=09=09 new_file, &new_pos,
+ =09=09=09=09=09 this_len, SPLICE_F_MOVE);
+@@ -168,6 +222,12 @@ static int ovl_copy_up_data(struct path *old, struct p=
+ath *new, loff_t len)
+=20
+ =09=09len -=3D bytes;
+ =09}
++
++=09if (!error && set_size) {
++=09=09inode_lock(new->dentry->d_inode);
++=09=09error =3D ovl_set_size(new->dentry, stat);
++=09=09inode_unlock(new->dentry->d_inode);
++=09}
+ out:
+ =09if (!error)
+ =09=09error =3D vfs_fsync(new_file, 0);
+@@ -177,16 +237,6 @@ static int ovl_copy_up_data(struct path *old, struct p=
+ath *new, loff_t len)
+ =09return error;
+ }
+=20
+-static int ovl_set_size(struct dentry *upperdentry, struct kstat *stat)
+-{
+-=09struct iattr attr =3D {
+-=09=09.ia_valid =3D ATTR_SIZE,
+-=09=09.ia_size =3D stat->size,
+-=09};
+-
+-=09return notify_change(upperdentry, &attr, NULL);
+-}
+-
+ static int ovl_set_timestamps(struct dentry *upperdentry, struct kstat *st=
+at)
+ {
+ =09struct iattr attr =3D {
+@@ -453,7 +503,7 @@ static int ovl_copy_up_inode(struct ovl_copy_up_ctx *c,=
+ struct dentry *temp)
+ =09=09upperpath.dentry =3D temp;
+=20
+ =09=09ovl_path_lowerdata(c->dentry, &datapath);
+-=09=09err =3D ovl_copy_up_data(&datapath, &upperpath, c->stat.size);
++=09=09err =3D ovl_copy_up_data(&datapath, &upperpath, &c->stat);
+ =09=09if (err)
+ =09=09=09return err;
+ =09}
+@@ -757,7 +807,7 @@ static int ovl_copy_up_meta_inode_data(struct ovl_copy_=
+up_ctx *c)
+ =09=09=09goto out;
+ =09}
+=20
+-=09err =3D ovl_copy_up_data(&datapath, &upperpath, c->stat.size);
++=09err =3D ovl_copy_up_data(&datapath, &upperpath, &c->stat);
+ =09if (err)
+ =09=09goto out_free;
+=20
+--=20
+2.20.1
+
+
+
