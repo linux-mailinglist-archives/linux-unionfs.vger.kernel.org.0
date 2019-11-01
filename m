@@ -2,193 +2,143 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36F10EBBF2
-	for <lists+linux-unionfs@lfdr.de>; Fri,  1 Nov 2019 03:19:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B992EBE76
+	for <lists+linux-unionfs@lfdr.de>; Fri,  1 Nov 2019 08:27:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728559AbfKACTf (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 31 Oct 2019 22:19:35 -0400
-Received: from sender2-pp-o92.zoho.com.cn ([163.53.93.251]:25316 "EHLO
-        sender3-pp-o92.zoho.com.cn" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726540AbfKACTf (ORCPT
+        id S1728506AbfKAH1y (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 1 Nov 2019 03:27:54 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:34561 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726573AbfKAH1y (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 31 Oct 2019 22:19:35 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1572574755; cv=none; 
-        d=zoho.com.cn; s=zohoarc; 
-        b=eOiKTWVIidCLr6CI1S3NMNr9g/gdKYi6LVavUS8ZtywBYyKDZqiRi44kwPva7kBY2q4x0vWlNdgNBNYbK79Fp+jWk4UTsjKQsa5QkAOizvrV1k5cOYZLzxVAJyHfj8u9yO5HPxtxnfKx41Urye8632VLJ+98AXZmrbE4fUDsM2A=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
-        t=1572574755; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:Reply-To:References:Subject:To; 
-        bh=8begtgKQzyDGND11zhdf8X+KUPxcnFfDhdFS2qe0EOU=; 
-        b=Zb9teMuN5twux2CVtHazMHBacA45nu2T3NQwVwDCWWAeQcySVs0Oq50lK8Armti5mdOjBszpeyFHdyEWYKb5lzp7fWIQqs0jYXctmgFq2ZGSNVTpO8E2WnWp7szQY13ph1byCXDyvpe31S0V+Q5oFY4Iis7gQ+o1tT1pygXk0HY=
-ARC-Authentication-Results: i=1; mx.zoho.com.cn;
-        dkim=pass  header.i=mykernel.net;
-        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
-        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1572574755;
-        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
-        h=Date:From:Reply-To:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        l=4636; bh=8begtgKQzyDGND11zhdf8X+KUPxcnFfDhdFS2qe0EOU=;
-        b=CADEIWWSb/XWhuUvmkmX3nWKlcXJKi2x/ZMe9RLuJ7eTRQ2eunF5dGGMdiXdAwC2
-        mkLKTPVnsL/xr507jQ6WacglqMGROHW0e7jlYsdXF+u8LHht+bQCst99Natanaac7Ad
-        5yURfeNjzVTElCtco7lOCAg+isJCwlCkwKx2bFZ0=
-Received: from mail.baihui.com by mx.zoho.com.cn
-        with SMTP id 1572574753505995.3577625788371; Fri, 1 Nov 2019 10:19:13 +0800 (CST)
-Date:   Fri, 01 Nov 2019 10:19:13 +0800
-From:   Chengguang Xu <cgxu519@mykernel.net>
-Reply-To: cgxu519@mykernel.net
-To:     "Amir Goldstein" <amir73il@gmail.com>
-Cc:     "Miklos Szeredi" <miklos@szeredi.hu>,
-        "overlayfs" <linux-unionfs@vger.kernel.org>
-Message-ID: <16e24c272dd.db4c4bd63079.5582642855306277071@mykernel.net>
-In-Reply-To: <CAOQ4uxjsSx-sPHU_W7k1cQL4GLrtfjYjvkvZ8iT=QRKRpbFPhQ@mail.gmail.com>
-References: <20191031104649.7177-1-cgxu519@mykernel.net> <CAOQ4uxjsSx-sPHU_W7k1cQL4GLrtfjYjvkvZ8iT=QRKRpbFPhQ@mail.gmail.com>
-Subject: Re: [PATCH v3] ovl: improving copy-up efficiency for big sparse
- file
+        Fri, 1 Nov 2019 03:27:54 -0400
+Received: by mail-oi1-f193.google.com with SMTP id l202so7463953oig.1
+        for <linux-unionfs@vger.kernel.org>; Fri, 01 Nov 2019 00:27:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=SBjQVCMFKnrJXdM6Q7dICUdlYg2Y+SSu4XE2KX/cUk4=;
+        b=gHMUlu/kfxgoWKB6JPIH1pg2O01Yjb/O0FVyVrDHZxsLTsocIjPHRJA7MwFYbYaWxQ
+         IdgZl9o0mKHZN59SpIg2Vbzc8BP0Llfajz+8QBorvC4gj6n/MDawCUb0EDbIIjL2w9ZG
+         8kUL0sDMrGjkqH6KpDjjVzxyBxJ9vhtvFs0Vulw6kIGYDnu60b0giR4It6ZENxpb47Ro
+         ZjZ9bRTJdAwkPTdKGA3eCtGw86lXWVpeQAonyjJDcNFkGd+/C2pn/sY5lv9Da2JvqjCW
+         hP7h7PAVo40Lx7JzhIWsq5sBFGwc1maY680YGxVYuEA2pj5rZv1H/jMU6CPaflKY4RHd
+         v9Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=SBjQVCMFKnrJXdM6Q7dICUdlYg2Y+SSu4XE2KX/cUk4=;
+        b=n1xj/z1FAIZ2JX5Xf5MUZXT+wBOJhFRuk5qTnW5aS3bOZ/XwUMRzLIiw/7TL8VgFr9
+         35CUPqaAyQcmBa2pXM3w7X18YlR2vMmesTeFQ6+fLt8vmDXmKYzGEugCj7bvs+IIqSap
+         JEYQOvvLmD4B4N+0Wv0vFhFP/LMN5shSy2q3/dfex0mUhrm9OAOSRlwytkdR4a7WZLp5
+         SkJ7fxTYnzFDxdSjj0SZtHZ5iDmMr7mAv6x7YMN30JUkhnzhsExl0X2f/+jsq5gFlLrp
+         0bJd0JcHBJHbBB4PCKbEB8R8sCLhaCKYadB2bAJWvzVIu/t8ZvrgGHGwvjpV0tEpODlb
+         y/lg==
+X-Gm-Message-State: APjAAAVAkyXDqQyI7dxtHzUMFI6o/aq0PaH2TjhaxS5GNj3Sv3EI+IIo
+        VI8tFMIebXlhEfn3qbuEwlD6ZJ1G
+X-Google-Smtp-Source: APXvYqyHqYHCnncQyaqzVrruMZWxAzOpNcnAzkEugMc/amSt2+IgiT48IQR/QFWb4uxF2Tsl1DJLOw==
+X-Received: by 2002:aca:b445:: with SMTP id d66mr2837346oif.111.1572593273598;
+        Fri, 01 Nov 2019 00:27:53 -0700 (PDT)
+Received: from JosephdeMacBook-Pro.local ([205.204.117.14])
+        by smtp.gmail.com with ESMTPSA id n39sm1961810ota.33.2019.11.01.00.27.48
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 01 Nov 2019 00:27:52 -0700 (PDT)
+Subject: Re: Performance regression caused by stack operation of regular file
+To:     JeffleXu <jefflexu@linux.alibaba.com>, miklos@szeredi.hu,
+        Amir Goldstein <amir73il@gmail.com>
+Cc:     linux-unionfs@vger.kernel.org
+References: <ae928bd7-001a-061e-01f0-43b53a0adcd1@linux.alibaba.com>
+From:   Joseph Qi <jiangqi903@gmail.com>
+Message-ID: <88f09a1e-2481-ac16-9754-77e21296b03a@gmail.com>
+Date:   Fri, 1 Nov 2019 15:27:45 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:60.0)
+ Gecko/20100101 Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Priority: Medium
-User-Agent: ZohoCN Mail
-X-Mailer: ZohoCN Mail
+In-Reply-To: <ae928bd7-001a-061e-01f0-43b53a0adcd1@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
- ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E5=9B=9B, 2019-10-31 22:14:54 Amir Golds=
-tein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
- > On Thu, Oct 31, 2019 at 12:47 PM Chengguang Xu <cgxu519@mykernel.net> wr=
-ote:
- > >
- > > Current copy-up is not efficient for big sparse file,
- > > It's not only slow but also wasting more disk space
- > > when the target lower file has huge hole inside.
- > > This patch tries to recognize file hole and skip it
- > > during copy-up.
- > >
- > > Detail logic of hole detection as below:
- > > When we detect next data position is larger than current
- > > position we will skip that hole, otherwise we copy
- > > data in the size of OVL_COPY_UP_CHUNK_SIZE. Actually,
- > > it may not recognize all kind of holes and sometimes
- > > only skips partial of hole area. However, it will be
- > > enough for most of the use cases.
- > >
- > > Additionally, this optimization relies on lseek(2)
- > > SEEK_DATA implementation, so for some specific
- > > filesystems which do not support this feature
- > > will behave as before on copy-up.
- > >
- > > Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
- >=20
- > Sorry for so many rounds.
- > With some nits fixed below you may add:
- > Reviewed-by: Amir Goldstein <amir73il@gmail.com>
- >=20
- > > ---
- > > v1->v2:
- > > - Set file size when the hole is in the end of the file.
- > > - Add a code comment for hole copy-up improvement.
- > > - Check SEEK_DATA support before doing hole skip.
- > > - Back to original copy-up when seek data fails(in error case).
- > >
- > > v2->v3:
- > > - Detect big continuous holes in an effective way.
- > > - Modify changelog and code comment.
- > > - Set file size in the end of ovl_copy_up_inode().
- > >
- > >  fs/overlayfs/copy_up.c | 43 ++++++++++++++++++++++++++++++++++++++++-=
--
- > >  1 file changed, 41 insertions(+), 2 deletions(-)
- > >
- > > diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
- > > index b801c6353100..10a2ae452393 100644
- > > --- a/fs/overlayfs/copy_up.c
- > > +++ b/fs/overlayfs/copy_up.c
- > > @@ -123,6 +123,9 @@ static int ovl_copy_up_data(struct path *old, stru=
-ct path *new, loff_t len)
- > >         loff_t old_pos =3D 0;
- > >         loff_t new_pos =3D 0;
- > >         loff_t cloned;
- > > +       loff_t old_next_data_pos;
- >=20
- > If you initialize data_pos =3D -1 ....
- >=20
- > > +       loff_t hole_len;
- > > +       bool skip_hole =3D false;
- > >         int error =3D 0;
- > >
- > >         if (len =3D=3D 0)
- > > @@ -144,7 +147,11 @@ static int ovl_copy_up_data(struct path *old, str=
-uct path *new, loff_t len)
- > >                 goto out;
- > >         /* Couldn't clone, so now we try to copy the data */
- > >
- > > -       /* FIXME: copy up sparse files efficiently */
- > > +       /* Check if lower fs supports seek operation */
- > > +       if (old_file->f_mode & FMODE_LSEEK &&
- > > +           old_file->f_op->llseek)
- > > +               skip_hole =3D true;
- > > +
- > >         while (len) {
- > >                 size_t this_len =3D OVL_COPY_UP_CHUNK_SIZE;
- > >                 long bytes;
- > > @@ -157,6 +164,38 @@ static int ovl_copy_up_data(struct path *old, str=
-uct path *new, loff_t len)
- > >                         break;
- > >                 }
- > >
- > > +               /*
- > > +                * Fill zero for hole will cost unnecessary disk space
- > > +                * and meanwhile slow down the copy-up speed, so we do
- > > +                * an optimization for hole during copy-up, it relies
- > > +                * on SEEK_DATA implementation in lower fs so if lower
- > > +                * fs does not support it, copy-up will behave as befo=
-re.
- > > +                *
- > > +                * Detail logic of hole detection as below:
- > > +                * When we detect next data position is larger than cu=
-rrent
- > > +                * position we will skip that hole, otherwise we copy
- > > +                * data in the size of OVL_COPY_UP_CHUNK_SIZE. Actuall=
-y,
- > > +                * it may not recognize all kind of holes and sometime=
-s
- > > +                * only skips partial of hole area. However, it will b=
-e
- > > +                * enough for most of the use cases.
- > > +                */
- > > +
- > > +               if (skip_hole) {
- >=20
- > ... you could test (skip_hole && old_pos !=3D data_pos) {
- >=20
- > because if (old_pos =3D=3D data_pos) then we just got here from
- > continue after skipping hole and there is no need to call llseek again.
- > Am I right?
-
-Good point!
-I'll check more precise condition like below.
-
-if (skip_hole && data_pos < old_pos) {
-
-Do llseek check
-
-}
-
-
- >=20
- > > +                       old_next_data_pos =3D vfs_llseek(old_file,
- > > +                                               old_pos, SEEK_DATA);
- > > +                       if (old_next_data_pos > old_pos) {
- > > +                               hole_len =3D old_next_data_pos - old_p=
-os;
- >=20
- > IMO, if you shorten var name to data_pos, it will not be any less
- > clear what it means and indentation will not be as messy.
- >=20
-=20
-Okay, let's truncate the var name.
+Hi Miklos & Amir,
+Could you please take a look at this?
+It behaves different between the latest kernel and an old one, e.g. 4.9.
 
 Thanks,
-Chengguang
+Joseph
 
+On 19/10/28 14:21, JeffleXu wrote:
+> Hi, Miklos,
+> 
+> I noticed a performance regression of reading/writing files in mergeddir caused by commit a6518f73e60e5044656d1ba587e7463479a9381a (vfs: don't open real), using unixbench fstime.
+> 
+> 
+> Reproduce Steps:
+> 
+> 1. cd /mnt/lower/ && git clone https://github.com/kdlucas/byte-unixbench.git
+> 
+> 2. mount -t overlay overlay -olowerdir=/mnt/lower,upperdir=/mnt/upper,workdir=/mnt/work /mnt/merge
+> 
+> 3. cd /mnt/merge/byte-unixbench/UnixBench && ./Run -c 1 -i 1 fstime
+> 
+> 
+> The score is 2870 before applying the patch, while it is 1780 after applying the patch, causing a 40% performance regression.
+> 
+> The testcase repeatedly reads 1024 bytes from one file and writes the readed data into another file, while both these two files
+> 
+> are created under /mnt/merge/tmp.  I have testsed the latest kernel 5.4.0-rc4+, same results.
+> 
+> 
+> The perf shows that there's extra one call of file_remove_privs(), override_creds() and revert_creds() every write() syscall,
+> 
+> among which file_remove_privs() is pretty expensive.
+> 
+> 
+> - perf data before applying the patch.
+> 
+> ```
+> 
+> -   53.00%     0.93%  fstime    [kernel.kallsyms]   [k] __vfs_write
+>    - 52.08% __vfs_write
+>       - 51.94% ext4_file_write_iter
+>          + 48.89% __generic_file_write_iter
+>            0.83% down_write_trylock
+>            0.79% up_write
+> 
+> ```
+> 
+> 
+> - perf data after applying the patch.
+> 
+> ```
+> 
+> +   94.88%     0.00%  fstime    [kernel.kallsyms]   [k] entry_SYSCALL_64_after_hwframe
+> +   94.88%     4.67%  fstime    [kernel.kallsyms]   [k] do_syscall_64
+> +   66.08%     1.60%  fstime    libc-2.17.so        [.] __GI___libc_write
+> +   62.37%     0.23%  fstime    [kernel.kallsyms]   [k] ksys_write
+> +   61.74%     0.62%  fstime    [kernel.kallsyms]   [k] vfs_write
+> -   60.10%     0.49%  fstime    [kernel.kallsyms]   [k] __vfs_write
+>    - 59.61% __vfs_write
+>       - 59.56% ovl_write_iter
+>          - 33.81% do_iter_write
+>             - 32.50% do_iter_readv_writev
+>                + ext4_file_write_iter
+>          + 19.15% file_remove_privs
+>            2.15% revert_creds
+>            2.02% override_creds
+>            0.64% down_write
+>            0.63% up_write
+> 
+> ```
+> 
+> 
+> Regards.
+> 
+> Jeffle
+> 
