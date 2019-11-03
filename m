@@ -2,75 +2,80 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 073EBEC61F
-	for <lists+linux-unionfs@lfdr.de>; Fri,  1 Nov 2019 16:56:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A507ED361
+	for <lists+linux-unionfs@lfdr.de>; Sun,  3 Nov 2019 13:44:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729309AbfKAP4O (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 1 Nov 2019 11:56:14 -0400
-Received: from mail-il1-f195.google.com ([209.85.166.195]:40616 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729363AbfKAP4L (ORCPT
+        id S1727500AbfKCMoP (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 3 Nov 2019 07:44:15 -0500
+Received: from sender2-pp-o92.zoho.com.cn ([163.53.93.251]:25321 "EHLO
+        sender3-pp-o92.zoho.com.cn" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727377AbfKCMoP (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 1 Nov 2019 11:56:11 -0400
-Received: by mail-il1-f195.google.com with SMTP id d83so9078800ilk.7
-        for <linux-unionfs@vger.kernel.org>; Fri, 01 Nov 2019 08:56:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
-        b=jkikiuxKNQxBjumG32R/xAOzBpTQzIQOGlQ9PlZMzROUxuROhIRW7LOTcmmKqgHbY3
-         GOAi1JnMWEnE/cHrGKrepuphWKFno/pbedjX9XbUWfuIb71+aWSjlL5ZBdl2tkqhPPKE
-         upGJ5iT/1C19qe7FISRldhXG8lpP7RchXgCPpOby1LewLJ9oB1SrBH33yMLjEi7ivjNF
-         o703S5ww1Ql1WeM1aVK41ldtWwBkirNy1eGYI9RnsPVvXaYfqhEH77U0dn8RQUxe2Nnp
-         f+7QOSjXXt7VdhDDkepSvRzDGCUBO3iHq8K6k3uKK4gkq+wr+4nHyD89dMwGRy4pl6Pa
-         lYoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
-        b=sB8ELJbNsZnF8V6xWpLvADia+o6+XuY5IXHJ2UKBu6r/R3MaPmK0EEt5xnB9tc0w0V
-         YDM1y+i01vbrhcSGx8UOFQUhTAhlaKJsjprdJDLj5S/Kc6CrYmak5pqfcaKq4KNOdDXv
-         UzAcIiZgHyurD4VdfcLmren6wfN3NQRycxTa+J1gHY0iuXIS9ZDxudqCsPMsNA+ujoAN
-         ImNA75fGxbAlU9ZoWKW4ugt6jR17BoHVaOg437QtQ6sCxr34bNl+6IFpZlEUT3zQ4J2p
-         YfN/dAOwuf2hukHciM80rbyyKjfAklk/xqkX+L0TgouDS/BaXF8kfaahrcXbc3ys0o35
-         XQEA==
-X-Gm-Message-State: APjAAAX+Cipfm3jCIjleOeGwa+e8NiY85Yx2GsxtAA+vI9u1m8EBtTK4
-        noHkUnxdSs1cqfJxiHjYqcXxzmjLzNaNrxbM4A==
-X-Google-Smtp-Source: APXvYqykJV+0/JwFtVH+nsMp7ykNvWlhcV0rRy9Az9oSoBx/tmbFcQXrrs+n9sPNEOpMU4VQknLk5nY+7hLQNduMfzM=
-X-Received: by 2002:a92:9ac2:: with SMTP id c63mr13404416ill.8.1572623769676;
- Fri, 01 Nov 2019 08:56:09 -0700 (PDT)
+        Sun, 3 Nov 2019 07:44:15 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1572785020; cv=none; 
+        d=zoho.com.cn; s=zohoarc; 
+        b=ih5/8WfNLA2B0EeB10lSJDqoObP2fJ1Lub/ckGVoCU6Mskjcj55ylVgyw1BDkjhNZtH2Q3QVum4AgqdBPuoOtygsZauB1idSXtcSCmSK4Jld/XS0ExOVWEKEP1rXlsTPv7fkPkso1WxDMwpamO1cnsCvUfeuhyoi3Y9QYSLFncI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
+        t=1572785020; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:Reply-To:References:Subject:To; 
+        bh=cBOTJo2cyZAe351P8Ghz322+6nCIrnSK/ZZ8QCl9FEg=; 
+        b=egceoMueJ4cjXM0Paay2Y8cLCF9BNTBFNU07HnouYflg0q85nx/hC1pfuU5iBWGExvMeyMP6nRazJ/95yV8R0M7GcVIbRRAVkoENwGnGJrgBj6PJnNnhYJNA7q14QYzF5DgHHYmeTpWsq8evGkuivF3eF8rYH9RZcXJ5Rku3Q6I=
+ARC-Authentication-Results: i=1; mx.zoho.com.cn;
+        dkim=pass  header.i=mykernel.net;
+        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
+        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1572785020;
+        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
+        h=Date:From:Reply-To:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        l=900; bh=cBOTJo2cyZAe351P8Ghz322+6nCIrnSK/ZZ8QCl9FEg=;
+        b=fTqtYB11qOoP1Zzj2NsQhs71C33aPo07Vp9HIMstaN5LPiIEjZR2katSKJ8cSUJC
+        +MJKN045EbTzaGrtZ+VZjZq1wDk+C77Lo8Z5aWArdNlV0jyiOYWUKcUyaxPbtriUH0G
+        TOm7ji8zgDUGgTOAgZg9YpayK18kdUD7e6gAVheg=
+Received: from mail.baihui.com by mx.zoho.com.cn
+        with SMTP id 1572785017791525.9372538069861; Sun, 3 Nov 2019 20:43:37 +0800 (CST)
+Date:   Sun, 03 Nov 2019 20:43:37 +0800
+From:   Chengguang Xu <cgxu519@mykernel.net>
+Reply-To: cgxu519@mykernel.net
+To:     "Amir Goldstein" <amir73il@gmail.com>
+Cc:     "Miklos Szeredi" <miklos@szeredi.hu>,
+        "overlayfs" <linux-unionfs@vger.kernel.org>,
+        "Vivek Goyal" <vgoyal@redhat.com>
+Message-ID: <16e314ad3bc.f4c363d96385.3761437052169638038@mykernel.net>
+In-Reply-To: <CAOQ4uxhdSXAvFQfhzZpBC=Xmmo9y+3AOU1o-tOWsLtr2ntU6Ag@mail.gmail.com>
+References: <20191030124431.11242-1-cgxu519@mykernel.net> <CAOQ4uxh670WFhwpQyPFTB2nUCSc9n1VmuyPOfdqiBSsq6GxLpQ@mail.gmail.com>
+ <16e204de70e.cefd69461771.2205150443916624303@mykernel.net> <CAOQ4uxhdSXAvFQfhzZpBC=Xmmo9y+3AOU1o-tOWsLtr2ntU6Ag@mail.gmail.com>
+Subject: Re: [PATCH v2] ovl: improving copy-up efficiency for big sparse
+ file
 MIME-Version: 1.0
-Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 1 Nov 2019 08:56:08 -0700 (PDT)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Mary Coster, I.M.F director-Benin" 
-        <info.zennitbankplcnigerian@gmail.com>
-Date:   Fri, 1 Nov 2019 16:56:08 +0100
-Message-ID: <CABHzvrmbRd3tt-E2+9AO2XvrMQFKQcn+kao_7DN4rb=grxZAcA@mail.gmail.com>
-Subject: Contact Money Gram international service-Benin to receive your
- payment funds US$2.500,000 Million
-To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Priority: Medium
+User-Agent: ZohoCN Mail
+X-Mailer: ZohoCN Mail
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Attn Dear,Funds Beneficiary.
-Contact Money Gram international service-Benin to receive your payment
-funds US$2.500,000 Million approved this morning through the UN
-payment settlement organization.
-Contact Person, Mr. John Dave.
-Official Director.Money Gram-Benin
-Email: moneygram.1820@outlook.fr
-Telephone +229 62619517
-Once you get intouch with Mr. John Dave, Money Gram Director, send to
-him your address including your phone numbers. He will be sending the
-transfer to you  $5000.00 USD daily until you received your complete
-payment $2.5m from the office.
-Note,I have paid the whole service fees for you but only small money
-you been required to send to this office is $23.00 only via Money Gram
-transfer.
-God bless
-Mary Coster, I.M.F director-Benin
-m.coster@aol.com
+ ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E5=9B=9B, 2019-10-31 14:53:15 Amir Golds=
+tein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
+ > >  > Yes, overlayfs does not comply with this "posix"' test.
+ > >  > This is why it was removed from the auto and quick groups.
+ > >
+ > > So I'm curious what is the purpose for the test?
+ > >
+ >=20
+ > This is a POSIX compliance test.
+ > It is meant to "remind" us that this behavior is not POSIX compliant
+ > and that we should fix it one day...
+ > A bit controversial to have a test like this without a roadmap
+ > when it is going to be fixed in xfstests, but it's there.
+
+I haven't checked carefully for the detail but It seems  feasible if we cop=
+y-up lower file  during mmap regardless of ro/rw mode.
+Is it acceptable  by slightly changing copy-up assumption to fulfill POSIX =
+compliance? Or we just wait for a better solution?
+
+Thanks,
+Chengguang
+
+
