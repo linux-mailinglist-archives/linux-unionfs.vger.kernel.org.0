@@ -2,89 +2,142 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5DABED39B
-	for <lists+linux-unionfs@lfdr.de>; Sun,  3 Nov 2019 15:46:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83AB9ED6C4
+	for <lists+linux-unionfs@lfdr.de>; Mon,  4 Nov 2019 02:03:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727505AbfKCOqS (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 3 Nov 2019 09:46:18 -0500
-Received: from mail-yw1-f66.google.com ([209.85.161.66]:42663 "EHLO
-        mail-yw1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727425AbfKCOqR (ORCPT
+        id S1728522AbfKDBDz (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 3 Nov 2019 20:03:55 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:44171 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726362AbfKDBDy (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 3 Nov 2019 09:46:17 -0500
-Received: by mail-yw1-f66.google.com with SMTP id d5so5948233ywk.9
-        for <linux-unionfs@vger.kernel.org>; Sun, 03 Nov 2019 06:46:17 -0800 (PST)
+        Sun, 3 Nov 2019 20:03:54 -0500
+Received: by mail-ot1-f66.google.com with SMTP id n48so12984442ota.11
+        for <linux-unionfs@vger.kernel.org>; Sun, 03 Nov 2019 17:03:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=hvlVWK1YMoJu0v37BEI7D8aK589YlkCCq6L2tmESap4=;
-        b=d4xwUifVjPxHwGEhqYC5q6uQcOXBc0Xh2Ab/wg+60xFjV+8GG9nzKZsZFB6oINjeho
-         pCsB0IaXHlBQYUFwIvdAkcWEBLXWAm9dERQY616oSfg3kOVF/W6jZ06Dvzm+B6ekkcPe
-         I0sx1jB00kj1rzo3CpnpjWrmVERCBFGIl1h9aSBqa2QV5mdNeQF/zGk8HtNwgmHJZveI
-         oYbRUtSJA0po84tIbsynqwKyes333tMhrhXnqZa6/IKg7xrrMt7uHd/iqMpQWmyV4PoX
-         2aSF7DZjHOpiGaLzk2bZqlKI9/j7G5Ahxh7gzL4qsH3SvU5nRPsTKAihYClaELkWzv5X
-         xblA==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Sl5ohjDSCyJbL6kBAZlCxhYunWZNGBDnW5N9EXg/9+A=;
+        b=qbRERWMmJCrjNgVN6H21n+K3GL+2Ri2BwdSsYGJ7eZZZfbicmcF9N+rNERQG2Y3Mg9
+         ZaIR/8pd8NOLIs3sCXI0p+yZueka968vFii6Nr46WTYegAsapVrvRXTv4eGz07Izb3CF
+         eKtr5z6+UVOfnAFH2ubbtkJ8byYEhYcVaEa1lXnEu2tBfZjdl/V9BecmJuRlptkxp8dV
+         zMHp8EawpzMBqNOym9sWRmvYbfuQ3A7Oit24BnDDbv/Cx7xMnVseuQVVuGVWrSBYzXg8
+         KJdbdArLDqhhRbJVrXYHvA5yZE72bBFN38GIARj+IQeJrUhXB6oF86XEsaXQVDk2OQu6
+         9tIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=hvlVWK1YMoJu0v37BEI7D8aK589YlkCCq6L2tmESap4=;
-        b=g1ve813XQjYR4oBiaJ3sra3m9qaxtEQ+RFz7OLM6Kz4Raa/FqtlUWlvTlYGhrf/Daq
-         D7psXMXDMfdVDTUXjVkSpzOfjvZpsZc/UggfsexHOCMo9EfmbYCH/37glI8EEMMnnr5j
-         MdTl/+vBNsGVhq45cXQ+RRz16c1FeLdodiARZk1jHy+jbTBHJOC9P/UJUSLU85hT4IFC
-         mr7f/Z0GLrEPa7zBTT4O44TbOqyWH9BkOEMRMYBHO/ty1isSRovUzBHnF0jGsJVp/7AX
-         iLf0Ul0wfA6Tu8CNAGN4CX1xySrx3O3xRSNo3ixRNSOexOVRTQODONjcXa+wmR9fh4XP
-         X4Hw==
-X-Gm-Message-State: APjAAAW27Mf9qojdgYeBq9ikHHDbr5hIrWyJmvbVMO9qMVqbMC2uoRJe
-        R5539BhVdaQXFMdVZryy+XJkixDZnoe2E2N9ci8=
-X-Google-Smtp-Source: APXvYqynNHeYvZnk381A/B3cD78O2x3urYG9Dbxtj5Fc55MgalHqsIz++QHyGlTUD0omGaEwJddbclZdg/HuO7PcRAc=
-X-Received: by 2002:a81:4a02:: with SMTP id x2mr16952844ywa.31.1572792376801;
- Sun, 03 Nov 2019 06:46:16 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Sl5ohjDSCyJbL6kBAZlCxhYunWZNGBDnW5N9EXg/9+A=;
+        b=SPOUOR/8B4f7qKP8oATwRVi3bjxtcdqWg28SRKi2gdBC4aBLLfeSJfDS3F6WOrCaiR
+         RftfrOrqOvUm4Z9LWCK45v8amoCeCvgfeoolVCjynnXfXZ39wig7ytHtu0rywcfNoy91
+         VRmhkh5L9i5ORxfLELjcKOZqjizDADvaqt+DOhVLYmmi1EEAQ3DvlXS0PgPE5QZTI3wD
+         jDoWUnQH3SEgyO07c4UMxuxMH0RiS3nXWzJmBLWehTs72pjw1gGrlqmPVDqwt7yzwMoL
+         l3utxqIIIUy1h6rCAqROK4vfN1wRNMCPwdGgXRY/dHbJ+s7zAtaL4ZBnskueWbVNvf3c
+         HlQQ==
+X-Gm-Message-State: APjAAAWmxiJmVuhzO6lzjSjgZvg4rKCMJXozeC800AK8IDb236hK4q4D
+        UMSzsDjLmuXq9zMrvhrws+ChPmQ7
+X-Google-Smtp-Source: APXvYqwiPvyXx80Wzl4r8+e9ezcB3m36ildp3qi4wyN0xOGGvPKnN7irr69puR+Hbfkv/fcbDxlkQQ==
+X-Received: by 2002:a9d:39e3:: with SMTP id y90mr13391453otb.194.1572829433892;
+        Sun, 03 Nov 2019 17:03:53 -0800 (PST)
+Received: from JosephdeMacBook-Pro.local ([205.204.117.4])
+        by smtp.gmail.com with ESMTPSA id k10sm4005827oig.25.2019.11.03.17.03.50
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 03 Nov 2019 17:03:53 -0800 (PST)
+Subject: Re: Performance regression caused by stack operation of regular file
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     JeffleXu <jefflexu@linux.alibaba.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        overlayfs <linux-unionfs@vger.kernel.org>
+References: <ae928bd7-001a-061e-01f0-43b53a0adcd1@linux.alibaba.com>
+ <88f09a1e-2481-ac16-9754-77e21296b03a@gmail.com>
+ <CAOQ4uxgHrtbCk+FMi5VOmQ+XUxGKmb5y--zgOQAz5_jx0ZuG8Q@mail.gmail.com>
+From:   Joseph Qi <jiangqi903@gmail.com>
+Message-ID: <2013b3b1-fc4d-3288-b0e8-cfb2e4aab361@gmail.com>
+Date:   Mon, 4 Nov 2019 09:03:43 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:60.0)
+ Gecko/20100101 Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20191030124431.11242-1-cgxu519@mykernel.net> <CAOQ4uxh670WFhwpQyPFTB2nUCSc9n1VmuyPOfdqiBSsq6GxLpQ@mail.gmail.com>
- <16e204de70e.cefd69461771.2205150443916624303@mykernel.net>
- <CAOQ4uxhdSXAvFQfhzZpBC=Xmmo9y+3AOU1o-tOWsLtr2ntU6Ag@mail.gmail.com> <16e314ad3bc.f4c363d96385.3761437052169638038@mykernel.net>
-In-Reply-To: <16e314ad3bc.f4c363d96385.3761437052169638038@mykernel.net>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Sun, 3 Nov 2019 16:46:05 +0200
-Message-ID: <CAOQ4uxj-hOu+TjGhUqgSbPocnZy=JDO62d6-FJC=raU6WkRvfA@mail.gmail.com>
-Subject: Re: [PATCH v2] ovl: improving copy-up efficiency for big sparse file
-To:     Chengguang Xu <cgxu519@mykernel.net>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Vivek Goyal <vgoyal@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAOQ4uxgHrtbCk+FMi5VOmQ+XUxGKmb5y--zgOQAz5_jx0ZuG8Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Sun, Nov 3, 2019 at 2:43 PM Chengguang Xu <cgxu519@mykernel.net> wrote:
->
->  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E5=9B=9B, 2019-10-31 14:53:15 Amir Gol=
-dstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
->  > >  > Yes, overlayfs does not comply with this "posix"' test.
->  > >  > This is why it was removed from the auto and quick groups.
->  > >
->  > > So I'm curious what is the purpose for the test?
->  > >
->  >
->  > This is a POSIX compliance test.
->  > It is meant to "remind" us that this behavior is not POSIX compliant
->  > and that we should fix it one day...
->  > A bit controversial to have a test like this without a roadmap
->  > when it is going to be fixed in xfstests, but it's there.
->
-> I haven't checked carefully for the detail but It seems  feasible if we c=
-opy-up lower file  during mmap regardless of ro/rw mode.
-> Is it acceptable  by slightly changing copy-up assumption to fulfill POSI=
-X compliance? Or we just wait for a better solution?
->
+Hi Amir,
+Thanks for your valuable inputs.
 
-That was attempted in the past.
-It's complicated ;-)
+On 19/11/1 22:25, Amir Goldstein wrote:
+> On Fri, Nov 1, 2019 at 9:27 AM Joseph Qi <jiangqi903@gmail.com> wrote:
+>>
+>> Hi Miklos & Amir,
+>> Could you please take a look at this?
+>> It behaves different between the latest kernel and an old one, e.g. 4.9.
+> 
+> Not surprisingly.
+> Stacked file operations in 4.19 shuffled the cards.
+> See below.
+> 
+>>
+>> Thanks,
+>> Joseph
+>>
+>> On 19/10/28 14:21, JeffleXu wrote:
+>>> Hi, Miklos,
+>>>
+>>> I noticed a performance regression of reading/writing files in mergeddir caused by commit a6518f73e60e5044656d1ba587e7463479a9381a (vfs: don't open real), using unixbench fstime.
+>>>
+>>>
+>>> Reproduce Steps:
+>>>
+>>> 1. cd /mnt/lower/ && git clone https://github.com/kdlucas/byte-unixbench.git
+>>>
+>>> 2. mount -t overlay overlay -olowerdir=/mnt/lower,upperdir=/mnt/upper,workdir=/mnt/work /mnt/merge
+>>>
+>>> 3. cd /mnt/merge/byte-unixbench/UnixBench && ./Run -c 1 -i 1 fstime
+>>>
+>>>
+>>> The score is 2870 before applying the patch, while it is 1780 after applying the patch, causing a 40% performance regression.
+>>>
+>>> The testcase repeatedly reads 1024 bytes from one file and writes the readed data into another file, while both these two files
+>>>
+>>> are created under /mnt/merge/tmp.  I have testsed the latest kernel 5.4.0-rc4+, same results.
+>>>
+> 
+> Is this really a workload that you are interested in or just a random
+> micro benchmark?
+> If kernel changes behavior for the better in some workloads and for the worst
+> in other workloads, it is important to distinguish between the case of real
+> life workloads and less meaningful micro benchmarks that do not really have
+> that much effect on real world.
+> 
+We'll figure out if there is a real use case with respect to this benchmark.
 
-Cheers,
-Amir.
+>>>
+>>> The perf shows that there's extra one call of file_remove_privs(), override_creds() and revert_creds() every write() syscall,
+>>>
+>>> among which file_remove_privs() is pretty expensive.
+>>>
+> 
+> Interesting.
+> If this is indeed the reasons for the perf regression
+> then it boils down to performance vs. security, because if kernel
+> 4.9 is truly faster due to skipped file_remove_privs() and override_creds()
+> then it is not really enforcing security in a consistent manner.
+> It's true that in the common case, mounter credentials are a super set of
+> user credentials, so file_remove_privs() and  security_file_permission()
+> with user credentials are most of the time practically enough, but that is
+> not universally true.
+> > If the workload is truly important to you, please try to figure out
+> why the extra calls are so expensive.
+> Do you have any LSMs enabled?
+> 
+Yes, we've enabled SELinux by default.
+
+Thanks,
+Joseph
