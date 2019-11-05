@@ -2,172 +2,248 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FE57EF540
-	for <lists+linux-unionfs@lfdr.de>; Tue,  5 Nov 2019 07:00:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED74AEF66B
+	for <lists+linux-unionfs@lfdr.de>; Tue,  5 Nov 2019 08:29:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727132AbfKEGAt (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 5 Nov 2019 01:00:49 -0500
-Received: from sender2-pp-o92.zoho.com.cn ([163.53.93.251]:25334 "EHLO
-        sender3-pp-o92.zoho.com.cn" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726773AbfKEGAt (ORCPT
+        id S2387724AbfKEH37 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 5 Nov 2019 02:29:59 -0500
+Received: from mail-yw1-f67.google.com ([209.85.161.67]:40974 "EHLO
+        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387600AbfKEH37 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 5 Nov 2019 01:00:49 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1572933623; cv=none; 
-        d=zoho.com.cn; s=zohoarc; 
-        b=pigp1ZOd/tPwP9ZykhNJaHV1A+JcdHfrE/Z+6BwwwnnRxLIstfaXFC0AplTZ7qI1ULRLpQ3zxQdAiNI8n3MgaEXAeWLSsfa5PcQquR5DgbqUByKMEFPKU86RA6+3SpYtg+MBRukK6KlgYPjCd4HO8MAPvmtXuiRK4ltaI6GhqXQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
-        t=1572933623; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:Reply-To:References:Subject:To; 
-        bh=Fi3c+udnOQ0UY1fTsnFuzZL2OnzLbt9L+XThzcI30UE=; 
-        b=Sa0Q3sZHLUaLrPW/ONHK9VsG+ZGigRHo7hUrZsBLva4CoSyj34TgOCXxL8/6I3m/YiAxwznLZ/V6BitczE7i6TtUgLXAnGfBwQ4lqT0gZ91YyXrs9gUkCQVGVbhKWbKTL3XjmJHsWmA02D+qAG7VniKgpg3i/d0xTx1GNRdO7Qs=
-ARC-Authentication-Results: i=1; mx.zoho.com.cn;
-        dkim=pass  header.i=mykernel.net;
-        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
-        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1572933623;
-        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
-        h=Date:From:Reply-To:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        l=4413; bh=Fi3c+udnOQ0UY1fTsnFuzZL2OnzLbt9L+XThzcI30UE=;
-        b=WXmkJdUXIhkS99CA0nEeBGVSrK8rGoeN9MY0UPZCVl/NjDblWt3dL30/VAJddBCa
-        3dVw8CF4dtI6clDRN/aClCc3eMF1Vxp7Jtb+s2cPYS1gmjkKi2kRTWSqgLmZYtjK0ns
-        cBqc+sMPVutfyjS9ng7brynbLkUYDbDrpZCSsK88=
-Received: from mail.baihui.com by mx.zoho.com.cn
-        with SMTP id 1572933621338285.024913380366; Tue, 5 Nov 2019 14:00:21 +0800 (CST)
-Date:   Tue, 05 Nov 2019 14:00:21 +0800
-From:   Chengguang Xu <cgxu519@mykernel.net>
-Reply-To: cgxu519@mykernel.net
-To:     "Amir Goldstein" <amir73il@gmail.com>
-Cc:     "fstests" <fstests@vger.kernel.org>,
-        "overlayfs" <linux-unionfs@vger.kernel.org>,
-        "Eryu Guan" <guaneryu@gmail.com>,
-        "Miklos Szeredi" <miklos@szeredi.hu>
-Message-ID: <16e3a265656.134a9f8341853.6895214917865048335@mykernel.net>
-In-Reply-To: <CAOQ4uxjqMTFc-Fmpg3oGChy01X2JzQoG_jqxk5iEz+bR4yoQjg@mail.gmail.com>
-References: <20191029055713.28191-1-cgxu519@mykernel.net> <CAOQ4uxgzZHXOv7K++BArYmaTEHbYr5oCkgXw8WVUsQgh0uyqhg@mail.gmail.com>
- <16e173c434a.11f8ced8d40796.3954073574203284331@mykernel.net>
- <CAOQ4uxjddbot29=cYqLMLyqT=w=pWmLOPqVzvi-5mcXQ3AB3EQ@mail.gmail.com>
- <CAOQ4uxiZgmA6Z8Lq=ac7O9f1+CMnSmyLoAA7TDu6Hyt=-pUctw@mail.gmail.com> <16e1afc4097.118c98c8b43000.1263688409904269456@mykernel.net> <CAOQ4uxjqMTFc-Fmpg3oGChy01X2JzQoG_jqxk5iEz+bR4yoQjg@mail.gmail.com>
-Subject: Re: [PATCH] overlay/066: adjust test file size && add more test
- patterns
+        Tue, 5 Nov 2019 02:29:59 -0500
+Received: by mail-yw1-f67.google.com with SMTP id j190so2201393ywf.8;
+        Mon, 04 Nov 2019 23:29:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=j0cfF0FK/fzQm7gGMsm3n4wrJJcRFrT7Rij3/U3pzI8=;
+        b=s7VYOY2AEUspkgvDCTtfLPDLPKzDOPRliXoii4LCY5lKPgGlcHlEdq3IRsYvQ5Helr
+         F9PbmQl+Wz32qbdpfKluBNj3dZkHOeOUAo6EoSEr2FSuTjJyZHj/dx58h4Hrzls8YYj0
+         5yIGj192am5MDql8LAeu5SGgK8hf3fyl0MD9PG/QtY33DYibDV9M2aCg9dCmwXOazWp7
+         QWtKOcPtiDaFlgstoc9fBhGtoYLnpMvekS4Wg8U5Cy8zNfPsOfH8WHoGo/toNAtpoKL6
+         pr3NEznAopl+IZg3FLQKfD8TE2ZwoeUkd/9oCP+jbxuS09NfZ86eSOIkXduOqFckgKru
+         qN9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=j0cfF0FK/fzQm7gGMsm3n4wrJJcRFrT7Rij3/U3pzI8=;
+        b=rh71ma1//UJRoa9daPbU8l4mLZnBGlTrpMrHLio3TP0rGDb3IonXr3hy6Au/zz0WZf
+         7XJm+G0uJBGofy0syc5UcvtIwwwGtL+hkMLl6v2rK0F9BD5ITBHBbplhbNBh57REfMHL
+         9yVWWE1+YUhibAT3M1OfEslM7ApsxHRgUCMd2+S1FHhwLJPPbRNbtgewOJsBSRRXaYPe
+         EfBvx1P46ybSZJQFrgbO6shQ6gUQNa8Udc7zr0Cuzn2HmnwaXQRdOW9vbAqKEVCXD4w9
+         haf5AsPlQgBcOgfOsCWtf31/EMQnY57wejtbv+DOTWmcJsYCKS1704FV4aFH4E3429Bw
+         lnzg==
+X-Gm-Message-State: APjAAAUd+4JcSPjjk7sEkGTdQfKLASWpK/SyWWYVMFBF46K+s/Jt1cEE
+        n1hLQqOM04NEaIcQOZe4h1F6WOtYS2vSMX956+I=
+X-Google-Smtp-Source: APXvYqxAbHqRuu4C/cYGfoFeuX7UQwk9jV4g6GO15MGPtOWIrN4nHEmbtt4RzQdEYu3SXrW/9z//UL5DExpr1kvlZ2o=
+X-Received: by 2002:a81:6c58:: with SMTP id h85mr22137798ywc.88.1572938997553;
+ Mon, 04 Nov 2019 23:29:57 -0800 (PST)
 MIME-Version: 1.0
+References: <20191105053510.13849-1-cgxu519@mykernel.net>
+In-Reply-To: <20191105053510.13849-1-cgxu519@mykernel.net>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Tue, 5 Nov 2019 09:29:46 +0200
+Message-ID: <CAOQ4uxg9BpH+V50novSRz6vqEP08USFgdgYagQyyK7v6q_kzDg@mail.gmail.com>
+Subject: Re: [PATCH v2] overlay/066: adjust test file size && add more test patterns
+To:     Chengguang Xu <cgxu519@mykernel.net>
+Cc:     fstests <fstests@vger.kernel.org>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        Eryu Guan <guaneryu@gmail.com>,
+        Miklos Szeredi <miklos@szeredi.hu>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Priority: Medium
-User-Agent: ZohoCN Mail
-X-Mailer: ZohoCN Mail
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
- ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=B8=89, 2019-10-30 13:33:59 Amir Golds=
-tein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
- > On Wed, Oct 30, 2019 at 6:46 AM Chengguang Xu <cgxu519@mykernel.net> wro=
-te:
- > >
- > >  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=BA=8C, 2019-10-29 20:32:43 Amir =
-Goldstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
- > >  > On Tue, Oct 29, 2019 at 1:58 PM Amir Goldstein <amir73il@gmail.com>=
- wrote:
- > >  > >
- > >  > > On Tue, Oct 29, 2019 at 1:17 PM Chengguang Xu <cgxu519@mykernel.n=
-et> wrote:
- > >  > > >
- > >  > > >  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=BA=8C, 2019-10-29 16:32:3=
-2 Amir Goldstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
- > >  > > >  > On Tue, Oct 29, 2019 at 7:57 AM Chengguang Xu <cgxu519@myker=
-nel.net> wrote:
- > >  > > >  > >
- > >  > > >  >
- > >  > > >  > Can you please send the patch as plain/text.
- > >  > > >  > Your mailer has sent it with quoted printable encoding and g=
-it am
- > >  > > >  > fails to apply the patch:
- > >  > > >  > https://lore.kernel.org/fstests/20191029055713.28191-1-cgxu5=
-19@mykernel.net/raw
- > >  > > >  >
- > >  > > >
- > >  > > > Sorry for that,  I'm not clear for the reason, so I send you th=
-e patch in attachment first.
- > >  > > >
- > >  > >
- > >  >
- > >  > OK, I can verify that test runs quick (5s) on my VM.
- > >  >
- > >  > But there is one more issue that I think needs to be addressed, eit=
-her
- > >  > in this fix patch or in a follow up patch.
- > >  >
- > >  > If the test ever fails on some run with a specific random holes seq=
-uence,
- > >  > it is going to be quite hard for reporter to report this sequence o=
-r for
- > >  > developers to reproduce the same random sequence.
- > >
- > > IMO, it's not so hard as you thought,  I prefer to use filefrag to che=
-ck it.
- > >
- > > I think below tidy info is very clear and easy to understand what had =
-happened.
- > >
- > > [root@hades ovl-lower]# filefrag -k -e copyup_sparse_test_random_small=
-_holefile
- > > Filesystem type is: 58465342
- > > File size of copyup_sparse_test_random_small_holefile is 10485760 (102=
-40 blocks of 1024 bytes)
- > >  ext:     logical_offset:        physical_offset: length:   expected: =
-flags:
- > >    0:        4..     411:    2625148..   2625555:    408:          4:
- > >    1:      816..    1259:    2626172..   2626615:    444:    2625960:
- > >    2:     1696..    1783:    2627196..   2627283:     88:    2627052:
- > >    3:     1872..    2207:    2627372..   2627707:    336:
- > >    4:     2544..    3019:    2629244..   2629719:    476:    2628044:
- > >    5:     3496..    3599:    2629720..   2629823:    104:
- > >    6:     3704..    3819:    2629928..   2630043:    116:
- > >    7:     3936..    3959:    2630044..   2630067:     24:
- > >    8:     3980..    4487:    2631292..   2631799:    508:    2630088:
- > >    9:     4992..    5235:    2631800..   2632043:    244:
- > >   10:     5472..    5715:    2632044..   2632287:    244:
- > >   11:     5956..    6355:    2633340..   2633739:    400:    2632528:
- > >   12:     6752..    6787:    2633740..   2633775:     36:
- > >   13:     6820..    6907:    2633808..   2633895:     88:
- > >   14:     6996..    7447:    2633896..   2634347:    452:
- > >   15:     7900..    8211:    2637436..   2637747:    312:    2634800:
- > >   16:     8516..    8867:    2638052..   2638403:    352:
- > >   17:     9216..    9703:    2638752..   2639239:    488:             =
-last
- > > copyup_sparse_test_random_small_holefile: 7 extents found
- > >
- >=20
- > There is a difference between understanding what happened and
- > reproducing, but there is no reason to choose one method over
- > the other.
- >=20
- > As a developer, when I get a bug report I would rather have both
- > an easy reproducer and all the postmortem  information available.
- > Therefore, please echo xfs_io commands, at least for creation of
- > random files to full log AND filefrag info, at least for the random
- > files to full log.
- >=20
-=20
-Actually, xfs_io itself will leave detail information for write operation (=
-pos+write size)
-See below, IMO, it is almost no difference compare to echo xfs_io command.
-So I just added title for those write scenarios in v2.
+On Tue, Nov 5, 2019 at 7:35 AM Chengguang Xu <cgxu519@mykernel.net> wrote:
+>
+> Making many small holes in 10M test file seems not very
+> helpful for test coverage and it takes too much time on
+> creating test files. In order to improve test speed we
+> adjust test file size to (10 * iosize) for iosize aligned
+> hole files and meanwhile add more test patterns for small
+> random holes and small empty file.
+>
+> Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
+> ---
+> v1->v2:
+> - Check result in one diff command.
+> - Print more information(file layout) to full log when test failed.
+> - Truncate test file name.
+>
+>  tests/overlay/066 | 97 +++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 69 insertions(+), 28 deletions(-)
+>
+> diff --git a/tests/overlay/066 b/tests/overlay/066
+> index 285a5aff..c353bdc7 100755
+> --- a/tests/overlay/066
+> +++ b/tests/overlay/066
+> @@ -40,48 +40,85 @@ _require_scratch
+>  # Remove all files from previous tests
+>  _scratch_mkfs
+>
+> -# We have totally 14 test files in this test.
+> +# We have totally 16 test files in this test.
+>  # The detail as below:
+> -# 1 empty file(10M) + 2^0(K)..2^11(K) hole size files(each 10M) + 1 random hole size file(100M).
+> +# 1 small empty file 4K
+> +# 1 big empty file 4M
+> +# 1 small random hole file 10M
+> +# 1 big random hole file 100M
+> +#
+> +# 12 files with variant iosize aligned holes.
+> +# 2^0(K)..2^11(K) hole size files(file size = 10 * iosize)
+>  #
+>  # Considering both upper and lower fs will fill zero when copy-up
+>  # hole area in the file, this test at least requires double disk
+>  # space of the sum of above test files' size.
+>
+> -_require_fs_space $OVL_BASE_SCRATCH_MNT $(((10*1024*13 + 100*1024*1) * 2))
+> +_require_fs_space $OVL_BASE_SCRATCH_MNT $((((4) + (4096) + (10 * 1024) \
+> +                + (100 * 1024) + (10 * (1 + 2048) * 12 / 2)) * 2))
+>
+>  lowerdir=$OVL_BASE_SCRATCH_MNT/$OVL_LOWER
+>  upperdir=$OVL_BASE_SCRATCH_MNT/$OVL_UPPER
+>  testfile="copyup_sparse_test"
+>
+> -# Create a completely empty hole file(10M).
+> -file_size=10240
+> -$XFS_IO_PROG -fc "truncate ${file_size}K" "${lowerdir}/${testfile}_empty_holefile" \
+> +# Create a small completely empty hole file(4K).
+> +file_size=4
+> +$XFS_IO_PROG -fc "truncate ${file_size}K" "${lowerdir}/${testfile}_empty_small" \
+>                  >>$seqres.full
+>
+> -# Create 2^0(K)..2^11(K) hole size test files(each 10M).
+> +# Create a big completely empty hole file(4M).
+> +file_size=4096
+> +$XFS_IO_PROG -fc "truncate ${file_size}K" "${lowerdir}/${testfile}_empty_big" \
+> +                >>$seqres.full
+> +
+> +# Create 2^0(K)..2^11(K) hole size test files(file size = 10 * iosize).
+>  #
+>  # The pattern is like below, both hole and data are equal to
+>  # iosize except last hole.
+>  #
+>  # |-- hole --|-- data --| ... |-- data --|-- hole --|
+>
+> -iosize=1
+> +min_iosize=1
+>  max_iosize=2048
+> -file_size=10240
+> -max_pos=`expr $file_size - $max_iosize`
+> +iosize=$min_iosize
+>
+>  while [ $iosize -le $max_iosize ]; do
+> +       file_size=$(($iosize * 10))
+> +       max_pos=$(($file_size - $iosize))
+>         pos=$iosize
+>         $XFS_IO_PROG -fc "truncate ${file_size}K" \
+> -               "${lowerdir}/${testfile}_iosize${iosize}K_holefile" >>$seqres.full
+> +               "${lowerdir}/${testfile}_iosize${iosize}K" >>$seqres.full
+> +       echo -e "\niosize=${iosize}K hole test write scenarios ---\n" >>$seqres.full
+>         while [ $pos -lt $max_pos ]; do
+>                 $XFS_IO_PROG -fc "pwrite ${pos}K ${iosize}K" \
+> -               "${lowerdir}/${testfile}_iosize${iosize}K_holefile" >>$seqres.full
+> -               pos=`expr $pos + $iosize + $iosize`
+> +               "${lowerdir}/${testfile}_iosize${iosize}K" >>$seqres.full
+> +               pos=$(($pos + $iosize * 2))
+>         done
+> -       iosize=`expr $iosize + $iosize`
+> +       iosize=$(($iosize * 2))
+>  done
+> +echo >>$seqres.full
+> +
+> +# Create test file with many random small holes(hole size is between 4K and 512K),
+> +# total file size is 10M.
+> +
+> +pos=4
+> +max_pos=9216
 
----
-iosize=3D2048K hole test write scenarios --- (This is what I added in v2)
+2 above are commutable values, please do not set them manually
+pos=$min_hole
+max_pos=$(($file_size - 2*$max_hole))
 
-wrote 2097152/2097152 bytes at offset 2097152
-2 MiB, 512 ops; 0.0007 sec (2.732 GiB/sec and 716083.9161 ops/sec)
-wrote 2097152/2097152 bytes at offset 6291456
-2 MiB, 512 ops; 0.0006 sec (2.889 GiB/sec and 757396.4497 ops/sec)
-wrote 2097152/2097152 bytes at offset 10485760
-2 MiB, 512 ops; 0.0007 sec (2.728 GiB/sec and 715083.7989 ops/sec)
-wrote 2097152/2097152 bytes at offset 14680064
-2 MiB, 512 ops; 0.0007 sec (2.778 GiB/sec and 728307.2546 ops/sec)
+Right?
+
+Please use calculation also for random big file.
+
+> +file_size=10240
+> +min_hole=4
+> +max_hole=512
+> +
+> +$XFS_IO_PROG -fc "truncate ${file_size}K" "${lowerdir}/${testfile}_random_small" \
+> +               >>$seqres.full
+> +
+> +echo -e "\nSmall random hole test write scenarios ---\n" >>$seqres.full
+> +while [ $pos -le $max_pos ]; do
+> +       iosize=$(($RANDOM % ($max_hole - $min_hole) + $min_hole))
+> +       $XFS_IO_PROG -fc "pwrite ${pos}K ${iosize}K" \
+> +               "${lowerdir}/${testfile}_random_small" >>$seqres.full
+
+I still prefer that you use a helper
+do_io "pwrite ${pos}K ${iosize}K" "${lowerdir}/${testfile}_random_small"
+
+which also records the xfs_io command in full log.
+
+> +       pos=$(($pos + $iosize * 2))
+> +done
+> +echo >>$seqres.full
+> +
+>
+>  # Create test file with many random holes(hole size is between 1M and 5M),
+>  # total file size is 100M.
+> @@ -92,19 +129,22 @@ file_size=102400
+>  min_hole=1024
+>  max_hole=5120
+>
+> -$XFS_IO_PROG -fc "truncate ${file_size}K" "${lowerdir}/${testfile}_random_holefile" \
+> +$XFS_IO_PROG -fc "truncate ${file_size}K" "${lowerdir}/${testfile}_random_big" \
+>                 >>$seqres.full
+>
+> +echo -e "\nBig random hole test write scenarios ---\n" >>$seqres.full
+>  while [ $pos -le $max_pos ]; do
+>         iosize=$(($RANDOM % ($max_hole - $min_hole) + $min_hole))
+>         $XFS_IO_PROG -fc "pwrite ${pos}K ${iosize}K" \
+> -               "${lowerdir}/${testfile}_random_holefile" >>$seqres.full
+> -       pos=`expr $pos + $iosize + $iosize`
+> +               "${lowerdir}/${testfile}_random_big" >>$seqres.full
+> +       pos=$(($pos + $iosize * 2))
+>  done
+> +echo >>$seqres.full
+>
+>  _scratch_mount
+>
+>  # Open the test files, no errors are expected.
+> +echo -e "\nDoing copy-up...\n" >>$seqres.full
+>  for f in $SCRATCH_MNT/*; do
+>         $XFS_IO_PROG -c "open" $f >>$seqres.full
+>  done
+> @@ -112,18 +152,19 @@ done
+>  echo "Silence is golden"
+>
+>  # Check all copy-up files in upper layer.
+> -iosize=1
+> -while [ $iosize -le 2048 ]; do
+> -       diff "${lowerdir}/${testfile}_iosize${iosize}K_holefile" \
+> -               "${upperdir}/${testfile}_iosize${iosize}K_holefile" >>$seqres.full ||\
+> -               echo "${upperdir}/${testfile}_iosize${iosize}K_holefile" copy up failed!
+> -       iosize=`expr $iosize + $iosize`
+> -done
+>
+> -diff "${lowerdir}/${testfile}_empty_holefile"  "${upperdir}/${testfile}_empty_holefile"  \
+> -       >>$seqres.full || echo "${upperdir}/${testfile}_empty_holefile" copy up failed!
+> -diff "${lowerdir}/${testfile}_random_holefile" "${upperdir}/${testfile}_random_holefile" \
+> -       >>$seqres.full || echo "${upperdir}/${testfile}_random_holefile" copy up failed!
+> +diff -qr ${upperdir} ${lowerdir} >>$seqres.full
+
+The output of diff is exactly the interesting output to golden output that
+will fail the test if it is not empty.
+If you want it also in full log please use | tee -a $seqres.full
 
 Thanks,
-Chengguang
-
-
-
+Amir.
