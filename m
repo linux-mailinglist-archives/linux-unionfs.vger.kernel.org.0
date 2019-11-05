@@ -2,112 +2,89 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3804EF67C
-	for <lists+linux-unionfs@lfdr.de>; Tue,  5 Nov 2019 08:37:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56322EF6A7
+	for <lists+linux-unionfs@lfdr.de>; Tue,  5 Nov 2019 08:56:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387627AbfKEHhs (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 5 Nov 2019 02:37:48 -0500
-Received: from mail-yw1-f68.google.com ([209.85.161.68]:35133 "EHLO
-        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387484AbfKEHhs (ORCPT
+        id S2387899AbfKEH4Q (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 5 Nov 2019 02:56:16 -0500
+Received: from mail-yw1-f66.google.com ([209.85.161.66]:43400 "EHLO
+        mail-yw1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387711AbfKEH4Q (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 5 Nov 2019 02:37:48 -0500
-Received: by mail-yw1-f68.google.com with SMTP id r131so1419019ywh.2;
-        Mon, 04 Nov 2019 23:37:47 -0800 (PST)
+        Tue, 5 Nov 2019 02:56:16 -0500
+Received: by mail-yw1-f66.google.com with SMTP id g77so7978300ywb.10;
+        Mon, 04 Nov 2019 23:56:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Rs5hDOsCMZ8VwYEEKd43QfYPUoGpSsM00GrQHPGwTj4=;
-        b=Bbngnve/DbUa3XvI/pzlaJjNgPnJ80WYnC0+mtFPw1XrIaQ6MiNmJOU2xowDuYbUgU
-         LWLvPRz8xBQQYcSTsYxnZRvrOjQOppjbySJlB8QEwBQxlHbz2Bf7OGFRixwV0Jmtd5gK
-         4OeEj/QjXcVMf0AVmA+6cv3GmgcuX34PezgRR5Fmp/ghqvsvo77Bey/Ob2fVI8S0lZ/d
-         8MqZtfJ4ukjWZrLKLtJKohkQvuFubH79q6lzEWqdto2z8BSEqMJyFxPjO284T97YYTcC
-         PV0F9865/zzpDONiIDs3LUbifUcQLjrzuhaWgx2lh9HqIAhHv8WXiSiCLjkIqC1JCmfs
-         sLVw==
+        bh=9Sw1HL7Q7exzJotrSp6tCwUKxBPvJqTFu7l+7aIJqKg=;
+        b=OVbPVVm7K3EvDzJQwMdKxlvHSCl4q1LrRSoYZWY30q7dVSRRnQU3Q5Z4HurO+gsw4P
+         pzlSjByiXPf19mwvaoSpHm8NX6Dbcrydpe0WFARfJPEeocp6h7juG2JThGeOburIUCoO
+         O/J8CBV3FIQDdnNpdBVVbMV1lxDxivXtW+Lsn60q0tK/lI1YAAaSw6pdCL8gpVLzrRoG
+         izBdrJVoPKJKZ5IE/mnvo0zHCKiiIvqAAFYUVUu6CzXC3NJVRsYlqDatf8H/82UAvK5v
+         78dkgGlhzy5wOx/51udKlV1AC019OtTMyeZSm6grUBaAAUorOJV6cW3NVROmRAUlMzHJ
+         ZFpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Rs5hDOsCMZ8VwYEEKd43QfYPUoGpSsM00GrQHPGwTj4=;
-        b=iKOyKchEVAg91itLQMCHO3aneD1bQ5QpZv0uv7JTZp6CqVSu866OKhSiSJTIOUY0lW
-         sSIJsscPM/0lfRUj6N5oXKs1kkm0ahu/gKA0fUQQfDinTpkIE6WIJxDS1EYzfBFAY0Hy
-         mVg3EmELCZ6gj9IpRFy8xHdh8iIMX+lXr6BNmJNlJXZ769GOo3vfJ9ZWmj6UKo+Nxb+6
-         ZOmM3a+CNGg4WTcfdypNSFCYaanuAjbt2tM5Ynwt8x1OejB7wcLt+4zlDjuGhPJY1XfE
-         7oqXZqfMUaoS30P2WEl54aFWWO1ot1ncmJVi7a+26ngkAYYely0gYwqEuCdYBFFIbfdG
-         PByg==
-X-Gm-Message-State: APjAAAUMDeFCoXt8IuicNN82HtsoC7ciqPNYjnf+ReWVtSA06LlNDl6S
-        R3OUdxpDRmgDCv5r8MA4dkKJ2IACxQEdsHftaZo=
-X-Google-Smtp-Source: APXvYqzwYekNamlnElt+M/OD/aeEgGTpHTJkeHZMMO/49Gwxx07WnZDn3L6DtKNFPy4vhN2jb6IfkIzwdX5bnKuXt9U=
-X-Received: by 2002:a81:3187:: with SMTP id x129mr24775416ywx.294.1572939467105;
- Mon, 04 Nov 2019 23:37:47 -0800 (PST)
+        bh=9Sw1HL7Q7exzJotrSp6tCwUKxBPvJqTFu7l+7aIJqKg=;
+        b=Oz+N4Pv68/5K6r7DHYOHRlDt1Kl+8llZk5Bh4eUkXd5FVcF7Yk04sjeYdkCRloDUAf
+         8xR9lnKxSIoy/LxyNamEE1XKBxlUf9/WPEdKVu0/eAr8aFTzkfomHEQdXur+E+9yEKX7
+         c7osrWNwUBQnpDBUqFtGukIvJz9lmG7THsN2jSPekMBp+hrDRoHw9M88q+Bd97n9xRfA
+         G53i5d4eF2I+4XTuj4UTRgmmbWcAEwRlasDgIysB2R+7jQHaEnXN22fv6xCou2NyYu4M
+         V9uxxGzT5GINhAtQyoGhja20o3yHONvleppi+aNJTVtQ6qoQlPL5LrViP8h0bclYbUHn
+         JmVQ==
+X-Gm-Message-State: APjAAAUc1ZstRNOWmnmumJXC3zmsYlFYdApDcl1ARjCZEEa2dDiVkpT1
+        t15igAG4JgvABaPzc0BeLfzZIdJ1aT+36T2Qyi4=
+X-Google-Smtp-Source: APXvYqxKftZebjOlSRQgJEVKt8QAMiNV2AMQkbdXNGu36cI3JUpSsxgpGzMHleM64j8D/XqUlbgQ1syh8coAsCsX/J0=
+X-Received: by 2002:a81:2f0f:: with SMTP id v15mr12058238ywv.183.1572940575277;
+ Mon, 04 Nov 2019 23:56:15 -0800 (PST)
 MIME-Version: 1.0
-References: <20191029055713.28191-1-cgxu519@mykernel.net> <CAOQ4uxgzZHXOv7K++BArYmaTEHbYr5oCkgXw8WVUsQgh0uyqhg@mail.gmail.com>
- <16e173c434a.11f8ced8d40796.3954073574203284331@mykernel.net>
- <CAOQ4uxjddbot29=cYqLMLyqT=w=pWmLOPqVzvi-5mcXQ3AB3EQ@mail.gmail.com>
- <CAOQ4uxiZgmA6Z8Lq=ac7O9f1+CMnSmyLoAA7TDu6Hyt=-pUctw@mail.gmail.com>
- <16e1afc4097.118c98c8b43000.1263688409904269456@mykernel.net>
- <CAOQ4uxjqMTFc-Fmpg3oGChy01X2JzQoG_jqxk5iEz+bR4yoQjg@mail.gmail.com> <16e3a265656.134a9f8341853.6895214917865048335@mykernel.net>
-In-Reply-To: <16e3a265656.134a9f8341853.6895214917865048335@mykernel.net>
+References: <20191104215253.141818-1-salyzyn@android.com>
+In-Reply-To: <20191104215253.141818-1-salyzyn@android.com>
 From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Tue, 5 Nov 2019 09:37:36 +0200
-Message-ID: <CAOQ4uxhOM7XdmE2hTn=H_trR-Qx1GGdWrN0GmLJ9dveAySMJ2Q@mail.gmail.com>
-Subject: Re: [PATCH] overlay/066: adjust test file size && add more test patterns
-To:     Chengguang Xu <cgxu519@mykernel.net>
-Cc:     fstests <fstests@vger.kernel.org>,
+Date:   Tue, 5 Nov 2019 09:56:04 +0200
+Message-ID: <CAOQ4uxhoozGgxYmucFpFx8N=b4x9H3sfp60TNzf0dmU9eQi2UQ@mail.gmail.com>
+Subject: Re: [PATCH v15 0/4] overlayfs override_creds=off & nested get xattr fix
+To:     Mark Salyzyn <salyzyn@android.com>
+Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
+        kernel-team@android.com, Miklos Szeredi <miklos@szeredi.hu>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Vivek Goyal <vgoyal@redhat.com>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
         overlayfs <linux-unionfs@vger.kernel.org>,
-        Eryu Guan <guaneryu@gmail.com>,
-        Miklos Szeredi <miklos@szeredi.hu>
+        linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
->  > There is a difference between understanding what happened and
->  > reproducing, but there is no reason to choose one method over
->  > the other.
->  >
->  > As a developer, when I get a bug report I would rather have both
->  > an easy reproducer and all the postmortem  information available.
->  > Therefore, please echo xfs_io commands, at least for creation of
->  > random files to full log AND filefrag info, at least for the random
->  > files to full log.
->  >
+On Mon, Nov 4, 2019 at 11:53 PM Mark Salyzyn <salyzyn@android.com> wrote:
 >
-> Actually, xfs_io itself will leave detail information for write operation (pos+write size)
-> See below, IMO, it is almost no difference compare to echo xfs_io command.
-> So I just added title for those write scenarios in v2.
+> Patch series:
 >
-> ---
-> iosize=2048K hole test write scenarios --- (This is what I added in v2)
->
-> wrote 2097152/2097152 bytes at offset 2097152
-> 2 MiB, 512 ops; 0.0007 sec (2.732 GiB/sec and 716083.9161 ops/sec)
-> wrote 2097152/2097152 bytes at offset 6291456
-> 2 MiB, 512 ops; 0.0006 sec (2.889 GiB/sec and 757396.4497 ops/sec)
-> wrote 2097152/2097152 bytes at offset 10485760
-> 2 MiB, 512 ops; 0.0007 sec (2.728 GiB/sec and 715083.7989 ops/sec)
-> wrote 2097152/2097152 bytes at offset 14680064
-> 2 MiB, 512 ops; 0.0007 sec (2.778 GiB/sec and 728307.2546 ops/sec)
->
+> Mark Salyzyn (4):
+>   Add flags option to get xattr method paired to __vfs_getxattr
 
-It's good that you added the titles, but not enough IMO.
+Sigh.. did not get to fsdevel (again...) I already told you several times
+that you need to use a shorter CC list.
 
-It is a social engineering issue, not a technical one.
-It is *nicer* for a test to provide a reproducer, than to provide information
-that needs to be converted to a reproducer by a developer.
+>   overlayfs: handle XATTR_NOSECURITY flag for get xattr method
+>   overlayfs: internal getxattr operations without sepolicy checking
+>   overlayfs: override_creds=off option bypass creator_cred
 
-And the main reason to be *nicer* in this case, is that it is zero effort
-for the test writer to provide the report in the form of reproducer, simply
-by echoing the xfs_io commands via a helper, (e.g. do_io).
+It would be better for review IMO if you rebase your series on top of
+git://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/vfs.git ovl-unpriv
 
-Please understand that most of xfstests are reproducers by themselves.
-Some random tests (like fsx/fsstress) leave a recorded log of operations
-to be used to reproduce a failure.
-Some random xfstests log the random seed to log, so it can be used to
-reproduce.
-In any case, leaving a *simple* one to reproduce a failure is essential.
+1. internal getxattr patch would be a one liner change to ovl_own_getxattr()
+2. The documentation of override_creds would be much more
+meaningful if it used the overlay permission model terminology
+that Miklos added in his patch set and extend it
 
 Thanks,
 Amir.
