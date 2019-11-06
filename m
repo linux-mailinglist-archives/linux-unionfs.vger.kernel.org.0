@@ -2,119 +2,125 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58C5BF155A
-	for <lists+linux-unionfs@lfdr.de>; Wed,  6 Nov 2019 12:43:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91FEBF22C8
+	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Nov 2019 00:43:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730005AbfKFLno (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 6 Nov 2019 06:43:44 -0500
-Received: from sender2-pp-o92.zoho.com.cn ([163.53.93.251]:25316 "EHLO
-        sender3-pp-o92.zoho.com.cn" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729894AbfKFLnn (ORCPT
+        id S1727728AbfKFXnE (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 6 Nov 2019 18:43:04 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:40853 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727376AbfKFXnE (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 6 Nov 2019 06:43:43 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1573040604; cv=none; 
-        d=zoho.com.cn; s=zohoarc; 
-        b=hMJQoyzz1u5Rb8nGa4dZM/VkXjoVh56LaYKdAFXs/VAwuzlZSTKwYNEsVDoJy9mWJR4nFaUdjAAAWvQfT6bS6cOsAwHhAuxrgJ1uFw8ZbTotwU7pre7fkeLpe3n8I3mdExKlqmCRfC4Vf7U1L8fE9E+tjKeNs6L2Uk1VIBinZlo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
-        t=1573040604; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:Reply-To:References:Subject:To; 
-        bh=uzLOdjSuDx6gUraBqnx0Vtchm4I5d7gulLChkh/0+LQ=; 
-        b=pD29I2447Vhvb/cJu46FNfwOIlFipIBd6i5NpNVyx1ovUZzZ/jhd9XPtu32GpWQSQYKMScHgo8d3XWtWgTKgCTEsLqOC9I3ep+XCKVdmOFw+Bj3yIANx6h7S+QHs0UmAk9dI4wE9HGUWPWqXEQxme2GqUDXAIAz97XF1lDR83s8=
-ARC-Authentication-Results: i=1; mx.zoho.com.cn;
-        dkim=pass  header.i=mykernel.net;
-        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
-        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1573040604;
-        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
-        h=Date:From:Reply-To:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        l=2102; bh=uzLOdjSuDx6gUraBqnx0Vtchm4I5d7gulLChkh/0+LQ=;
-        b=GnZ2M0JkcZkkKaqeDMqu7C4E1xxtkaV1/twKm79guiDLUBvHv3w/u9QKWcbuzCGd
-        dATa0my1De5Sbwql0z32OZ9TjB+B7QqiGkfFp7W/yj0Vp1sk9ZpipZyNMI7RfRhMZlk
-        XHl61JETxhRooMN2414pMoSZbav+SKkJDld7FSp8=
-Received: from mail.baihui.com by mx.zoho.com.cn
-        with SMTP id 1573040602786295.5835788917002; Wed, 6 Nov 2019 19:43:22 +0800 (CST)
-Date:   Wed, 06 Nov 2019 19:43:22 +0800
-From:   Chengguang Xu <cgxu519@mykernel.net>
-Reply-To: cgxu519@mykernel.net
-To:     "Amir Goldstein" <amir73il@gmail.com>
-Cc:     "fstests" <fstests@vger.kernel.org>,
-        "overlayfs" <linux-unionfs@vger.kernel.org>,
-        "Eryu Guan" <guaneryu@gmail.com>,
-        "Miklos Szeredi" <miklos@szeredi.hu>
-Message-ID: <16e4086be9e.fa912076579.8007843109982063857@mykernel.net>
-In-Reply-To: <CAOQ4uxjWjjMw7o32JaG_nuqw4oXw_Qo+jWjhRXkQ9pd9o1QjmQ@mail.gmail.com>
-References: <20191106073945.12015-1-cgxu519@mykernel.net> <CAOQ4uxgBO6zZVJsa2uor5kwa1jp05Xrte6fifZdOsX=yF=v0-g@mail.gmail.com>
- <16e403ebe86.e4a465d3522.6312283139717764767@mykernel.net> <CAOQ4uxjWjjMw7o32JaG_nuqw4oXw_Qo+jWjhRXkQ9pd9o1QjmQ@mail.gmail.com>
-Subject: Re: [PATCH v3] overlay/066: adjust test file size && add more test
- patterns
+        Wed, 6 Nov 2019 18:43:04 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iSUx4-0002vl-3u; Wed, 06 Nov 2019 23:43:02 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ovl: create UUIDs for file systems that do not set the superblock UUID
+Date:   Wed,  6 Nov 2019 23:43:01 +0000
+Message-Id: <20191106234301.283006-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Priority: Medium
-User-Agent: ZohoCN Mail
-X-Mailer: ZohoCN Mail
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
- ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=B8=89, 2019-11-06 19:26:07 Amir Golds=
-tein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
- > On Wed, Nov 6, 2019 at 12:24 PM Chengguang Xu <cgxu519@mykernel.net> wro=
-te:
- > >
- > >  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=B8=89, 2019-11-06 18:01:54 Amir =
-Goldstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
- > >  > On Wed, Nov 6, 2019 at 9:40 AM Chengguang Xu <cgxu519@mykernel.net>=
- wrote:
- > >  > >
- > >  > > Making many small holes in 10M test file seems not very
- > >  > > helpful for test coverage and it takes too much time on
- > >  > > creating test files. In order to improve test speed we
- > >  > > adjust test file size to (10 * iosize) for iosize aligned
- > >  > > hole files and meanwhile add more test patterns for small
- > >  > > random holes and small empty file.
- > >  > >
- > >  > > Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
- > >  > Reviewed-by: Amir Goldstein <amir73il@gmail.com>
- > >  >
- > >  > Please send me a plain text version of the patch so I can test it.
- > >  >
- > >
- > > Hi Amir,
- > >
- > > Sorry for that again but I really don't know what was wrong for this p=
-atch.
- > > I sent using 'git send-email' and there was nothing broken or unusual =
-compare
- > > to other normal patches. So I have to send this patch in attachment ag=
-ain.
- > >
- >=20
- > Test runs fine, except big random file has a single chunk 32MB of data:
- >=20
- > Big random hole test write scenarios ---
- >=20
- > /root/xfstests/bin/xfs_io -i -fc "pwrite 1024K 30862K"
- > /vdf/ovl-lower/copyup_sparse_test_random_big
- > wrote 31602688/31602688 bytes at offset 1048576
- > 30 MiB, 7716 ops; 0.1295 sec (232.614 MiB/sec and 59553.1201 ops/sec)
- >=20
- > That is because of this typo:
- >=20
- > @@ -133,7 +133,7 @@ file_size=3D102400
- >  min_hole=3D1024
- >  max_hole=3D5120
- >  pos=3D$min_hole
- > -max_hole=3D$(($file_size - 2*$max_hole))
- > +max_pos=3D$(($file_size - 2*$max_hole))
- >=20
- > If you re-submit, please add my Reviewed-by tag.
- >=20
+From: Colin Ian King <colin.king@canonical.com>
 
-Thanks a lot for your test and review, I'll resend soon.
+Some file systems such as squashfs do not set the UUID in the
+superblock resulting in a zero'd UUID.  In cases were two or more
+of these file systems are overlayed on the lower layer we can hit
+overlay corruption issues because identical zero'd overlayfs UUIDs
+are impossible to differentiate between.  This can be fixed by
+creating an overlayfs UUID based on the file system from the
+superblock s_magic and s_dev fields.  (This currently seems like
+enough information to be able create a UUID, but the could be
+scope to use other super block fields such as the pointer s_fs_info
+but may need some obfuscation).
 
-Thanks,
-Chengguang
+This issue can be reproduced with the following commands:
 
+mkdir -p /cdrom
+mount -t iso9660 -o ro,noatime /dev/sr0 /cdrom
+sleep 1
+mkdir -p /cow
+mount -t tmpfs -o 'rw,noatime,mode=755' tmpfs /cow
+mkdir -p /cow/upper
+mkdir -p /cow/work
+modprobe -q -b overlay
+modprobe -q -b loop
+dev=$(losetup -f)
+mkdir -p /filesystem.squashfs
+losetup $dev /cdrom/casper/filesystem.squashfs
+mount -t squashfs -o ro,noatime $dev /filesystem.squashfs
+dev=$(losetup -f)
+mkdir -p /installer.squashfs
+losetup $dev /cdrom/casper/installer.squashfs
+mount -t squashfs -o ro,noatime $dev /installer.squashfs
+mkdir -p /root-tmp
+mount -t overlay -o 'upperdir=/cow/upper,lowerdir=/installer.squashfs:/filesystem.squashfs,workdir=/cow/work' /cow /root-tmp
 
+FILE=/root-tmp/etc/.pwd.lock
+
+echo foo > $FILE
+cat $FILE
+sync
+echo 3 > /proc/sys/vm/drop_caches
+cat $FILE
+
+The output from cat $FILE:
+cat: /root-tmp/etc/.pwd.lock: Input/output error
+
+dmesg reports:
+[ 42.415432] overlayfs: invalid origin (etc/.pwd.lock, ftype=8000, origin ftype=4000).
+
+BugLink: https://bugs.launchpad.net/bugs/1824407
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ fs/overlayfs/copy_up.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index b801c6353100..a578db87936b 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -231,6 +231,7 @@ struct ovl_fh *ovl_encode_real_fh(struct dentry *real, bool is_upper)
+ 	void *buf;
+ 	int buflen = MAX_HANDLE_SZ;
+ 	uuid_t *uuid = &real->d_sb->s_uuid;
++	static const uuid_t z_uuid;
+ 
+ 	buf = kmalloc(buflen, GFP_KERNEL);
+ 	if (!buf)
+@@ -272,7 +273,20 @@ struct ovl_fh *ovl_encode_real_fh(struct dentry *real, bool is_upper)
+ 	if (is_upper)
+ 		fh->flags |= OVL_FH_FLAG_PATH_UPPER;
+ 	fh->len = fh_len;
+-	fh->uuid = *uuid;
++
++	if (uuid_equal(uuid, &z_uuid)) {
++		/*
++		 * An zero'd uuid indicates the uuid in the super block was
++		 * not set by the file system, so fake one instead
++		 */
++		struct super_block *sb = real->d_sb;
++
++		memcpy(&fh->uuid.b[0], &sb->s_magic, 8);
++		memcpy(&fh->uuid.b[8], &sb->s_dev, 8);
++	} else {
++		fh->uuid = *uuid;
++	}
++
+ 	memcpy(fh->fid, buf, buflen);
+ 
+ out:
+-- 
+2.20.1
 
