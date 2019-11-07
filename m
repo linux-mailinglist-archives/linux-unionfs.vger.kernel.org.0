@@ -2,21 +2,21 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 56E79F2A4F
-	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Nov 2019 10:13:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05B6AF2B0A
+	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Nov 2019 10:44:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733139AbfKGJMz (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 7 Nov 2019 04:12:55 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:54026 "EHLO
+        id S1727707AbfKGJoD (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 7 Nov 2019 04:44:03 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:54722 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727120AbfKGJMz (ORCPT
+        with ESMTP id S1727632AbfKGJoD (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 7 Nov 2019 04:12:55 -0500
+        Thu, 7 Nov 2019 04:44:03 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212])
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iSdqX-0007ZD-9L; Thu, 07 Nov 2019 09:12:53 +0000
+        id 1iSeKe-0001KQ-DR; Thu, 07 Nov 2019 09:44:00 +0000
 Subject: Re: [PATCH] ovl: create UUIDs for file systems that do not set the
  superblock UUID
 From:   Colin Ian King <colin.king@canonical.com>
@@ -28,6 +28,7 @@ Cc:     Miklos Szeredi <miklos@szeredi.hu>,
 References: <20191106234301.283006-1-colin.king@canonical.com>
  <CAOQ4uxhT4pFzHjjKyoMOc3xVXXqyqc37zd=-pCx2+keA4e6NAg@mail.gmail.com>
  <02adb5f3-10be-1827-f48b-b621bd61783a@canonical.com>
+ <f88a4ef7-3e2a-9e17-1573-3594288091cd@canonical.com>
 Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
  mQINBE6TJCgBEACo6nMNvy06zNKj5tiwDsXXS+LhT+LwtEsy9EnraKYXAf2xwazcICSjX06e
  fanlyhB0figzQO0n/tP7BcfMVNG7n1+DC71mSyRK1ZERcG1523ajvdZOxbBCTvTitYOy3bjs
@@ -70,12 +71,12 @@ Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
  WNp62+mTeHsX6v9EACH4S+Cw9Q1qJElFEu9/1vFNBmGY2vDv14gU2xEiS2eIvKiYl/b5Y85Q
  QLOHWV8up73KK5Qq/6bm4BqVd1rKGI9un8kezUQNGBKre2KKs6wquH8oynDP/baoYxEGMXBg
  GF/qjOC6OY+U7kNUW3N/A7J3M2VdOTLu3hVTzJMZdlMmmsg74azvZDV75dUigqXcwjE=
-Message-ID: <f88a4ef7-3e2a-9e17-1573-3594288091cd@canonical.com>
-Date:   Thu, 7 Nov 2019 09:12:52 +0000
+Message-ID: <bba96a64-a9f7-cd03-e00b-8ee369520ae7@canonical.com>
+Date:   Thu, 7 Nov 2019 09:43:59 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.1
 MIME-Version: 1.0
-In-Reply-To: <02adb5f3-10be-1827-f48b-b621bd61783a@canonical.com>
+In-Reply-To: <f88a4ef7-3e2a-9e17-1573-3594288091cd@canonical.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -84,44 +85,55 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On 07/11/2019 08:45, Colin Ian King wrote:
-> On 07/11/2019 07:08, Amir Goldstein wrote:
->> On Thu, Nov 7, 2019 at 1:43 AM Colin King <colin.king@canonical.com> wrote:
+On 07/11/2019 09:12, Colin Ian King wrote:
+> On 07/11/2019 08:45, Colin Ian King wrote:
+>> On 07/11/2019 07:08, Amir Goldstein wrote:
+>>> On Thu, Nov 7, 2019 at 1:43 AM Colin King <colin.king@canonical.com> wrote:
+>>>>
+>>>> From: Colin Ian King <colin.king@canonical.com>
+>>>>
+>>>> Some file systems such as squashfs do not set the UUID in the
+>>>> superblock resulting in a zero'd UUID.  In cases were two or more
+>>>> of these file systems are overlayed on the lower layer we can hit
+>>>> overlay corruption issues because identical zero'd overlayfs UUIDs
+>>>> are impossible to differentiate between.  This can be fixed by
+>>>> creating an overlayfs UUID based on the file system from the
+>>>> superblock s_magic and s_dev fields.  (This currently seems like
+>>>> enough information to be able create a UUID, but the could be
+>>>> scope to use other super block fields such as the pointer s_fs_info
+>>>> but may need some obfuscation).
+>>>>
 >>>
->>> From: Colin Ian King <colin.king@canonical.com>
+>>> The fix is incorrent. uuid stored in xattr needs to have persistent properties.
+>>> In the use case that you describe, the origin file handle should simply be
+>>> ignored.
 >>>
->>> Some file systems such as squashfs do not set the UUID in the
->>> superblock resulting in a zero'd UUID.  In cases were two or more
->>> of these file systems are overlayed on the lower layer we can hit
->>> overlay corruption issues because identical zero'd overlayfs UUIDs
->>> are impossible to differentiate between.  This can be fixed by
->>> creating an overlayfs UUID based on the file system from the
->>> superblock s_magic and s_dev fields.  (This currently seems like
->>> enough information to be able create a UUID, but the could be
->>> scope to use other super block fields such as the pointer s_fs_info
->>> but may need some obfuscation).
->>>
+>>> Please test attached patch.
 >>
->> The fix is incorrent. uuid stored in xattr needs to have persistent properties.
->> In the use case that you describe, the origin file handle should simply be
->> ignored.
+>> Thanks for the patch. Tested, and the error still occurs:
 >>
->> Please test attached patch.
+>> [  163.959633] overlayfs: invalid origin (etc/.pwd.lock, ftype=8000,
+>> origin ftype=4000).
 > 
-> Thanks for the patch. Tested, and the error still occurs:
-> 
-> [  163.959633] overlayfs: invalid origin (etc/.pwd.lock, ftype=8000,
-> origin ftype=4000).
+> Added debug, seems like nouuid is not being set to true, nouuid is false
+> on the layers 0 and 1.
 
-Added debug, seems like nouuid is not being set to true, nouuid is false
-on the layers 0 and 1.
+So nouuid is not being set in ovl_lower_uuid_ok() because the code is
+returning early because of the following statement:
+
+if (!ofs->config.nfs_export && !(ofs->config.index && ofs->upper_mnt))
+	return true;
+
+..and not getting to the following for-loop.
 
 > 
-> Colin
-> 
 >>
->> Thanks,
->> Amir.
+>> Colin
+>>
+>>>
+>>> Thanks,
+>>> Amir.
+>>>
 >>
 > 
 
