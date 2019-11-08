@@ -2,159 +2,64 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 689ABF2CCA
-	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Nov 2019 11:50:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1559F4286
+	for <lists+linux-unionfs@lfdr.de>; Fri,  8 Nov 2019 09:49:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387958AbfKGKuA (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 7 Nov 2019 05:50:00 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:55981 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727707AbfKGKuA (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 7 Nov 2019 05:50:00 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iSfMT-0007Gf-UD; Thu, 07 Nov 2019 10:49:57 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Miklos Szeredi <mszeredi@redhat.com>,
-        Amir Goldstein <amir73il@gmail.com>,
-        linux-unionfs@vger.kernel.org, stable@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][V2] ovl: fix lookup failure on multi lower squashfs
-Date:   Thu,  7 Nov 2019 10:49:57 +0000
-Message-Id: <20191107104957.306383-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1729873AbfKHItL convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-unionfs@lfdr.de>); Fri, 8 Nov 2019 03:49:11 -0500
+Received: from smtp2.axis.com ([195.60.68.18]:6671 "EHLO smtp2.axis.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730281AbfKHItL (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Fri, 8 Nov 2019 03:49:11 -0500
+X-Greylist: delayed 427 seconds by postgrey-1.27 at vger.kernel.org; Fri, 08 Nov 2019 03:49:10 EST
+IronPort-SDR: WvRnsVaQdIw9h4ToGnaAScFovIcj8ixDqnHUkvokG0Y1Rbohu6FQ7yHp8IuPJ+iW5qA4ANdHim
+ s0eEI9Pjg3sB4d03zBdyoHeVfkRWnYbWx97P/MvJ5tH3JrrsSKjg+XWgIk9pfj87fBLccRlpiL
+ wYnWFo3Z8T9BIE67fa3t/sSXpddBzmpXuXNLhJZzUdFd8scqp59EEIjfLN4UjRRvUH4xJVXKQy
+ DJkMCckabPIVg3NwIKCSwPjimkuwr5NIYq7+h/U+hljSMJOptqT9y65aHKArD1/DiwVHboO6hb
+ tSI=
+X-IronPort-AV: E=Sophos;i="5.68,280,1569276000"; 
+   d="scan'208";a="2223074"
+X-Axis-User: NO
+X-Axis-NonUser: YES
+X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
+From:   Anders Dellien <anders.dellien@axis.com>
+To:     "linux-unionfs@vger.kernel.org" <linux-unionfs@vger.kernel.org>,
+        "miklos@szeredi.hu" <miklos@szeredi.hu>
+Subject: [Help] Problem when using overlayfs with LoadPin
+Thread-Topic: [Help] Problem when using overlayfs with LoadPin
+Thread-Index: AQHVlg+AU4rtIfIfBEmjUkXD88NDhg==
+Date:   Fri, 8 Nov 2019 08:42:02 +0000
+Message-ID: <1573202522019.97305@axis.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.0.5.60]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hi all,
 
-In the past, overlayfs required that lower fs have non null uuid in
-order to support nfs export and decode copy up origin file handles.
+I have previously successfully used LoadPin [https://www.kernel.org/doc/html/latest/admin-guide/LSM/LoadPin.html]
+together with overlayfs, however commit a6518f "vfs: don't open real" introduces a regression.
 
-Commit 9df085f3c9a2 ("ovl: relax requirement for non null uuid of
-lower fs") relaxed this requirement for nfs export support, as long
-as uuid (even if null) is unique among all lower fs.
+(from loadpin.c):
 
-However, said commit unintentionally also relaxed the non null uuid
-requirement for decoding copy up origin file handles, regardless of
-the unique uuid requirement.
+        /* file_dentry sees through overlays */
+        load_root = file_dentry(file)->d_sb;  (here, load_root->s_bdev is NULL and not the actual block device from the lower layer)
 
-Amend this mistake by disabling decoding of copy up origin file handle
-from lower fs with a conflicting uuid.
+Questions:
+* Maybe this is expected behavior and I am doing something wrong? Maybe there is some build- or mount option that
+could fix the problem?
+* If this really is a bug in overlayfs then I would be happy to try to fix it - however as I am not familiar with the code
+I would very much appreciate if someone more knowledgeable could point me in the right direction.
 
-We still encode copy up origin file handles from those fs, because
-file handles like those already exist in the wild and because they
-might provide useful information in the future.
-
-Reported-by: Colin Ian King <colin.king@canonical.com>
-Link: https://lore.kernel.org/lkml/20191106234301.283006-1-colin.king@canonical.com/
-Fixes: 9df085f3c9a2 ("ovl: relax requirement for non null uuid ...")
-Cc: stable@vger.kernel.org # v4.20+
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- fs/overlayfs/namei.c     |  8 ++++++++
- fs/overlayfs/ovl_entry.h |  2 ++
- fs/overlayfs/super.c     | 16 ++++++++++------
- 3 files changed, 20 insertions(+), 6 deletions(-)
-
-diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
-index e9717c2f7d45..f47c591402d7 100644
---- a/fs/overlayfs/namei.c
-+++ b/fs/overlayfs/namei.c
-@@ -325,6 +325,14 @@ int ovl_check_origin_fh(struct ovl_fs *ofs, struct ovl_fh *fh, bool connected,
- 	int i;
- 
- 	for (i = 0; i < ofs->numlower; i++) {
-+		/*
-+		 * If lower fs uuid is not unique among lower fs we cannot match
-+		 * fh->uuid to layer.
-+		 */
-+		if (ofs->lower_layers[i].fsid &&
-+		    ofs->lower_layers[i].fs->bad_uuid)
-+			continue;
-+
- 		origin = ovl_decode_real_fh(fh, ofs->lower_layers[i].mnt,
- 					    connected);
- 		if (origin)
-diff --git a/fs/overlayfs/ovl_entry.h b/fs/overlayfs/ovl_entry.h
-index a8279280e88d..28348c44ea5b 100644
---- a/fs/overlayfs/ovl_entry.h
-+++ b/fs/overlayfs/ovl_entry.h
-@@ -22,6 +22,8 @@ struct ovl_config {
- struct ovl_sb {
- 	struct super_block *sb;
- 	dev_t pseudo_dev;
-+	/* Unusable (conflicting) uuid */
-+	bool bad_uuid;
- };
- 
- struct ovl_layer {
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index afbcb116a7f1..5d4faab57ba0 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -1255,17 +1255,18 @@ static bool ovl_lower_uuid_ok(struct ovl_fs *ofs, const uuid_t *uuid)
- {
- 	unsigned int i;
- 
--	if (!ofs->config.nfs_export && !(ofs->config.index && ofs->upper_mnt))
--		return true;
--
- 	for (i = 0; i < ofs->numlowerfs; i++) {
- 		/*
- 		 * We use uuid to associate an overlay lower file handle with a
- 		 * lower layer, so we can accept lower fs with null uuid as long
- 		 * as all lower layers with null uuid are on the same fs.
-+		 * if we detect multiple lower fs with the same uuid, we
-+		 * disable lower file handle decoding on all of them.
- 		 */
--		if (uuid_equal(&ofs->lower_fs[i].sb->s_uuid, uuid))
-+		if (uuid_equal(&ofs->lower_fs[i].sb->s_uuid, uuid)) {
-+			ofs->lower_fs[i].bad_uuid = true;
- 			return false;
-+		}
- 	}
- 	return true;
- }
-@@ -1277,6 +1278,7 @@ static int ovl_get_fsid(struct ovl_fs *ofs, const struct path *path)
- 	unsigned int i;
- 	dev_t dev;
- 	int err;
-+	bool bad_uuid = false;
- 
- 	/* fsid 0 is reserved for upper fs even with non upper overlay */
- 	if (ofs->upper_mnt && ofs->upper_mnt->mnt_sb == sb)
-@@ -1287,10 +1289,11 @@ static int ovl_get_fsid(struct ovl_fs *ofs, const struct path *path)
- 			return i + 1;
- 	}
- 
--	if (!ovl_lower_uuid_ok(ofs, &sb->s_uuid)) {
-+	if (ofs->upper_mnt && !ovl_lower_uuid_ok(ofs, &sb->s_uuid)) {
-+		bad_uuid = true;
- 		ofs->config.index = false;
- 		ofs->config.nfs_export = false;
--		pr_warn("overlayfs: %s uuid detected in lower fs '%pd2', falling back to index=off,nfs_export=off.\n",
-+		pr_warn("overlayfs: %s uuid detected in lower fs '%pd2', enforcing index=off,nfs_export=off.\n",
- 			uuid_is_null(&sb->s_uuid) ? "null" : "conflicting",
- 			path->dentry);
- 	}
-@@ -1303,6 +1306,7 @@ static int ovl_get_fsid(struct ovl_fs *ofs, const struct path *path)
- 
- 	ofs->lower_fs[ofs->numlowerfs].sb = sb;
- 	ofs->lower_fs[ofs->numlowerfs].pseudo_dev = dev;
-+	ofs->lower_fs[ofs->numlowerfs].bad_uuid = bad_uuid;
- 	ofs->numlowerfs++;
- 
- 	return ofs->numlowerfs;
--- 
-2.20.1
+Thanks,
+Anders
 
