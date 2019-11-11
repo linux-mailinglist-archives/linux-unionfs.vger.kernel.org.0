@@ -2,93 +2,114 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF9EDF6F04
-	for <lists+linux-unionfs@lfdr.de>; Mon, 11 Nov 2019 08:30:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49372F6F27
+	for <lists+linux-unionfs@lfdr.de>; Mon, 11 Nov 2019 08:40:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726360AbfKKHaM (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 11 Nov 2019 02:30:12 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:42372 "EHLO
+        id S1726804AbfKKHkU (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 11 Nov 2019 02:40:20 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:44656 "EHLO
         mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726785AbfKKHaL (ORCPT
+        with ESMTP id S1726360AbfKKHkU (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 11 Nov 2019 02:30:11 -0500
-Received: by mail-wr1-f68.google.com with SMTP id a15so13378359wrf.9;
-        Sun, 10 Nov 2019 23:30:08 -0800 (PST)
+        Mon, 11 Nov 2019 02:40:20 -0500
+Received: by mail-wr1-f68.google.com with SMTP id f2so13382956wrs.11;
+        Sun, 10 Nov 2019 23:40:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=NY5K7XoiMGGUj/e5AbZmCH/5tz6YlPNT7ys8PeCHnBo=;
-        b=eTKTmUVKe+sAUtiEjIll4p0x9ja0Q3uLF/osiHU5V5KowU6Kv9LUN4XeYfcRmvSjqf
-         McUAgNxxQSxCSXG7XVtan1vNw0rj1wbcmx2Zqt0Os2cD68MUAA7vBnR/On94FFcf4dgN
-         FpyAgYyQVr81uXnsJumM2b58bOeBHw8lrcX1kzHOq9N+B1Gmn3GWKBBxcDgwxSaa+Yow
-         RUL/76g0l6khK3o07kA8fpfkegCYg7d0LyaCs/+57FWeIFcmsyRpkDB2Lbe7tuBReXZv
-         9aKReHYw4+CO2WWoyrrfinmNnX9RtLUzq8bxlJIHJAhLwhSAQqTsSlMMA3/ylGs/RkC7
-         Z6RQ==
+        bh=MoAGf49PP11xkmCo2JW1cZjvmPda4h92cn+3cutaohs=;
+        b=DAHA4kG+5pFgJmDpNVdg0UL3r+mBvcxiQvSyDdR0PtUsta6XaZbCBKJSOH+5uxBWfA
+         Wy6Mz+yqOihfdQqk711MaMtzxm2HYa6YNh7sux7NXk+J+yBui5Yq0VksF75uAXsDbcPv
+         wYmxZrcO3YYhjGJQFWgq71m0gEBXvjH6143XdTAR/eLq0qPcW0AmHdph3c9C2A/bf4Y8
+         6dfKY/f1/I6Qpl/ybFYvg+9KFyhiJolkgGirieZi5VQKCLGTo1z6ANpia7oJb5a/hpmA
+         7H8PAGytYvqNl8hyXMD/u1PvOT9934K0dLKAnKQk5y5Dtc+hn/wLgaBYji7wT8r+4OO0
+         M5VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=NY5K7XoiMGGUj/e5AbZmCH/5tz6YlPNT7ys8PeCHnBo=;
-        b=bufWZGvvJ85j/gadD6Fp9cfv6lDETnAUmXQ13j84Itf6kxOhQB1IcS18Wn3LfKDz2i
-         9N+U4aQNT9Z7PuegZ8/5iIFfPusGuBO29NqgHUsbUkIimpfomBOJYxgTHqFsBVURmcVJ
-         YRuMpzpt9mIMJ+dZxFBX7PMmiveTt/323Puo++j+Bcg8dEWE6OYLugFIb4XMq5an2J8d
-         uFyV/qnSQGm/5P7aIWyiO1bCBbb9ry7LXPUhHUGEgdXSn3+CoEIMNv9Df3iHNIn1rf+R
-         Sfzfim20RnHTyWSmvJJiG3WfNytAL0HhndDrA8lWGu/J8DHusDo1RVYAiZbb0GlIo96A
-         e/7A==
-X-Gm-Message-State: APjAAAXTkrxwDLvtWFIkKvr74RnyVWES+qQXyo3jYN2j9yMHQE8dOHR9
-        +EiliYfdLsJ/cxIBP0v0r3c=
-X-Google-Smtp-Source: APXvYqxRMATLlDFdxdTENYHygL9EJBYTfK+n2ZhiW1zS3MQ2uZBQQBxovLiP+oDNDjNuRVYoT4yHng==
-X-Received: by 2002:adf:b64e:: with SMTP id i14mr18500662wre.332.1573457407820;
-        Sun, 10 Nov 2019 23:30:07 -0800 (PST)
+        bh=MoAGf49PP11xkmCo2JW1cZjvmPda4h92cn+3cutaohs=;
+        b=jAbLvaWfyQXg8S/4v8+wCXF5KpWLzmzkj5zn7ovRbpg23TYSd6BahkgwHxjVfNhePi
+         sKnaViZbwiFsjTK9gKZRwm/Kyy1J+iTs8ejKfLfRvDCoGbKp1txoqHcSAe8nbZ9F6G1W
+         LVLQ8A/WkhU6ahXY//p/6tHJEqUAWzjSkJ6DE6WSbPh2Q6Kzt3jxat6LyOyTHoC2jUUt
+         VfOPLO8b3QogO5DFMhi0frrdJr+48YYhk3Jn4CnZHP6SOtBH0zQroqm6pG2RE6Taec7o
+         Wx/ls6wzy98MI42AQm0gl8U378OIXbEtSIcwFIYTob0SgNhgQLHEIJ9FfzHwRkip30Sw
+         KpUA==
+X-Gm-Message-State: APjAAAV4mW823LahLU44IdDcfo//kue31oNN5XoD431nDmiaVwyECCsM
+        XOWEciCjaFS6ZeOxrum5s54=
+X-Google-Smtp-Source: APXvYqyC4oQEaSD10Jq+fJZB91XYzHQHB/wMKJbN4v+7h72FCf4QnSmHUdMVMdTb6t2rsObMgLWu0w==
+X-Received: by 2002:adf:ed48:: with SMTP id u8mr18448337wro.28.1573458018006;
+        Sun, 10 Nov 2019 23:40:18 -0800 (PST)
 Received: from localhost.localdomain ([94.230.83.228])
-        by smtp.gmail.com with ESMTPSA id a6sm18960800wrh.69.2019.11.10.23.30.06
+        by smtp.gmail.com with ESMTPSA id j63sm20557270wmj.46.2019.11.10.23.40.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Nov 2019 23:30:07 -0800 (PST)
+        Sun, 10 Nov 2019 23:40:17 -0800 (PST)
 From:   Amir Goldstein <amir73il@gmail.com>
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Deepa Dinamani <deepa.kernel@gmail.com>,
-        linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: [PATCH] ovl: fix timestamp limits
-Date:   Mon, 11 Nov 2019 09:30:00 +0200
-Message-Id: <20191111073000.2957-1-amir73il@gmail.com>
+To:     Eryu Guan <guaneryu@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        linux-unionfs@vger.kernel.org, fstests@vger.kernel.org
+Subject: [PATCH] overlay: support timestamp range check
+Date:   Mon, 11 Nov 2019 09:40:10 +0200
+Message-Id: <20191111074010.3738-1-amir73il@gmail.com>
 X-Mailer: git-send-email 2.17.1
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Overlayfs timestamp overflow limits should be inherrited from upper
-filesystem.
+Overlayfs timestamp range is the same as base fs timestamp range
 
-The current behavior, when overlayfs is over an underlying filesystem
-that does not support post 2038 timestamps (e.g. xfs), is that overlayfs
-overflows post 2038 timestamps instead of clamping them.
-
-This change fixes xfstest generic/402 (verify filesystem timestamps for
-supported ranges).
-
-Cc: Deepa Dinamani <deepa.kernel@gmail.com>
 Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 ---
 
-(*) generic/402 currently does 'notrun' on overlayfs and need
-    a small fix that I will post shortly
+Eryu,
 
- fs/overlayfs/super.c | 2 ++
- 1 file changed, 2 insertions(+)
+This change will cause the test to start running and failing on upstream
+kernel with overlayfs over some fs (e.g. xfs/ext4).
 
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index 5d4faab57ba0..44915874fccb 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -1621,6 +1621,8 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
+The kernel fix is posted:
+https://lore.kernel.org/linux-fsdevel/20191111073000.2957-1-amir73il@gmail.com/T/#u
+
+Thanks,
+Amir.
+
+ common/rc | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/common/rc b/common/rc
+index b988e912..e5535279 100644
+--- a/common/rc
++++ b/common/rc
+@@ -1978,13 +1978,14 @@ _require_timestamp_range()
+ _filesystem_timestamp_range()
+ {
+ 	local device=${1:-$TEST_DEV}
++	local fstyp=${2:-$FSTYP}
+ 	u32max=$(((1<<32)-1))
+ 	s32min=-$((1<<31))
+ 	s32max=$(((1<<31)-1))
+ 	s64max=$(((1<<63)-1))
+ 	s64min=$((1<<63))
  
- 		sb->s_stack_depth = ofs->upper_mnt->mnt_sb->s_stack_depth;
- 		sb->s_time_gran = ofs->upper_mnt->mnt_sb->s_time_gran;
-+		sb->s_time_min = ofs->upper_mnt->mnt_sb->s_time_min;
-+		sb->s_time_max = ofs->upper_mnt->mnt_sb->s_time_max;
- 
- 	}
- 	oe = ovl_get_lowerstack(sb, ofs);
+-	case $FSTYP in
++	case $fstyp in
+ 	ext2)
+ 		echo "$s32min $s32max"
+ 		;;
+@@ -2005,6 +2006,13 @@ _filesystem_timestamp_range()
+ 	btrfs)
+ 		echo "$s64min $s64max"
+ 		;;
++	overlay)
++		if [ ! -z $OVL_BASE_FSTYP -a $OVL_BASE_FSTYP != "overlay" ]; then
++			_filesystem_timestamp_range $OVL_BASE_TEST_DEV $OVL_BASE_FSTYP
++		else
++			echo "-1 -1"
++		fi
++		;;
+ 	*)
+ 		echo "-1 -1"
+ 		;;
 -- 
 2.17.1
 
