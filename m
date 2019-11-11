@@ -2,114 +2,61 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49372F6F27
-	for <lists+linux-unionfs@lfdr.de>; Mon, 11 Nov 2019 08:40:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3AB5F82E6
+	for <lists+linux-unionfs@lfdr.de>; Mon, 11 Nov 2019 23:31:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726804AbfKKHkU (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 11 Nov 2019 02:40:20 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:44656 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726360AbfKKHkU (ORCPT
+        id S1726951AbfKKWbz (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 11 Nov 2019 17:31:55 -0500
+Received: from mail-io1-f68.google.com ([209.85.166.68]:43307 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726877AbfKKWby (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 11 Nov 2019 02:40:20 -0500
-Received: by mail-wr1-f68.google.com with SMTP id f2so13382956wrs.11;
-        Sun, 10 Nov 2019 23:40:18 -0800 (PST)
+        Mon, 11 Nov 2019 17:31:54 -0500
+Received: by mail-io1-f68.google.com with SMTP id c11so16399761iom.10;
+        Mon, 11 Nov 2019 14:31:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=MoAGf49PP11xkmCo2JW1cZjvmPda4h92cn+3cutaohs=;
-        b=DAHA4kG+5pFgJmDpNVdg0UL3r+mBvcxiQvSyDdR0PtUsta6XaZbCBKJSOH+5uxBWfA
-         Wy6Mz+yqOihfdQqk711MaMtzxm2HYa6YNh7sux7NXk+J+yBui5Yq0VksF75uAXsDbcPv
-         wYmxZrcO3YYhjGJQFWgq71m0gEBXvjH6143XdTAR/eLq0qPcW0AmHdph3c9C2A/bf4Y8
-         6dfKY/f1/I6Qpl/ybFYvg+9KFyhiJolkgGirieZi5VQKCLGTo1z6ANpia7oJb5a/hpmA
-         7H8PAGytYvqNl8hyXMD/u1PvOT9934K0dLKAnKQk5y5Dtc+hn/wLgaBYji7wT8r+4OO0
-         M5VQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UzExIHvmaD+XcRMUyZx/D1Vv4Cdb5bDDAD/wOjWahK8=;
+        b=njlS48w8YU8HQrHl2Y86sW78e8A/XuIs0Zfr2jwc9dR1ZPEcS64BKcZk6C/ZAoEpo9
+         nlPHCidW2coUa2ef3KgoQUSQhUdo1EeuVGohf6OVZRNuN0PAlDkFslk9xYRuPWQVqiKP
+         oxkixyJpSYuYw/h9EsSOCnq7Gp7rYuvveU8XWzwXk9joJ+AxGAz4hYnjpkHD6ZK0bDcq
+         /6Wlp2+yDGrG9GElZD6KdJx77tAZlZFf3zCGwDjUWMktTEv4I24aozem/JStjYW9OWWw
+         DDvIbBM79OHgI57+H9DpYeR1gxnNQ/1SU4EAaJCP60fJZ2SfsKNZsPS4aIATDzH7M6GL
+         vjdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=MoAGf49PP11xkmCo2JW1cZjvmPda4h92cn+3cutaohs=;
-        b=jAbLvaWfyQXg8S/4v8+wCXF5KpWLzmzkj5zn7ovRbpg23TYSd6BahkgwHxjVfNhePi
-         sKnaViZbwiFsjTK9gKZRwm/Kyy1J+iTs8ejKfLfRvDCoGbKp1txoqHcSAe8nbZ9F6G1W
-         LVLQ8A/WkhU6ahXY//p/6tHJEqUAWzjSkJ6DE6WSbPh2Q6Kzt3jxat6LyOyTHoC2jUUt
-         VfOPLO8b3QogO5DFMhi0frrdJr+48YYhk3Jn4CnZHP6SOtBH0zQroqm6pG2RE6Taec7o
-         Wx/ls6wzy98MI42AQm0gl8U378OIXbEtSIcwFIYTob0SgNhgQLHEIJ9FfzHwRkip30Sw
-         KpUA==
-X-Gm-Message-State: APjAAAV4mW823LahLU44IdDcfo//kue31oNN5XoD431nDmiaVwyECCsM
-        XOWEciCjaFS6ZeOxrum5s54=
-X-Google-Smtp-Source: APXvYqyC4oQEaSD10Jq+fJZB91XYzHQHB/wMKJbN4v+7h72FCf4QnSmHUdMVMdTb6t2rsObMgLWu0w==
-X-Received: by 2002:adf:ed48:: with SMTP id u8mr18448337wro.28.1573458018006;
-        Sun, 10 Nov 2019 23:40:18 -0800 (PST)
-Received: from localhost.localdomain ([94.230.83.228])
-        by smtp.gmail.com with ESMTPSA id j63sm20557270wmj.46.2019.11.10.23.40.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Nov 2019 23:40:17 -0800 (PST)
-From:   Amir Goldstein <amir73il@gmail.com>
-To:     Eryu Guan <guaneryu@gmail.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        linux-unionfs@vger.kernel.org, fstests@vger.kernel.org
-Subject: [PATCH] overlay: support timestamp range check
-Date:   Mon, 11 Nov 2019 09:40:10 +0200
-Message-Id: <20191111074010.3738-1-amir73il@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UzExIHvmaD+XcRMUyZx/D1Vv4Cdb5bDDAD/wOjWahK8=;
+        b=B6kxHlFnHEMRUHYI1MC2Cb/mlTlVCYV6BsLp9bgTw7mU5B/atJlNyhhM3pd+HVhw93
+         3bLCi6gwFSFcrY2PWfU5u8rBbYGY/kwr+fuM1lflAvFqEfQ7WXLW1cZPLnLtDzc93CkG
+         XCn1upUC5IU/OlhFWuEirGzbccPVhEOH6JPCYREYN/iQPoBlGmzG1zzc7lYGD+/Nxtxg
+         ZNqgVrtreNa+GsgH7tGc0sBC9w2+jXwzEXAJQIQDa5XP1u8rDp4Y8lIrBhewf+5WRIfX
+         hgjLY3RGyrf03Y/EYdsaaJd5OYc9utXX7EiSA/j6KA/15+MwmgYyj5A413M6avvNyQLq
+         heyA==
+X-Gm-Message-State: APjAAAVx4/m8EolZXaOPNmKqDg8DmHyQlqI4JVJ1nJDO62PfPIAEcZOy
+        6z8ftD24tdjv9DcgcHy76PedTX6aF4Y/20wHXiE=
+X-Google-Smtp-Source: APXvYqzA78x0sBf2hxDR1ZLxIPKxz0E0rGJlYYdFqXSoyTjFjx9S0mUM8Pa7ymGZQqEAynyUIcNVF9q8JRhPqP01HFU=
+X-Received: by 2002:a6b:e403:: with SMTP id u3mr27887331iog.130.1573511513872;
+ Mon, 11 Nov 2019 14:31:53 -0800 (PST)
+MIME-Version: 1.0
+References: <20191111073000.2957-1-amir73il@gmail.com>
+In-Reply-To: <20191111073000.2957-1-amir73il@gmail.com>
+From:   Deepa Dinamani <deepa.kernel@gmail.com>
+Date:   Mon, 11 Nov 2019 14:31:41 -0800
+Message-ID: <CABeXuvpfJqXBdXf5bz62Y561FewnXUrWe6peB5oN0Sm4Cy0yEA@mail.gmail.com>
+Subject: Re: [PATCH] ovl: fix timestamp limits
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org,
+        Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Overlayfs timestamp range is the same as base fs timestamp range
+Thanks for the fix.
 
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
----
-
-Eryu,
-
-This change will cause the test to start running and failing on upstream
-kernel with overlayfs over some fs (e.g. xfs/ext4).
-
-The kernel fix is posted:
-https://lore.kernel.org/linux-fsdevel/20191111073000.2957-1-amir73il@gmail.com/T/#u
-
-Thanks,
-Amir.
-
- common/rc | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/common/rc b/common/rc
-index b988e912..e5535279 100644
---- a/common/rc
-+++ b/common/rc
-@@ -1978,13 +1978,14 @@ _require_timestamp_range()
- _filesystem_timestamp_range()
- {
- 	local device=${1:-$TEST_DEV}
-+	local fstyp=${2:-$FSTYP}
- 	u32max=$(((1<<32)-1))
- 	s32min=-$((1<<31))
- 	s32max=$(((1<<31)-1))
- 	s64max=$(((1<<63)-1))
- 	s64min=$((1<<63))
- 
--	case $FSTYP in
-+	case $fstyp in
- 	ext2)
- 		echo "$s32min $s32max"
- 		;;
-@@ -2005,6 +2006,13 @@ _filesystem_timestamp_range()
- 	btrfs)
- 		echo "$s64min $s64max"
- 		;;
-+	overlay)
-+		if [ ! -z $OVL_BASE_FSTYP -a $OVL_BASE_FSTYP != "overlay" ]; then
-+			_filesystem_timestamp_range $OVL_BASE_TEST_DEV $OVL_BASE_FSTYP
-+		else
-+			echo "-1 -1"
-+		fi
-+		;;
- 	*)
- 		echo "-1 -1"
- 		;;
--- 
-2.17.1
-
+Acked-by: Deepa Dinamani <deepa.kernel@gmail.com>
