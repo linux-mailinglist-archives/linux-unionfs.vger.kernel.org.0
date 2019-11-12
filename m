@@ -2,54 +2,55 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0F9BF9514
-	for <lists+linux-unionfs@lfdr.de>; Tue, 12 Nov 2019 17:06:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11C33F95EE
+	for <lists+linux-unionfs@lfdr.de>; Tue, 12 Nov 2019 17:45:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726738AbfKLQGZ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 12 Nov 2019 11:06:25 -0500
-Received: from mail-yw1-f65.google.com ([209.85.161.65]:46584 "EHLO
-        mail-yw1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725954AbfKLQGZ (ORCPT
+        id S1727398AbfKLQpR (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 12 Nov 2019 11:45:17 -0500
+Received: from mail-io1-f68.google.com ([209.85.166.68]:39548 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726896AbfKLQpR (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 12 Nov 2019 11:06:25 -0500
-Received: by mail-yw1-f65.google.com with SMTP id i2so6590278ywg.13;
-        Tue, 12 Nov 2019 08:06:24 -0800 (PST)
+        Tue, 12 Nov 2019 11:45:17 -0500
+Received: by mail-io1-f68.google.com with SMTP id k1so19456088ioj.6;
+        Tue, 12 Nov 2019 08:45:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ypu9S5NRvgB1jgf0WfQSzfM4hFIMr3jgA84CuN2cuZQ=;
-        b=JEu52vo3k/XO0Svx0DDr5qhOveZFNH2IoyTYnXmjUBWyKkTN5HKsNQ3pd4nsSyDYeJ
-         pePuV4Hm9bRhfp+Oim4K9utU3xWx5pIOHEzcj5i8Ve3JkPECWxDapG78EDLGvlESH68B
-         fXkPATCxKzJN8QTw6y0DE7qP30Cg26D//106lpkurbgbP8Q6aB/jcPZcp0Ds7NhQqGdT
-         rYDBHw6uKVBY5Kb99HsHcrNK2fObdu9zXU3IhZNdGDm9M3V1ntbVH0M1ORnVQ3Kte962
-         4gCaZRxCNK5JH61t1ybe+ieLa0t+E5xZtauYdp8p5UoJ9c1PvN5uk0KpvYFIVuWVPPN/
-         lD3w==
+        bh=PobkGdQvYUHoqWoS3SPDAuh4l/MIV5b0WGjvMmrndiU=;
+        b=iI/yGc/Tdnqjir5Ca3/F5FQb45PSQTVcgToixXaIkI3Uzh1+vXwgFXPHjnpeVtk4vN
+         BWGRNT4b0kN6+d2DFLxL98kmhwcmh5M7V+TUdGLRow2XZOEAD9/VX6tqvoYhkBcUXKLg
+         Op4DT6hjqb3bzsS9804lknY7nJ2O3GFuhMOz542Kk/gUuMnlnv5quu3qi41b20looD4X
+         BlrWW9iV8TSsld2y8N5xOY9LodKiNKG0/8k4ps7D1+XuZ6r+YIT5568VwQZTL98W2Hjp
+         0HpqeSENpG1GHMzgbK59qq6o33SJM6u+szS87OUTBAecu8IK43VJbbpuNNk6llzbb8r4
+         uMZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ypu9S5NRvgB1jgf0WfQSzfM4hFIMr3jgA84CuN2cuZQ=;
-        b=sf0w0RwwARFGvT/Z2D0uY9qY3Gq7hcq6Kd7I2G2fN6A1VS7AYMAC7mUATrJDbjfQl3
-         USeYVvyC5kKizcp3y/e6FqQM66HdSNBwUVsouoGoRftq/0Xi26Op1iifn18wu0X5OaZZ
-         LbnP5cBJOX5k/rJ54VO5Epm/Wv5mcgNKxYZstXtNzeWZ9iQxogqDDmi5KFTfv85te706
-         j2KOJ1vjGiQODFuMOo8J68sGf0++ujMzJIWLb1CpNyaDIsTVA9BxY6S4aTTmYLaTTPo8
-         CDiReoZnngAhfIUIT5bB5dMreody3VwSi1qXsgFVgYB0pIyny5Sq1+ioZFQEMcizOZJu
-         E5Qw==
-X-Gm-Message-State: APjAAAUXqxOf//LIxFJ/cABpNUIVoBs/ptoQIAwnzrjzCv8tp1bI3MLv
-        oFUojlF/5XoD45xqgkI4IcpfcX+QG4b5S5GDfEw=
-X-Google-Smtp-Source: APXvYqz5T+lthf9ksExwvifc1gSq7vIf5VEAzIpb/3uz6BwomyXeVa0psdem1gn1oiJcnNlQS2UsH/XNRApncx1woZk=
-X-Received: by 2002:a81:234c:: with SMTP id j73mr20534364ywj.181.1573574783924;
- Tue, 12 Nov 2019 08:06:23 -0800 (PST)
+        bh=PobkGdQvYUHoqWoS3SPDAuh4l/MIV5b0WGjvMmrndiU=;
+        b=MzUgYKhTNM+/ESinte6YHqb8CmLbGHU9/1a9q52zH1aosGSC0rnPUrDrfwFjSL7x9i
+         ZXB6ruDQm7pfvvXo5ocTplJZtrbtqrsW6B+2Bh4KgZZhVHlw2QIItdsaLXvy8JdaqA7q
+         kGL0w9DVFkvbpxS3p+tyhrMTH0kYLQuJ78zH2bUr2nqjdi28nhElWu3Bsx0O+K0uP0Gl
+         AcU4/OyZD+IKToOyzvsCiSkND5j8Hlhoeq8JtlOf1E4LEDOiYCklYfUqKNX2Lzg+Qh7h
+         h0pr/m6h3nbe2Ai6fTElHAkBL5U4VX/5HQLsJq4Qn6HohjYNi8lUOQ92Ow3ED3KYi4Yc
+         PBNQ==
+X-Gm-Message-State: APjAAAUree1TBLmhRTBTejE1l4fHG9GLgUvOoOG/4yUD5d8t9PlC5Ckw
+        8mMYbht5tdplQOIBaP/crT351ATssFt/XcnojLuDyg==
+X-Google-Smtp-Source: APXvYqxu+fKORcLQiO0ZD+mCPKm7rg5cIan4So75YiHJ5GgugQP7AbyPA9XtiXiL1L3LHIKCjaMACff5iBOsk1mKr74=
+X-Received: by 2002:a6b:e403:: with SMTP id u3mr31742018iog.130.1573577116178;
+ Tue, 12 Nov 2019 08:45:16 -0800 (PST)
 MIME-Version: 1.0
 References: <20191111073000.2957-1-amir73il@gmail.com> <CAJfpegvASSszZoYOdX9dcffo0EUNGVe_b8RU3JTtn-tXr9O7eg@mail.gmail.com>
-In-Reply-To: <CAJfpegvASSszZoYOdX9dcffo0EUNGVe_b8RU3JTtn-tXr9O7eg@mail.gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Tue, 12 Nov 2019 18:06:12 +0200
-Message-ID: <CAOQ4uxhMqYWYnXfXrzU7Qtv8xpR6k_tR9CFSo01NLZSvqBOxsw@mail.gmail.com>
+ <CAOQ4uxhMqYWYnXfXrzU7Qtv8xpR6k_tR9CFSo01NLZSvqBOxsw@mail.gmail.com>
+In-Reply-To: <CAOQ4uxhMqYWYnXfXrzU7Qtv8xpR6k_tR9CFSo01NLZSvqBOxsw@mail.gmail.com>
+From:   Deepa Dinamani <deepa.kernel@gmail.com>
+Date:   Tue, 12 Nov 2019 08:45:04 -0800
+Message-ID: <CABeXuvreoQkM1A3JBONtfD7uVLvC5MQ0hDRKX5rEQ_VUFGER8w@mail.gmail.com>
 Subject: Re: [PATCH] ovl: fix timestamp limits
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Deepa Dinamani <deepa.kernel@gmail.com>,
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
         overlayfs <linux-unionfs@vger.kernel.org>,
         linux-fsdevel <linux-fsdevel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -58,26 +59,27 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Tue, Nov 12, 2019 at 5:48 PM Miklos Szeredi <miklos@szeredi.hu> wrote:
+On Tue, Nov 12, 2019 at 8:06 AM Amir Goldstein <amir73il@gmail.com> wrote:
 >
-> On Mon, Nov 11, 2019 at 8:30 AM Amir Goldstein <amir73il@gmail.com> wrote:
+> On Tue, Nov 12, 2019 at 5:48 PM Miklos Szeredi <miklos@szeredi.hu> wrote:
 > >
-> > Overlayfs timestamp overflow limits should be inherrited from upper
-> > filesystem.
+> > On Mon, Nov 11, 2019 at 8:30 AM Amir Goldstein <amir73il@gmail.com> wrote:
+> > >
+> > > Overlayfs timestamp overflow limits should be inherrited from upper
+> > > filesystem.
+> > >
+> > > The current behavior, when overlayfs is over an underlying filesystem
+> > > that does not support post 2038 timestamps (e.g. xfs), is that overlayfs
+> > > overflows post 2038 timestamps instead of clamping them.
 > >
-> > The current behavior, when overlayfs is over an underlying filesystem
-> > that does not support post 2038 timestamps (e.g. xfs), is that overlayfs
-> > overflows post 2038 timestamps instead of clamping them.
+> > How?  Isn't the clamping supposed to happen in the underlying filesystem anyway?
+> >
 >
-> How?  Isn't the clamping supposed to happen in the underlying filesystem anyway?
->
+> Not sure if it is supposed to be it doesn't.
+> It happens in do_utimes() -> utimes_common()
 
-Not sure if it is supposed to be it doesn't.
-It happens in do_utimes() -> utimes_common()
+Clamping also happens as part of current_time(). If this is called on
+an inode belonging to the upper fs, then the timestamps are clamped to
+those limits.
 
-clamping seems to happen when user sets the times,
-so setting the overlay limits to those of upper fs seems
-correct anyway.
-
-Thanks,
-Amir.
+-Deepa
