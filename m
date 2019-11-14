@@ -2,169 +2,86 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3240FB95E
-	for <lists+linux-unionfs@lfdr.de>; Wed, 13 Nov 2019 21:06:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35D90FC42D
+	for <lists+linux-unionfs@lfdr.de>; Thu, 14 Nov 2019 11:30:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726338AbfKMUGy (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 13 Nov 2019 15:06:54 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:43539 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726173AbfKMUGy (ORCPT
+        id S1726202AbfKNKa0 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 14 Nov 2019 05:30:26 -0500
+Received: from mail-io1-f66.google.com ([209.85.166.66]:36949 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726106AbfKNKa0 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 13 Nov 2019 15:06:54 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iUyuh-0007CI-O4; Wed, 13 Nov 2019 20:06:51 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Miklos Szeredi <mszeredi@redhat.com>,
-        Amir Goldstein <amir73il@gmail.com>,
-        linux-unionfs@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH][V4] ovl: fix lookup failure on multi lower squashfs
-Date:   Wed, 13 Nov 2019 20:06:51 +0000
-Message-Id: <20191113200651.114606-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Thu, 14 Nov 2019 05:30:26 -0500
+Received: by mail-io1-f66.google.com with SMTP id 1so6235069iou.4
+        for <linux-unionfs@vger.kernel.org>; Thu, 14 Nov 2019 02:30:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=q0ODQMjiIKKDNHMHFmstYPQVkSDb52CtygX5wXt7a60=;
+        b=RPQgdynYquk1oX1FlJYROA3WoECoE8TuBO6QFqoYnJX2y6zQvSgSS12bmkC2MMNyVm
+         ubKNHkff9bsXOxrsS8frUFNImLf/lTOBrv4PDhNbvVsWy/jR33CM+eyXSDYWyvYXuH1R
+         SsbDaX4F8xABNuwPY3VKxmfk0hUTpSr2JPeIY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=q0ODQMjiIKKDNHMHFmstYPQVkSDb52CtygX5wXt7a60=;
+        b=U2jBXg7wIqXKckIDJu0SKxCAEtU4MykCGJqBMBwbsdmlz2Kn6J79hrsPPGmEIkGirJ
+         Hm9edtEVyWQYfAk+70aquGDtfPoXzHoa1qOBEiv1TgpBJlUtM+fNpPAGmYly9D9DWriZ
+         AXiRrvPy4M0SC4ZRRE04kA5r+23yoIV1xFw1Fgd70uc8MUY4iUKsIpLNaJOXXQapbGLJ
+         ny0bVLYyrOTtrhMnqqXrkvXsTUK4g6NGdmtHUHH/qC/SFQ249rvEDcopYYDyfW6vhHN2
+         e6EohUJTyf1QUUA5E4jCxcy8fS2TcbNsgt/7g/aJCqbr/DcV8oMSneIwAOHqZCRYDiyx
+         aIwg==
+X-Gm-Message-State: APjAAAUF4qZI++mwr0gN8BBJnAwFAMQwcces1uCk5ERDiEljXTBmXffQ
+        DXKt/DNiWf27hEwnBZYTGggPjSm3Xt/sx8O3GyAvuw==
+X-Google-Smtp-Source: APXvYqyFB3goydsCrDzye1z3rnm33m5fU70E0wh+81ZMdqXoZNXF97wesNRGnM95NZF4bjAMv7oGDQM9lP5R7AgpLFI=
+X-Received: by 2002:a05:6638:9:: with SMTP id z9mr6880049jao.35.1573727425730;
+ Thu, 14 Nov 2019 02:30:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20191113200651.114606-1-colin.king@canonical.com>
+In-Reply-To: <20191113200651.114606-1-colin.king@canonical.com>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Thu, 14 Nov 2019 11:30:14 +0100
+Message-ID: <CAJfpegug-saOEigqDNKfwMR5qdzrbLnRBD=0eN5juGioFH_L_Q@mail.gmail.com>
+Subject: Re: [PATCH][V4] ovl: fix lookup failure on multi lower squashfs
+To:     Colin King <colin.king@canonical.com>
+Cc:     Miklos Szeredi <mszeredi@redhat.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-From: Amir Goldstein <amir73il@gmail.com>
+On Wed, Nov 13, 2019 at 9:06 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Amir Goldstein <amir73il@gmail.com>
+>
+> In the past, overlayfs required that lower fs have non null
+> uuid in order to support nfs export and decode copy up origin file handles.
+>
+> Commit 9df085f3c9a2 ("ovl: relax requirement for non null uuid of
+> lower fs") relaxed this requirement for nfs export support, as long
+> as uuid (even if null) is unique among all lower fs.
 
-In the past, overlayfs required that lower fs have non null
-uuid in order to support nfs export and decode copy up origin file handles.
+I see another corner case:
 
-Commit 9df085f3c9a2 ("ovl: relax requirement for non null uuid of
-lower fs") relaxed this requirement for nfs export support, as long
-as uuid (even if null) is unique among all lower fs.
+n- two filesystems, A and B, both have null uuid
+ - upper layer is on A
+ - lower layer 1 is also on A
+ - lower layer 2 is on B
 
-However, said commit unintentionally also relaxed the non null uuid
-requirement for decoding copy up origin file handles, regardless of
-the unique uuid requirement.
+In this case bad_uuid won't be set for B, because the check only
+involves the list of lower fs.  Hence we'll try to decode a layer 2
+origin on layer 1 and fail.
 
-Amend this mistake by disabling decoding of copy up origin file handle
-from lower fs with a conflicting uuid.
+Can we fix this without special casing lower layer fsid == 0 in
+various places?  I guess that involves using lower_fs[0] for the
+fsid=0 case (i.e. index lower_fs by fsid, rather than (fsid -1)).
+Probably warrants a separate patch.
 
-We still encode copy up origin file handles from those fs, because
-file handles like those already exist in the wild and because they
-might provide useful information in the future.
-
-[Colin Ian King] fixed the case of index=off,nfs_export=off
-
-Reported-by: Colin Ian King <colin.king@canonical.com>
-Link: https://lore.kernel.org/lkml/20191106234301.283006-1-colin.king@canonical.com/
-Fixes: 9df085f3c9a2 ("ovl: relax requirement for non null uuid ...")
-Cc: stable@vger.kernel.org # v4.20+
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Tested-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Colin Ian King <colin.king@canonical.com>`
----
-
-V3: fix the following check:
-  -       if (!ofs->config.nfs_export && !(ofs->config.index && ofs->upper_mnt))
-  +       if (!ofs->config.nfs_export && !ofs->upper_mnt)
-
-V4: remove bogus ofs->upper_mnt check
-
----
- fs/overlayfs/namei.c     |  8 ++++++++
- fs/overlayfs/ovl_entry.h |  2 ++
- fs/overlayfs/super.c     | 13 ++++++++++---
- 3 files changed, 20 insertions(+), 3 deletions(-)
-
-diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
-index e9717c2f7d45..f47c591402d7 100644
---- a/fs/overlayfs/namei.c
-+++ b/fs/overlayfs/namei.c
-@@ -325,6 +325,14 @@ int ovl_check_origin_fh(struct ovl_fs *ofs, struct ovl_fh *fh, bool connected,
- 	int i;
- 
- 	for (i = 0; i < ofs->numlower; i++) {
-+		/*
-+		 * If lower fs uuid is not unique among lower fs we cannot match
-+		 * fh->uuid to layer.
-+		 */
-+		if (ofs->lower_layers[i].fsid &&
-+		    ofs->lower_layers[i].fs->bad_uuid)
-+			continue;
-+
- 		origin = ovl_decode_real_fh(fh, ofs->lower_layers[i].mnt,
- 					    connected);
- 		if (origin)
-diff --git a/fs/overlayfs/ovl_entry.h b/fs/overlayfs/ovl_entry.h
-index a8279280e88d..28348c44ea5b 100644
---- a/fs/overlayfs/ovl_entry.h
-+++ b/fs/overlayfs/ovl_entry.h
-@@ -22,6 +22,8 @@ struct ovl_config {
- struct ovl_sb {
- 	struct super_block *sb;
- 	dev_t pseudo_dev;
-+	/* Unusable (conflicting) uuid */
-+	bool bad_uuid;
- };
- 
- struct ovl_layer {
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index afbcb116a7f1..8001bbad8705 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -1255,7 +1255,7 @@ static bool ovl_lower_uuid_ok(struct ovl_fs *ofs, const uuid_t *uuid)
- {
- 	unsigned int i;
- 
--	if (!ofs->config.nfs_export && !(ofs->config.index && ofs->upper_mnt))
-+	if (!ofs->config.nfs_export && !ofs->upper_mnt)
- 		return true;
- 
- 	for (i = 0; i < ofs->numlowerfs; i++) {
-@@ -1263,9 +1263,13 @@ static bool ovl_lower_uuid_ok(struct ovl_fs *ofs, const uuid_t *uuid)
- 		 * We use uuid to associate an overlay lower file handle with a
- 		 * lower layer, so we can accept lower fs with null uuid as long
- 		 * as all lower layers with null uuid are on the same fs.
-+		 * if we detect multiple lower fs with the same uuid, we
-+		 * disable lower file handle decoding on all of them.
- 		 */
--		if (uuid_equal(&ofs->lower_fs[i].sb->s_uuid, uuid))
-+		if (uuid_equal(&ofs->lower_fs[i].sb->s_uuid, uuid)) {
-+			ofs->lower_fs[i].bad_uuid = true;
- 			return false;
-+		}
- 	}
- 	return true;
- }
-@@ -1277,6 +1281,7 @@ static int ovl_get_fsid(struct ovl_fs *ofs, const struct path *path)
- 	unsigned int i;
- 	dev_t dev;
- 	int err;
-+	bool bad_uuid = false;
- 
- 	/* fsid 0 is reserved for upper fs even with non upper overlay */
- 	if (ofs->upper_mnt && ofs->upper_mnt->mnt_sb == sb)
-@@ -1288,9 +1293,10 @@ static int ovl_get_fsid(struct ovl_fs *ofs, const struct path *path)
- 	}
- 
- 	if (!ovl_lower_uuid_ok(ofs, &sb->s_uuid)) {
-+		bad_uuid = true;
- 		ofs->config.index = false;
- 		ofs->config.nfs_export = false;
--		pr_warn("overlayfs: %s uuid detected in lower fs '%pd2', falling back to index=off,nfs_export=off.\n",
-+		pr_warn("overlayfs: %s uuid detected in lower fs '%pd2', enforcing index=off,nfs_export=off.\n",
- 			uuid_is_null(&sb->s_uuid) ? "null" : "conflicting",
- 			path->dentry);
- 	}
-@@ -1303,6 +1309,7 @@ static int ovl_get_fsid(struct ovl_fs *ofs, const struct path *path)
- 
- 	ofs->lower_fs[ofs->numlowerfs].sb = sb;
- 	ofs->lower_fs[ofs->numlowerfs].pseudo_dev = dev;
-+	ofs->lower_fs[ofs->numlowerfs].bad_uuid = bad_uuid;
- 	ofs->numlowerfs++;
- 
- 	return ofs->numlowerfs;
--- 
-2.20.1
-
+Thanks,
+Miklos
