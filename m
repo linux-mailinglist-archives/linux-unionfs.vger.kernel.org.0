@@ -2,56 +2,57 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D9FFFC916
-	for <lists+linux-unionfs@lfdr.de>; Thu, 14 Nov 2019 15:43:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D427AFC9FC
+	for <lists+linux-unionfs@lfdr.de>; Thu, 14 Nov 2019 16:34:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726276AbfKNOnj (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 14 Nov 2019 09:43:39 -0500
-Received: from mail-yb1-f196.google.com ([209.85.219.196]:41864 "EHLO
-        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726263AbfKNOnj (ORCPT
+        id S1726276AbfKNPey (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 14 Nov 2019 10:34:54 -0500
+Received: from mail-io1-f67.google.com ([209.85.166.67]:41919 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726452AbfKNPey (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 14 Nov 2019 09:43:39 -0500
-Received: by mail-yb1-f196.google.com with SMTP id d95so2614043ybi.8;
-        Thu, 14 Nov 2019 06:43:38 -0800 (PST)
+        Thu, 14 Nov 2019 10:34:54 -0500
+Received: by mail-io1-f67.google.com with SMTP id r144so7222942iod.8
+        for <linux-unionfs@vger.kernel.org>; Thu, 14 Nov 2019 07:34:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=szeredi.hu; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=4pgB+Cd8IZTdSBIGkWqDsTXRY6q97RGvQ71jVJ4qlw0=;
-        b=gFMJ5VH+kIMU2+hoWNAqr/eIhXNqrLV6mmSvpfpSXWg/SsvYydSoI0gWeiIV17plLP
-         n+fYi/7BL7mCmhWtF2dTasgXKEqfVhMjN3/CeEsyJNIyObqLewtioIUcjrAejEZYrhwc
-         XtAIv1BcI8lxhT/x9wNGob8nIij/8QiEjox8WW9rI9u6dqMtUFEu4LR6jijCELn7jU/n
-         bDGRe0fgvhar0f0BoBoFnwgJ+dxhwowUjfPsBcY32KSLnYPUDi4FV5/OLwSpO79QGOn6
-         SmUTon9X2b8EvMeRXQTnXmr89jC8iF29kY6PHfsxK46414NozpsEbnNyF+dr5VLzJfiY
-         MSkA==
+        bh=TUlRU9cKKaNVZQJfAQT/do7G2k04lqCGA4z6vNnMsGQ=;
+        b=Gf3JcA/6I5FyJbc72sKAqamUPXFxiPVt7Hj5319gDyzsYiJMudzuRdZXmvEpYlK/My
+         4UW7i5B9KNCTYQn7nI9dTWijqpLioNvi2TfIVwOFIykEZObvThrKzFX9U8pmytRR07+e
+         elXel76PlSzf5sFKyKbZ4XcUWsTA4iLSFjtn0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=4pgB+Cd8IZTdSBIGkWqDsTXRY6q97RGvQ71jVJ4qlw0=;
-        b=Cx6SGk2xAi8lgQX/i6uOlcTo9thJ3YIoNOUlfGttnaa81mkVD5RIjuwMBQjYJW+yDI
-         VTmRood+2k+olChYYoszBCZKwXAG8JzZF90KA5u+Zg+oMhZ6ef//uh8nL6nvFB3xao8X
-         V7QpwXvQCWh0hddnhKxytl9Aw3VUWZNX8s/NQ4w1oCR1LhfiZ5SS/zMt3KjVWQGohh/s
-         8+TgFBem2qhlabo7BTBZI7xV2ku0PfNv5zk48MWZc0CCTMe9lPd8z5f8gvvr0+XkmJVL
-         cZO7oKfJS0fb2xR1qcbwBHxamEeFxObuDI3fmCr694MS4GkNTZxlHhxQ3cZ8mESg7WWr
-         GJwQ==
-X-Gm-Message-State: APjAAAU41YODAczWD5A511+I47kwzr1x3gMl8h06irBjvM3mpagYT8wo
-        d74Pa4bs0H7SjXjwx/SKheH6LXa8jKqvOXrbHRk=
-X-Google-Smtp-Source: APXvYqzzjtMYZbdlQQuoAVP38gmtj54lHfp9b0FuWN5Kc0nv3H7D8KhIeKeMXWqAQmvWXhUUgOZrdVtUsQwZHIIGiHM=
-X-Received: by 2002:a25:383:: with SMTP id 125mr7270645ybd.45.1573742617997;
- Thu, 14 Nov 2019 06:43:37 -0800 (PST)
+        bh=TUlRU9cKKaNVZQJfAQT/do7G2k04lqCGA4z6vNnMsGQ=;
+        b=tXhFsV3Bocmo9D0k+WTtGeI07VeiiSX4UbhtDY0flUanJDt1uLRPva4LPJ1RhIn4/R
+         eo2nZwTHqkrdKZ+rzTBD4Lg46vMY8TO/79xoc8fQzIe3M+uJyhNDSjph0bmxydcgark7
+         ALc6+hld/EKdXFbYKXkJdOdZDhJvrjSohOpQpsVmBSk8xfy5XDuyQra0UgVGaaWcjIjD
+         Cb10jfmRTgUEl+JkAe2ds+KU+rdfDcx4GfUWAbmXIvj3Ki8aDfjOk+HMA7bQavNH6imX
+         1sUrOb/ZYXqTyQyZLqrV7oqY4diGPlPGOJpuGBVGxJCMbGPB5x17gx6cIl/jbd4zBpGr
+         Y4Ww==
+X-Gm-Message-State: APjAAAUQxhJYRRT+OOgWs/Uj4+pRrLLGRms9D1BoYRmlvmy46ScdajGr
+        wi/hx9m3cfCSdCo2vMqxAy5CdtT13Xa5beNaE5vVLQ==
+X-Google-Smtp-Source: APXvYqzSGRk8kaQZw1eAWtpTrcv0aiDPDHw7DokTcyToLRrifSAcy/pMiW4l+KCNIFd1O0AHk+CEm1Ze7LF4tMBSKQc=
+X-Received: by 2002:a6b:3bca:: with SMTP id i193mr7558649ioa.285.1573745693624;
+ Thu, 14 Nov 2019 07:34:53 -0800 (PST)
 MIME-Version: 1.0
-References: <20191113200651.114606-1-colin.king@canonical.com> <CAJfpegug-saOEigqDNKfwMR5qdzrbLnRBD=0eN5juGioFH_L_Q@mail.gmail.com>
-In-Reply-To: <CAJfpegug-saOEigqDNKfwMR5qdzrbLnRBD=0eN5juGioFH_L_Q@mail.gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 14 Nov 2019 16:43:26 +0200
-Message-ID: <CAOQ4uxgf5KAq7VoHVNVUD9QtA7Y++-_TdwOe6=icHLgJvyrg1A@mail.gmail.com>
-Subject: Re: [PATCH][V4] ovl: fix lookup failure on multi lower squashfs
-To:     Miklos Szeredi <miklos@szeredi.hu>
+References: <20191107104957.306383-1-colin.king@canonical.com>
+ <CAJfpegtr_xg_VG2npTfaxC+vD7B8bKa_0n9pu5vyfU-XQ9oV9Q@mail.gmail.com>
+ <CAOQ4uxhnpeyK6xW-c5NOQZ_h1uhAOUn_BbVVVYhUgZ74KSKDKQ@mail.gmail.com>
+ <CAJfpegu7egxf=BVyVQKKW_icjMbjdLcLdd1FEw5hXLvDaiLNVQ@mail.gmail.com> <CAOQ4uxh8n-QW+zTe3Y56suyaQf8Tcascj337AbMmKF7jf9=sjw@mail.gmail.com>
+In-Reply-To: <CAOQ4uxh8n-QW+zTe3Y56suyaQf8Tcascj337AbMmKF7jf9=sjw@mail.gmail.com>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Thu, 14 Nov 2019 16:34:42 +0100
+Message-ID: <CAJfpegvKnWR6_aPFwjcP8E7CRPesHPc3Svk=n9=39CnM=Mjfvg@mail.gmail.com>
+Subject: Re: [PATCH][V2] ovl: fix lookup failure on multi lower squashfs
+To:     Amir Goldstein <amir73il@gmail.com>
 Cc:     Colin King <colin.king@canonical.com>,
         Miklos Szeredi <mszeredi@redhat.com>,
         overlayfs <linux-unionfs@vger.kernel.org>,
+        stable <stable@vger.kernel.org>, kernel-janitors@vger.kernel.org,
         linux-kernel <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
@@ -59,43 +60,45 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Thu, Nov 14, 2019 at 12:30 PM Miklos Szeredi <miklos@szeredi.hu> wrote:
->
-> On Wed, Nov 13, 2019 at 9:06 PM Colin King <colin.king@canonical.com> wrote:
-> >
-> > From: Amir Goldstein <amir73il@gmail.com>
-> >
-> > In the past, overlayfs required that lower fs have non null
-> > uuid in order to support nfs export and decode copy up origin file handles.
-> >
-> > Commit 9df085f3c9a2 ("ovl: relax requirement for non null uuid of
-> > lower fs") relaxed this requirement for nfs export support, as long
-> > as uuid (even if null) is unique among all lower fs.
->
-> I see another corner case:
->
-> n- two filesystems, A and B, both have null uuid
->  - upper layer is on A
->  - lower layer 1 is also on A
->  - lower layer 2 is on B
->
-> In this case bad_uuid won't be set for B, because the check only
-> involves the list of lower fs.  Hence we'll try to decode a layer 2
-> origin on layer 1 and fail.
+On Thu, Nov 14, 2019 at 3:37 PM Amir Goldstein <amir73il@gmail.com> wrote:
 
-Right.
-
+> What Colin has now reported brings to light the fact that
+> decoding lower file handles was also required for making inode
+> numbers persistent.
 >
-> Can we fix this without special casing lower layer fsid == 0 in
-> various places?  I guess that involves using lower_fs[0] for the
-> fsid=0 case (i.e. index lower_fs by fsid, rather than (fsid -1)).
-> Probably warrants a separate patch.
+> So the bad_uuid condition is required for all of the above, not
+> just for decoding origin.
 >
+> > Can we do a message that makes
+> > that somewhat more clearer?
+> >
+>
+> What about the logs:
+>
+>                 pr_warn("overlayfs: upper fs does not support xattr,
+> falling back to index=off and metacopy=off.\n");
+>                 pr_warn("overlayfs: upper fs does not support file
+> handles, falling back to index=off.\n");
+>                 pr_warn("overlayfs: fs on '%s' does not support file
+> handles, falling back to index=off,nfs_export=off.\n",
+>
+> Should we also change them to reflect the fact the decoding origin
+> is not supported???
+>
+> Seems like a lot of hassle that will end up writing too much information
+> that most people won't understand.
+>
+> IIRC, we also do not guaranty persistent inode numbers for hardlinks
+> when index=off.
+>
+> As for the change in question (falling back => enforcing), if that bothers you,
+> we can get rid of this change by testing emitting the print only if
+> (ofs->config.nfs_export || ofs->config.index).
 
-I guess we should.
-I do hate that special casing.
-I can work of that, but would you like to hold back this patch now?
-Or just fix that corner case later?
+That makes sense.
+
+It would also make sense to have a section about inode number
+persistence in the documentation.
 
 Thanks,
-Amir.
+Miklos
