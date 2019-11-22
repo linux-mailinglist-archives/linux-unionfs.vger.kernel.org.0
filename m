@@ -2,105 +2,96 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78F301068DE
-	for <lists+linux-unionfs@lfdr.de>; Fri, 22 Nov 2019 10:32:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 365291068E8
+	for <lists+linux-unionfs@lfdr.de>; Fri, 22 Nov 2019 10:35:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726554AbfKVJcJ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 22 Nov 2019 04:32:09 -0500
-Received: from mail-yw1-f67.google.com ([209.85.161.67]:41470 "EHLO
-        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726364AbfKVJcJ (ORCPT
+        id S1726568AbfKVJf1 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 22 Nov 2019 04:35:27 -0500
+Received: from mail-yb1-f175.google.com ([209.85.219.175]:42959 "EHLO
+        mail-yb1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726563AbfKVJf1 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 22 Nov 2019 04:32:09 -0500
-Received: by mail-yw1-f67.google.com with SMTP id j190so2240039ywf.8
-        for <linux-unionfs@vger.kernel.org>; Fri, 22 Nov 2019 01:32:08 -0800 (PST)
+        Fri, 22 Nov 2019 04:35:27 -0500
+Received: by mail-yb1-f175.google.com with SMTP id a11so2479284ybc.9
+        for <linux-unionfs@vger.kernel.org>; Fri, 22 Nov 2019 01:35:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=q9GjCuANRvoppzwTQZmx08jCm74GBbxt6WJj6IHcE1k=;
-        b=pKkIYFlz0Hq0s5Hd2Geq3fWu7g0bNn3ocxLo7vEYPWW4vn7aZpbnTpCebeBoSQMDkc
-         w8t1gUy70pSWHGm7qPQezmzNavsKDkR7+sXlOt0lLm2XIUCS2dNHwnWoV82M208WSeHk
-         NC2OloDGGmioX685Z0A33wEigS8tsTLJoduk+UIYPwIPaWjzU3JwgKyEyjavNU1zFKZP
-         22Q95mpqBl98pB8WFrgZvhL9BwTITC5ftBOMp3uq1c5quZcQw4Zr/2u5Ea6o1ohEY+zy
-         qDgyRwr5e6SloC7sESt1zTGE2HteJ+TKC/JYzt1ZOwAd6SO0sIpuJucVumu+CWUgUWId
-         q4RA==
+        bh=38Ube36fxNXGCUyi48CZ7QFLrU7pdCa/iYRXf9W3GMw=;
+        b=Uv+DEKfvjB+lk7arHwyY0sXJhHWR47s/JJMEKprf3gTqlktKZ51zfWCHnblkWy6xSD
+         5pKlCpjJBbBZLvVlZr6o7w0xJdcPWNc2j0ngUnJO5UAkckS3iAMrbomoX64XTLPAnr3P
+         DvTHUVLZoR7fiQ7yQYwSgDtmbwBvK3gmhi/SUutMx8Uguz5VnycZEim0IxK3SoT8Sysx
+         lyaAkXIAKncqtlBQhL7ovLKOm/brUxUuUwKC34TAL6zRocrmNOYC159bwgu5FB7EwGWu
+         Lm5IgGealAtCBDI5P99RhMU+v5DYjlcBDwpYN5RmzZ2D4JzPR4oNYd4CsiyZ9SP1+2WB
+         73yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=q9GjCuANRvoppzwTQZmx08jCm74GBbxt6WJj6IHcE1k=;
-        b=ub8mIhwf+gB9kaMaAXJkUgHC8hHNMzEHQctj7zgWEs7o967SdRYxCmkSHLE4ykDSix
-         HFv7rSHXAWhTKU9tqUR6RwG6/IRCqOVoIW+nuRwZ/OKJ7HnN7vnKr0pwT/hQ4uuXNx/m
-         Z2HNdJhUgr+Fp1/RL6d5FDCZJQkNLIWknoEjZiYdOWHcRJHVelsT6VxyGZ2hRk9dPbXU
-         VwDe8/W6YVCbQj8amo04+0wOKhyPWvQmhIOINct/TjytiMWlBr+WzZY7BN0Ipaa0TBuH
-         zxoQlYmWGt+5YseX2oSg7ljW5g0eBxQbwMHPlImsCrXenAjI7fk7Zsx+ZRruqywLWR2Y
-         mLGA==
-X-Gm-Message-State: APjAAAWa1lKl8vx4ccKXYE2KDpk5aSi2pO+eU/li+Jfa0gc4frp5+bmm
-        URi5iZxKeWEIDfPZNM3Wf7BfsZ+vQViycMT1v7Y=
-X-Google-Smtp-Source: APXvYqzuZx6LDEUp4DSyabyfHCJPugCB0dLM2r21vByensLDAuZT9oLA0In/J34pcNWhigi5xG4BQcpCfyN4GAcTjMM=
-X-Received: by 2002:a81:234c:: with SMTP id j73mr8538495ywj.181.1574415126222;
- Fri, 22 Nov 2019 01:32:06 -0800 (PST)
+        bh=38Ube36fxNXGCUyi48CZ7QFLrU7pdCa/iYRXf9W3GMw=;
+        b=REHX0B6pjTsyU2doRWEAzkl2XFB8RdTCcmCLteZ+lC0fnFFyYGQF+NgzJr0b3froOZ
+         rPvuoxw/MSRfnu7li8VBtwX6JsvOfIAiSRszQFTan1oY66dMzPOKjjEMmkcxAP3x457O
+         M7/p/aVrOdo0CpQ3eGKnLjpOpnc3gLzBjnPFPyduumirvHNf2SNlRhdBCBVR1+xXnB0a
+         t/OMt2RGVq6iBiWPydv+/qcVMxg7R1ubJ/bs9GtxQ5N77zoGmKOf4+ct+B6y55/DU57L
+         eFOYx/fA1vAvBuqLwm0bl9RXdjwMRwTjeuOvVH+CaT6JbXL7/E4h3xYoFh0saL1beZ1a
+         Ryww==
+X-Gm-Message-State: APjAAAXI4/1R/0/CUYPzk8WnukeyDoWS46CWa2XPMicc95qiL9OQfJHf
+        w3MW/aAguYM0ti2LY+duF7o24tlxb3H5Oi201eXNYg==
+X-Google-Smtp-Source: APXvYqyT8bm+1bxnjrsbjk9WZCsfdisPYUEgPfqple1C5HvvSBDWXdtlGVCDFGPSDw/xxq3WcGkXuvvrz4W5bdvNRWo=
+X-Received: by 2002:a25:6649:: with SMTP id z9mr8942051ybm.132.1574415326626;
+ Fri, 22 Nov 2019 01:35:26 -0800 (PST)
 MIME-Version: 1.0
-References: <20191117154349.28695-1-amir73il@gmail.com> <CAOQ4uxjMbNVf9-1YjUpDzyaM_aV7OD0hi4m_AMbUvH3vUVn4sQ@mail.gmail.com>
- <CAOQ4uxjMsv2vE5Nn5D8TNCFxaz8b4duyOLOiPpy4qd1bs3bdwQ@mail.gmail.com>
-In-Reply-To: <CAOQ4uxjMsv2vE5Nn5D8TNCFxaz8b4duyOLOiPpy4qd1bs3bdwQ@mail.gmail.com>
+References: <CAOQ4uxjryJep94sLgVxV7sGab8K3yeeDUZwOYOfLtOOguW1pcA@mail.gmail.com>
+In-Reply-To: <CAOQ4uxjryJep94sLgVxV7sGab8K3yeeDUZwOYOfLtOOguW1pcA@mail.gmail.com>
 From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Fri, 22 Nov 2019 11:31:55 +0200
-Message-ID: <CAOQ4uxi5QoV-WyY2rXhGpFoOfvcKh0Pm0tfU1vPvyk+rj0zCNQ@mail.gmail.com>
-Subject: Re: [PATCH 0/6] Sort out overlay layers and fs arrays
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Colin Ian King <colin.king@canonical.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>
+Date:   Fri, 22 Nov 2019 11:35:15 +0200
+Message-ID: <CAOQ4uxiHKjNba8HD5JUWFxxJqyJxPMk3fFfA3fi-nO6uJngTAg@mail.gmail.com>
+Subject: Fwd: [ANNOUNCE] unionmount-testsuite: master branch updated to 509b1e7
+To:     overlayfs <linux-unionfs@vger.kernel.org>
+Cc:     Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-> > > I was also considering setting xino=on by default if xino_auto
-> > > is enabled, because what have we got to loose?
-> > >
-> > > The inodes whose st_ino fit in lower bits (by far more common) will
-> > > use overlay st_dev and the inodes whose st_ino overflow the lower bits
-> > > will use pseudo_dev. Seems like a win-win situation, but I wanted to
-> > > get your feedback on this before sending out a patch.
-> > >
-> >
-> > Arrr.. yes, there is a catch.
-> > Overflowing lower bits has a price beyond just using pseudo_dev.
-> > It introduces the possibility of inode number conflicts on directories,
-> > because directories never use pseudo_dev.
-> >
->
-> But we could mitigate that problem if we reserve an fsid for volatile
-> directory inode numbers. get_next_ino is 32bit anyway.
-> I am going to take a swing at having xino=auto always enabling xino.
->
+Hi All,
 
-FWIW, pushed WIP branch to:
-https://github.com/amir73il/linux/commits/ovl-ino
+The master branch on the unionmount-testsuite tree [1] has been updated.
 
-It is based on an updated ovl-layers branch of the $SUBJECT series.
+Changes in this update:
+- Enhance --verify with copy up state checks
+- Verify metadata only copy up with --verify --meta
+- Verify unified ino domain with xino requires --verify --xino
 
-During cleanup, I've found several corner cases bugs of setting
-i_ino value and fixed them.
-None of those bugs are critical.
-AFAIK, the only user that complained on inconsistent i_ino is
-an xfstest that is checking ino in /proc/locks.
+Note that this release changes xino from a test configuration that is
+implied from --verify to requiring an explicit opt-in with --xino option.
 
-However, I do think that the cleanup I made simplifies the code
-which was a bit spaghetti in that area and with some more TLC
-we can get to enabling xino from xino=auto even for filesystems
-that have seldom high ino bits.
+This change allows more strict checking of the xino=off configuration
+and exposes a kernel v4.17 regression:
 
-That could be a real benefit, because it is unlikely that users
-will have enough knowledge or certainty about underlying fs
-to declare xino=on.
-
-I need to clear up some time to test i_ino changes and
-the collision avoidance code, but for now, at least the ovl-ino branch
-passes the existing regression tests.
+ ./run --ov=1 --verify hard-link
+ ...
+ /mnt/a/no_foo110: File unexpectedly on upper layer
 
 Thanks,
 Amir.
+
+[1] https://github.com/amir73il/unionmount-testsuite
+
+The head of the master branch is commit:
+
+1724ef2 Decouple xino configuration from --verify
+
+New commits:
+
+Amir Goldstein (8):
+  Fix ./run --ov --verify --recycle
+  Simplify initialization of __upper
+  Fix instantiation of hardlinked dentry
+  Record meta copy_up vs. data copy_up
+  Check that files were copied up as expected
+  Reset dentry copy_up state on upper layer rotate
+  Check that data was not copied up with metacopy=on
+  Decouple xino configuration from --verify
