@@ -2,52 +2,53 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 365291068E8
-	for <lists+linux-unionfs@lfdr.de>; Fri, 22 Nov 2019 10:35:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EF531068ED
+	for <lists+linux-unionfs@lfdr.de>; Fri, 22 Nov 2019 10:37:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726568AbfKVJf1 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 22 Nov 2019 04:35:27 -0500
-Received: from mail-yb1-f175.google.com ([209.85.219.175]:42959 "EHLO
-        mail-yb1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726563AbfKVJf1 (ORCPT
+        id S1726500AbfKVJh3 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 22 Nov 2019 04:37:29 -0500
+Received: from mail-yw1-f47.google.com ([209.85.161.47]:34863 "EHLO
+        mail-yw1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726100AbfKVJh3 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 22 Nov 2019 04:35:27 -0500
-Received: by mail-yb1-f175.google.com with SMTP id a11so2479284ybc.9
-        for <linux-unionfs@vger.kernel.org>; Fri, 22 Nov 2019 01:35:27 -0800 (PST)
+        Fri, 22 Nov 2019 04:37:29 -0500
+Received: by mail-yw1-f47.google.com with SMTP id r131so2255296ywh.2
+        for <linux-unionfs@vger.kernel.org>; Fri, 22 Nov 2019 01:37:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
         bh=38Ube36fxNXGCUyi48CZ7QFLrU7pdCa/iYRXf9W3GMw=;
-        b=Uv+DEKfvjB+lk7arHwyY0sXJhHWR47s/JJMEKprf3gTqlktKZ51zfWCHnblkWy6xSD
-         5pKlCpjJBbBZLvVlZr6o7w0xJdcPWNc2j0ngUnJO5UAkckS3iAMrbomoX64XTLPAnr3P
-         DvTHUVLZoR7fiQ7yQYwSgDtmbwBvK3gmhi/SUutMx8Uguz5VnycZEim0IxK3SoT8Sysx
-         lyaAkXIAKncqtlBQhL7ovLKOm/brUxUuUwKC34TAL6zRocrmNOYC159bwgu5FB7EwGWu
-         Lm5IgGealAtCBDI5P99RhMU+v5DYjlcBDwpYN5RmzZ2D4JzPR4oNYd4CsiyZ9SP1+2WB
-         73yg==
+        b=DUadi3fEC3L74SwUBV+xbE0iAf3oaJnIsTf1cMvkTxrhPfXsSa8suKbsK+iGal2zpu
+         Q7M+Wi+ET2fRsTAuzSAMlOZ1jpaTVmy8mPNO9iMHJcnnBUSoMO+jKUqdeuEqEXm4g8yx
+         23eGPmpcHDuQwtAfRbuZCqtYndSsnpoMb8/NkEU+nhRPrartaOnYmPethF1llAQO109B
+         KW5c8kMlETN475cG2ni/aRw6uPgO+soGGPVwuk/ZsR2N5Ab6wqu+R8epelNf9V2oLHzV
+         0if4v9qlZsBUW4noVV0qqCj+sBERo+5P7LnuzFobtQTHhAhODdCzemACeyrS4AAZyVc1
+         8EXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
         bh=38Ube36fxNXGCUyi48CZ7QFLrU7pdCa/iYRXf9W3GMw=;
-        b=REHX0B6pjTsyU2doRWEAzkl2XFB8RdTCcmCLteZ+lC0fnFFyYGQF+NgzJr0b3froOZ
-         rPvuoxw/MSRfnu7li8VBtwX6JsvOfIAiSRszQFTan1oY66dMzPOKjjEMmkcxAP3x457O
-         M7/p/aVrOdo0CpQ3eGKnLjpOpnc3gLzBjnPFPyduumirvHNf2SNlRhdBCBVR1+xXnB0a
-         t/OMt2RGVq6iBiWPydv+/qcVMxg7R1ubJ/bs9GtxQ5N77zoGmKOf4+ct+B6y55/DU57L
-         eFOYx/fA1vAvBuqLwm0bl9RXdjwMRwTjeuOvVH+CaT6JbXL7/E4h3xYoFh0saL1beZ1a
-         Ryww==
-X-Gm-Message-State: APjAAAXI4/1R/0/CUYPzk8WnukeyDoWS46CWa2XPMicc95qiL9OQfJHf
-        w3MW/aAguYM0ti2LY+duF7o24tlxb3H5Oi201eXNYg==
-X-Google-Smtp-Source: APXvYqyT8bm+1bxnjrsbjk9WZCsfdisPYUEgPfqple1C5HvvSBDWXdtlGVCDFGPSDw/xxq3WcGkXuvvrz4W5bdvNRWo=
-X-Received: by 2002:a25:6649:: with SMTP id z9mr8942051ybm.132.1574415326626;
- Fri, 22 Nov 2019 01:35:26 -0800 (PST)
+        b=hjpVtzK5pY2h26qo9WDo4gwDWXvCx+uWkuj4Yc/KXFq/AWaU+0FoIOHcEO9K4FdZkM
+         shMFFihzC3dv9k9ZGDb6m/keV+mgZWtJcMcU45fDbSZxas31wGYhmZngT/6gHIkrtnWy
+         LWxPz1BbhDEmpsX6V5dVlhXYznEv2S9xaLuiu6v4L6w7OZpXiM/GQ9lXPHjfTK2YGPBG
+         k2Yan8xEt0nRLFRuNtnyqXyQT0tT1MNiXmuLHyQQzACXX8krG7okmI6xo8bYYHnGbjdp
+         WZXuufVUaB/Y+7uHcL2Ud/JwAa/TkMvwld/L2eNBValeQekHgS7I6t/4FgcWeZlPWHPj
+         2fkQ==
+X-Gm-Message-State: APjAAAXmsJqVvLUqKQRG1yJ/U+Ng19/ZEEfDnQafPOC3ayrCwAHjh/TJ
+        bpIMqW9Ep2EGR/Qj21BZdaH1xWOSBFyLd91dVhtNAg==
+X-Google-Smtp-Source: APXvYqyUJKdNyFQZBBV0aHOGmP8m575XmmYR+Vl3hhFhLht4VdadbExxjhqxuY+FeBFLq5Qvg751oHQJjXcNJFq4Xv8=
+X-Received: by 2002:a81:ae07:: with SMTP id m7mr266902ywh.294.1574415448445;
+ Fri, 22 Nov 2019 01:37:28 -0800 (PST)
 MIME-Version: 1.0
 References: <CAOQ4uxjryJep94sLgVxV7sGab8K3yeeDUZwOYOfLtOOguW1pcA@mail.gmail.com>
-In-Reply-To: <CAOQ4uxjryJep94sLgVxV7sGab8K3yeeDUZwOYOfLtOOguW1pcA@mail.gmail.com>
+ <CAOQ4uxiHKjNba8HD5JUWFxxJqyJxPMk3fFfA3fi-nO6uJngTAg@mail.gmail.com>
+In-Reply-To: <CAOQ4uxiHKjNba8HD5JUWFxxJqyJxPMk3fFfA3fi-nO6uJngTAg@mail.gmail.com>
 From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Fri, 22 Nov 2019 11:35:15 +0200
-Message-ID: <CAOQ4uxiHKjNba8HD5JUWFxxJqyJxPMk3fFfA3fi-nO6uJngTAg@mail.gmail.com>
-Subject: Fwd: [ANNOUNCE] unionmount-testsuite: master branch updated to 509b1e7
+Date:   Fri, 22 Nov 2019 11:37:17 +0200
+Message-ID: <CAOQ4uxhBBnr5zFOn1Dr-XtDSo=p3BovyhK6xZh22GA=dv1L8Bw@mail.gmail.com>
+Subject: [ANNOUNCE] unionmount-testsuite: master branch updated to 1724ef2
 To:     overlayfs <linux-unionfs@vger.kernel.org>
 Cc:     Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>
 Content-Type: text/plain; charset="UTF-8"
