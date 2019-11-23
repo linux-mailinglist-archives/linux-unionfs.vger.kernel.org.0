@@ -2,97 +2,73 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EF531068ED
-	for <lists+linux-unionfs@lfdr.de>; Fri, 22 Nov 2019 10:37:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54C86107C69
+	for <lists+linux-unionfs@lfdr.de>; Sat, 23 Nov 2019 03:27:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726500AbfKVJh3 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 22 Nov 2019 04:37:29 -0500
-Received: from mail-yw1-f47.google.com ([209.85.161.47]:34863 "EHLO
-        mail-yw1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726100AbfKVJh3 (ORCPT
+        id S1726451AbfKWC1B (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 22 Nov 2019 21:27:01 -0500
+Received: from mail-il1-f198.google.com ([209.85.166.198]:56309 "EHLO
+        mail-il1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726085AbfKWC1B (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 22 Nov 2019 04:37:29 -0500
-Received: by mail-yw1-f47.google.com with SMTP id r131so2255296ywh.2
-        for <linux-unionfs@vger.kernel.org>; Fri, 22 Nov 2019 01:37:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=38Ube36fxNXGCUyi48CZ7QFLrU7pdCa/iYRXf9W3GMw=;
-        b=DUadi3fEC3L74SwUBV+xbE0iAf3oaJnIsTf1cMvkTxrhPfXsSa8suKbsK+iGal2zpu
-         Q7M+Wi+ET2fRsTAuzSAMlOZ1jpaTVmy8mPNO9iMHJcnnBUSoMO+jKUqdeuEqEXm4g8yx
-         23eGPmpcHDuQwtAfRbuZCqtYndSsnpoMb8/NkEU+nhRPrartaOnYmPethF1llAQO109B
-         KW5c8kMlETN475cG2ni/aRw6uPgO+soGGPVwuk/ZsR2N5Ab6wqu+R8epelNf9V2oLHzV
-         0if4v9qlZsBUW4noVV0qqCj+sBERo+5P7LnuzFobtQTHhAhODdCzemACeyrS4AAZyVc1
-         8EXQ==
+        Fri, 22 Nov 2019 21:27:01 -0500
+Received: by mail-il1-f198.google.com with SMTP id p21so453828ilk.22
+        for <linux-unionfs@vger.kernel.org>; Fri, 22 Nov 2019 18:27:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=38Ube36fxNXGCUyi48CZ7QFLrU7pdCa/iYRXf9W3GMw=;
-        b=hjpVtzK5pY2h26qo9WDo4gwDWXvCx+uWkuj4Yc/KXFq/AWaU+0FoIOHcEO9K4FdZkM
-         shMFFihzC3dv9k9ZGDb6m/keV+mgZWtJcMcU45fDbSZxas31wGYhmZngT/6gHIkrtnWy
-         LWxPz1BbhDEmpsX6V5dVlhXYznEv2S9xaLuiu6v4L6w7OZpXiM/GQ9lXPHjfTK2YGPBG
-         k2Yan8xEt0nRLFRuNtnyqXyQT0tT1MNiXmuLHyQQzACXX8krG7okmI6xo8bYYHnGbjdp
-         WZXuufVUaB/Y+7uHcL2Ud/JwAa/TkMvwld/L2eNBValeQekHgS7I6t/4FgcWeZlPWHPj
-         2fkQ==
-X-Gm-Message-State: APjAAAXmsJqVvLUqKQRG1yJ/U+Ng19/ZEEfDnQafPOC3ayrCwAHjh/TJ
-        bpIMqW9Ep2EGR/Qj21BZdaH1xWOSBFyLd91dVhtNAg==
-X-Google-Smtp-Source: APXvYqyUJKdNyFQZBBV0aHOGmP8m575XmmYR+Vl3hhFhLht4VdadbExxjhqxuY+FeBFLq5Qvg751oHQJjXcNJFq4Xv8=
-X-Received: by 2002:a81:ae07:: with SMTP id m7mr266902ywh.294.1574415448445;
- Fri, 22 Nov 2019 01:37:28 -0800 (PST)
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=AXD7gA5IclP9MlEfBt3hOECjOVr1z7Xrb3xxCpv2mBI=;
+        b=ln9+s1P7MCuc8S/kOjD7XR91ig00CagWXz+eEgfSm7U4MuCmCSrlq3RdsWg83DBRqJ
+         BbVI+z6N4LKf895vAcWUH4trGuG/tkZtmwpaXjeXJkux/s1ehUVPqHYczA6Fk8PPo5+b
+         tyF+Nd+Fek4KvzaklhfxQIwxbn1zNvjO7d8UGt2cHuIQlNuMHjRwKSVKphL2vaS8tl/p
+         GwW3XgVuaAgWAaiIMLKLJQr+M6yUWgzB+iGoirTQky5ie1lVs32jgR/MOG6kYTbXzzT5
+         AjANgs2SVMN7xPCsDo588q9y93P2/bFHA9W52TqpxQxnDdDa7xL4lX+FrDMj2OUhFmoH
+         7JsA==
+X-Gm-Message-State: APjAAAUxKaIEZspabX19kCMvKA6xRZbZ2+NXHAP8YFwFQZg0uOoyQhYp
+        U7/Avg2hbtjyq/GjVq5Qh+u101CG3BJPEs97b1xX5l/eVuPk
+X-Google-Smtp-Source: APXvYqw+zwi8wEAChrZq2ZVReXjmVskvTdckaXjZ2KbBA0nnhxgLvaWwwG2piW1E9CjkkowM30p50xw7NE0F2nHtTiaknnYm/gUD
 MIME-Version: 1.0
-References: <CAOQ4uxjryJep94sLgVxV7sGab8K3yeeDUZwOYOfLtOOguW1pcA@mail.gmail.com>
- <CAOQ4uxiHKjNba8HD5JUWFxxJqyJxPMk3fFfA3fi-nO6uJngTAg@mail.gmail.com>
-In-Reply-To: <CAOQ4uxiHKjNba8HD5JUWFxxJqyJxPMk3fFfA3fi-nO6uJngTAg@mail.gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Fri, 22 Nov 2019 11:37:17 +0200
-Message-ID: <CAOQ4uxhBBnr5zFOn1Dr-XtDSo=p3BovyhK6xZh22GA=dv1L8Bw@mail.gmail.com>
-Subject: [ANNOUNCE] unionmount-testsuite: master branch updated to 1724ef2
-To:     overlayfs <linux-unionfs@vger.kernel.org>
-Cc:     Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>
-Content-Type: text/plain; charset="UTF-8"
+X-Received: by 2002:a92:bb95:: with SMTP id x21mr20040816ilk.128.1574476020687;
+ Fri, 22 Nov 2019 18:27:00 -0800 (PST)
+Date:   Fri, 22 Nov 2019 18:27:00 -0800
+In-Reply-To: <000000000000d03eea0571adfe83@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000ebac4d0597fa4340@google.com>
+Subject: Re: possible deadlock in mnt_want_write
+From:   syzbot <syzbot+ae82084b07d0297e566b@syzkaller.appspotmail.com>
+To:     amir73il@gmail.com, ast@kernel.org, dvyukov@google.com,
+        linux-fsdevel@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org,
+        mszeredi@redhat.com, rgoldwyn@suse.de,
+        syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk,
+        zohar@linux.ibm.com, zohar@linux.vnet.ibm.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Hi All,
+syzbot has bisected this bug to:
 
-The master branch on the unionmount-testsuite tree [1] has been updated.
+commit 8e54cadab447dae779f80f79c87cbeaea9594f60
+Author: Al Viro <viro@zeniv.linux.org.uk>
+Date:   Sun Nov 27 01:05:42 2016 +0000
 
-Changes in this update:
-- Enhance --verify with copy up state checks
-- Verify metadata only copy up with --verify --meta
-- Verify unified ino domain with xino requires --verify --xino
+     fix default_file_splice_read()
 
-Note that this release changes xino from a test configuration that is
-implied from --verify to requiring an explicit opt-in with --xino option.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=15147a36e00000
+start commit:   6d906f99 Merge tag 'arm64-fixes' of git://git.kernel.org/p..
+git tree:       upstream
+final crash:    https://syzkaller.appspot.com/x/report.txt?x=17147a36e00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=13147a36e00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=856fc6d0fbbeede9
+dashboard link: https://syzkaller.appspot.com/bug?extid=ae82084b07d0297e566b
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=111767b7200000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1611ab2d200000
 
-This change allows more strict checking of the xino=off configuration
-and exposes a kernel v4.17 regression:
+Reported-by: syzbot+ae82084b07d0297e566b@syzkaller.appspotmail.com
+Fixes: 8e54cadab447 ("fix default_file_splice_read()")
 
- ./run --ov=1 --verify hard-link
- ...
- /mnt/a/no_foo110: File unexpectedly on upper layer
-
-Thanks,
-Amir.
-
-[1] https://github.com/amir73il/unionmount-testsuite
-
-The head of the master branch is commit:
-
-1724ef2 Decouple xino configuration from --verify
-
-New commits:
-
-Amir Goldstein (8):
-  Fix ./run --ov --verify --recycle
-  Simplify initialization of __upper
-  Fix instantiation of hardlinked dentry
-  Record meta copy_up vs. data copy_up
-  Check that files were copied up as expected
-  Reset dentry copy_up state on upper layer rotate
-  Check that data was not copied up with metacopy=on
-  Decouple xino configuration from --verify
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
