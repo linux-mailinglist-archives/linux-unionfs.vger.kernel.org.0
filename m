@@ -2,93 +2,89 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D7BC10E271
-	for <lists+linux-unionfs@lfdr.de>; Sun,  1 Dec 2019 17:00:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C5E510E302
+	for <lists+linux-unionfs@lfdr.de>; Sun,  1 Dec 2019 19:20:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726489AbfLAQAI (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 1 Dec 2019 11:00:08 -0500
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:42932 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726393AbfLAQAI (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 1 Dec 2019 11:00:08 -0500
+        id S1727237AbfLASU5 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 1 Dec 2019 13:20:57 -0500
+Received: from mtax.cdmx.gob.mx ([187.141.35.197]:9691 "EHLO mtax.cdmx.gob.mx"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727072AbfLASU5 (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Sun, 1 Dec 2019 13:20:57 -0500
+X-Greylist: delayed 6638 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Dec 2019 13:20:56 EST
+X-NAI-Header: Modified by McAfee Email Gateway (4500)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
+        t=1575217624; h=DKIM-Filter:X-Virus-Scanned:
+         Content-Type:MIME-Version:Content-Transfer-Encoding:
+         Content-Description:Subject:To:From:Date:Message-Id:
+         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-SAAS-TrackingID:
+         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
+         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=M
+        8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs4
+        8=; b=xURAwICJD6y74ZEdDB9QO/Eoq76rEBUHi72bqcdWQ6Jk
+        GJGiHiNAIzzBYXjT58LCVw7ijjBxAQp7geGSQgurYdPeWqNK+x
+        cKvLNgFkFBOD7TmTVjVwst+c2HOJtKAgGySE/5fK+u9/oPQ6Dj
+        Bvm+djQEo5XLH0qIAfGBD598QEY=
+Received: from cdmx.gob.mx (correo.cdmx.gob.mx [10.250.108.150]) by mtax.cdmx.gob.mx with smtp
+        (TLS: TLSv1/SSLv3,256bits,ECDHE-RSA-AES256-GCM-SHA384)
+         id 1dee_63e5_f4311ff3_1247_4494_bbcc_37908e7b44e9;
+        Sun, 01 Dec 2019 10:27:03 -0600
 Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id F32588EE133;
-        Sun,  1 Dec 2019 08:00:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1575216008;
-        bh=SQMci2TwWaXQ6p1PA/tS0pw7vJqCK2dZbQoETPjE9Js=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=uCu+VK7PwnTWwPvM+rXEFTjntuhj0goD/E3OQm4CTdvZghG7BEJ8+naiqhDUJprfW
-         6giA+retO8LwUazxLYObHJhAx+AQWhl0TZ8Gk/L5jCtpzlG85T8Js3pQKt75vy6E2m
-         abdJcQjwDotgi/bLeR23YtKdiBjZYbNK9gWZy70o=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id DKuA77goXulG; Sun,  1 Dec 2019 08:00:07 -0800 (PST)
-Received: from jarvis.lan (unknown [50.35.76.230])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id EA1058EE0DA;
-        Sun,  1 Dec 2019 08:00:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1575216007;
-        bh=SQMci2TwWaXQ6p1PA/tS0pw7vJqCK2dZbQoETPjE9Js=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=chI4XJFpuaOc/zpI5mPXgD1LKltJiwU6iIG13z3HCBgG1eJMw4NBZwQz8OSbjjkw4
-         GDB9HK7huOz02xKg19S72SEYGOMT5vW4MsFTCBJxWKMCqDUVfOHX2BTXTC+0DeQ5ZK
-         kt4WMAE4kv5k8xakQ/M7kU/OyZEc9alk4dSHUXGo=
-Message-ID: <1575216006.4080.3.camel@HansenPartnership.com>
-Subject: Re: [PATCH 1/1] fs: rethread notify_change to take a path instead
- of a dentry
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Seth Forshee <seth.forshee@canonical.com>
-Date:   Sun, 01 Dec 2019 08:00:06 -0800
-In-Reply-To: <CAOQ4uxggMt77HHD4GOk4Rth8KAVz17f5CcZdgAfiMpTuQLz3PA@mail.gmail.com>
-References: <1575148763.5563.28.camel@HansenPartnership.com>
-         <1575148868.5563.30.camel@HansenPartnership.com>
-         <CAOQ4uxggMt77HHD4GOk4Rth8KAVz17f5CcZdgAfiMpTuQLz3PA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        by cdmx.gob.mx (Postfix) with ESMTP id 5D5521E261A;
+        Sun,  1 Dec 2019 10:18:30 -0600 (CST)
+Received: from cdmx.gob.mx ([127.0.0.1])
+        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id VLa5XKGikteT; Sun,  1 Dec 2019 10:18:30 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by cdmx.gob.mx (Postfix) with ESMTP id B788F1E2A35;
+        Sun,  1 Dec 2019 10:13:17 -0600 (CST)
+DKIM-Filter: OpenDKIM Filter v2.9.2 cdmx.gob.mx B788F1E2A35
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cdmx.gob.mx;
+        s=72359050-3965-11E6-920A-0192F7A2F08E; t=1575216797;
+        bh=M8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs48=;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
+         From:Date:Message-Id;
+        b=oMt+SqmsPjUb09IDb/WnAxwMgzzr6xAChZYVvyD75LhuCJSgCCl7i9V4cnI3a02OV
+         TnSo0/l/EsQSrwidtYvyjuHZjkR0PP6hzXMD4UXFv1NJFYdwfNXHuJRFWYyYRlx8Rs
+         7Cvddet/0l7kUn3GNIYfI7qljCPcwMqU8rA6R/f4=
+X-Virus-Scanned: amavisd-new at cdmx.gob.mx
+Received: from cdmx.gob.mx ([127.0.0.1])
+        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id xNudDctEddhd; Sun,  1 Dec 2019 10:13:17 -0600 (CST)
+Received: from [192.168.0.104] (unknown [188.125.168.160])
+        by cdmx.gob.mx (Postfix) with ESMTPSA id 9605D1E2B8C;
+        Sun,  1 Dec 2019 10:04:47 -0600 (CST)
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Congratulations
+To:     Recipients <aac-styfe@cdmx.gob.mx>
+From:   "Bishop Johnr" <aac-styfe@cdmx.gob.mx>
+Date:   Sun, 01 Dec 2019 17:04:40 +0100
+Message-Id: <20191201160447.9605D1E2B8C@cdmx.gob.mx>
+X-AnalysisOut: [v=2.2 cv=ONdX5WSB c=1 sm=1 tr=0 p=6K-Ig8iNAUou4E5wYCEA:9 p]
+X-AnalysisOut: [=zRI05YRXt28A:10 a=T6zFoIZ12MK39YzkfxrL7A==:117 a=9152RP8M]
+X-AnalysisOut: [6GQqDhC/mI/QXQ==:17 a=8nJEP1OIZ-IA:10 a=pxVhFHJ0LMsA:10 a=]
+X-AnalysisOut: [pGLkceISAAAA:8 a=wPNLvfGTeEIA:10 a=M8O0W8wq6qAA:10 a=Ygvjr]
+X-AnalysisOut: [iKHvHXA2FhpO6d-:22]
+X-SAAS-TrackingID: 5d9e3ed5.0.105119091.00-2374.176728157.s12p02m015.mxlogic.net
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 3
+X-NAI-Spam-Score: -5000
+X-NAI-Spam-Rules: 1 Rules triggered
+        WHITELISTED=-5000
+X-NAI-Spam-Version: 2.3.0.9418 : core <6686> : inlines <7165> : streams
+ <1840193> : uri <2949750>
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Sun, 2019-12-01 at 09:04 +0200, Amir Goldstein wrote:
-> Hi James!
-> 
-> On Sat, Nov 30, 2019 at 11:21 PM James Bottomley
-> <James.Bottomley@hansenpartnership.com> wrote:
-> > 
-> > In order to prepare for implementing shiftfs as a property changing
-> > bind mount, the path (which contains the vfsmount) must be threaded
-> > through everywhere we are going to do either a permission check or
-> > an
-> 
-> I am curious how bind/shift mount is expected to handle
-> inode_permission().
+Money was donated to you by Mr and Mrs Allen and Violet Large, just contact=
+ them with this email for more information =
 
-I should be posting the initial patch soon, so you can see.  However
-the principle is pretty simple: at the top of the API you have to
-install a fsuid/fsgid shifted override credential if the vfsmount is
-marked for shifting.  To make that determination you need the path at
-all those points, hence this patch.  However, anywhere in the stack
-after this, you can make the determination either by the vfsmount flag
-or by recognizing the shifted credential.  The latter is how I do this
-in inode_permission
 
-> Otherwise, I am fine with the change, short of some style comments
-> below...
-
-OK, will fix for v2.
-
-James
-
+EMail: allenandvioletlargeaward@gmail.com
