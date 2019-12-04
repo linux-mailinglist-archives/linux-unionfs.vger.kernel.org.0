@@ -2,56 +2,52 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD5C9113134
-	for <lists+linux-unionfs@lfdr.de>; Wed,  4 Dec 2019 18:56:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4F31113688
+	for <lists+linux-unionfs@lfdr.de>; Wed,  4 Dec 2019 21:37:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727852AbfLDR40 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 4 Dec 2019 12:56:26 -0500
-Received: from mail-yw1-f45.google.com ([209.85.161.45]:46970 "EHLO
-        mail-yw1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727828AbfLDR40 (ORCPT
+        id S1727998AbfLDUhI (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 4 Dec 2019 15:37:08 -0500
+Received: from mail-il1-f176.google.com ([209.85.166.176]:33187 "EHLO
+        mail-il1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727911AbfLDUhH (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 4 Dec 2019 12:56:26 -0500
-Received: by mail-yw1-f45.google.com with SMTP id u139so37020ywf.13
-        for <linux-unionfs@vger.kernel.org>; Wed, 04 Dec 2019 09:56:25 -0800 (PST)
+        Wed, 4 Dec 2019 15:37:07 -0500
+Received: by mail-il1-f176.google.com with SMTP id r81so828010ilk.0
+        for <linux-unionfs@vger.kernel.org>; Wed, 04 Dec 2019 12:37:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=szeredi.hu; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=t/LSSuRKBFL5brPIc4cvZ8RD9TACdfnub9xd340KSzE=;
-        b=Mw6qYPPP61BD8ra0to7fPRlHfrfmQTWY78E3cDZ1ZZIWu/KDd4+wNw1z1JYFcfMk7M
-         +jjFLQbXdEsCM1Wz0PhD3qWAwaza27sURzgsMT+3pE3T/gEQuzPjedRAsmjW1mMgC71v
-         1u7PeC0zXICpBPIfbLmVS8gcJ6tFZxvaQfBVWr+lefEhuTuHHgVbv26dTgBP5JVToNOg
-         UGN9LeqA0UBSYF2fL6aHFqrYFcWFCSiGzyVuZJ9HgDyZkzhN+W0ZxLvycd6AUE+IgNtP
-         QfsqB7kaTQ0GUz/Y6YYxVCchB8gUGdgfW59BpLdPz32m4Zsbx3edGtVhQXV9aBROUA3z
-         tKsw==
+        bh=kxriC3EieV58F1mLQjsdvdcRY+irLGaaJudbBJHPPNo=;
+        b=jsTtiXSDilUqZXyPs6clEk2RWJCl+LvM7POF9yTS+EEdmO2Y3+r4FirkC3g9BuHeUp
+         e4obNxcRPxCXOlX4pcna3wDfEMm7bo1kwHv5LVOj0bwxer1v3e5uADnjlh0etl2xbuPo
+         LiX1uq/mrY5kfXJ6VEXXM/OUlShMSCwed7NiI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=t/LSSuRKBFL5brPIc4cvZ8RD9TACdfnub9xd340KSzE=;
-        b=qhQxmGtHV5dOa4HjrZuYxJ6nZQ4/V3o4fq4ZRcDtg1P4y0RuyusIRoW8mEN0QuLUWc
-         /DTZmNbNhb9w5T/Oj1y90nT26eBHKDOvp98lSqngyy592D+Xcneb19tnaSc9M/PCa7Qb
-         YTc28bwUqmljj92fdl2yVxEQARcS0PlUJWC6KuNNILMsHYilZEP86nSwhoFZJSe7NGIi
-         AaXq1wXOn+npIfWwIcx6n68aXZzNCpGmIqsOlP/4TNOKTvqQ2ti3NU2rmYjH0LPujPBv
-         fgc7xy57Qzju8vcOTSy5qAydquieKDvH0Te59gJeIcukWA6/p9kUimeprDLebe66/eAW
-         5Tgg==
-X-Gm-Message-State: APjAAAX7cOu1akspKpVMwEV2eRh36Rq0IoAr+hSMb9PiPwgdo6UOK1B4
-        bKThE5YWAF8vILlHteopsUVYrtqVQ9uIrrqSXLY=
-X-Google-Smtp-Source: APXvYqwhAgu3mZDkNWDTlxo6sVxkINRzDvJ/7Drhu5jRB26Dvv+gYGkzXO6BE65cOHdGbK8v4CQ02waqPnV3GoN7kP0=
-X-Received: by 2002:a81:1887:: with SMTP id 129mr2842407ywy.25.1575482184631;
- Wed, 04 Dec 2019 09:56:24 -0800 (PST)
+        bh=kxriC3EieV58F1mLQjsdvdcRY+irLGaaJudbBJHPPNo=;
+        b=B5rTUYXYzjKF/rVgIQcztsGDruWj8BLJy3j+XupbQlY5rXm2irg0bOFogxJeeF/edw
+         Ls6H3p4K3MpDETrN/KyCApDLl61QIOLd43lZJk8+tuZal5ztQX6ggI+MN+cPUW7uQ+1H
+         nHFjHzHHuzqub6jmgqwkFSnPv4zWIB7t8uYQSlvjvLC0Jr73eNvqh7ocZt/reF9xF0VZ
+         MzfhMOGlzThO+oYmJOJXbYvMF3+FTC0/lEaMvAvFAcXaCp4W7Fc6Cml8nIUSYou72cH2
+         zHgiyXFan6Njz6J6lpHiecss5sW4XUta4V7ul0vCk4zj054d+FJ2PVy1KpnfXTBIcUoP
+         vUUg==
+X-Gm-Message-State: APjAAAVnEkmQuUn3B67ufcZxK/8WtScHBZhe0A3RvihDwOiZfufYi4sx
+        UOYx45AWYejB6jBbMkxI0WoYHHfepFqxYs0U2k+L7w==
+X-Google-Smtp-Source: APXvYqxf1zklmzBhVmBql/l6yuCo6YnKfsxefdzf+OS4KMmJZghhn2Y893MLpr0R7KNmcedZzVyQNIs2GP2wQDBrioE=
+X-Received: by 2002:a92:3bd3:: with SMTP id n80mr5436241ilh.174.1575491827217;
+ Wed, 04 Dec 2019 12:37:07 -0800 (PST)
 MIME-Version: 1.0
 References: <7817498.QaoxCVBQX0@linux-e202.suse.de> <CAJfpeguBxP7QPSr9UO6yzPpWHJ+fAckozQ823u5hPY76kqYjSQ@mail.gmail.com>
  <9499302.rauRU9GSnF@linux-e202.suse.de>
 In-Reply-To: <9499302.rauRU9GSnF@linux-e202.suse.de>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Wed, 4 Dec 2019 19:56:13 +0200
-Message-ID: <CAOQ4uxjkz+hpfKZYuHLZkGHzx5-KzezcZe4X6-pu4uXwZwtK6g@mail.gmail.com>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Wed, 4 Dec 2019 21:36:55 +0100
+Message-ID: <CAJfpeguo9qYMLwsj3yfNfGdJsfA9RDYj1gvyDKhQzUe86=AfxQ@mail.gmail.com>
 Subject: Re: overlayfs does not pin underlying layers
 To:     Fabian Vogt <fvogt@suse.de>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        linux-unionfs <linux-unionfs@vger.kernel.org>,
+Cc:     linux-unionfs <linux-unionfs@vger.kernel.org>,
         Ignaz Forster <iforster@suse.de>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
@@ -59,7 +55,7 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, Dec 4, 2019 at 7:08 PM Fabian Vogt <fvogt@suse.de> wrote:
+On Wed, Dec 4, 2019 at 6:05 PM Fabian Vogt <fvogt@suse.de> wrote:
 >
 > Hi,
 >
@@ -87,34 +83,18 @@ On Wed, Dec 4, 2019 at 7:08 PM Fabian Vogt <fvogt@suse.de> wrote:
 >
 > The specific issue we're facing here is system shutdown - if there's an active
 > overlayfs mount, it's not guaranteed that the unmounts happen in the right
-> order.
-
-What do you mean by "right" order? Please explain the problem.
-If overlay does not prevent mount of lower/upper then you can unmount
-lower/upper/overlay in any order as long as you unmount all of them.
-But you can also walk all mounts from /proc/mounts in reserve order.
-It should do the right thing w.r.t dependencies.
-
-> Currently we work around that by adding the systemd specific
+> order. Currently we work around that by adding the systemd specific
 > "x-systemd.requires-mounts-for=foo-lower.mount" option in /etc/fstab.
 > If for some reason the order is wrong, this behaviour of overlayfs might lead
 > to the system shutting down without the actual unmount happening properly,
 > as it's equivalent to "umount -l" on lower/upper FSs.
-
-I don't know what the systemd shutdown procedure is.
-Is it trying to unmount all the blockdev filesystems before shutdown?
-Is that the problem?
-
 > I'm not sure whether there's a scenario in which this could even lead to data
 > loss if something relies on umount succeeding to mean that the attached device
 > is unused.
->
 
-Basically, you cannot know that there is no other mount of that
-specific blockdev,
-maybe in another mount namespace, when you unmount a specific mount point.
-In any case, with modern journalled blockdev filesystem, shutdown without clean
-unmount should not result in data loss (of fsynced data).
+IDGI: what is the right order?  Why would it lead to corruption if the
+shutdown of the underlying fs is delayed until the shutdown of
+overlayfs?
 
 Thanks,
-Amir.
+Miklos
