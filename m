@@ -2,99 +2,99 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4F31113688
-	for <lists+linux-unionfs@lfdr.de>; Wed,  4 Dec 2019 21:37:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EC36113F84
+	for <lists+linux-unionfs@lfdr.de>; Thu,  5 Dec 2019 11:39:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727998AbfLDUhI (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 4 Dec 2019 15:37:08 -0500
-Received: from mail-il1-f176.google.com ([209.85.166.176]:33187 "EHLO
-        mail-il1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727911AbfLDUhH (ORCPT
+        id S1728707AbfLEKjO (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 5 Dec 2019 05:39:14 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:63100 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728794AbfLEKjO (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 4 Dec 2019 15:37:07 -0500
-Received: by mail-il1-f176.google.com with SMTP id r81so828010ilk.0
-        for <linux-unionfs@vger.kernel.org>; Wed, 04 Dec 2019 12:37:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kxriC3EieV58F1mLQjsdvdcRY+irLGaaJudbBJHPPNo=;
-        b=jsTtiXSDilUqZXyPs6clEk2RWJCl+LvM7POF9yTS+EEdmO2Y3+r4FirkC3g9BuHeUp
-         e4obNxcRPxCXOlX4pcna3wDfEMm7bo1kwHv5LVOj0bwxer1v3e5uADnjlh0etl2xbuPo
-         LiX1uq/mrY5kfXJ6VEXXM/OUlShMSCwed7NiI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kxriC3EieV58F1mLQjsdvdcRY+irLGaaJudbBJHPPNo=;
-        b=B5rTUYXYzjKF/rVgIQcztsGDruWj8BLJy3j+XupbQlY5rXm2irg0bOFogxJeeF/edw
-         Ls6H3p4K3MpDETrN/KyCApDLl61QIOLd43lZJk8+tuZal5ztQX6ggI+MN+cPUW7uQ+1H
-         nHFjHzHHuzqub6jmgqwkFSnPv4zWIB7t8uYQSlvjvLC0Jr73eNvqh7ocZt/reF9xF0VZ
-         MzfhMOGlzThO+oYmJOJXbYvMF3+FTC0/lEaMvAvFAcXaCp4W7Fc6Cml8nIUSYou72cH2
-         zHgiyXFan6Njz6J6lpHiecss5sW4XUta4V7ul0vCk4zj054d+FJ2PVy1KpnfXTBIcUoP
-         vUUg==
-X-Gm-Message-State: APjAAAVnEkmQuUn3B67ufcZxK/8WtScHBZhe0A3RvihDwOiZfufYi4sx
-        UOYx45AWYejB6jBbMkxI0WoYHHfepFqxYs0U2k+L7w==
-X-Google-Smtp-Source: APXvYqxf1zklmzBhVmBql/l6yuCo6YnKfsxefdzf+OS4KMmJZghhn2Y893MLpr0R7KNmcedZzVyQNIs2GP2wQDBrioE=
-X-Received: by 2002:a92:3bd3:: with SMTP id n80mr5436241ilh.174.1575491827217;
- Wed, 04 Dec 2019 12:37:07 -0800 (PST)
+        Thu, 5 Dec 2019 05:39:14 -0500
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xB5AbihM051717
+        for <linux-unionfs@vger.kernel.org>; Thu, 5 Dec 2019 05:39:13 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2wpx3d5bb8-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-unionfs@vger.kernel.org>; Thu, 05 Dec 2019 05:39:12 -0500
+Received: from localhost
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-unionfs@vger.kernel.org> from <riteshh@linux.ibm.com>;
+        Thu, 5 Dec 2019 10:39:10 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Thu, 5 Dec 2019 10:39:07 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xB5Ad6JO65732634
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 5 Dec 2019 10:39:06 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 67382A405C;
+        Thu,  5 Dec 2019 10:39:06 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6D686A4054;
+        Thu,  5 Dec 2019 10:39:04 +0000 (GMT)
+Received: from dhcp-9-199-159-163.in.ibm.com (unknown [9.199.159.163])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu,  5 Dec 2019 10:39:04 +0000 (GMT)
+From:   Ritesh Harjani <riteshh@linux.ibm.com>
+To:     willy@infradead.org, linux-fsdevel@vger.kernel.org,
+        jlayton@kernel.org, viro@zeniv.linux.org.uk
+Cc:     ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+        linux-nfs@vger.kernel.org, devel@lists.orangefs.org,
+        linux-unionfs@vger.kernel.org,
+        Ritesh Harjani <riteshh@linux.ibm.com>
+Subject: [PATCH 0/1] Use inode_lock/unlock class of provided APIs in filesystems
+Date:   Thu,  5 Dec 2019 16:09:01 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <7817498.QaoxCVBQX0@linux-e202.suse.de> <CAJfpeguBxP7QPSr9UO6yzPpWHJ+fAckozQ823u5hPY76kqYjSQ@mail.gmail.com>
- <9499302.rauRU9GSnF@linux-e202.suse.de>
-In-Reply-To: <9499302.rauRU9GSnF@linux-e202.suse.de>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Wed, 4 Dec 2019 21:36:55 +0100
-Message-ID: <CAJfpeguo9qYMLwsj3yfNfGdJsfA9RDYj1gvyDKhQzUe86=AfxQ@mail.gmail.com>
-Subject: Re: overlayfs does not pin underlying layers
-To:     Fabian Vogt <fvogt@suse.de>
-Cc:     linux-unionfs <linux-unionfs@vger.kernel.org>,
-        Ignaz Forster <iforster@suse.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19120510-0020-0000-0000-0000039440D3
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19120510-0021-0000-0000-000021EB6D6B
+Message-Id: <20191205103902.23618-1-riteshh@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-05_02:2019-12-04,2019-12-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
+ mlxlogscore=361 mlxscore=0 impostorscore=0 spamscore=0 phishscore=0
+ malwarescore=0 clxscore=1011 bulkscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912050087
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, Dec 4, 2019 at 6:05 PM Fabian Vogt <fvogt@suse.de> wrote:
->
-> Hi,
->
-> Am Dienstag, 3. Dezember 2019, 15:19:28 CET schrieb Miklos Szeredi:
-> > On Tue, Dec 3, 2019 at 2:49 PM Fabian Vogt <fvogt@suse.de> wrote:
-> > >
-> > > Hi,
-> > >
-> > > I noticed that you can still unmount the lower/upper/work layers, even if
-> > > they're currently part of an active overlay mount. This is the case even when
-> > > files in the overlay mount are currently open. After unmounting, the usual
-> > > effects of a lazy umount can be observed, like still active loop devices.
-> > >
-> > > Is this intentional?
-> >
-> > It's a known feature.  Not sure how much thought was given to this,
-> > but nobody took notice up till now.
-> >
-> > Do you have a good reason for wanting the underlying mounts pinned, or
-> > you are just surprised by this behavior?  In the latter case we can
-> > just add a paragraph to the documentation and be done with it.
->
-> Both. It's obviously very inconsistent that it's possible to unmount something
-> which you still have unrestricted access to.
->
-> The specific issue we're facing here is system shutdown - if there's an active
-> overlayfs mount, it's not guaranteed that the unmounts happen in the right
-> order. Currently we work around that by adding the systemd specific
-> "x-systemd.requires-mounts-for=foo-lower.mount" option in /etc/fstab.
-> If for some reason the order is wrong, this behaviour of overlayfs might lead
-> to the system shutting down without the actual unmount happening properly,
-> as it's equivalent to "umount -l" on lower/upper FSs.
-> I'm not sure whether there's a scenario in which this could even lead to data
-> loss if something relies on umount succeeding to mean that the attached device
-> is unused.
+Matthew Wilcox in [1] suggested that it will be a good idea
+to define some missing API instead of directly using i_rwsem in
+filesystems drivers for lock/unlock/downgrade purposes.
 
-IDGI: what is the right order?  Why would it lead to corruption if the
-shutdown of the underlying fs is delayed until the shutdown of
-overlayfs?
+This patch does that work. No functionality change in this patch.
 
-Thanks,
-Miklos
+After this there are only lockdep class of APIs at certain places
+in filesystems which are directly using i_rwsem and second is XFS,
+but it seems to be anyway defining it's own xfs_ilock/iunlock set
+of APIs and 'iolock' naming convention for this lock.
+
+[1]: https://www.spinics.net/lists/linux-ext4/msg68689.html
+
+Ritesh Harjani (1):
+  fs: Use inode_lock/unlock class of provided APIs in filesystems
+
+ fs/btrfs/delayed-inode.c |  2 +-
+ fs/btrfs/ioctl.c         |  4 ++--
+ fs/ceph/io.c             | 24 ++++++++++++------------
+ fs/nfs/io.c              | 24 ++++++++++++------------
+ fs/orangefs/file.c       |  4 ++--
+ fs/overlayfs/readdir.c   |  2 +-
+ fs/readdir.c             |  4 ++--
+ include/linux/fs.h       | 21 +++++++++++++++++++++
+ 8 files changed, 53 insertions(+), 32 deletions(-)
+
+-- 
+2.20.1
+
