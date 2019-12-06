@@ -2,88 +2,108 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7B03114C5A
-	for <lists+linux-unionfs@lfdr.de>; Fri,  6 Dec 2019 07:33:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF0C0114C69
+	for <lists+linux-unionfs@lfdr.de>; Fri,  6 Dec 2019 07:46:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726156AbfLFGds (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 6 Dec 2019 01:33:48 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:34142 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726104AbfLFGdr (ORCPT
+        id S1726169AbfLFGqt (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 6 Dec 2019 01:46:49 -0500
+Received: from mail-yw1-f68.google.com ([209.85.161.68]:45347 "EHLO
+        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726104AbfLFGqs (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 6 Dec 2019 01:33:47 -0500
-Received: by mail-wm1-f67.google.com with SMTP id f4so9012137wmj.1
-        for <linux-unionfs@vger.kernel.org>; Thu, 05 Dec 2019 22:33:46 -0800 (PST)
+        Fri, 6 Dec 2019 01:46:48 -0500
+Received: by mail-yw1-f68.google.com with SMTP id d12so2291707ywl.12;
+        Thu, 05 Dec 2019 22:46:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=WemESWTE/NmweCBVHfvOlsbnM44BUgX56VoY+3ISQ60=;
-        b=NVs4fEu4n/hfAyNJPms8js4J2/WgjO7wctwriv6oPWzMwIQA/RJbjsqLUv66mQheRX
-         mEFHYmXjhF9bFbGZUqf5nyboNVSfyBvzdE49OOGKwlhlUsE2jDSw9s1VLWWk7dyJ3sWB
-         /8dDcuatRcx0mGvvBtF4Dl+1Ta0Y/pPJrwSskNOHxZC1qhxFhG3srokhgHlvXE0LRtT1
-         5A6ubF5p9dKT9Rvzh2xE+35IzQZnvrvSHI3HLpSyuHI+it3D2krREzpSoR5eGFW9Gji6
-         SiblETHP+gi6bztK5XDr1Ft6Yu7m1l0T5pDUr0NFMq4DNNT0ovo3e5Z7ScZ3XrjNMLoC
-         XyAQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7gaosEyCtS7figPaTevfhISyTIAcwkXEtc8ItLxSuls=;
+        b=NwOh2LW6GvrtCLPiYl0gp4bYM5mcmkPs5GMwnsSHyeOnf11ZgJRAkVQtdsioEwpgbB
+         xIaHJyK/DkrNiYHZ/qhBOzG4VtQCIovYFAB2fEtMXc7QG2Cua1pJBkgW0rsf0Mt0Lxn7
+         XaBpBbSPR+KJPzqsZvRZdTxy/w60i/sMIUp8LA7CUVC/yt8ap63wgimUM075+kZT6Woi
+         hC2SBX1lq/g3rmmNzJ/ggAwDhmMaBEpi9Au3FhiXhPo5F3/PVpAQM3qX7ZzznfsE+tsd
+         s76ey9TfKuBCyr2LgmbnE4MFFA3tD14/2Dr3XMdfAKzdPkMCIe/upu512JjlfwDFQ24E
+         SC5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=WemESWTE/NmweCBVHfvOlsbnM44BUgX56VoY+3ISQ60=;
-        b=q9qu8hLUiVAOFFWLdf+n2eh0aQqyjkxWng/Zoeb/DH07Z9evzzAgzjxmX9lTttrTfQ
-         SxDIA3LazgNtcaZLfGig5niYIq8PvXvWjetNsjYfYxuQWX9MxgYL+DrSiuaNrxtbUISp
-         2tqP2yxLRSN3EG7tEH21q9rwg+xOT7JzULM0oVCnfrT+TZSRHjX8III69Glqs+24VCfw
-         0JVikuCNc9qH8E/GGcYEufriFop1X0w8sPSWhSy/fn0S/9ZRRmraFE9tYRF1PAOd1aXT
-         Re4v9ox+hPmb5ByCtqtPqBYgKUAe3feBpRHSBhT/6oMwu/FD8D9BG9q2AHC1+IDAhwbv
-         Z0Vg==
-X-Gm-Message-State: APjAAAXq/YHVXZ0CESdqAgfyWMrPcY+ZGVjRgaYr6+D/6fS5lA/21oyd
-        wxRBbsXIpJuziw69aPGZzag=
-X-Google-Smtp-Source: APXvYqwrm/sZOqjgY9rRri/3qNprf98I4RnzBUCwKuz6wSXfKfiqdVFFLFNNCZj7H3IBEXD1Uj2SsQ==
-X-Received: by 2002:a05:600c:2549:: with SMTP id e9mr8950313wma.160.1575614025637;
-        Thu, 05 Dec 2019 22:33:45 -0800 (PST)
-Received: from localhost.localdomain ([141.226.162.223])
-        by smtp.gmail.com with ESMTPSA id k4sm2461375wmk.26.2019.12.05.22.33.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2019 22:33:45 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7gaosEyCtS7figPaTevfhISyTIAcwkXEtc8ItLxSuls=;
+        b=VIMyeHZYpRJIzxiqukOSvy3IRwbWg4MMTcH84VU0nbJu9rSbxsmQvi36KXoywGO81i
+         vOXRtWcLJGpV3ZMiJl/lr/wMnQYQGqzTlVXGGyP8prAYBiwUEWjgDvvS2B2ooJma/v1x
+         B3Q9tL/rAikJkVSK/7yahXEtI1qLurvrD+w1kBOiC9F7SgcMoua+3WkymmPii28MHMBM
+         +wuC6s1ThokYy89Bd/3Hui6TkSF7KMOhPgnaDPu6y4N/PD4tFvMKlRhIoI4eGLQyAK5r
+         GlvshhuUdw84Sld1ZuiKd+NniEJPsCej7A4hnx1fi2V0SbJNf8urGwVGNtxjb8ZvzK9W
+         2ImQ==
+X-Gm-Message-State: APjAAAVB/gTD3/MtF2GGe8Xe+ANQVPMQ/pqpQdEfi00mCsYFHolsQHTz
+        1T2Azg6rt/yg8VhI6IztaSPdWmo/GsokACXtoo8=
+X-Google-Smtp-Source: APXvYqxZPoGPZ2g12UuMmnRst0eaRP4msgk/8mr3Sw9+PT/0v4fpiG2Jd/uCEF/o8zxSRZZJsFHnZ+hqe3yjhK8ZwpE=
+X-Received: by 2002:a81:14d:: with SMTP id 74mr8923710ywb.183.1575614807610;
+ Thu, 05 Dec 2019 22:46:47 -0800 (PST)
+MIME-Version: 1.0
+References: <0000000000002492cc0587d58ed8@google.com> <000000000000db84550598ff519f@google.com>
+In-Reply-To: <000000000000db84550598ff519f@google.com>
 From:   Amir Goldstein <amir73il@gmail.com>
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     linux-unionfs@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Subject: [PATCH] ovl: relax WARN_ON() on rename to self
-Date:   Fri,  6 Dec 2019 08:33:36 +0200
-Message-Id: <20191206063336.9722-1-amir73il@gmail.com>
-X-Mailer: git-send-email 2.17.1
+Date:   Fri, 6 Dec 2019 08:46:36 +0200
+Message-ID: <CAOQ4uxgzGRJs3o=7_rM3HtdMjEP-Emy=0a98LMVvYa-3==ZpjQ@mail.gmail.com>
+Subject: Re: WARNING in ovl_rename
+To:     syzbot <syzbot+bb1836a212e69f8e201a@syzkaller.appspotmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>
+Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Miklos Szeredi <mszeredi@redhat.com>,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-In ovl_rename(), if new upper is hardlinked to old upper underneath
-overlayfs before upper dirs are locked, user will get an ESTALE error
-and a WARN_ON will be printed.
+On Fri, Dec 6, 2019 at 3:54 AM syzbot
+<syzbot+bb1836a212e69f8e201a@syzkaller.appspotmail.com> wrote:
+>
+> syzbot suspects this bug was fixed by commit:
+>
+> commit 146d62e5a5867fbf84490d82455718bfb10fe824
+> Author: Amir Goldstein <amir73il@gmail.com>
+> Date:   Thu Apr 18 14:42:08 2019 +0000
+>
+>      ovl: detect overlapping layers
+>
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=138841dae00000
+> start commit:   037904a2 Merge branch 'x86-urgent-for-linus' of git://git...
+> git tree:       upstream
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=a42d110b47dd6b36
+> dashboard link: https://syzkaller.appspot.com/bug?extid=bb1836a212e69f8e201a
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15ba097ca00000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10be1ceca00000
+>
+> If the result looks correct, please mark the bug fixed by replying with:
+>
+> #syz fix: ovl: detect overlapping layers
+>
 
-Changes to underlying layers while overlayfs is mounted may result in
-unexpected behavior, but it shouldn't crash the kernel and it shouldn't
-trigger WARN_ON() either, so relax this WARN_ON().
+Not exactly. Depends how you define "the bug".
 
-Reported-by: syzbot+bb1836a212e69f8e201a@syzkaller.appspotmail.com
-Fixes: 804032fabb3b ("ovl: don't check rename to self")
-Cc: <stable@vger.kernel.org> # v4.9+
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
----
- fs/overlayfs/dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The actual bug wasn't introduced by:
+     ovl: fix EIO from lookup of non-indexed upper
 
-diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
-index 702aa63f6774..29abdb1d3b5c 100644
---- a/fs/overlayfs/dir.c
-+++ b/fs/overlayfs/dir.c
-@@ -1170,7 +1170,7 @@ static int ovl_rename(struct inode *olddir, struct dentry *old,
- 	if (newdentry == trap)
- 		goto out_dput;
- 
--	if (WARN_ON(olddentry->d_inode == newdentry->d_inode))
-+	if (olddentry->d_inode == newdentry->d_inode)
- 		goto out_dput;
- 
- 	err = 0;
--- 
-2.17.1
+Nor was it fixed by:
+     ovl: detect overlapping layers
 
+It would be more accurate to say that the former commit exposed the bug
+to this specific repro and the latter commit has masked it from this repro.
+
+The actual bug was introduced by:
+    804032fabb3b ("ovl: don't check rename to self")
+
+Which did not take into account hardlinking underneath overlayfs.
+
+I posted a fix to relax this WARN_ON(), which is marked for stable 4.9+,
+because I see that the repro is also reported on kernel 4.14.y and
+"ovl: detect overlapping layers" is not expected to land in 4.14.y.
+
+Thanks,
+Amir.
