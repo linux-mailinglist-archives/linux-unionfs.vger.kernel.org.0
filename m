@@ -2,69 +2,82 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F768114AAC
-	for <lists+linux-unionfs@lfdr.de>; Fri,  6 Dec 2019 02:54:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8C36114B82
+	for <lists+linux-unionfs@lfdr.de>; Fri,  6 Dec 2019 04:54:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726175AbfLFByD (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 5 Dec 2019 20:54:03 -0500
-Received: from mail-io1-f71.google.com ([209.85.166.71]:44292 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726268AbfLFByB (ORCPT
+        id S1726207AbfLFDyR (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 5 Dec 2019 22:54:17 -0500
+Received: from out30-131.freemail.mail.aliyun.com ([115.124.30.131]:43768 "EHLO
+        out30-131.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726198AbfLFDyR (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 5 Dec 2019 20:54:01 -0500
-Received: by mail-io1-f71.google.com with SMTP id t17so3739835ioi.11
-        for <linux-unionfs@vger.kernel.org>; Thu, 05 Dec 2019 17:54:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=rAeCsgZxV9UJGkBQ4eWnQ9S3cKiAG0istSYvhHhfEbE=;
-        b=LOfbOzhsVirpjN0TOfNEKXNDbIoJFdcRxNS0x6v13qGFgxkyRiG9cVtVq4z3XWuQ0P
-         I89ELERRQ5eNSZXPrTXJaKu8SJyn5twYmGar+8099F2BVdFE4bprpV2HLbh6C3xEWxWS
-         zA5V10AaiyVOXiXbfcUGFwu669Gz8tWPa6d1sVqXzShtRGbauggyAtesmq9cNeDSjeD5
-         Bm9WX/SW9XKbytU4G3R6rn4ErPkolqzpYjxexW6G0l7xV51I7htNqxOkfxqVJ6m8rHuz
-         BV9DHMIokBA5FjMIAWsftp9k9anJAIpzMHsH9Xfm4yAO2UTs6twzEKgjhvGZR+OTQoCt
-         6Dew==
-X-Gm-Message-State: APjAAAVYlJ3zQmWsJFV2+pHv2VSqcocTnrgMAfSbR5W0hTuPOK3VgFgm
-        Jwu7+qAVMZMD6nZapSDxvCIV0kIdvaPYHx3ZzIlatfbmG8hl
-X-Google-Smtp-Source: APXvYqzsPCD57qboZKu4afU8AjADTn/f/SbgP9h50QEUqO4V8Qa1IqsWP4i1pyRvC9AmRjLOlMpOdVS7zTYOkMfgGrm4fe23QH+N
+        Thu, 5 Dec 2019 22:54:17 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e07487;MF=jiufei.xue@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0Tk5aP4X_1575604447;
+Received: from ali-186590e05fa3.local(mailfrom:jiufei.xue@linux.alibaba.com fp:SMTPD_---0Tk5aP4X_1575604447)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Fri, 06 Dec 2019 11:54:07 +0800
+Subject: Re: [PATCH V2 0/2] ovl: implement async IO routines
+To:     miklos@szeredi.hu, amir73il@gmail.com
+Cc:     linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org
+References: <1574243126-59283-1-git-send-email-jiufei.xue@linux.alibaba.com>
+ <052a9b10-1cca-35d0-622a-d597421b3ecf@linux.alibaba.com>
+From:   Jiufei Xue <jiufei.xue@linux.alibaba.com>
+Message-ID: <7ff1ed40-ef1c-32e6-a539-1f10aa46dd42@linux.alibaba.com>
+Date:   Fri, 6 Dec 2019 11:54:07 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0)
+ Gecko/20100101 Thunderbird/60.7.0
 MIME-Version: 1.0
-X-Received: by 2002:a92:844d:: with SMTP id l74mr12309671ild.16.1575597240974;
- Thu, 05 Dec 2019 17:54:00 -0800 (PST)
-Date:   Thu, 05 Dec 2019 17:54:00 -0800
-In-Reply-To: <0000000000002492cc0587d58ed8@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000db84550598ff519f@google.com>
-Subject: Re: WARNING in ovl_rename
-From:   syzbot <syzbot+bb1836a212e69f8e201a@syzkaller.appspotmail.com>
-To:     amir73il@gmail.com, linux-kernel@vger.kernel.org,
-        linux-unionfs@vger.kernel.org, miklos@szeredi.hu,
-        mszeredi@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+In-Reply-To: <052a9b10-1cca-35d0-622a-d597421b3ecf@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-syzbot suspects this bug was fixed by commit:
+ping again.
 
-commit 146d62e5a5867fbf84490d82455718bfb10fe824
-Author: Amir Goldstein <amir73il@gmail.com>
-Date:   Thu Apr 18 14:42:08 2019 +0000
+From my test, the patchset can improve the performance significantly.
 
-     ovl: detect overlapping layers
+The following data are tested on INTEL P4510 NVMe using fio with iodepth
+128 and blocksize 4k.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=138841dae00000
-start commit:   037904a2 Merge branch 'x86-urgent-for-linus' of git://git...
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a42d110b47dd6b36
-dashboard link: https://syzkaller.appspot.com/bug?extid=bb1836a212e69f8e201a
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15ba097ca00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10be1ceca00000
+----------------------------------------------------------------
+                      |       RANDREAD     |     RANDWRITE     |
+----------------------------------------------------------------
+w/ async IO routines  |        377MB/s     |      405MB/s      |
+----------------------------------------------------------------
+w/o async IO routines |        32.0MB/s	   |      62.3MB/s     |
+----------------------------------------------------------------
 
-If the result looks correct, please mark the bug fixed by replying with:
+Regards,
+Jiufei
 
-#syz fix: ovl: detect overlapping layers
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+On 2019/11/26 上午10:00, Jiufei Xue wrote:
+> Hi miklos,
+> 
+> Could you please kindly review this patch and give some advice?
+> 
+> Thanks,
+> Jiufei
+> 
+> On 2019/11/20 下午5:45, Jiufei Xue wrote:
+>> ovl stacks regular file operations now. However it doesn't implement
+>> async IO routines and will convert async IOs to sync IOs which is not
+>> expected.
+>>
+>> This patchset implements overlayfs async IO routines.
+>>
+>> Jiufei Xue (2)
+>> vfs: add vfs_iocb_iter_[read|write] helper functions
+>> ovl: implement async IO routines
+>>
+>>  fs/overlayfs/file.c      |  116 +++++++++++++++++++++++++++++++++++++++++------
+>>  fs/overlayfs/overlayfs.h |    2
+>>  fs/overlayfs/super.c     |   12 ++++
+>>  fs/read_write.c          |   58 +++++++++++++++++++++++
+>>  include/linux/fs.h       |   16 ++++++
+>>  5 files changed, 188 insertions(+), 16 deletions(-)
+>>
+> 
