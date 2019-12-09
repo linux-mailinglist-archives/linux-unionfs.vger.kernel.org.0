@@ -2,108 +2,73 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF0C0114C69
-	for <lists+linux-unionfs@lfdr.de>; Fri,  6 Dec 2019 07:46:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75D96116FC8
+	for <lists+linux-unionfs@lfdr.de>; Mon,  9 Dec 2019 15:57:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726169AbfLFGqt (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 6 Dec 2019 01:46:49 -0500
-Received: from mail-yw1-f68.google.com ([209.85.161.68]:45347 "EHLO
-        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726104AbfLFGqs (ORCPT
+        id S1726310AbfLIO5i (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 9 Dec 2019 09:57:38 -0500
+Received: from mail-io1-f43.google.com ([209.85.166.43]:35160 "EHLO
+        mail-io1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726265AbfLIO5i (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 6 Dec 2019 01:46:48 -0500
-Received: by mail-yw1-f68.google.com with SMTP id d12so2291707ywl.12;
-        Thu, 05 Dec 2019 22:46:48 -0800 (PST)
+        Mon, 9 Dec 2019 09:57:38 -0500
+Received: by mail-io1-f43.google.com with SMTP id v18so15087681iol.2
+        for <linux-unionfs@vger.kernel.org>; Mon, 09 Dec 2019 06:57:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=szeredi.hu; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=7gaosEyCtS7figPaTevfhISyTIAcwkXEtc8ItLxSuls=;
-        b=NwOh2LW6GvrtCLPiYl0gp4bYM5mcmkPs5GMwnsSHyeOnf11ZgJRAkVQtdsioEwpgbB
-         xIaHJyK/DkrNiYHZ/qhBOzG4VtQCIovYFAB2fEtMXc7QG2Cua1pJBkgW0rsf0Mt0Lxn7
-         XaBpBbSPR+KJPzqsZvRZdTxy/w60i/sMIUp8LA7CUVC/yt8ap63wgimUM075+kZT6Woi
-         hC2SBX1lq/g3rmmNzJ/ggAwDhmMaBEpi9Au3FhiXhPo5F3/PVpAQM3qX7ZzznfsE+tsd
-         s76ey9TfKuBCyr2LgmbnE4MFFA3tD14/2Dr3XMdfAKzdPkMCIe/upu512JjlfwDFQ24E
-         SC5w==
+        bh=tzN5z7lN2a/KJCOCYI/RukGcVVmHZ5uMBYIJED3u+I8=;
+        b=WwMpoFvVBd1IA3cxiyl2kIegAwqIYZ/eOl7EfzUnev9zMH8SsdUobI+XjKIxhJg0wp
+         r+3PygiRKkp5O2LsHuVLdkisk8rkw1rMCSlo9ZJj740hxHCbzabeZIJ/P9KenfX7bYxY
+         KBYqkMrtpS8Rb382F8X1rtSt8a/rpSjx8TQ08=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=7gaosEyCtS7figPaTevfhISyTIAcwkXEtc8ItLxSuls=;
-        b=VIMyeHZYpRJIzxiqukOSvy3IRwbWg4MMTcH84VU0nbJu9rSbxsmQvi36KXoywGO81i
-         vOXRtWcLJGpV3ZMiJl/lr/wMnQYQGqzTlVXGGyP8prAYBiwUEWjgDvvS2B2ooJma/v1x
-         B3Q9tL/rAikJkVSK/7yahXEtI1qLurvrD+w1kBOiC9F7SgcMoua+3WkymmPii28MHMBM
-         +wuC6s1ThokYy89Bd/3Hui6TkSF7KMOhPgnaDPu6y4N/PD4tFvMKlRhIoI4eGLQyAK5r
-         GlvshhuUdw84Sld1ZuiKd+NniEJPsCej7A4hnx1fi2V0SbJNf8urGwVGNtxjb8ZvzK9W
-         2ImQ==
-X-Gm-Message-State: APjAAAVB/gTD3/MtF2GGe8Xe+ANQVPMQ/pqpQdEfi00mCsYFHolsQHTz
-        1T2Azg6rt/yg8VhI6IztaSPdWmo/GsokACXtoo8=
-X-Google-Smtp-Source: APXvYqxZPoGPZ2g12UuMmnRst0eaRP4msgk/8mr3Sw9+PT/0v4fpiG2Jd/uCEF/o8zxSRZZJsFHnZ+hqe3yjhK8ZwpE=
-X-Received: by 2002:a81:14d:: with SMTP id 74mr8923710ywb.183.1575614807610;
- Thu, 05 Dec 2019 22:46:47 -0800 (PST)
+        bh=tzN5z7lN2a/KJCOCYI/RukGcVVmHZ5uMBYIJED3u+I8=;
+        b=r22aYms9QCWxfoRnXc2+vnF4FNv3z2vHDSxHxLFMR9xY/lzvFUsXD8ChDyty6+BwKE
+         z9x2Kynne5g/YHJHh0kfV6/wvP37RQGbsZ3r/SdYCeE0Lm4HNZKB6atPrLO8Te4555+W
+         OAC6J89Cw81bGAp/lpcw+ktxOK1lnatMKsTXcDVYTlIhA4TimD1r1pOHItq5AHqMrDbz
+         RbtH/2P8uTULd4bi9VsBy0kqVFZeYHHpaR5mYvT2uBeofh9DiyU8SvPC4+1zsXzkNvAv
+         2tnD4xLMjof9ku4CKBe/0EXpgskHveRlHF5s51wTJpOZxo045GZidWV3rImY2n9sAfA1
+         PN1Q==
+X-Gm-Message-State: APjAAAW2rdAJG3sBKNnDj9uSz99Y3sBj7ql/kbCauxBk9IyBd6iMGlH8
+        vlw0raBdEZ6ZeHVXbNTSOPMWAY64cVnCL7WxGZbd4oi/
+X-Google-Smtp-Source: APXvYqw5dMhIUjcEq6SfPV4dkyVaZxRDEoS5JHMD60Yf5hwWo3ca2OD52WysQBW8nN4OIPTcrFL8hjFG9zE+Kont21A=
+X-Received: by 2002:a6b:6f07:: with SMTP id k7mr21388166ioc.174.1575903457824;
+ Mon, 09 Dec 2019 06:57:37 -0800 (PST)
 MIME-Version: 1.0
-References: <0000000000002492cc0587d58ed8@google.com> <000000000000db84550598ff519f@google.com>
-In-Reply-To: <000000000000db84550598ff519f@google.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Fri, 6 Dec 2019 08:46:36 +0200
-Message-ID: <CAOQ4uxgzGRJs3o=7_rM3HtdMjEP-Emy=0a98LMVvYa-3==ZpjQ@mail.gmail.com>
-Subject: Re: WARNING in ovl_rename
-To:     syzbot <syzbot+bb1836a212e69f8e201a@syzkaller.appspotmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
+References: <CAOQ4uxh7fszXGXV0U5K4yz4o3WwDk40LmOi+dH2Nwi+yq_5+Pw@mail.gmail.com>
+In-Reply-To: <CAOQ4uxh7fszXGXV0U5K4yz4o3WwDk40LmOi+dH2Nwi+yq_5+Pw@mail.gmail.com>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Mon, 9 Dec 2019 15:57:26 +0100
+Message-ID: <CAJfpegv8sN=XB5ePnEiz3KfVhHhyNmYWW8C-bckaxeYiQ0Ee-g@mail.gmail.com>
+Subject: Re: Overlayfs fixes queue
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     overlayfs <linux-unionfs@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Fri, Dec 6, 2019 at 3:54 AM syzbot
-<syzbot+bb1836a212e69f8e201a@syzkaller.appspotmail.com> wrote:
+On Mon, Dec 2, 2019 at 7:32 AM Amir Goldstein <amir73il@gmail.com> wrote:
 >
-> syzbot suspects this bug was fixed by commit:
+> Hi Miklos,
 >
-> commit 146d62e5a5867fbf84490d82455718bfb10fe824
-> Author: Amir Goldstein <amir73il@gmail.com>
-> Date:   Thu Apr 18 14:42:08 2019 +0000
+> Will you have time to queue some of the queued fixed [1] and docs .rst
+> conversion [2] for 5.5, maybe rc2?
 >
->      ovl: detect overlapping layers
+> The timestamp limits issue is also being addressed by Deepa in vfs as
+> you suggested, so not critical but nice to have.
 >
-> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=138841dae00000
-> start commit:   037904a2 Merge branch 'x86-urgent-for-linus' of git://git...
-> git tree:       upstream
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=a42d110b47dd6b36
-> dashboard link: https://syzkaller.appspot.com/bug?extid=bb1836a212e69f8e201a
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15ba097ca00000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10be1ceca00000
->
-> If the result looks correct, please mark the bug fixed by replying with:
->
-> #syz fix: ovl: detect overlapping layers
->
+> I posted an xfstest [3] that demonstrates the corner case of
+> non-unique st_dev;st_ino (v4.17 regression).
 
-Not exactly. Depends how you define "the bug".
+Hi Amir,
 
-The actual bug wasn't introduced by:
-     ovl: fix EIO from lookup of non-indexed upper
-
-Nor was it fixed by:
-     ovl: detect overlapping layers
-
-It would be more accurate to say that the former commit exposed the bug
-to this specific repro and the latter commit has masked it from this repro.
-
-The actual bug was introduced by:
-    804032fabb3b ("ovl: don't check rename to self")
-
-Which did not take into account hardlinking underneath overlayfs.
-
-I posted a fix to relax this WARN_ON(), which is marked for stable 4.9+,
-because I see that the repro is also reported on kernel 4.14.y and
-"ovl: detect overlapping layers" is not expected to land in 4.14.y.
+I'm going though your queue, hoping to finish it for -rc2.
 
 Thanks,
-Amir.
+Miklos
