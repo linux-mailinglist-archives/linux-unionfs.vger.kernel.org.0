@@ -2,112 +2,93 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92D6611E430
-	for <lists+linux-unionfs@lfdr.de>; Fri, 13 Dec 2019 13:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04C0511E839
+	for <lists+linux-unionfs@lfdr.de>; Fri, 13 Dec 2019 17:26:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727170AbfLMM6l (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 13 Dec 2019 07:58:41 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:36836 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726345AbfLMM6l (ORCPT
+        id S1727984AbfLMQ0X (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 13 Dec 2019 11:26:23 -0500
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:53667 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728207AbfLMQ0W (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 13 Dec 2019 07:58:41 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBDCsFdH093153;
-        Fri, 13 Dec 2019 12:58:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=Lo7X5i3aeAYl4E0hOzjUTvXNaezv6f05FMLqKytQDWs=;
- b=oPbjMgcp31ClP7OmRouSbGdd3zQixq5ZebBEYJDGD5wirPltFg++fTzr/MNmEAzHokUB
- 9OR938UjRQI3JGv1Vex3r5S3IWRRnoACIc7G45VB6p6p8acisERF0IfBHuZAModnpYcX
- dNXI7aG4ewvtSXm1Vw7U8CaafZsDLOE4FH06To9be7kqTeCtLyCc57SgW7fDv2u9SDTw
- 0HmW99F3mhm039akuiZeHZNzBVSFxqb6xn4x3KXMgvZgxQiKn3s677lTKAmhs0aeV9RY
- JCkqC/c6l0QXgrfFy8XX4dPGR4qNZjp5ok5mBD7luO6uTNj6yLb75Swb5y8ggRIXscsJ Ag== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 2wr41qrycy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Dec 2019 12:58:38 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBDCsM6N028425;
-        Fri, 13 Dec 2019 12:58:37 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2wumw6kyy4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Dec 2019 12:58:37 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xBDCwaAv001917;
-        Fri, 13 Dec 2019 12:58:36 GMT
-Received: from kadam (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 13 Dec 2019 04:58:35 -0800
-Date:   Fri, 13 Dec 2019 15:58:28 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Amir Goldstein <amir73il@gmail.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>
-Subject: Re: [bug report] ovl: make sure that real fid is 32bit aligned in
- memory
-Message-ID: <20191213125828.GE2407@kadam>
-References: <20191213103705.iurz35cawvp6w46w@kili.mountain>
- <CAJfpegv1d=XRcqD0yJpobP2j3F+gBbKhmJ2mUzwq33s=4gD4Bw@mail.gmail.com>
+        Fri, 13 Dec 2019 11:26:22 -0500
+Received: by mail-wm1-f68.google.com with SMTP id w8so196504wmd.3
+        for <linux-unionfs@vger.kernel.org>; Fri, 13 Dec 2019 08:26:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=51qjue+Lhz7PmDgRPAGTCZbzojtbIVXyxCeZE2aMNjE=;
+        b=iDxyPlsfMu31u66hSyVq5/bWBnE7w3FIEEQNFRIns/gD+2id91qJulDC35PNWGQW4M
+         z15Av5sU9HBPXQkZIi0XTiOwMRCAnvKFQI8CQUibQ9lR8fRJutqnU0J2l0CaDTPsvuU2
+         VahVlDApeiudV1fsYUDYuISFHXK15w/eB582g=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=51qjue+Lhz7PmDgRPAGTCZbzojtbIVXyxCeZE2aMNjE=;
+        b=Zl/gTbvwFLA6PHuDWT9CReOjy84HurA9L+kgZH35F2fQ3WrjuBCWA1J1enVCDPH+zH
+         IBGVJ4HthGNoj2h6QVxaCyzfjMsbBhpt1zi/3VqNr1Jku3MkHUVeAXEmL6VPARFVcIx1
+         PqA1SDUeyulkcWp/2klsJAVTkr74m6dCvqLdvhw2roeuZrfbAIljZ3Pq2dFujUQnVJ2n
+         fijIDmp0KL41d49O4UpXrRQdXTz3Ia81T3f5rSbHkuoc6TURtCvK7+y0me5uCH36Gobv
+         RC5Fy0rocox1LdvMqTbPvjOHGI8jbDr6Y7/BLuooGLud6LjWDULWmN1qPazWcXgApzmw
+         1PyA==
+X-Gm-Message-State: APjAAAWUl2xzJ6GWu7+MwYuoOLwET6UMIur0pApsrY/x8LTrNZeOzcx+
+        O2Lp9XbiH2KrxY6PZD/1MlNz+A==
+X-Google-Smtp-Source: APXvYqzEJhQMLHR7HkP0qIFqLDe3n+JnIup+iSc+paWffU2Gi1zxfwx8kUgouUgm/GEu8xXHbSQkQg==
+X-Received: by 2002:a7b:c246:: with SMTP id b6mr14182508wmj.75.1576254380923;
+        Fri, 13 Dec 2019 08:26:20 -0800 (PST)
+Received: from miu.piliscsaba.redhat.com (catv-212-96-48-140.catv.broadband.hu. [212.96.48.140])
+        by smtp.gmail.com with ESMTPSA id a184sm11056008wmf.29.2019.12.13.08.26.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Dec 2019 08:26:20 -0800 (PST)
+Date:   Fri, 13 Dec 2019 17:26:12 +0100
+From:   Miklos Szeredi <miklos@szeredi.hu>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-unionfs@vger.kernel.org
+Subject: [GIT PULL] overlayfs fixes for 5.5-rc2
+Message-ID: <20191213162612.GA5081@miu.piliscsaba.redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJfpegv1d=XRcqD0yJpobP2j3F+gBbKhmJ2mUzwq33s=4gD4Bw@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9469 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=816
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1912130104
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9469 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=878 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1912130104
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Fri, Dec 13, 2019 at 01:22:10PM +0100, Miklos Szeredi wrote:
-> On Fri, Dec 13, 2019 at 11:38 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> >
-> > Hello Amir Goldstein,
-> >
-> > This is a semi-automatic email about new static checker warnings.
-> >
-> > The patch cbe7fba8edfc: "ovl: make sure that real fid is 32bit
-> > aligned in memory" from Nov 15, 2019, leads to the following Smatch
-> > complaint:
-> >
-> >     fs/overlayfs/copy_up.c:338 ovl_set_origin()
-> >      warn: variable dereferenced before check 'fh' (see line 337)
-> >
-> > fs/overlayfs/copy_up.c
-> >    336           */
-> >    337          err = ovl_check_setxattr(dentry, upper, OVL_XATTR_ORIGIN, fh->buf,
-> >                                                                           ^^^^^^^
-> > The patch adds an unconditional dereference
-> 
-> But in fact fh->buf is not a dereference:
-> 
-> struct ovl_fh {
->     u8 padding[3];    /* make sure fb.fid is 32bit aligned */
->     union {
->         struct ovl_fb fb;
->         u8 buf[0];
->     };
-> } __packed;
-> 
-> Subsequent code will also not dereference fh->buf, because the
-> supplied size is zero.
+Hi Linus,
 
-Ah yes.  Thanks.  Smatch got confused because the array is inside a
-union.  Sorry.
+Please pull from:
 
-regards,
-dan carpenter
+  git://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/vfs.git tags/ovl-fixes-5.5-rc2
 
+Fix some bugs and documentation.
+
+Thanks,
+Miklos
+
+----------------------------------------------------------------
+Amir Goldstein (7):
+      ovl: fix lookup failure on multi lower squashfs
+      ovl: make sure that real fid is 32bit aligned in memory
+      ovl: don't use a temp buf for encoding real fh
+      ovl: fix corner case of non-unique st_dev;st_ino
+      ovl: relax WARN_ON() on rename to self
+      docs: filesystems: overlayfs: Rename overlayfs.txt to .rst
+      docs: filesystems: overlayfs: Fix restview warnings
+
+---
+ .../filesystems/{overlayfs.txt => overlayfs.rst}   | 10 +--
+ MAINTAINERS                                        |  2 +-
+ fs/overlayfs/copy_up.c                             | 53 +++++++-------
+ fs/overlayfs/dir.c                                 |  2 +-
+ fs/overlayfs/export.c                              | 80 +++++++++++++---------
+ fs/overlayfs/inode.c                               |  8 ++-
+ fs/overlayfs/namei.c                               | 52 ++++++++------
+ fs/overlayfs/overlayfs.h                           | 34 +++++++--
+ fs/overlayfs/ovl_entry.h                           |  2 +
+ fs/overlayfs/super.c                               | 24 +++++--
+ 10 files changed, 166 insertions(+), 101 deletions(-)
+ rename Documentation/filesystems/{overlayfs.txt => overlayfs.rst} (99%)
