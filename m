@@ -2,93 +2,76 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04C0511E839
-	for <lists+linux-unionfs@lfdr.de>; Fri, 13 Dec 2019 17:26:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7807011F1A4
+	for <lists+linux-unionfs@lfdr.de>; Sat, 14 Dec 2019 12:56:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727984AbfLMQ0X (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 13 Dec 2019 11:26:23 -0500
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:53667 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728207AbfLMQ0W (ORCPT
+        id S1725900AbfLNL46 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 14 Dec 2019 06:56:58 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:55955 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725895AbfLNL46 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 13 Dec 2019 11:26:22 -0500
-Received: by mail-wm1-f68.google.com with SMTP id w8so196504wmd.3
-        for <linux-unionfs@vger.kernel.org>; Fri, 13 Dec 2019 08:26:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=51qjue+Lhz7PmDgRPAGTCZbzojtbIVXyxCeZE2aMNjE=;
-        b=iDxyPlsfMu31u66hSyVq5/bWBnE7w3FIEEQNFRIns/gD+2id91qJulDC35PNWGQW4M
-         z15Av5sU9HBPXQkZIi0XTiOwMRCAnvKFQI8CQUibQ9lR8fRJutqnU0J2l0CaDTPsvuU2
-         VahVlDApeiudV1fsYUDYuISFHXK15w/eB582g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=51qjue+Lhz7PmDgRPAGTCZbzojtbIVXyxCeZE2aMNjE=;
-        b=Zl/gTbvwFLA6PHuDWT9CReOjy84HurA9L+kgZH35F2fQ3WrjuBCWA1J1enVCDPH+zH
-         IBGVJ4HthGNoj2h6QVxaCyzfjMsbBhpt1zi/3VqNr1Jku3MkHUVeAXEmL6VPARFVcIx1
-         PqA1SDUeyulkcWp/2klsJAVTkr74m6dCvqLdvhw2roeuZrfbAIljZ3Pq2dFujUQnVJ2n
-         fijIDmp0KL41d49O4UpXrRQdXTz3Ia81T3f5rSbHkuoc6TURtCvK7+y0me5uCH36Gobv
-         RC5Fy0rocox1LdvMqTbPvjOHGI8jbDr6Y7/BLuooGLud6LjWDULWmN1qPazWcXgApzmw
-         1PyA==
-X-Gm-Message-State: APjAAAWUl2xzJ6GWu7+MwYuoOLwET6UMIur0pApsrY/x8LTrNZeOzcx+
-        O2Lp9XbiH2KrxY6PZD/1MlNz+A==
-X-Google-Smtp-Source: APXvYqzEJhQMLHR7HkP0qIFqLDe3n+JnIup+iSc+paWffU2Gi1zxfwx8kUgouUgm/GEu8xXHbSQkQg==
-X-Received: by 2002:a7b:c246:: with SMTP id b6mr14182508wmj.75.1576254380923;
-        Fri, 13 Dec 2019 08:26:20 -0800 (PST)
-Received: from miu.piliscsaba.redhat.com (catv-212-96-48-140.catv.broadband.hu. [212.96.48.140])
-        by smtp.gmail.com with ESMTPSA id a184sm11056008wmf.29.2019.12.13.08.26.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Dec 2019 08:26:20 -0800 (PST)
-Date:   Fri, 13 Dec 2019 17:26:12 +0100
-From:   Miklos Szeredi <miklos@szeredi.hu>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-unionfs@vger.kernel.org
-Subject: [GIT PULL] overlayfs fixes for 5.5-rc2
-Message-ID: <20191213162612.GA5081@miu.piliscsaba.redhat.com>
+        Sat, 14 Dec 2019 06:56:58 -0500
+Received: from [213.220.153.21] (helo=wittgenstein)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <christian.brauner@ubuntu.com>)
+        id 1ig62Z-0005xt-6W; Sat, 14 Dec 2019 11:56:55 +0000
+Date:   Sat, 14 Dec 2019 12:56:54 +0100
+From:   Christian Brauner <christian.brauner@ubuntu.com>
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     linux-fsdevel@vger.kernel.org, dhowells@redhat.com,
+        Al Viro <viro@ZenIV.linux.org.uk>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        linux-unionfs@vger.kernel.org,
+        Seth Forshee <seth.forshee@canonical.com>,
+        =?utf-8?B?U3TDqXBoYW5l?= Graber <stgraber@ubuntu.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Christian Brauner <christian.brauner@ubuntu.com>
+Subject: Re: [PATCH 0/1] preparatory patch for a uid/gid shifting bind mount
+Message-ID: <20191214115653.sciufxtj7ynwa7vy@wittgenstein>
+References: <1575148763.5563.28.camel@HansenPartnership.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1575148763.5563.28.camel@HansenPartnership.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Hi Linus,
+On Sat, Nov 30, 2019 at 01:19:23PM -0800, James Bottomley wrote:
+> I had another look at what it would take to reimplement shiftfs as a
+> true bind mount.  It turns out we do have struct path threaded in
+> almost enough places to make it work.  There really is only one API
+> that needs updating and that's notify_change(), so the following patch
+> fixes that and pulls do_truncate() along as well.  The updates are
+> mostly smooth and pretty obvious because the path was actually already
+> present, except for in overlayfs where trying to sort out what the path
+> should be is somewhat of a nightmare.  If the overlayfs people could
+> take a look and make sure I got it right, I'd be grateful.
+> 
+> I think this is the only needed change, but I've only just got a
+> functional implementation of a uid/gid shifting bind mount, so there
+> might be other places that need rethreading as I find deficiencies in
+> the current implementation.  I'll send them along as additional patches
+> if I find them
 
-Please pull from:
+Thanks for the patch. Can you please make sure to Cc the following
+people who attended the dedicated shiftfs session together with you at
+LPC in Lisbon for v2? They're all major stackholders in this:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/vfs.git tags/ovl-fixes-5.5-rc2
+Stéphane Graber <stgraber@ubuntu.com>
+Eric Biederman <ebiederm@xmission.com>
+David Howells <dhowells@redhat.com>
+Aleksa Sarai <cyphar@cyphar.com>
+Christian Brauner <christian.brauner@ubuntu.com>
 
-Fix some bugs and documentation.
+(I haven't gotten around to looking at the initial bind mount patchset
+you sent out about two weeks ago. Pre-holidays it's always tricky to
+find time for proper reviews...)
 
-Thanks,
-Miklos
-
-----------------------------------------------------------------
-Amir Goldstein (7):
-      ovl: fix lookup failure on multi lower squashfs
-      ovl: make sure that real fid is 32bit aligned in memory
-      ovl: don't use a temp buf for encoding real fh
-      ovl: fix corner case of non-unique st_dev;st_ino
-      ovl: relax WARN_ON() on rename to self
-      docs: filesystems: overlayfs: Rename overlayfs.txt to .rst
-      docs: filesystems: overlayfs: Fix restview warnings
-
----
- .../filesystems/{overlayfs.txt => overlayfs.rst}   | 10 +--
- MAINTAINERS                                        |  2 +-
- fs/overlayfs/copy_up.c                             | 53 +++++++-------
- fs/overlayfs/dir.c                                 |  2 +-
- fs/overlayfs/export.c                              | 80 +++++++++++++---------
- fs/overlayfs/inode.c                               |  8 ++-
- fs/overlayfs/namei.c                               | 52 ++++++++------
- fs/overlayfs/overlayfs.h                           | 34 +++++++--
- fs/overlayfs/ovl_entry.h                           |  2 +
- fs/overlayfs/super.c                               | 24 +++++--
- 10 files changed, 166 insertions(+), 101 deletions(-)
- rename Documentation/filesystems/{overlayfs.txt => overlayfs.rst} (99%)
+Christian
