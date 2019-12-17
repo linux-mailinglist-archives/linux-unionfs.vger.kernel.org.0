@@ -2,137 +2,108 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2244A1224A2
-	for <lists+linux-unionfs@lfdr.de>; Tue, 17 Dec 2019 07:27:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 979A7122658
+	for <lists+linux-unionfs@lfdr.de>; Tue, 17 Dec 2019 09:12:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727954AbfLQG1P (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 17 Dec 2019 01:27:15 -0500
-Received: from mail-io1-f66.google.com ([209.85.166.66]:43643 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725886AbfLQG1P (ORCPT
+        id S1726536AbfLQIMn (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 17 Dec 2019 03:12:43 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:38412 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725805AbfLQIMn (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 17 Dec 2019 01:27:15 -0500
-Received: by mail-io1-f66.google.com with SMTP id s2so9727821iog.10
-        for <linux-unionfs@vger.kernel.org>; Mon, 16 Dec 2019 22:27:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rXyM2/SEH8O9YHXNS16UWLhaRRcLGXGQT4kvRxu4Hh4=;
-        b=c5BcS84PRmoCt35+pPBOdcbABYVwE/vKnPlgeqKM86NzCsPnh2BVevYiAjdyg6DR3J
-         8x4XS9iFJbTgickndr/E4WOK9m+ZnVEHv5InAE4ufZBqU3nXL+SM7cwzUnChXQufLj5i
-         t6EdQmc3HrN1l8YAixqHJASW713HH6Uixkohw+IA65opdEg0P0sg6gaphVqI6pQXke4+
-         Eg3ldWP6p6qESfzto7Hg7ZbJKP7oyIcSJ2ns3qIwvr88QIi/IaOggsN/3T1Z/epr0HTg
-         Rtj5KIDrzZIC7vqa88WlUoMrsTP5tFO+69LxX79dP7PkTL3d7arvAwXse8mAI/3CopmB
-         UdeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rXyM2/SEH8O9YHXNS16UWLhaRRcLGXGQT4kvRxu4Hh4=;
-        b=KuafKDdzDoLRpuP3x2QLVnkppWawQwUcVdRazRa1fKjvKbqiNt4LEy6KE4gwKGgPmG
-         +1pAPxeMevQcyuCTRG7BGK06SiViUGYx+wK0SRT9xuQQ9htIW2Y+TFnFkAxYmo2cuIcl
-         7apDIOqp2yvJFJYdjM+AwgiFiM/rgJkGb9rToFDnvwxw07c/ZL1N8rat1N2zHsDdfeXN
-         xjRxz4NCU7Oknv0fAT9GPCe/hhBtqA3YYM2mHoORQ6hU+1luZrEAXVlToz+5bVSoEojQ
-         2HOTAHZ0GYgRUo4Y1NIH+qO42N9GzCnREcb5ZzAshTjutWaJWqwsbsAoDzQ7jqO0wGjl
-         4DnA==
-X-Gm-Message-State: APjAAAW0Z8W7ufJpFLO2URuQ6QBA7i2jd5oRgxkFiyeimTVQaYFMCZm9
-        s6JKJ4ZCZrh1uDDsWA6fH8xM2HDnCVAEmrTp1oUJ2Jdx
-X-Google-Smtp-Source: APXvYqyJtBybjiNyoAq6CCjN3sXPIYfh7O/goAPRzYnL/JL33M5Bn4D03/IxXmgwZiZU/hLwrQG7qvPzFI094EN6K/8=
-X-Received: by 2002:a02:81cc:: with SMTP id r12mr15148400jag.93.1576564034447;
- Mon, 16 Dec 2019 22:27:14 -0800 (PST)
+        Tue, 17 Dec 2019 03:12:43 -0500
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBH87KJT041191
+        for <linux-unionfs@vger.kernel.org>; Tue, 17 Dec 2019 03:12:42 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2wvw5c2wyd-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-unionfs@vger.kernel.org>; Tue, 17 Dec 2019 03:12:42 -0500
+Received: from localhost
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-unionfs@vger.kernel.org> from <riteshh@linux.ibm.com>;
+        Tue, 17 Dec 2019 08:12:39 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Tue, 17 Dec 2019 08:12:36 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xBH8CZG155705752
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 17 Dec 2019 08:12:35 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 2B3DD4C059;
+        Tue, 17 Dec 2019 08:12:35 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A81214C040;
+        Tue, 17 Dec 2019 08:12:33 +0000 (GMT)
+Received: from [9.199.158.112] (unknown [9.199.158.112])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 17 Dec 2019 08:12:33 +0000 (GMT)
+Subject: Re: [PATCH 0/1] Use inode_lock/unlock class of provided APIs in
+ filesystems
+To:     willy@infradead.org, linux-fsdevel@vger.kernel.org,
+        jlayton@kernel.org, viro@zeniv.linux.org.uk
+Cc:     ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+        linux-nfs@vger.kernel.org, devel@lists.orangefs.org,
+        linux-unionfs@vger.kernel.org
+References: <20191205103902.23618-1-riteshh@linux.ibm.com>
+From:   Ritesh Harjani <riteshh@linux.ibm.com>
+Date:   Tue, 17 Dec 2019 13:42:29 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-References: <20191101123551.8849-1-cgxu519@mykernel.net> <CAOQ4uxi6g=UmfCjtZiyfgPhHc9+NCOQBQ++YeBTWmJaXjDNX_g@mail.gmail.com>
- <CAJfpegv39gDaVwLXx4+Vzb75Bv2fOfCHX8-bjS0N9QRkXo=G1Q@mail.gmail.com> <CAOQ4uxg59CxKaT_knYNf1YoX1fYXZ6tGHzEPLJMCe9ACip-SGw@mail.gmail.com>
-In-Reply-To: <CAOQ4uxg59CxKaT_knYNf1YoX1fYXZ6tGHzEPLJMCe9ACip-SGw@mail.gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Tue, 17 Dec 2019 08:27:03 +0200
-Message-ID: <CAOQ4uxia14EUn=5HFNGL5AyydU=JUcLBS-sYbc9UM_i_-F_EyQ@mail.gmail.com>
-Subject: Re: [PATCH v4] ovl: improving copy-up efficiency for big sparse file
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Chengguang Xu <cgxu519@mykernel.net>,
-        overlayfs <linux-unionfs@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191205103902.23618-1-riteshh@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19121708-0020-0000-0000-000003990467
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19121708-0021-0000-0000-000021F01F27
+Message-Id: <20191217081233.A81214C040@d06av22.portsmouth.uk.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-17_01:2019-12-16,2019-12-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
+ mlxlogscore=757 mlxscore=0 bulkscore=0 adultscore=0 malwarescore=0
+ lowpriorityscore=0 priorityscore=1501 impostorscore=0 spamscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912170071
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Mon, Dec 16, 2019 at 4:03 PM Amir Goldstein <amir73il@gmail.com> wrote:
->
-> On Mon, Dec 16, 2019 at 1:58 PM Miklos Szeredi <miklos@szeredi.hu> wrote:
-> >
-> > On Thu, Dec 12, 2019 at 4:43 PM Amir Goldstein <amir73il@gmail.com> wrote:
-> >
-> > > It's the same old story that was fixed in commit:
-> > > 6d0a8a90a5bb ovl: take lower dir inode mutex outside upper sb_writers lock
-> > >
-> > > The lower overlay inode mutex is taken inside ovl_llseek() while upper fs
-> > > sb_writers is held since ovl_maybe_copy_up() of nested overlay.
-> > >
-> > > Since the lower overlay uses same real fs as nested overlay upper,
-> > > this could really deadlock if the lower overlay inode is being modified
-> > > (took inode mutex and trying to take real fs sb_writers).
-> > >
-> > > Not a very common case, but still a possible deadlock.
-> > >
-> > > The only way to avoid this deadlock is probably a bit too hacky for your taste:
-> > >
-> > >         /* Skip copy hole optimization for nested overlay */
-> > >         if (old->mnt->mnt_sb->s_stack_depth)
-> > >                 skip_hole = false;
-> > >
-> > > The other way is to use ovl_inode_lock() in ovl_llseek().
-> > >
-> > > Have any preference? Something else?
-> > >
-> > > Should we maybe use ovl_inode_lock() also in ovl_write_iter() and
-> > > ovl_ioctl_set_flags()? In all those cases, we are not protecting the overlay
-> > > inode members, but the real inode members from concurrent modification
-> > > through overlay.
-> >
-> > Possibly.   I think this whole thing needs a good analysis of i_rwsem
-> > use in overlayfs.
-> >
->
-> From what I can find, besides those 3 instances in file.c, there are
-> two places I know of that access vfs_ functions on the overlay inode:
->
-> 1. ovl_lookup_real_one(connected, ...), which takes the inode_lock itself
-> 2. ovl_cache_update_ino(path, ...), which is called with inode_lock held
->
-> In those places the locking is intentional and looks correct.
->
-> And 3 more places that take inode_lock of overlay dir inode:
-> 1. ovl_dir_llseek() - synchronize modifications to od->cache
->     and synchronize modifications to real f_pos
-> 2. ovl_dir_fsync() - synchronize modifications to od->upperfile.
-> 3. ovl_dir_release() - synchronize modifications to od->cache.
->
-> Those 3 places were written before ovl_inode_lock existed.
->
-> real f_pos could be protected by ovl_inode_lock same as ovl_llseek().
->
-> od->upperfile could be protected by ovl_inode_lock same as copy up.
->
-> od->cache is created/accessed from ovl_iterate() with inode_lock
-> protection from vfs - I don't know if we want to change that to also take
-> ovl_inode_lock, so not sure if we have a good reason to change locking
-> in ovl dir operations.
->
+Al, do you think this can be picked up via your tree?
+Please let me know if anything needed from my end on this.
 
-On second thought, we can convert to protecting modifications of
-od->cache and OVL_I(inode)->cache with ovl_inode_lock and then switch
-to ->iterate_shared().
+-ritesh
 
-ovl_iterate() and ovl_seek_cursor() would walk on an elevated reference of
-ovl_dir_cache instead of on od->cache directly.
-impure dir cache would have to be refcounted as well.
+On 12/5/19 4:09 PM, Ritesh Harjani wrote:
+> Matthew Wilcox in [1] suggested that it will be a good idea
+> to define some missing API instead of directly using i_rwsem in
+> filesystems drivers for lock/unlock/downgrade purposes.
+> 
+> This patch does that work. No functionality change in this patch.
+> 
+> After this there are only lockdep class of APIs at certain places
+> in filesystems which are directly using i_rwsem and second is XFS,
+> but it seems to be anyway defining it's own xfs_ilock/iunlock set
+> of APIs and 'iolock' naming convention for this lock.
+> 
+> [1]: https://www.spinics.net/lists/linux-ext4/msg68689.html
+> 
+> Ritesh Harjani (1):
+>    fs: Use inode_lock/unlock class of provided APIs in filesystems
+> 
+>   fs/btrfs/delayed-inode.c |  2 +-
+>   fs/btrfs/ioctl.c         |  4 ++--
+>   fs/ceph/io.c             | 24 ++++++++++++------------
+>   fs/nfs/io.c              | 24 ++++++++++++------------
+>   fs/orangefs/file.c       |  4 ++--
+>   fs/overlayfs/readdir.c   |  2 +-
+>   fs/readdir.c             |  4 ++--
+>   include/linux/fs.h       | 21 +++++++++++++++++++++
+>   8 files changed, 53 insertions(+), 32 deletions(-)
+> 
 
-Am I missing something?
-
-I actually have one use case which may involve many concurrent readdirs
-on a large directory, so this could be interesting for me to benchmark.
-
-Thanks,
-Amir.
