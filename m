@@ -2,153 +2,203 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24B5E128A7E
-	for <lists+linux-unionfs@lfdr.de>; Sat, 21 Dec 2019 17:52:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20083128A87
+	for <lists+linux-unionfs@lfdr.de>; Sat, 21 Dec 2019 18:04:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726114AbfLUQww (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 21 Dec 2019 11:52:52 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:45459 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726107AbfLUQww (ORCPT
+        id S1726319AbfLURE4 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 21 Dec 2019 12:04:56 -0500
+Received: from mail-wm1-f42.google.com ([209.85.128.42]:51647 "EHLO
+        mail-wm1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726179AbfLURE4 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 21 Dec 2019 11:52:52 -0500
-Received: by mail-wr1-f68.google.com with SMTP id j42so12328922wrj.12
-        for <linux-unionfs@vger.kernel.org>; Sat, 21 Dec 2019 08:52:50 -0800 (PST)
+        Sat, 21 Dec 2019 12:04:56 -0500
+Received: by mail-wm1-f42.google.com with SMTP id d73so11928689wmd.1;
+        Sat, 21 Dec 2019 09:04:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=tFw4DNUP3TL91LBL7JRmX0IsmFr0EKAfMPojHm8Sdfw=;
-        b=h15Q3RiSgJkLtVIh3HVDo17/rsHdTbOjYbakdHZNw8xduhRVdKGlrRgcBy/r+dHH3R
-         N3fNBp/PCKIlegcWt8HyjTs+kCLhvRWZa3CFYHAVben+M+a7Fut82f8pPliUSEVoPMZz
-         ZSw5548yfbx6KzutJg8RRFdy7Cq85tATu9peFUpXK1n0rAnYev008C1BfA5QX3f+EKzM
-         wte3BHRX0vHKy7GAwDbBwhhp8WbZlHaWcNBi4GmWe4QCCCxxnxbfZp4WH343H0iGkN9L
-         RpQiozS8LC6IfWBH7G9ZiKI68tiB5ATIhTtE2RB0JprxmZLVHBHKgwf85RPU+Yavmkmx
-         9nzw==
+        bh=XYYsNOwA4P2JUXVBuryUxvONRaOD/VDfSk7veS8CbIM=;
+        b=dGhFAqqPwTBxAMWD/HugWz7FObPdySk16bUJuH4QsQnpZ/xCHowx7MKUCcfijRC7AR
+         gBxvcw7shrr1VV9gwP466WzzM4+FNEElXiGAdMkmyqeltpmZIrpMgJLTm/McWECBIBsw
+         QAzNKa+jVoqatuR+2lvBLYs5qE5MmnXVOaNrx8o+b6dAedZshID8YHPzgkSHjY5wNd24
+         lDviz97wVaoqVjotxSqRu5PRPqLAg8R6iWx+V1Iv+HwtLZewji9qIZidX5y95WRKx+vu
+         /M06wAO2AG2gXW0u/rZ9Dz47RFrxs8hEH3pvm+i5pE4wthsndljvp9dA20Hd8z1oAP40
+         vzRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=tFw4DNUP3TL91LBL7JRmX0IsmFr0EKAfMPojHm8Sdfw=;
-        b=CT4QDkPd7XL0j6kiv3dXdS3uTc/hR/eQxcEYc97/jz43PIKhNwsC3tSxud7kOI/Qaq
-         vs6AzN/B9F0cqi8yKvQ7EX4ZyemToq9Bnf7qFs/EwgtDxGxu4M0/tzsQzO1TMSjGjc89
-         AFNl0cgfvpnNBEwn7SjpofXr0InFGgHzljnsJnWj4PyF5GNBHaX+Q+nwekyxapx3wL0m
-         qM/ecDBE+7zPENHIrbdOsJ5iSfBbQyK8MpIKbtNR/xl2909jSCuoRNdkitRZh28Osibd
-         0aw0BMV8m6weGJZhb8iy8Xk1UyrPXZzxyLL5idymp4WrPQC43QcpdavtSCZVcU7Gwj9G
-         0XfA==
-X-Gm-Message-State: APjAAAWj+8wPHVnrQuwyXUo+N+KCtU9pL4C3+PKT9RERPYzjle/uk3U3
-        nECB4Vr7vT35nSW3Ut42SVQ=
-X-Google-Smtp-Source: APXvYqyEm/Y7rwameHQx8hx0OXfBVuu7WRqOVfvwWJZd/zfFrL/wMIVE4b+aWavBhcOIn02eUT556Q==
-X-Received: by 2002:a5d:4044:: with SMTP id w4mr21180989wrp.322.1576947169827;
-        Sat, 21 Dec 2019 08:52:49 -0800 (PST)
+        bh=XYYsNOwA4P2JUXVBuryUxvONRaOD/VDfSk7veS8CbIM=;
+        b=TczjM1DgfSFaeDfVFI+aYo47bxhaVDDpCC9atBLLdwt8sHiV5ake7oMjO98Jg03z2D
+         VmeurlJrYt9Zcw8jw5NPASeWR+4qBEut0O8ZFXSw4dE56QfT4beyRqWfEL85wUJUNTu/
+         WTza3dh/rlCVNZTk2RUF6mzQmGLO9v4G3pEKFO9luFjFUJnKaLGBsKCv3UwhD8rqQdj8
+         SWZazY+xz53Okgeh5owE2lutnU/GYCbPrVFseBjCVjqVIBhcWZMemYTTqr76obZr3nGy
+         zYhdPCx35cJ1inVILRJw5ojZLpqaJH/9yGMcJXvhYaS5g2KwMlRy8OFCkyhsOjqc7nZI
+         9x8Q==
+X-Gm-Message-State: APjAAAXYgzSosxi2Qzjw2BrR3p5uVZcUKRe+T2Y29nPPIzR56gqNWSTB
+        y7reJUGY+6uVbfNfUxqnt2U=
+X-Google-Smtp-Source: APXvYqw7nwfXBg96IY5BgyoKJmEnSTKPtBCdwt7CaejicuFPN8RtRE0M8bmZ4Nb2R2bTDv2m7/MYng==
+X-Received: by 2002:a1c:1f51:: with SMTP id f78mr21751351wmf.60.1576947894498;
+        Sat, 21 Dec 2019 09:04:54 -0800 (PST)
 Received: from localhost.localdomain ([141.226.162.223])
-        by smtp.gmail.com with ESMTPSA id f1sm14148004wro.85.2019.12.21.08.52.48
+        by smtp.gmail.com with ESMTPSA id q68sm16193448wme.14.2019.12.21.09.04.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Dec 2019 08:52:49 -0800 (PST)
+        Sat, 21 Dec 2019 09:04:53 -0800 (PST)
 From:   Amir Goldstein <amir73il@gmail.com>
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Chengguang Xu <cgxu519@mykernel.net>, linux-unionfs@vger.kernel.org
-Subject: [PATCH] ovl: use ovl_inode_lock in ovl_llseek()
-Date:   Sat, 21 Dec 2019 18:52:43 +0200
-Message-Id: <20191221165243.13026-1-amir73il@gmail.com>
+To:     Eryu Guan <guaneryu@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org,
+        fstests@vger.kernel.org
+Subject: [PATCH v2] overlay: Test unique st_dev;st_ino on non-samefs setup
+Date:   Sat, 21 Dec 2019 19:04:47 +0200
+Message-Id: <20191221170447.13586-1-amir73il@gmail.com>
 X-Mailer: git-send-email 2.17.1
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-In ovl_llseek() we use the overlay inode rwsem to protect against
-concurrent modifications to real file f_pos, because we copy the overlay
-file f_pos to/from the real file f_pos.
+Check that files from middle layer on same fs as upper layer
+are not allowed to export the real inode st_dev;st_ino.
 
-This caused a lockdep warning of locking order violation when the
-ovl_llseek() operation was called on a lower nested overlay layer while
-the upper layer fs sb_writers is held (with patch improving copy-up
-efficiency for big sparse file).
-
-Use the internal ovl_inode_lock() instead of the overlay inode rwsem
-in those cases. It is meant to be used for protecting against concurrent
-changes to overlay inode internal state changes.
-
-The locking order rules are documented to explain this case.
+This is a regression test for kernel commit:
+  9c6d8f13e9da ("ovl: fix corner case of non-unique st_dev;st_ino")
 
 Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 ---
 
-Miklos,
+Eryu,
 
-From all the potential cases to replace inode_lock with ovl_inode_lock,
-this is the only one left with justification.
-
-ovl_write_iter() and ovl_ioctl_set_flags() will require more changes and
-they cannot be called on a lower overlay.
-
-ovl_dir_llseek() needs to use the same lock used by ovl_iterate() when
-modifying realfile->f_pos (i_rwsem).
-
-ovl_dir_fsync() could use ovl_inode_lock insead of i_rwsem for
-od->upperfile test&set, but there is no strong justification to make
-that change now.
+The kernel fix commit is now upstream.
 
 Thanks,
 Amir.
 
- fs/overlayfs/file.c  |  4 ++--
- fs/overlayfs/inode.c | 21 +++++++++++++++++++++
- 2 files changed, 23 insertions(+), 2 deletions(-)
+Changes since v1:
+- Document upstream commit id
 
-diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
-index e235a635d9ec..859efeaaefab 100644
---- a/fs/overlayfs/file.c
-+++ b/fs/overlayfs/file.c
-@@ -171,7 +171,7 @@ static loff_t ovl_llseek(struct file *file, loff_t offset, int whence)
- 	 * limitations that are more strict than ->s_maxbytes for specific
- 	 * files, so we use the real file to perform seeks.
- 	 */
--	inode_lock(inode);
-+	ovl_inode_lock(inode);
- 	real.file->f_pos = file->f_pos;
- 
- 	old_cred = ovl_override_creds(inode->i_sb);
-@@ -179,7 +179,7 @@ static loff_t ovl_llseek(struct file *file, loff_t offset, int whence)
- 	revert_creds(old_cred);
- 
- 	file->f_pos = real.file->f_pos;
--	inode_unlock(inode);
-+	ovl_inode_unlock(inode);
- 
- 	fdput(real);
- 
-diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index b045cf1826fc..481a19965dd1 100644
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -527,6 +527,27 @@ static const struct address_space_operations ovl_aops = {
-  * [...] &ovl_i_mutex_dir_key[depth]   (stack_depth=2)
-  * [...] &ovl_i_mutex_dir_key[depth]#2 (stack_depth=1)
-  * [...] &type->i_mutex_dir_key        (stack_depth=0)
-+ *
-+ * Locking order w.r.t ovl_want_write() is important for nested overlayfs.
-+ *
-+ * This chain is valid:
-+ * - inode->i_rwsem			(inode_lock[2])
-+ * - upper_mnt->mnt_sb->s_writers	(ovl_want_write[0])
-+ * - OVL_I(inode)->lock			(ovl_inode_lock[2])
-+ * - OVL_I(lowerinode)->lock		(ovl_inode_lock[1])
-+ *
-+ * And this chain is valid:
-+ * - inode->i_rwsem			(inode_lock[2])
-+ * - OVL_I(inode)->lock			(ovl_inode_lock[2])
-+ * - lowerinode->i_rwsem		(inode_lock[1])
-+ * - OVL_I(lowerinode)->lock		(ovl_inode_lock[1])
-+ *
-+ * But lowerinode->i_rwsem SHOULD NOT be acquired while ovl_want_write() is
-+ * held, because it is in reverse order of the non-nested case using the same
-+ * upper fs:
-+ * - inode->i_rwsem			(inode_lock[1])
-+ * - upper_mnt->mnt_sb->s_writers	(ovl_want_write[0])
-+ * - OVL_I(inode)->lock			(ovl_inode_lock[1])
-  */
- #define OVL_MAX_NESTING FILESYSTEM_MAX_STACK_DEPTH
- 
+ tests/overlay/067     | 94 +++++++++++++++++++++++++++++++++++++++++++
+ tests/overlay/067.out |  2 +
+ tests/overlay/group   |  1 +
+ 3 files changed, 97 insertions(+)
+ create mode 100755 tests/overlay/067
+ create mode 100644 tests/overlay/067.out
+
+diff --git a/tests/overlay/067 b/tests/overlay/067
+new file mode 100755
+index 00000000..d0a59a0b
+--- /dev/null
++++ b/tests/overlay/067
+@@ -0,0 +1,94 @@
++#! /bin/bash
++# SPDX-License-Identifier: GPL-2.0
++# Copyright (C) 2019 CTERA Networks. All Rights Reserved.
++#
++# FSQA Test No. 067
++#
++# Test unique st_dev;st_ino on non-samefs setup.
++#
++# Check that files from middle layer on same fs as upper layer
++# are not allowed to export the real inode st_dev;st_ino.
++#
++# This is a regression test for kernel commit:
++#   9c6d8f13e9da ovl: fix corner case of non-unique st_dev;st_ino
++#
++seq=`basename $0`
++seqres=$RESULT_DIR/$seq
++echo "QA output created by $seq"
++
++here=`pwd`
++tmp=/tmp/$$
++status=1	# failure is the default!
++trap "_cleanup; exit \$status" 0 1 2 3 15
++
++_cleanup()
++{
++	cd /
++	rm -f $tmp.*
++}
++
++# get standard environment, filters and checks
++. ./common/rc
++. ./common/filter
++
++rm -f $seqres.full
++
++# real QA test starts here
++_supported_fs overlay
++_supported_os Linux
++# Use non-default scratch underlying overlay dirs, we need to check
++# them explicity after test.
++_require_scratch_nocheck
++_require_test
++
++# Lower is on test partition
++lower=$OVL_BASE_TEST_DIR/$OVL_LOWER-$seq
++# Upper/work are on scratch partition
++middle=$OVL_BASE_SCRATCH_MNT/$OVL_LOWER
++upper=$OVL_BASE_SCRATCH_MNT/$OVL_UPPER
++work=$OVL_BASE_SCRATCH_MNT/$OVL_WORK
++
++rm -rf $lower
++mkdir $lower
++
++_scratch_mkfs >>$seqres.full 2>&1
++
++realfile=$middle/file
++testfile=$SCRATCH_MNT/file
++
++# Create a file on middle layer on same fs as upper layer
++echo wrong > $realfile
++
++# Mount an overlay on $SCRATCH_MNT with lower layer on test partition
++# and middle and upper layer on scratch partition.
++# Disable xino, so not all overlay inodes are on the same st_dev.
++_overlay_scratch_mount_dirs $middle:$lower $upper $work -o xino=off || \
++	_notrun "cannot mount overlay with xino=off option"
++
++stat $realfile >>$seqres.full
++stat $testfile >>$seqres.full
++
++# Diverge the content of the overlay file from its origin
++echo right > $testfile
++
++stat $testfile >>$seqres.full
++
++# Expect the overlay file to differ from the original lower file
++diff -q $realfile $testfile >>$seqres.full &&
++	echo "diff with middle layer file doesn't know right from wrong! (warm cache)"
++
++echo 3 > /proc/sys/vm/drop_caches
++
++stat $testfile >>$seqres.full
++
++# Expect the overlay file to differ from the original lower file
++diff -q $realfile $testfile >>$seqres.full &&
++	echo "diff with middle layer file doesn't know right from wrong! (cold cache)"
++
++$UMOUNT_PROG $SCRATCH_MNT
++# check overlayfs
++_overlay_check_scratch_dirs $middle:$lower $upper $work -o xino=off
++
++echo "Silence is golden"
++status=0
++exit
+diff --git a/tests/overlay/067.out b/tests/overlay/067.out
+new file mode 100644
+index 00000000..daa15453
+--- /dev/null
++++ b/tests/overlay/067.out
+@@ -0,0 +1,2 @@
++QA output created by 067
++Silence is golden
+diff --git a/tests/overlay/group b/tests/overlay/group
+index 1dec7db9..b7cd7774 100644
+--- a/tests/overlay/group
++++ b/tests/overlay/group
+@@ -69,3 +69,4 @@
+ 064 auto quick copyup
+ 065 auto quick mount
+ 066 auto quick copyup
++067 auto quick copyup nonsamefs
 -- 
 2.17.1
 
