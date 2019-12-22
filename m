@@ -2,94 +2,84 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1377D128F5E
-	for <lists+linux-unionfs@lfdr.de>; Sun, 22 Dec 2019 19:45:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B611129004
+	for <lists+linux-unionfs@lfdr.de>; Sun, 22 Dec 2019 22:19:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726645AbfLVSpi (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 22 Dec 2019 13:45:38 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:44249 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725919AbfLVSpi (ORCPT
+        id S1726623AbfLVVTd (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 22 Dec 2019 16:19:33 -0500
+Received: from mail-io1-f66.google.com ([209.85.166.66]:41264 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726010AbfLVVTd (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 22 Dec 2019 13:45:38 -0500
-Received: by mail-wr1-f67.google.com with SMTP id q10so14341499wrm.11;
-        Sun, 22 Dec 2019 10:45:36 -0800 (PST)
+        Sun, 22 Dec 2019 16:19:33 -0500
+Received: by mail-io1-f66.google.com with SMTP id c16so10836782ioo.8;
+        Sun, 22 Dec 2019 13:19:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=hMUvTejarQb83y3JWrmzDGdkHFq0cI3MO3u2f5COMPs=;
-        b=qZ4+wZP1KWPxmPTInnjiQzXCf2ToHIRtlsma9sUBdV83M2TZmBmOFKRp6jS2C6iUvG
-         imkEBOH5YXQVM8rcq4mQijOERJQQ8oHUfeGlKO9KvLe8QossMTCZxDyyHvfri2PKlJqY
-         tHnbo3+uWKHv6jCpj/MyHV6VK2OgCtVU4VV/nEn3uE7NIUZFy8mUc9uCjGclsEJRvkJT
-         d0RMA+JzoIocM9vfekKmrv/bYgkdqox1rkjvtBMHq90YMpqJT9gGzE7Ui3nobWQz3MJg
-         /u3pbKTlhGkESZywK+GoH0i1QhQPYhAYtMw5IWiycACtMDDjd9RzvBQv356H1agm6N0w
-         HnLg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CXDBDWTdYlT8SsvmmiGVbrDnxW2kEr2Q0Tela7LwImY=;
+        b=MPm42GaLew1hMn1xuVmh+3qyAP34+sz0eXNoE+NvEaw2dMN1fH/i+5y91L1bu4mQ46
+         dnvVCThft2+m09Au+ZhAubM9Kgml36RGet69Yb461WiUe9UT4MJA4vcAyVoKqV1kmzw2
+         N1gxyK5CgnVXXg9820Z8qEfMJMuuskHk/dTa7atc4SdYSnwzyRZKBNF7kJTS05jSwhrx
+         KbgeEaUYoFa+v/EWTJpHVaM54GqoAMcdt5MNz9yoHlt9GT9fJ6+bgyZp1oseEGaRkylc
+         04OE0zBP00UfYWqOure3Q0sllU8dDhmk3OdFLNfsNjb20Hi6TD+g6I5gkydMHVB0/8TE
+         PkIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=hMUvTejarQb83y3JWrmzDGdkHFq0cI3MO3u2f5COMPs=;
-        b=Q+limEoXNidGJNafYJgGfxEZOWZGA2B/i6J78MVrdWgxDExx15xUb3zGudDaSBM/KZ
-         MAmZF0Dndm2RFFwyT49JiAlyxlYYb9IkFn8uCJw9qTP1mv2T/fTfEpgtT2dcN20xtKMd
-         AANrJpGPXlAjc3FXE+40Ymq/34YYR/mkNCkKoL11Lx+vbsCq2o2ndGi2nZw4uBjQ7Yyl
-         sNQEPSq6vUESXntA5jiXIiRpZAotEgACGRlnBoNzGkRrNTXjoKO/NhGRYvhZAYQ3+T0I
-         xtMripGRKPE+KzV9CAVn6GZlI7iNDKkGVuHFUr+bBhkN4xvgR5caXssb6yhZYRKDjDHY
-         1AiA==
-X-Gm-Message-State: APjAAAVDRx31aDP9eIDInLDwk/WAv5H6nejw1QrdKe0puvEgMqemnscE
-        TxP5sAzJtAsI0x+4tIew6h066Fcr
-X-Google-Smtp-Source: APXvYqzd/3Ziq8/cGEjkf7pIF/NeiqyJi1JMCOXVTRjormXnuBfxpSh+FhIZlnQxZHx69MtLtxDphg==
-X-Received: by 2002:a5d:4c85:: with SMTP id z5mr25574325wrs.42.1577040335758;
-        Sun, 22 Dec 2019 10:45:35 -0800 (PST)
-Received: from localhost.localdomain ([141.226.162.223])
-        by smtp.gmail.com with ESMTPSA id y6sm17544054wrl.17.2019.12.22.10.45.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Dec 2019 10:45:34 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CXDBDWTdYlT8SsvmmiGVbrDnxW2kEr2Q0Tela7LwImY=;
+        b=TsifNUzceWT+vxlx/T8weaKcJaNClBxBmRNJUKIoPvmAq5YW+b3XIsFrxQmjvAqyBb
+         5HFotvbczYpZ9tQ0BMFBsdGPmvh2dwXsH8WOSsPFBnuHwbulfddOq3HZ/BqXMUl4RKbk
+         82Z+jsO7VcTKCryRmrZgxjbtEK1DCq/nejmWp5I8FPpuvGhOvcFBrCqjFqSeXip+mmEU
+         82ZrFiQbfvQi4ELLRq3NhoUi0dclerfFnMorzJmlmv7tHRw1YZpnciqA3hJXHLVKhej/
+         tsz1AOffNxozeGt0yAqWzwW+d8JB460vQUB90t9SabAcf5cdKzhiq3pe2ZEww3P/7hRD
+         2lnw==
+X-Gm-Message-State: APjAAAWXOqs3X7VS+at6zcqMRove20Tv/YTcnlGtUnRZJ86Qs+D+Sw9/
+        sbR29aw3wGDsftqdKKuEF+bA8n28VviRivVZx2g=
+X-Google-Smtp-Source: APXvYqxJ0VSB2rX0tAUagVVNFnU3VZN0ANk6f57lWtBfiDG4yvhNz0roASAxdp+L2dx07/TYFwiAcopxWfijHz/GFmA=
+X-Received: by 2002:a6b:6b19:: with SMTP id g25mr18973455ioc.137.1577049572707;
+ Sun, 22 Dec 2019 13:19:32 -0800 (PST)
+MIME-Version: 1.0
+References: <20191221185149.17509-1-amir73il@gmail.com>
+In-Reply-To: <20191221185149.17509-1-amir73il@gmail.com>
 From:   Amir Goldstein <amir73il@gmail.com>
-To:     Jeff Layton <jlayton@poochiereds.net>
-Cc:     "J . Bruce Fields" <bfields@fieldses.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        linux-unionfs@vger.kernel.org, linux-nfs@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-Subject: [PATCH] locks: print unsigned ino in /proc/locks
-Date:   Sun, 22 Dec 2019 20:45:28 +0200
-Message-Id: <20191222184528.32687-1-amir73il@gmail.com>
-X-Mailer: git-send-email 2.17.1
+Date:   Sun, 22 Dec 2019 23:19:21 +0200
+Message-ID: <CAOQ4uxj2+ma4LEm14WdyXSkrHMrdWkwVzQd4r-WTqGdGJ8g2Rg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] Nested overlay exportfs tests
+To:     Eryu Guan <guaneryu@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        fstests <fstests@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-An ino is unsigned so export it as such in /proc/locks.
+On Sat, Dec 21, 2019 at 8:51 PM Amir Goldstein <amir73il@gmail.com> wrote:
+>
+> Eryu,
+>
 
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
----
+Eryu,
 
-Hi Jeff,
+Actually, I needed to make a change to overlay/069, so please hold on
+with these.
 
-Ran into this while writing tests to verify i_ino == d_ino == st_ino on
-overlayfs. In some configurations (xino=on) overlayfs sets MSB on i_ino,
-so /proc/locks reports negative ino values.
+For test coverage, the interesting cases for nested overlay are:
+- lower overlay is samefs
+- lower overlay is non-samefs
 
-BTW, the requirement for (i_ino == d_ino) came from nfsd v3 readdirplus.
+That last case is especially interesting to exercise xino bit overflow,
+because lower overlay uses the high ino bits.
 
-Thanks,
+This is not how I implemented overlay/069, so I made this change and
+it caught another bug in upstream.
+
+I have more nested tests coming soon, so I will post those along
+with v2 of these tests.
+
+Thanks and sorry for the noise,
 Amir.
-
- fs/locks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/locks.c b/fs/locks.c
-index 6970f55daf54..44b6da032842 100644
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2853,7 +2853,7 @@ static void lock_get_status(struct seq_file *f, struct file_lock *fl,
- 	}
- 	if (inode) {
- 		/* userspace relies on this representation of dev_t */
--		seq_printf(f, "%d %02x:%02x:%ld ", fl_pid,
-+		seq_printf(f, "%d %02x:%02x:%lu ", fl_pid,
- 				MAJOR(inode->i_sb->s_dev),
- 				MINOR(inode->i_sb->s_dev), inode->i_ino);
- 	} else {
--- 
-2.17.1
-
