@@ -2,100 +2,100 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8129612BD3D
-	for <lists+linux-unionfs@lfdr.de>; Sat, 28 Dec 2019 11:10:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6970C12C285
+	for <lists+linux-unionfs@lfdr.de>; Sun, 29 Dec 2019 14:19:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726377AbfL1KKv (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 28 Dec 2019 05:10:51 -0500
-Received: from mail-io1-f66.google.com ([209.85.166.66]:43232 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726248AbfL1KKv (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 28 Dec 2019 05:10:51 -0500
-Received: by mail-io1-f66.google.com with SMTP id n21so26102649ioo.10;
-        Sat, 28 Dec 2019 02:10:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=AQVDLXoG3OJl9MAwKiT8ijRLZ0D7oeHNde77OTeL3hI=;
-        b=d1JDRRkm4o/yL3rudZbk/sKG3il48+EbO5waONXDUtS5VVAnR3GU2Uuh4CLkSFafo9
-         QnAH+j5RjNsEMeRx7SwBJCSuIj7sSjezZiijj7LeEio700PZbbB3MdRp8Th4zUQbtMVE
-         W36YTCKCOP724RY8S0s96zLUYWl1fIA2mDcSlp+VcjFbcV//DfCLTbfn5rkmeH5z/rtI
-         9tBMO/ILJ1gFAEltsoVdt8KGo/SN9XlAcqYj8fWtmLyUOqEFTG73vbXFJbxylk8g6Wa1
-         DPhn4/UrL7+VLYOwHAQJwnFaoHME/RAargFVIel/u7yC6WaXT/OuKpAT+wxANawGlSrh
-         Tkjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=AQVDLXoG3OJl9MAwKiT8ijRLZ0D7oeHNde77OTeL3hI=;
-        b=e7UTRwljlczFoD3lAp+iNEZzKH5q4GdmwS6GZHHAj9+vY61COpLtlf8/HItEkOx6Ls
-         du2WH1HI1XcMwNc5kWy7AvBUXTLRBNf7nW1746JZ9ZxpIiGVEE1O5jk/O232ulXlpfkY
-         hZPpDIs6DzLyC6tw8kV6xSZ+nM9Tned7Vy6HlpeMmsFl6EVQZCuIoNlKpNvBvsl/OHoi
-         F/aodjIZ5p26GT4P2F35OjfgI9/ZUKq90+7l3hiDp3bnSueiPQJcFitIANjnqN5fikGW
-         TuOWnHUGQxIDUfAP+/juY0YfRKv4gwOF/6pLXA9QWz5sjWwcXK7Qwue8JsCKmBuaq4Ly
-         LwsA==
-X-Gm-Message-State: APjAAAW2fS16IzMwMlN8s2rqYBEydhfD3PTamd6MBnFKWiHZg3ICxBuf
-        rrRt0uGaUmH4ajg35dCb2JAlbJnpo5/N/SjWXh/t6Yql
-X-Google-Smtp-Source: APXvYqznZiIaPHTXON+mBcLVjwOIugad78cCGvRi/9LtbJdUfK8C5A/dqWe3meVMPXBjxkIEqyfYmjZ66ijUOEqFrkM=
-X-Received: by 2002:a6b:f214:: with SMTP id q20mr168001ioh.137.1577527850683;
- Sat, 28 Dec 2019 02:10:50 -0800 (PST)
-MIME-Version: 1.0
-References: <1535374564-8257-1-git-send-email-amir73il@gmail.com>
- <1535374564-8257-7-git-send-email-amir73il@gmail.com> <BC68C02C-E6E5-4414-A1D2-D36D335738E2@dilger.ca>
-In-Reply-To: <BC68C02C-E6E5-4414-A1D2-D36D335738E2@dilger.ca>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Sat, 28 Dec 2019 12:10:38 +0200
-Message-ID: <CAOQ4uxjuJ-6Tw3vw1qahjp2LrGPx=eZfZA9qk47=mWSamEiF+g@mail.gmail.com>
-Subject: Re: [PATCH v3 6/6] ovl: add ovl_fadvise()
-To:     Andreas Dilger <adilger@dilger.ca>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Dave Chinner <david@fromorbit.com>,
+        id S1726388AbfL2NTq (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 29 Dec 2019 08:19:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41604 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726160AbfL2NTq (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Sun, 29 Dec 2019 08:19:46 -0500
+Received: from tleilax.poochiereds.net (68-20-15-154.lightspeed.rlghnc.sbcglobal.net [68.20.15.154])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7133F20748;
+        Sun, 29 Dec 2019 13:19:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1577625586;
+        bh=Uvs+Fo1+JPdzN0Tz8dPt06V4gWYWykuZzmBlGbxYL20=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=Z8CrBqYRqykNjlDeKRR0PI0Lv5GBww+zRJhtlXkMVq+dPcH2Exh/lUm+7l78iQQ3h
+         mhXAWCNVGUke9+QQqw4SlFjkzXQGDpsB16eNFbrTQG9KeiEjIEY3EYjHVXk6aFU2I2
+         HQDIO/HGjIXIT7F76koPsYMG83Z5AXfC+1DilRO0=
+Message-ID: <52abe8f14c6ef1db9c9a3327f4c1f941318945d6.camel@kernel.org>
+Subject: Re: [PATCH] locks: print unsigned ino in /proc/locks
+From:   Jeff Layton <jlayton@kernel.org>
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     "J . Bruce Fields" <bfields@fieldses.org>,
+        Miklos Szeredi <miklos@szeredi.hu>,
         overlayfs <linux-unionfs@vger.kernel.org>,
+        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
         linux-fsdevel <linux-fsdevel@vger.kernel.org>
+Date:   Sun, 29 Dec 2019 08:19:44 -0500
+In-Reply-To: <CAOQ4uxgJZORnBoGe=UA3j=8sfBeccv07vQes0Q9RjSVXKGrKhw@mail.gmail.com>
+References: <20191222184528.32687-1-amir73il@gmail.com>
+         <2f6dbf1777ae4b9870c077b8a34c79bf8ed8a554.camel@kernel.org>
+         <CAOQ4uxgJZORnBoGe=UA3j=8sfBeccv07vQes0Q9RjSVXKGrKhw@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Sat, Dec 28, 2019 at 7:49 AM Andreas Dilger <adilger@dilger.ca> wrote:
->
-> On Aug 27, 2018, at 6:56 AM, Amir Goldstein <amir73il@gmail.com> wrote:
-> >
-> > Implement stacked fadvise to fix syscalls readahead(2) and fadvise64(2)
-> > on an overlayfs file.
->
-> I was just looking into the existence of the "new" fadvise() method in
-> the VFS being able to communicate application hints directly to the
-> filesystem to see if it could be used to address the word size issue in
-> https://bugzilla.kernel.org/show_bug.cgi?id=205957 without adding a new
-> syscall, and came across this patch and the 4/6 patch that adds the
-> vfs_fadvise() function itself (copied below for clarity).
->
-> It seems to me that this implementation is broken?  Only vfs_fadvise()
-> is called from the fadvise64() syscall, and it will call f_op->fadvise()
-> if the filesystem provides this method.  Only overlayfs provides the
-> .fadvise method today.  However, it looks that ovl_fadvise() calls back
-> into vfs_fadvise() again, in a seemingly endless loop?
->
+On Mon, 2019-12-23 at 04:58 +0200, Amir Goldstein wrote:
+> On Mon, Dec 23, 2019 at 3:17 AM Jeff Layton <jlayton@kernel.org> wrote:
+> > On Sun, 2019-12-22 at 20:45 +0200, Amir Goldstein wrote:
+> > > An ino is unsigned so export it as such in /proc/locks.
+> > > 
+> > > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> > > ---
+> > > 
+> > > Hi Jeff,
+> > > 
+> > > Ran into this while writing tests to verify i_ino == d_ino == st_ino on
+> > > overlayfs. In some configurations (xino=on) overlayfs sets MSB on i_ino,
+> > > so /proc/locks reports negative ino values.
+> > > 
+> > > BTW, the requirement for (i_ino == d_ino) came from nfsd v3 readdirplus.
+> > > 
+> > > Thanks,
+> > > Amir.
+> > > 
+> > >  fs/locks.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/fs/locks.c b/fs/locks.c
+> > > index 6970f55daf54..44b6da032842 100644
+> > > --- a/fs/locks.c
+> > > +++ b/fs/locks.c
+> > > @@ -2853,7 +2853,7 @@ static void lock_get_status(struct seq_file *f, struct file_lock *fl,
+> > >       }
+> > >       if (inode) {
+> > >               /* userspace relies on this representation of dev_t */
+> > > -             seq_printf(f, "%d %02x:%02x:%ld ", fl_pid,
+> > > +             seq_printf(f, "%d %02x:%02x:%lu ", fl_pid,
+> > >                               MAJOR(inode->i_sb->s_dev),
+> > >                               MINOR(inode->i_sb->s_dev), inode->i_ino);
+> > >       } else {
+> > 
+> > My that is an old bug! I think that goes back to early v2.x days, if not
+> > v1.x. I'll queue it up, and maybe we can get this in for v5.6.
+> 
+> I suppose you meant for v5.5?
+> I'd be happy if we can also mark it for stable (sorry I did not).
+> Reason is that I have xfstests depending on it, which test overlay
+> fixes that are marked for stable.
+> 
 
-You are confusing endless loop with recursion that has a stop condition.
-The entire concept of stacked filesystem is recursion back into vfs.
-This is essentially what most of the ovl file operations do, but they recurse
-on the "real.file", which is supposed to be on a filesystem with lower
-sb->s_stack_depth (FILESYSTEM_MAX_STACK_DEPTH is 2).
+Oh! I didn't realize the urgency. It's been in -next for a week or so
+now, so I think it's probably safe enough. I'll send a PR soon, after I
+give it a bit more testing.
 
-> It seems like generic_fadvise() should be EXPORT_SYMBOL() so that any
-> filesystem that implements its own .fadvise method can do its own thing,
-> and then call generic_fadvise() to handle the remaining MM-specific work.
->
-> Thoughts?
+Thanks!
+-- 
+Jeff Layton <jlayton@kernel.org>
 
-Sure makes sense.
-Overlayfs just doesn't need to call the generic helper.
-
-Thanks,
-Amir.
