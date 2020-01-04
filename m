@@ -2,101 +2,110 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C543312FDB6
-	for <lists+linux-unionfs@lfdr.de>; Fri,  3 Jan 2020 21:20:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDAF4130467
+	for <lists+linux-unionfs@lfdr.de>; Sat,  4 Jan 2020 21:40:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728766AbgACUUO (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 3 Jan 2020 15:20:14 -0500
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:34467 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728779AbgACUUK (ORCPT
+        id S1726135AbgADUkI (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 4 Jan 2020 15:40:08 -0500
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:48108 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726118AbgADUkH (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 3 Jan 2020 15:20:10 -0500
-Received: by mail-qk1-f196.google.com with SMTP id j9so35123010qkk.1
-        for <linux-unionfs@vger.kernel.org>; Fri, 03 Jan 2020 12:20:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
-        b=JHYDNcOHsw5Vg59sFwNh4MhnXNKJfQKDhV3JhQemZ8O0wjy4NOClQJHVO9/XZY1B2e
-         7N2r8FlVbF9YCIZf1O8PJKqvP+J732CrXrgkZLQFQD6r8xa5PmtrOPXurr4eE1D10/dY
-         mFNu91hy8xJJRta6mrMYIQyNs0OE0ozgPWJvUT4Jmr91vUmPG9p04hCqKp3daJ6nspkN
-         ZTnUyt7jeaXiRVZmI5OCw3hnhqJr3CafoKv3hfbaHkDpeu4215n4LA4JUWv5RDO6VsPp
-         wo4bmuxUPsJ+VBxSxq4NIVVGqRtUU4TTV0YA8c6/GhqTjpJxCcyOyITBnIawjrG3MRiM
-         hUyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
-        b=j6tktkRbjAYRsLZwkooZ3TR/SLKsg+u5a04MCG2AISz/IVJaQlLQWZiBKzl5K63S87
-         gXKSeUqMPDpmzsLM9RfzIyJfr48WDRhE3j7wETGGXK/GCCzRrrUCO9dVUpSih7jtFJgn
-         Zzy0v6hZFYGMuo2FMSGCCeFlfQCKn6eljHk+bs0UjTUzhB8pNVxBdKhFa3JHCogB1GTL
-         xIypAnpLBMh3TbcXaBfBpx2zk9wjMZQuJGgVbhjqOsGpWbyPkSsUWOy5HvP8CABdNyVU
-         +LvK44wTKo+SzL2nkmtiSQRfIOj4OrAg0GVDlvCDDJTXKlmzvTOQeIOWbRkMc6KZnJmC
-         Kxjg==
-X-Gm-Message-State: APjAAAXn9L9tdyfXbWzNZVIT4fTK6BJoO4WM9LXk6ajEk473Myh/xW/d
-        WHHEfdpf56nyTxs6CwvA6uspSTH9kWY5orxwc2/wdSo3Da0=
-X-Google-Smtp-Source: APXvYqzazOZ1eDGwLjA5b5joJwHBsXYUc3xk3mwbut9BpsYKwbpZffl6B/gnfGOg4rASQDOizOWq9gQ5QJjCh6l6GTs=
-X-Received: by 2002:a37:4141:: with SMTP id o62mr70745354qka.282.1578082808591;
- Fri, 03 Jan 2020 12:20:08 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:ac8:4410:0:0:0:0:0 with HTTP; Fri, 3 Jan 2020 12:20:08 -0800 (PST)
-From:   "Rev.Dr Emmanuel Okoye CEO Ecobank-benin" 
-        <westernunion.benin982@gmail.com>
-Date:   Fri, 3 Jan 2020 21:20:08 +0100
-Message-ID: <CAP=nHBJWiJ9KpSSbF4jP9u5UiU5d_kGjSUyPYDmdB2x1uiJFMw@mail.gmail.com>
-Subject: I promise you must be happy today, God has uplifted you and your
- family ok
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        Sat, 4 Jan 2020 15:40:07 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id BD31F8EE0CE;
+        Sat,  4 Jan 2020 12:40:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1578170406;
+        bh=KHDsJqFu40CMbKCPiOUzv5iPnDdd1fMDH1mGeefbPvI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=MG9Q5mhA75rma962htcOkWUMZCTIK00FOJf0enIXtQkQNcb7LBLV9Yk8oAwIuq9bG
+         pXUJJ9LozTDBvDhnTy94r1EU8zXE92/vWlBHP+dm2VffcUiOr1TOnzQyWMohSxjqdk
+         +FI+LwPoygAYZbuJmBDE39QJxPOT0OrMXTkwtV+g=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 51-kfvigumKl; Sat,  4 Jan 2020 12:40:06 -0800 (PST)
+Received: from jarvis.int.hansenpartnership.com (jarvis.ext.hansenpartnership.com [153.66.160.226])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 009838EE079;
+        Sat,  4 Jan 2020 12:40:05 -0800 (PST)
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     linux-fsdevel@vger.kernel.org
+Cc:     David Howells <dhowells@redhat.com>,
+        Christian Brauner <christian@brauner.io>,
+        Al Viro <viro@ZenIV.linux.org.uk>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Seth Forshee <seth.forshee@canonical.com>,
+        linux-unionfs@vger.kernel.org, Amir Goldstein <amir73il@gmail.com>,
+        =?UTF-8?q?St=C3=A9phane=20Graber?= <stgraber@ubuntu.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        containers@lists.linux-foundation.org
+Subject: [PATCH v2 0/3] introduce a uid/gid shifting bind mount
+Date:   Sat,  4 Jan 2020 12:39:43 -0800
+Message-Id: <20200104203946.27914-1-James.Bottomley@HansenPartnership.com>
+X-Mailer: git-send-email 2.16.4
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Dear Friend
+The object of this series is to replace shiftfs with a proper uid/gid
+shifting bind mount instead of the shiftfs hack of introducing
+something that looks similar to an overlay filesystem to do it.
 
-i hope all is well with you,if so, glory be to God almighty. I'm very
-happy to inform you, about my success in getting payment funds under
-the cooperation of a new partner from United States of
-America.Presently I am in uk for investment projects with my own share
-of the total sum. I didn't forget your past efforts. IMF finally
-approved your compensation payment funds this morning by prepaid (ATM)
-Debit card of US$12,500.000.00Million Dollars, Since you not received
-this payment yet, I was not certified
-but it is not your fault and not my fault, I hold nothing against
-you.than bank official whom has been detaining the transfer in the
-bank, trying to claim your funds by themselves.
+The VFS still has the problem that in order to tell what vfsmount a
+dentry belongs to, struct path would have to be threaded everywhere
+struct dentry currently is.  However, this patch is structured only to
+require a rethreading of notify_change.  The rest of the knowledge
+that a shift is in operation is carried in the task structure by
+caching the unshifted credentials.
 
-Therefore, in appreciation of your effort I have raised an
-International prepaid (ATM) Debit card of US$12,500.000.00 in your
-favor as compensation to you.
+The only real change from v1 is that the notify_change patch is
+updated to fix the issues pointed out by Amir Goldstein.  And I've
+combined the precursor patch to rethread notify_changes into the
+series.
 
-Now, i want you to contact my Diplomatic Agent, His name is Mike Benz
-on His  e-mail Address (mikebenz550@aol.com
+James
 
-ask Him to send the Prepaid (ATM) Debit card to you. Bear in mind that
-the money is in Prepaid (ATM) Debit card, not cash, so you need to
-send to him,
-your full name
-address  where the prepaid (ATM) Debit card will be delivered to you,
-including your cell phone number. Finally, I left explicit
-instructions with him, on how to send the (ATM CARD) to you.
+---
 
-The Prepaid (ATM) Debit card, will be send to you through my
-Diplomatic Agent Mr. Mike Benz immediately you contact him. So contact
-my Diplomatic Agent Mr. Mike Benz immediately you receive this letter.
-Below is his contact information:
+James Bottomley (3):
+  fs: rethread notify_change to take a path instead of a dentry
+  fs: introduce uid/gid shifting bind mount
+  fs: expose shifting bind mount to userspace
 
-NAME : MIKE BENZ
-EMAIL ADDRESS: mikebenz550@aol.com
-Text Him, (256) 284-4886
+ drivers/base/devtmpfs.c   |   8 +++-
+ fs/attr.c                 |  91 ++++++++++++++++++++++++++++----------
+ fs/bind.c                 |  35 +++++++++++++++
+ fs/cachefiles/interface.c |   6 ++-
+ fs/coredump.c             |   4 +-
+ fs/ecryptfs/inode.c       |   9 ++--
+ fs/exec.c                 |   7 ++-
+ fs/inode.c                |  16 ++++---
+ fs/internal.h             |   2 +
+ fs/mount.h                |   2 +
+ fs/namei.c                | 110 ++++++++++++++++++++++++++++++++++++++--------
+ fs/namespace.c            |   1 +
+ fs/nfsd/vfs.c             |  13 +++---
+ fs/open.c                 |  44 ++++++++++++++-----
+ fs/overlayfs/copy_up.c    |  40 ++++++++++-------
+ fs/overlayfs/dir.c        |  10 ++++-
+ fs/overlayfs/inode.c      |   6 ++-
+ fs/overlayfs/overlayfs.h  |   2 +-
+ fs/overlayfs/super.c      |   3 +-
+ fs/posix_acl.c            |   4 +-
+ fs/proc_namespace.c       |   4 ++
+ fs/stat.c                 |  31 +++++++++++--
+ fs/utimes.c               |   2 +-
+ include/linux/cred.h      |  10 +++++
+ include/linux/fs.h        |   6 +--
+ include/linux/mount.h     |   4 +-
+ include/linux/sched.h     |   5 +++
+ kernel/capability.c       |  14 +++++-
+ kernel/cred.c             |  20 +++++++++
+ kernel/groups.c           |   7 +++
+ 30 files changed, 408 insertions(+), 108 deletions(-)
 
-Request for Delivery of the Prepaid (ATM) Debit card  to you today.
-Note, please I have paid for the whole service fees for you, so the
-only money you will send to my Diplomatic Agent Mr. Mike Benz is
-$50.00 for your prepaid (ATM) Debit card DELIVERY FEE to your address
-ok.
-Let me know once you receive this Card at your address.
-Best regards,
-Rev.Dr, George Adadar
+-- 
+2.16.4
+
