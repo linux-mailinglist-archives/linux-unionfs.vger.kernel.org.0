@@ -2,109 +2,96 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EED09130D97
-	for <lists+linux-unionfs@lfdr.de>; Mon,  6 Jan 2020 07:35:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D528913178E
+	for <lists+linux-unionfs@lfdr.de>; Mon,  6 Jan 2020 19:35:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726695AbgAFGfi (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 6 Jan 2020 01:35:38 -0500
-Received: from mail-io1-f68.google.com ([209.85.166.68]:38787 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726338AbgAFGfi (ORCPT
+        id S1726698AbgAFSfJ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 6 Jan 2020 13:35:09 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:45284 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726569AbgAFSfI (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 6 Jan 2020 01:35:38 -0500
-Received: by mail-io1-f68.google.com with SMTP id v3so47553645ioj.5
-        for <linux-unionfs@vger.kernel.org>; Sun, 05 Jan 2020 22:35:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tNbCTMK5hFr53U0AeXQqZ1eRJkRA78RQ1Kwbs3jUxFQ=;
-        b=ovBcn9JrXNgzB68BfJwXeX60GnU7gMgMv5jJsp9p380us93/F6+rsKpY42buZZYYQ9
-         vQR1UgSibyyc72vXle0WlKxQ0bU9hXI/tDqv5XjHGeQGB5yE+BMuRGaiv9gOIrpcWLK3
-         UOw+8Wd0nFVUunzMDM+3lysmNoQULqO+RCBdbOFykLWWaPjP/ogiMr6bvGhv3AoKv7xJ
-         85IetCPSTKak1MDadMkrAxTbJrbfepu8T+V9OC8ZSt9vAIbZYekz3GIqsKkQkma/ORUv
-         uuMQsaOZ4RlFnqE6Jkup/ohnfsHM2MJ8XdNdSDq9nCso4NB2c4eT6gWompZ53K3Zqbye
-         DzXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tNbCTMK5hFr53U0AeXQqZ1eRJkRA78RQ1Kwbs3jUxFQ=;
-        b=MEb+5cE7lyqOyb2qNJnN8X0MSHxo2dZKz9XuJ0qHldfNq+6NafOSzQWVYZnhE32slT
-         rNa6CJsbx4H8175sc6k0OvVT8oxkSnbOstEUB2gVRvTEavCQm6Gr5rszqEPSTwTV8QMY
-         sxg8lMqi7c8Sx0O29FSOf7NTi/rITW8n2QIDeApVQGTOeTWXMbQ9j8F+PsQeG4BFCvk6
-         AZuxTtxhU+CCgOizf+z3oD0xmdU6Tq0IDCVlVjbZLfVgO8dFNbEBU2hr28zBn9kP55IE
-         8OHV1fqBFqLDqb1+jWLmJrrBy9nlJt7OXRlvZSkCzjpIZrw6rSlmCVKxdiEZl3dOn6nP
-         yXVw==
-X-Gm-Message-State: APjAAAUSzutDTa5/UYBLUhzedsVUdzhqnVA+LOdneeg0+XALN6URAN58
-        VjsZwYvgYzl+lMKMjx8dfByL08g0FdevYhdXdgG8QrWw
-X-Google-Smtp-Source: APXvYqwAY0GRaqGsCUJ/Z/YOut2l6tqmYGZrzXHGd9LLC5CwR4u7z2uOmTxMo9uRqxRQRwUG/qCzNiGkDXal2nWVXgc=
-X-Received: by 2002:a5d:814f:: with SMTP id f15mr66428395ioo.275.1578292537372;
- Sun, 05 Jan 2020 22:35:37 -0800 (PST)
+        Mon, 6 Jan 2020 13:35:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1578335707;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=1j8TuP+/xGqwxQ12t6Y+SryoZpNk3WPLpksOGE7sVBI=;
+        b=AHiY4RElzj4EPNUI3rTO+ero26ylW+BWHyy7Ut0GMLWxqOgbxdK1lbUt/LmwjgRggGG3EN
+        qxWlwMKdo4FbvPuGxH1lsBboKYkKUouEgEjFFsUBJ1rDWlkaMEjAM/bS/672uWtsHAfZa0
+        Ksxlfst/jpGksZuPgyzPh/kh2EATJkI=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-118-GgGX0fosN7ar9PHf7TAMHA-1; Mon, 06 Jan 2020 13:35:05 -0500
+X-MC-Unique: GgGX0fosN7ar9PHf7TAMHA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CE846477;
+        Mon,  6 Jan 2020 18:35:03 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.35])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id EE0367BFA5;
+        Mon,  6 Jan 2020 18:35:00 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+        id 7FD1A2202E9; Mon,  6 Jan 2020 13:35:00 -0500 (EST)
+Date:   Mon, 6 Jan 2020 13:35:00 -0500
+From:   Vivek Goyal <vgoyal@redhat.com>
+To:     "Ernst, Eric" <eric.ernst@intel.com>
+Cc:     "mszeredi@redhat.com" <mszeredi@redhat.com>,
+        "kata-dev@lists.katacontainers.io" <kata-dev@lists.katacontainers.io>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        linux-unionfs@vger.kernel.org
+Subject: Re: Virtio-fs as upper layer for overlayfs
+Message-ID: <20200106183500.GA14619@redhat.com>
+References: <7904C889-F0AC-4473-8C02-887EF6593564@intel.com>
 MIME-Version: 1.0
-References: <20191223064025.23801-1-amir73il@gmail.com>
-In-Reply-To: <20191223064025.23801-1-amir73il@gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Mon, 6 Jan 2020 08:35:25 +0200
-Message-ID: <CAOQ4uxh4NygFUFvUp3xs8rZRUkc3SDxO1DL6YrNhx3j0SBgAJg@mail.gmail.com>
-Subject: Re: [PATCH] ovl: fix wrong WARN_ON() in ovl_cache_update_ino()
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     overlayfs <linux-unionfs@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7904C889-F0AC-4473-8C02-887EF6593564@intel.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Mon, Dec 23, 2019 at 8:40 AM Amir Goldstein <amir73il@gmail.com> wrote:
->
-> The WARN_ON() that child entry is always on overlay st_dev became wrong
-> when we allowed this function to update d_ino in non-samefs setup with
-> xino enabled.
->
-> It is not true in case of xino bits overflow on a non-dir inode.
-> Leave the WARN_ON() only for directories, where assertion is still true.
->
-> Fixes: adbf4f7ea834 ("ovl: consistent d_ino for non-samefs with xino")
-> Cc: <stable@vger.kernel.org> # v4.17+
-> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> ---
->
+On Mon, Jan 06, 2020 at 05:27:05PM +0000, Ernst, Eric wrote:
 
-Miklos,
+[CC linux-unionfs@vger.kernel.org and amir]
 
-If you have time, please send this one to Linus for v5.5.
-It is a simple fix and the only one causing failure in the new xfstests [1]
-that I posted.
+> Hi Miklos,
+> 
+> One of the popular use cases for Kata Containers is running docker-in-docker.  That is, a container image is run which in turn will make use of a container runtime to do a container build.
+> 
+> When combined with virtio-fs, we end up with a configuration like:
+> xfs/ext4 -> overlayfs -> virtio-fs -> overlayfs 
+> 
+> As discussed in [1], per overlayfs spec: 
+> "The upper filesystem will normally be writable and if it is it must support the creation of trusted.* extended attributes, and must provide valid d_type in readdir responses, so NFS is not suitable."
+> 
 
-Thanks,
-Amir.
+I don't know exaactly the reasons why NFS is not supported as upper. Are
+above only two reasons? These might work with virtio-fs depending on
+underlying filesystem. If yes, should we check for these properties
+at mount time (instead of relying on dentry flags only,
+ovl_dentry_remote()).
 
-[1] https://lore.kernel.org/fstests/20191230141423.31695-1-amir73il@gmail.com/
+I feel there is more to it. Just that I don't know. Miklos and Amir
+will probably have more thoughts on this.
 
->
->  fs/overlayfs/readdir.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
-> index 47a91c9733a5..7255e6a5838f 100644
-> --- a/fs/overlayfs/readdir.c
-> +++ b/fs/overlayfs/readdir.c
-> @@ -504,7 +504,13 @@ static int ovl_cache_update_ino(struct path *path, struct ovl_cache_entry *p)
->                 if (err)
->                         goto fail;
->
-> -               WARN_ON_ONCE(dir->d_sb->s_dev != stat.dev);
-> +               /*
-> +                * Directory inode is always on overlay st_dev.
-> +                * Non-dir with ovl_same_dev() could be on pseudo st_dev in case
-> +                * of xino bits overflow.
-> +                */
-> +               WARN_ON_ONCE(S_ISDIR(stat.mode) &&
-> +                            dir->d_sb->s_dev != stat.dev);
->                 ino = stat.ino;
->         } else if (xinobits && !OVL_TYPE_UPPER(type)) {
->                 ino = ovl_remap_lower_ino(ino, xinobits,
-> --
-> 2.17.1
->
+Vivek
+
+> At this point, with virtio-fs this, [2], check fails.  
+> 
+> Vivek mentioned that bypassing this check *may* be feasible, [3].  Can you help identify if this is feasible, and rationale for NFS not being available as an upper (though, more importantly, understanding what needs to be done to add proper support for virtio-fs as upper layer).
+> 
+> Thanks,
+> Eric 
+> 
+> [1] - https://github.com/kata-containers/runtime/issues/1888
+> [2] - https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/overlayfs/super.c#n753
+> [3] - https://github.com/kata-containers/runtime/issues/1888#issuecomment-518259095
+> 
+
