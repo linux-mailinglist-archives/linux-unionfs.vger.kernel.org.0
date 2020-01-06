@@ -2,173 +2,109 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E009130953
-	for <lists+linux-unionfs@lfdr.de>; Sun,  5 Jan 2020 18:44:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EED09130D97
+	for <lists+linux-unionfs@lfdr.de>; Mon,  6 Jan 2020 07:35:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726368AbgAERom (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 5 Jan 2020 12:44:42 -0500
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:35116 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726293AbgAERom (ORCPT
+        id S1726695AbgAFGfi (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 6 Jan 2020 01:35:38 -0500
+Received: from mail-io1-f68.google.com ([209.85.166.68]:38787 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726338AbgAFGfi (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 5 Jan 2020 12:44:42 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 1F8368EE148;
-        Sun,  5 Jan 2020 09:44:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1578246281;
-        bh=pfDZPxMteXgYQcTMRFiEL1bOy+FJZWdBqlqd4YdUZJU=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=G3HAO4A9vSrZgFlbEn1Q5WTQZ6scOx8tvt3QMdOCGTOUKViD7GmCdniPB1MEU1sG5
-         veUbIO56gPULqC5icox4wXfiBAgBq2C6JJEz7itzztdRpi42YGW5GJrWaGbCHAP16/
-         BOIptH3X+izrhV7XMWp6mby/FsyqG1cHer4OZL7k=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Wq06jtlsziun; Sun,  5 Jan 2020 09:44:40 -0800 (PST)
-Received: from jarvis.lan (unknown [50.35.76.230])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 305C28EE0D2;
-        Sun,  5 Jan 2020 09:44:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1578246280;
-        bh=pfDZPxMteXgYQcTMRFiEL1bOy+FJZWdBqlqd4YdUZJU=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=kK3uw9D5yvu0zqd/1xCNfdpQO79i3XbsNW7x4e8N9VSbl4+qCouUsuYgibpthx9TT
-         jfwLf/NzLyHbttJmExepVPehNkTSWr1j9Q3qwm8zqNIvYoXe9NVOsPGvJRVgu+CtAb
-         DSZqhRsJjtDUKLnl+3/JKMQKkyVVfdZIxoafoBbg=
-Message-ID: <1578246278.3310.26.camel@HansenPartnership.com>
-Subject: Re: [PATCH v2 2/3] fs: introduce uid/gid shifting bind mount
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Christian Brauner <christian@brauner.io>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Seth Forshee <seth.forshee@canonical.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        =?ISO-8859-1?Q?St=E9phane?= Graber <stgraber@ubuntu.com>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Linux Containers <containers@lists.linux-foundation.org>
-Date:   Sun, 05 Jan 2020 09:44:38 -0800
-In-Reply-To: <CAOQ4uxiMJePVaXFiLw88rnr4qxCPN0dLQcXq_KCC831hZzM7rA@mail.gmail.com>
-References: <20200104203946.27914-1-James.Bottomley@HansenPartnership.com>
-         <20200104203946.27914-3-James.Bottomley@HansenPartnership.com>
-         <CAOQ4uxiMJePVaXFiLw88rnr4qxCPN0dLQcXq_KCC831hZzM7rA@mail.gmail.com>
+        Mon, 6 Jan 2020 01:35:38 -0500
+Received: by mail-io1-f68.google.com with SMTP id v3so47553645ioj.5
+        for <linux-unionfs@vger.kernel.org>; Sun, 05 Jan 2020 22:35:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tNbCTMK5hFr53U0AeXQqZ1eRJkRA78RQ1Kwbs3jUxFQ=;
+        b=ovBcn9JrXNgzB68BfJwXeX60GnU7gMgMv5jJsp9p380us93/F6+rsKpY42buZZYYQ9
+         vQR1UgSibyyc72vXle0WlKxQ0bU9hXI/tDqv5XjHGeQGB5yE+BMuRGaiv9gOIrpcWLK3
+         UOw+8Wd0nFVUunzMDM+3lysmNoQULqO+RCBdbOFykLWWaPjP/ogiMr6bvGhv3AoKv7xJ
+         85IetCPSTKak1MDadMkrAxTbJrbfepu8T+V9OC8ZSt9vAIbZYekz3GIqsKkQkma/ORUv
+         uuMQsaOZ4RlFnqE6Jkup/ohnfsHM2MJ8XdNdSDq9nCso4NB2c4eT6gWompZ53K3Zqbye
+         DzXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tNbCTMK5hFr53U0AeXQqZ1eRJkRA78RQ1Kwbs3jUxFQ=;
+        b=MEb+5cE7lyqOyb2qNJnN8X0MSHxo2dZKz9XuJ0qHldfNq+6NafOSzQWVYZnhE32slT
+         rNa6CJsbx4H8175sc6k0OvVT8oxkSnbOstEUB2gVRvTEavCQm6Gr5rszqEPSTwTV8QMY
+         sxg8lMqi7c8Sx0O29FSOf7NTi/rITW8n2QIDeApVQGTOeTWXMbQ9j8F+PsQeG4BFCvk6
+         AZuxTtxhU+CCgOizf+z3oD0xmdU6Tq0IDCVlVjbZLfVgO8dFNbEBU2hr28zBn9kP55IE
+         8OHV1fqBFqLDqb1+jWLmJrrBy9nlJt7OXRlvZSkCzjpIZrw6rSlmCVKxdiEZl3dOn6nP
+         yXVw==
+X-Gm-Message-State: APjAAAUSzutDTa5/UYBLUhzedsVUdzhqnVA+LOdneeg0+XALN6URAN58
+        VjsZwYvgYzl+lMKMjx8dfByL08g0FdevYhdXdgG8QrWw
+X-Google-Smtp-Source: APXvYqwAY0GRaqGsCUJ/Z/YOut2l6tqmYGZrzXHGd9LLC5CwR4u7z2uOmTxMo9uRqxRQRwUG/qCzNiGkDXal2nWVXgc=
+X-Received: by 2002:a5d:814f:: with SMTP id f15mr66428395ioo.275.1578292537372;
+ Sun, 05 Jan 2020 22:35:37 -0800 (PST)
+MIME-Version: 1.0
+References: <20191223064025.23801-1-amir73il@gmail.com>
+In-Reply-To: <20191223064025.23801-1-amir73il@gmail.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Mon, 6 Jan 2020 08:35:25 +0200
+Message-ID: <CAOQ4uxh4NygFUFvUp3xs8rZRUkc3SDxO1DL6YrNhx3j0SBgAJg@mail.gmail.com>
+Subject: Re: [PATCH] ovl: fix wrong WARN_ON() in ovl_cache_update_ino()
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     overlayfs <linux-unionfs@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Sun, 2020-01-05 at 01:09 +0200, Amir Goldstein wrote:
-> On Sat, Jan 4, 2020 at 10:41 PM James Bottomley
-> <James.Bottomley@hansenpartnership.com> wrote:
-> > 
-> > This implementation reverse shifts according to the user_ns
-> > belonging to the mnt_ns.  So if the vfsmount has the newly
-> > introduced flag MNT_SHIFT and the current user_ns is the same as
-> > the mount_ns->user_ns then we shift back using the user_ns before
-> > committing to the underlying filesystem.
-> > 
-> > For example, if a user_ns is created where interior (fake root, uid
-> > 0) is mapped to kernel uid 100000 then writes from interior root
-> > normally go to the filesystem at the kernel uid.  However, if
-> > MNT_SHIFT is set, they will be shifted back to write at uid 0,
-> > meaning we can bind mount real image filesystems to user_ns
-> > protected faker root.
-> > 
-> > In essence there are several things which have to be done for this
-> > to occur safely.  Firstly for all operations on the filesystem, new
-> > credentials have to be installed where fsuid and fsgid are set to
-> > the *interior* values.
-> 
-> Must we really install new creds?
+On Mon, Dec 23, 2019 at 8:40 AM Amir Goldstein <amir73il@gmail.com> wrote:
+>
+> The WARN_ON() that child entry is always on overlay st_dev became wrong
+> when we allowed this function to update d_ino in non-samefs setup with
+> xino enabled.
+>
+> It is not true in case of xino bits overflow on a non-dir inode.
+> Leave the WARN_ON() only for directories, where assertion is still true.
+>
+> Fixes: adbf4f7ea834 ("ovl: consistent d_ino for non-samefs with xino")
+> Cc: <stable@vger.kernel.org> # v4.17+
+> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> ---
+>
 
-Well, the reason for doing it is that for uid/gid changes that's the
-way everything else does it, so principle of least surprise.
+Miklos,
 
-However, there are two other cases where this doesn't work:
+If you have time, please send this one to Linus for v5.5.
+It is a simple fix and the only one causing failure in the new xfstests [1]
+that I posted.
 
-   1. inode uid/gid changes, which are compared against the real uid/gid 
-   2. execution, where we need to bring the filesystem uid/gid to the
-      exterior representation of the interior values for unprivileged
-      execution to work.
-   3. the capable_wrt_inode checks where we're usually checking if the
-      inode uid/gid has an interior mapping, but since for shiftfs we're
-      assuming inode uid/gid are interior we need to see if anything maps
-      to them.
-   4. the in_group_p checks to see whether we're in a group that's
-      capable.
+Thanks,
+Amir.
 
-1. could be fixed by shifting uid/gid ... I just didn't think this was
-a good idea.  2,3. can't be fixed because the direction of the check
-needs to be reversed and 4 has to be done separately because group_info
- is a pointer to something that lives outside the credential.  Taking
-the pointer, creating a new one and shifting every group is possible, I
-just also wasn't sure if it was a wise thing to do.
+[1] https://lore.kernel.org/fstests/20191230141423.31695-1-amir73il@gmail.com/
 
-> Maybe we just need to set/clear a SHIFTED flag on current creds?
-> 
-> i.e. instead of change_userns_creds(path)/revert_userns_creds()
-> how about start_shifted_creds(mnt)/end_shifted_creds().
-> 
-> and then cred_is_shifted() only checks the flag and no need for
-> all the cached creds mechanism.
-> 
-> current_fsuid()/current_fsgid() will take care of the shifting based
-> on the creds flag.
-
-So it is true, if current_fsuid/fsgid did the mapping, it would be a
-fifth case above, but we'd have to be sure no-one ever used the bare
-current_cred()->fsuid.  Auditing filesystems, it looks like there's
-only one current case of this in namei.c:may_follow_link(), so I think
-it could work ... but it's still a danger for other places, like
-security module checks and things.
-
-> Also, you should consider placing a call to start_shifted/end_shifted
-> inside __mnt_want_write()/__mnt_drop_write().
-> This should automatically cover all writable fs ops  - including some
-> that you missed (setxattr).
-
-xattr handling wasn't really missed, I left it out because it was the
-controversial case last time.  Should the interior root be able to set
-xattrs?  I think the argument was tending towards the yes except
-security. prefix ones last time so perhaps it is safe to reintroduce.
-
-> Taking this a step further, perhaps it would make sense to wrap all
-> readonly fs ops with mnt_want_read()/mnt_drop_read() flavors.
-> Note that inode level already has a similar i_readcount access
-> counter.
-
-Unfortunately, read and write aren't the only operations where we need
-a shift, there's also lookup (which doesn't require read or write). 
-Now we could also go with mnt_want_lookup/mnt_drop_lookup or simply
-keep the existing shift coding on the lookup path.
-
-> This could be used, for example, to provide a facility that is
-> stronger than MNT_DETACH, and weaker than filesystem "shutdown"
-> ioctl, for blocking new file opens (with openat()) on a mounted
-> filesystem.
-> 
-> The point is, you add gating to vfs that is generic and not for
-> single use case (i.e. cred shifting).
-> 
-> Apologies in advance if  some of these ideas are ill advised.
-
-Of the two ideas, I think using a generic gate point, if we can find
-it, is a definite winner because it programmatically identifies the
-shift points.  I'm less enthused about moving the shift into
-current_fsuid/fsgid because of the potential for stuff to go wrong and
-because it's counter to how everything else is currently done, but I'll
-let the filesystem experts weigh in on this one.  The good news is that
-the two ideas aren't dependent on each other so either can be
-implemented without the other.
-
-James
-
+>
+>  fs/overlayfs/readdir.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
+> index 47a91c9733a5..7255e6a5838f 100644
+> --- a/fs/overlayfs/readdir.c
+> +++ b/fs/overlayfs/readdir.c
+> @@ -504,7 +504,13 @@ static int ovl_cache_update_ino(struct path *path, struct ovl_cache_entry *p)
+>                 if (err)
+>                         goto fail;
+>
+> -               WARN_ON_ONCE(dir->d_sb->s_dev != stat.dev);
+> +               /*
+> +                * Directory inode is always on overlay st_dev.
+> +                * Non-dir with ovl_same_dev() could be on pseudo st_dev in case
+> +                * of xino bits overflow.
+> +                */
+> +               WARN_ON_ONCE(S_ISDIR(stat.mode) &&
+> +                            dir->d_sb->s_dev != stat.dev);
+>                 ino = stat.ino;
+>         } else if (xinobits && !OVL_TYPE_UPPER(type)) {
+>                 ino = ovl_remap_lower_ino(ino, xinobits,
+> --
+> 2.17.1
+>
