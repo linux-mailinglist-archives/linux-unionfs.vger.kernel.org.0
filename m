@@ -2,102 +2,90 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D45C9131B36
-	for <lists+linux-unionfs@lfdr.de>; Mon,  6 Jan 2020 23:18:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ABA81322E7
+	for <lists+linux-unionfs@lfdr.de>; Tue,  7 Jan 2020 10:48:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727088AbgAFWSs (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 6 Jan 2020 17:18:48 -0500
-Received: from mga14.intel.com ([192.55.52.115]:10942 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726695AbgAFWSs (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 6 Jan 2020 17:18:48 -0500
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Jan 2020 14:18:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,403,1571727600"; 
-   d="scan'208";a="253507860"
-Received: from eernst-gateway.jf.intel.com (HELO localhost) ([10.54.74.169])
-  by fmsmga002.fm.intel.com with ESMTP; 06 Jan 2020 14:18:47 -0800
-From:   eric.ernst@intel.com
-Date:   Mon, 6 Jan 2020 14:24:37 -0800
-To:     Miklos Szeredi <miklos@szeredi.hu>
+        id S1727273AbgAGJss (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 7 Jan 2020 04:48:48 -0500
+Received: from mail-io1-f49.google.com ([209.85.166.49]:43454 "EHLO
+        mail-io1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726558AbgAGJss (ORCPT
+        <rfc822;linux-unionfs@vger.kernel.org>);
+        Tue, 7 Jan 2020 04:48:48 -0500
+Received: by mail-io1-f49.google.com with SMTP id n21so50372963ioo.10
+        for <linux-unionfs@vger.kernel.org>; Tue, 07 Jan 2020 01:48:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vxsENtkttdrDlVFqy8451EmQmwOGREIRsafP+Y6d9Rw=;
+        b=CQ2GEfoPljK4ACSdFqwqpW2bA7A7/7WL6m82kkyZoX1dW+I0QiVKmIBFPAjFGIBHSb
+         ecbNx/a7fyIAH7YWXG9lWyR3yY7IEPpU1Hcm2MW844YGN/QTfKZ0Gl+Pr6IBTxOtQYMe
+         x5/97HY83vFbGVoIDzsE7jQ1xXpRUq6MIzyu8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vxsENtkttdrDlVFqy8451EmQmwOGREIRsafP+Y6d9Rw=;
+        b=T2dRbziXC6LN3RG8mFMno/ak4mBLBqG9XLx6dexEP0Vlj5/5LyDj5ZamTwVv6ALtin
+         t1+pDUxW0qK1qakRiVq8mDjNTvQk5snszU4tDdaqyMm4zwreM0zwk5n3UItiO1NUBfnL
+         A/hWhAVygOpRgeU4jxUdzPF6mNNOGqXe4YMLZUHJ+/rt1RtOgC9xL96Q6bypPi3gNUg5
+         ft4QMeiHQ5GMavUt0UMv5iv2PZ49CrZBqVeD5xNUERyUKTnkQ/Nqozz5aviQMuhdRi+M
+         H+c5nrFaufgQncqJarLkD6sz9+UG6V5qznxzVoiacy59BrOtjpdVHAqQt68UlBIro3fV
+         R6Jg==
+X-Gm-Message-State: APjAAAUgyEgbTdh/s8QRHQ9dISHo+aOAWafv/UBHkYE5wnurtGdnsGQ4
+        ybGqeaQulPyvVDJKpUTihrfdWHwEUOIBz9Tz/0HDqg==
+X-Google-Smtp-Source: APXvYqw7bEHSjOfvRImKYJs5czVdJoHMh8j7w/OkuKyXFbkY9RBfhRDuYkiF/2sROKwO4yFIfDBomFWPTDD5mGRUyiU=
+X-Received: by 2002:a02:9988:: with SMTP id a8mr84854131jal.33.1578390528072;
+ Tue, 07 Jan 2020 01:48:48 -0800 (PST)
+MIME-Version: 1.0
+References: <7904C889-F0AC-4473-8C02-887EF6593564@intel.com>
+ <20200106183500.GA14619@redhat.com> <CAJfpegszhftUxkhaAaF3Gj4u+S5M74RwCrXLTptW=zcKz+_xug@mail.gmail.com>
+ <20200106222437.GA141177@eernstworkstation>
+In-Reply-To: <20200106222437.GA141177@eernstworkstation>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Tue, 7 Jan 2020 10:48:37 +0100
+Message-ID: <CAJfpegt0pB-jJUBEmewRgH6MMmj3__MNzZ9ScitgcEehr51awQ@mail.gmail.com>
+Subject: Re: Virtio-fs as upper layer for overlayfs
+To:     "Ernst, Eric" <eric.ernst@intel.com>
 Cc:     Vivek Goyal <vgoyal@redhat.com>,
         "mszeredi@redhat.com" <mszeredi@redhat.com>,
         "kata-dev@lists.katacontainers.io" <kata-dev@lists.katacontainers.io>,
         Stefan Hajnoczi <stefanha@redhat.com>,
         Amir Goldstein <amir73il@gmail.com>,
         overlayfs <linux-unionfs@vger.kernel.org>
-Subject: Re: Virtio-fs as upper layer for overlayfs
-Message-ID: <20200106222437.GA141177@eernstworkstation>
-References: <7904C889-F0AC-4473-8C02-887EF6593564@intel.com>
- <20200106183500.GA14619@redhat.com>
- <CAJfpegszhftUxkhaAaF3Gj4u+S5M74RwCrXLTptW=zcKz+_xug@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJfpegszhftUxkhaAaF3Gj4u+S5M74RwCrXLTptW=zcKz+_xug@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Mon, Jan 06, 2020 at 08:58:23PM +0100, Miklos Szeredi wrote:
-> On Mon, Jan 6, 2020 at 7:35 PM Vivek Goyal <vgoyal@redhat.com> wrote:
-> >
-> > On Mon, Jan 06, 2020 at 05:27:05PM +0000, Ernst, Eric wrote:
-> >
-> > [CC linux-unionfs@vger.kernel.org and amir]
-> >
-> > > Hi Miklos,
-> > >
-> > > One of the popular use cases for Kata Containers is running docker-in-docker.  That is, a container image is run which in turn will make use of a container runtime to do a container build.
-> > >
-> > > When combined with virtio-fs, we end up with a configuration like:
-> > > xfs/ext4 -> overlayfs -> virtio-fs -> overlayfs
-> > >
-> > > As discussed in [1], per overlayfs spec:
-> > > "The upper filesystem will normally be writable and if it is it must support the creation of trusted.* extended attributes, and must provide valid d_type in readdir responses, so NFS is not suitable."
-> > >
-> >
-> > I don't know exaactly the reasons why NFS is not supported as upper. Are
-> > above only two reasons? These might work with virtio-fs depending on
-> > underlying filesystem. If yes, should we check for these properties
-> > at mount time (instead of relying on dentry flags only,
-> > ovl_dentry_remote()).
-> >
-> > I feel there is more to it.
-> 
-> NFS also has these automount points, that we currently can't cope with
-> in overlayfs.  And there's revalidation, which we reject on upper
-> simply because overlayfs currently doesn't call ->revalidate() on
-> upper.   Not that we would not be able to, it's just something that
-> probably needs some thought.
-> 
-> Virtio-fs does not yet have the magic automount thing (which would be
-> useful to resolve inode number conflicts), but it does have
-> revalidate. In the virtio-fs case, not calling ->revalidate() should
-> not be a problem, so it's safe to try out this configuration by adding
-> a hack to disable the remote check in case of a virtio-fs upper.
+On Mon, Jan 6, 2020 at 11:18 PM <eric.ernst@intel.com> wrote:
+
+> Miklos, I'm still learning a bit more about fs implementations, so my
+> apologies if this should be obvious. For virtio-fs, one of the use cases
+> that is described is sharing memory between two guests (not necessarily
+> the Kata use case). I was guessing the dcache would be within the guest,
+> and that in at least the shared memory case, there's potential that a
+> revalidate may be neccesary, in case any changes are made by the second guest?
+
+Exactly.
+
+> (I could be mixing up the intended use for revalidate, though).
 >
+> Can you clarify that "not calling ->revalidate() should not be a
+> problem?"
 
-Miklos, I'm still learning a bit more about fs implementations, so my
-apologies if this should be obvious. For virtio-fs, one of the use cases
-that is described is sharing memory between two guests (not necessarily
-the Kata use case). I was guessing the dcache would be within the guest,
-and that in at least the shared memory case, there's potential that a 
-revalidate may be neccesary, in case any changes are made by the second guest?
-(I could be mixing up the intended use for revalidate, though).
+I was referring specifically to the overlayfs case.  Overlayfs stacks
+on top of some other filesystems, i.e. when ->d_revalidate() is called
+on overlayfs it calls ->d_revalidate() on underlying fs.  This only
+happens for the lower (read-only) layers, not the upper (read-write)
+layer.  So if the underlying upper fs is modified from another guest,
+than that modification is not going to be reflected on the overlayfs.
+However, overlayfs documents any changes to underlying layers as
+resulting in undefined behavior.  It would be strange if docker was
+relying on undefined behavior of overlayfs, so not doing the
+revalidation should not make a difference.
 
-Can you clarify that "not calling ->revalidate() should not be a
-problem?"
-
-Thanks for the help.
-
--Eric
-
-
-> Thanks,
-> Miklos
+Thanks,
+Miklos
