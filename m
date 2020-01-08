@@ -2,159 +2,83 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B2A8A13448F
-	for <lists+linux-unionfs@lfdr.de>; Wed,  8 Jan 2020 15:06:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BA22134637
+	for <lists+linux-unionfs@lfdr.de>; Wed,  8 Jan 2020 16:30:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727127AbgAHOGV (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 8 Jan 2020 09:06:21 -0500
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:42540 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726708AbgAHOGV (ORCPT
+        id S1728273AbgAHP37 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 8 Jan 2020 10:29:59 -0500
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:36252 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726556AbgAHP37 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 8 Jan 2020 09:06:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1578492379;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=ZI4rwrCVY3scRh2p0sxhdIZOPE/mYbnsSIBQYTjPK0A=;
-        b=c6svQ3ruZ6IjylsfMZHW7MNqBRv4BbuANBh2kEQ5eDky3zy2ilG8/uqbESLY+Fwvrv8QU5
-        x8Pcc1YC9sQGfRsSZeSEagVG2jq9Bv42I2OfFp3k3mVIYsNs7mK9DaepSuaY1ef+Iql1XK
-        tMfM/ku7aQ8Btn1P66Yk9kpQ3TZPxWA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-139-RiJutJWFMfWKQkn_MeLkhg-1; Wed, 08 Jan 2020 09:06:15 -0500
-X-MC-Unique: RiJutJWFMfWKQkn_MeLkhg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BA02A10120C4;
-        Wed,  8 Jan 2020 14:06:12 +0000 (UTC)
-Received: from horse.redhat.com (unknown [10.18.25.35])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9525D5D9E5;
-        Wed,  8 Jan 2020 14:06:11 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-        id 234BA220A24; Wed,  8 Jan 2020 09:06:11 -0500 (EST)
-Date:   Wed, 8 Jan 2020 09:06:11 -0500
-From:   Vivek Goyal <vgoyal@redhat.com>
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     overlayfs <linux-unionfs@vger.kernel.org>,
+        Wed, 8 Jan 2020 10:29:59 -0500
+Received: by mail-pl1-f194.google.com with SMTP id a6so1274020plm.3
+        for <linux-unionfs@vger.kernel.org>; Wed, 08 Jan 2020 07:29:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tycho-ws.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=bsFLaRVwJl1muQaHc6qol6Zx8YuPcAvjJrLvsxuYd5Q=;
+        b=FXeABJQYBlgzNgKsBkngpFn65SgXi2QQ2pBtQtWefujHnhtGMw/f7NX3me6abpfuj/
+         eyGvXo2grjfnXzjs3GRuHL7IM+WXuJFdHFvMpjIwV+JJJ5LB/o96RpjK9JsFLDRICifR
+         GW/++CGS/gTtQCObn1R5t6KG+DFReqkJEVlLc17XK6/mJH/lCWeFCS28H9aPQVMmU9pD
+         mC/xSy4bsf3d2jAcG42pzKm9UnacvhCGpOlWhx/oG6aoNMBRRIG+ugXVhqG5sUEMfPW6
+         LOYI+uW2bTozP90NE0v5Vu+AK8w8vb6mJ5LZNE7x/OXHWdyzjjgXlUJn/BQQpiwEe+Yp
+         RVQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=bsFLaRVwJl1muQaHc6qol6Zx8YuPcAvjJrLvsxuYd5Q=;
+        b=mbM9h5Wi12BX79U8/HgBBFul5nzUgJ/fkxbW2jWw3CFonGY1K08wHrBWh/UXZeFp/m
+         aURPYkddqrGjnH5Ww74mmNCSu5+iweVstglnt0sc/f8jpnLP4H8qeqL685HNhCPuyE5D
+         yVOI1QJC2gQFMwqbNm3ea4FPtwimDV1H7oY8b2F1lx2OaemQuSFKvLG9onRg2He5tOW0
+         PS+fV9ALRPZa9RBHalqPlSC+/vIxogXbdH5QE2rTC7DUEc5LGzr1utmAthU0QCTRMDoL
+         G1ILGYrH/xxoUCsF+7Q/ol1w0iO4yD12FzviICaYfHyaqZFaqJZB7cG952HiphrVM1ky
+         qthw==
+X-Gm-Message-State: APjAAAXMCVDi9AQ4q81mW4bPKYnR5YvA/aF8rmN75mHDor6q/AP6+Ao8
+        iFcrBJDVozyiE1EgBK4e3rbrxQ==
+X-Google-Smtp-Source: APXvYqzqtx8ON2XpQzXfz34PxP9O2YpQNraj6CkwoDfKjWPXTjYS3Lu8a/KI3UWwytfXtjnV6NYEGw==
+X-Received: by 2002:a17:90a:aa81:: with SMTP id l1mr5007054pjq.62.1578497397577;
+        Wed, 08 Jan 2020 07:29:57 -0800 (PST)
+Received: from cisco ([2601:282:b02:8120:8cce:f495:841a:bcdb])
+        by smtp.gmail.com with ESMTPSA id j28sm4069043pgb.36.2020.01.08.07.29.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jan 2020 07:29:56 -0800 (PST)
+Date:   Wed, 8 Jan 2020 08:29:56 -0700
+From:   Tycho Andersen <tycho@tycho.ws>
+To:     Vivek Goyal <vgoyal@redhat.com>
+Cc:     Amir Goldstein <amir73il@gmail.com>,
         StuartIanNaylor <rolyantrauts@gmail.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
         Linux Containers <containers@lists.linux-foundation.org>,
-        kmxz <kxzkxz7139@gmail.com>, "zhangyi (F)" <yi.zhang@huawei.com>,
-        Miklos Szeredi <miklos@szeredi.hu>
+        "zhangyi (F)" <yi.zhang@huawei.com>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        kmxz <kxzkxz7139@gmail.com>,
+        James.Bottomley@HansenPartnership.com
 Subject: Re: OverlaysFS offline tools
-Message-ID: <20200108140611.GA1995@redhat.com>
+Message-ID: <20200108152956.GD1169@cisco>
 References: <CAOQ4uxjFC81hikgg0WaF0Z3Mxkk3iDakKx2Ttuhp_L_2Tnc6xQ@mail.gmail.com>
+ <20200108140611.GA1995@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAOQ4uxjFC81hikgg0WaF0Z3Mxkk3iDakKx2Ttuhp_L_2Tnc6xQ@mail.gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+In-Reply-To: <20200108140611.GA1995@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, Jan 08, 2020 at 09:27:12AM +0200, Amir Goldstein wrote:
-> [-fsdevel,+containers]
+On Wed, Jan 08, 2020 at 09:06:11AM -0500, Vivek Goyal wrote:
+> - shiftfs
 > 
-> > On Thu, Apr 18, 2019 at 1:58 PM StuartIanNaylor <rolyantrauts@gmail.com> wrote:
-> > >
-> > > Apols to ask here but are there any tools for overlayFS?
-> > >
-> > > https://github.com/kmxz/overlayfs-tools is just about the only thing I
-> > > can find.
-> >
-> > There is also https://github.com/hisilicon/overlayfs-progs which
-> > can check and fix overlay layers, but it hasn't been updated in a while.
-> >
-> 
-> Hi Vivek (and containers folks),
-> 
-> Stuart has pinged me on https://github.com/StuartIanNaylor/zram-config/issues/4
-> to ask about the status of overlayfs offline tools.
-> 
-> Quoting my answer here for visibility to more container developers:
-> 
-> I have been involved with implementing many overlayfs features in the
-> kernel in the
-> past couple of years (redirect_dir,index,nfs_export,xino,metacopy).
-> All of these features bring benefits to end users, but AFAIK, they are
-> all still disabled
-> by default in containers runtimes (?) because lack of tools support
-> (e.g. migration
-> /import/export). I cannot force anyone to use the new overlayfs
-> features nor to write
-> offline tools support for them.
-> 
-> So how can we improve this situation?
-> 
-> If the problem is development resources then I've had great experience
-> in the past
-> with OSS internship programs like Google summer of code (GSoC):
-> Organizations, such as Redhat or mobyproject.org, can participate in the program
-> by posting proposals for open source projects.
-> Developers, such as myself, volunteer to mentors projects and students apply
-> to work on them.
-> 
-> IIRC, the timeline for GSoC for project proposals in around April. Applying as
-> an organization could be before that.
-> 
-> Vivek, since you are the only developer I know involved in containers runtime
-> projects I am asking you, but really its a question for all container developers
-> out there.
-> 
-> Are you aware of missing features in containers that could be met by filling the
-> gaps with overlayfs offline tools?
+>   As of now they are relying on doing chown of the image but will really
+>   like to see the ability to shift uid/gids using shiftfs or using
+>   VFS layer solution.
 
-CCing Dan Walsh as he is taking care of podman and often I hear some of
-the the complaints from him w.r.t what he thinks is missing. This is
-not necessarily related to overlayfs offline tools.
+I think James is working on this:
 
-- Unpriviliged mounting of overlayfs.
- 
-  He wants to launch containers unpriviliged and hence wants to be able
-  to mount overlayfs without being root in init_user_ns. I think Miklos
-  posted some patches for that but not much progress after that.
+https://lore.kernel.org/linux-fsdevel/20200104203946.27914-1-James.Bottomley@HansenPartnership.com/
 
-  https://patchwork.kernel.org/cover/11212091/
-
-- shiftfs
-
-  As of now they are relying on doing chown of the image but will really
-  like to see the ability to shift uid/gids using shiftfs or using
-  VFS layer solution.
-
-- Overlayfs redirect_dir is not compatible with image building
-
-  redirect_dir is not compatible with image building and I think that's
-  one reason that its not used by default. And as metacopy is dependent
-  on redirect_dir, its not used by default as well. It can be used for
-  running containers though, but one needs to know that in advacnce.
-
-  So it will be good if that's fixed with redirect_dir and metacopy
-  features and then there is higher chance that these features are
-  enabled by default.
-
-  Miklos had some ides on how to tackle the issue of getting diff
-  correctly with redirect_dir enabled.
-
-  https://www.spinics.net/lists/linux-unionfs/msg06969.html
-
-  Having said that, I think Dan Walsh has enabled metacopy by default
-  in podman in certain configurations (for running containers and not
-  for building images).
-
-Thanks
-Vivek
-
-
-> Are you a part of an organization that could consider posting this sort of
-> project proposals to GSoC or other internship programs?
-> 
-> Thanks,
-> Amir.
-> 
-
+Tycho
