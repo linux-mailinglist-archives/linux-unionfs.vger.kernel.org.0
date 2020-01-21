@@ -2,95 +2,85 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F5D143255
-	for <lists+linux-unionfs@lfdr.de>; Mon, 20 Jan 2020 20:32:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9156F143A61
+	for <lists+linux-unionfs@lfdr.de>; Tue, 21 Jan 2020 11:04:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726890AbgATTco (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 20 Jan 2020 14:32:44 -0500
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:33139 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728682AbgATTcn (ORCPT
+        id S1729027AbgAUKE3 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 21 Jan 2020 05:04:29 -0500
+Received: from mail-il1-f195.google.com ([209.85.166.195]:45187 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729429AbgAUKE3 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 20 Jan 2020 14:32:43 -0500
-Received: by mail-lf1-f65.google.com with SMTP id n25so207171lfl.0
-        for <linux-unionfs@vger.kernel.org>; Mon, 20 Jan 2020 11:32:42 -0800 (PST)
+        Tue, 21 Jan 2020 05:04:29 -0500
+Received: by mail-il1-f195.google.com with SMTP id p8so1879361iln.12
+        for <linux-unionfs@vger.kernel.org>; Tue, 21 Jan 2020 02:04:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=z7I/Kq2V0EnXiuoACdRbnwoAql3KZ080nwyXVjlruyU=;
-        b=I1roYPqxBJzWtUK/EbeI6Kt4sZi+JdSJm6qJbGHrPRZYvHUSh5jIrCeNC6L/G/f0o1
-         SOUBr7y32ZptFoyqXLV46mqkCVXIPksz6dHNenBfKH5ZmZaxgtbXfnD4DPiQngFU9XCO
-         yyR3xavKr41v/xLWwuSw91WJb2uX+wjZFxyyrAuDZ+hvXvCheAMdiLqD+HrlaysRfXCL
-         GNNQRcxyOsqzXo4wRH2J/upuPpeDO5ZRhzNY4HfuYgHfElCshp5fZYHSWkrBX0jAzQvX
-         wM9NfRj8QHz6JxUFOI+rZ3wcUi7Ikp+pHr28kaxr4n7py/KC1H5pYclpR4JTvoTIZ7Jv
-         h8rg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=RLXBHAiHNAu8azvyXTV+09a0bz3r8JrjYniYiKIAJIk=;
+        b=XE3IXmVaBH0xT15J4inhfCaaJNjvrEcAPZxpVGLNnbhhgn/YRXcJwiE/8gQ6+frNF1
+         CEnKpEnm2+nK0k6YFOSR+igDWtvGEx/s5bhTAWVxpZMFlU6Gstihw+0hVsPZ+zdl/4dB
+         Vmjxboy/5EZ5c02MOXR1IslX0C/kmETHiEM5oorxbkMjWHafNVJvgkK8ehwCZ8tUFEbQ
+         CdU9E2PIfyqN6BgI4iKQkDujbX2rQDdNfyyTYxNR/IaJ131zVe9GtMlfC9KrPAi7Y68s
+         QOBgdgglm9LHpH0QtUbjgFubJ4NhbUt4VHnA+YBwlpivEK1L5P0jxtNisccqzMiG7RlM
+         7PsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=z7I/Kq2V0EnXiuoACdRbnwoAql3KZ080nwyXVjlruyU=;
-        b=peHEfNiq1nqDTdYvEHx5BeH+XfnHlE+g2gsufXywQz4l1PFX7JVzAZU/l99G6BF3ls
-         /sMUKRLutvBRCUUmzeb5OLW/jq/TUWlFxhWjPImjEqmH7SCrDjb7DQCeSrt85blkP2ML
-         FrT/8+J7IV21SFrQI3leB2t1jV3h1vuesoN9k48O6IKLm0jVgx0NK5HZr8OKDfXkp5MW
-         ox17qLttYDlxKsXpxkX5ff8NE7CqGUjcikUX7HTCScGBiH3xc9Wo2O3+zHanTxa6v9Ky
-         +t3Sa0PKoEISinCU32lWLNsEqZi+8qM9QDLfw2XU0xzT4suo2itSqNBDHGsWtNQBzrJl
-         e2BQ==
-X-Gm-Message-State: APjAAAUO0vOQjnT2/TDHGD3IOg0CPYH/t6WzCdyLqOqrQXZiiB2WV/NB
-        9P5VQrXcMOJuhXSw7CssbdGoHuMh+by73j8jTqmFnv5Br5o=
-X-Google-Smtp-Source: APXvYqwKjCT5QnfvXWtJkO29cRmoOGR1uhIhw9Ol6eYz9VuYzVaqX/o8Ejt2WLDxZ+bl2CebXLO8AWZ4Emn93SBTQws=
-X-Received: by 2002:a17:906:1fcd:: with SMTP id e13mr898516ejt.333.1579548761316;
- Mon, 20 Jan 2020 11:32:41 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RLXBHAiHNAu8azvyXTV+09a0bz3r8JrjYniYiKIAJIk=;
+        b=mRbCVNSE0An6xHyfl5H/+JMwsoi55BgpifNVPa1/bNm06+j1RuI8ouufYkzbIJOPlm
+         9mLIQpCvRbUP5eyLVDokpbZ7WC3aLMVsqUpJbfveOJTjCxQ+xYKi8ueawuYVIZ/laOMD
+         1ISWRiiC7Jbuop0qi2zc/7wkJEUUC1DP0mSDY8e/oCkT+8Oi3WX9CN2BJB0Qn6tt9yJb
+         /LZesh70VWDhwqK6jFMkl/4/BWMnlserwp03PtqSrSx5YAVEX57M5elsu17cYH0URy/D
+         GtTxsFKCyOBrG1r+SwZ9CodTRV3zOYe+lot8GSTEpWKV1FFo4knnBhoqRenGD3eW8Wv/
+         EVbQ==
+X-Gm-Message-State: APjAAAXT7p2IoJLnfyFAddhGsRpLRsbEf0ZOXyCWhnIf+7SKKek2IzzA
+        BmOma+LR/BXZALPEM1Rk0KrOrW36HmpnGfdRFgI=
+X-Google-Smtp-Source: APXvYqyNT/IL2Z8mtlgfD/E0sPm23H9z3hrnTTVishsz2XjXq3Cwvvez68TSSVlYME1UI1iSmccTZBc6h0lo85/Jn3k=
+X-Received: by 2002:a92:9c8c:: with SMTP id x12mr2907679ill.275.1579601068199;
+ Tue, 21 Jan 2020 02:04:28 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:6402:22dc:0:0:0:0 with HTTP; Mon, 20 Jan 2020 11:32:40
- -0800 (PST)
-Reply-To: mcclainejohn.13@gmail.com
-From:   "Prof, William Roberts" <eco.bank1204@gmail.com>
-Date:   Mon, 20 Jan 2020 20:32:40 +0100
-Message-ID: <CAOE+jABpcHQWZWhtskhDFbtTqfBe7h065WE2kC1G+jQD+tQiTA@mail.gmail.com>
-Subject: Contact Diplomatic Agent, Mr. Mcclaine John to receive your ATM CARD
- valued the sum of $12.8Million United States Dollars
-To:     undisclosed-recipients:;
+References: <20191223064025.23801-1-amir73il@gmail.com> <CAOQ4uxh4NygFUFvUp3xs8rZRUkc3SDxO1DL6YrNhx3j0SBgAJg@mail.gmail.com>
+In-Reply-To: <CAOQ4uxh4NygFUFvUp3xs8rZRUkc3SDxO1DL6YrNhx3j0SBgAJg@mail.gmail.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Tue, 21 Jan 2020 12:04:17 +0200
+Message-ID: <CAOQ4uxjsiQ5PKYSPLmgk5b5O_e5255+QK8Obgs9K--cTi3z=7w@mail.gmail.com>
+Subject: Re: [PATCH] ovl: fix wrong WARN_ON() in ovl_cache_update_ino()
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     overlayfs <linux-unionfs@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Attn: Dear Beneficiary,
+On Mon, Jan 6, 2020 at 8:35 AM Amir Goldstein <amir73il@gmail.com> wrote:
+>
+> On Mon, Dec 23, 2019 at 8:40 AM Amir Goldstein <amir73il@gmail.com> wrote:
+> >
+> > The WARN_ON() that child entry is always on overlay st_dev became wrong
+> > when we allowed this function to update d_ino in non-samefs setup with
+> > xino enabled.
+> >
+> > It is not true in case of xino bits overflow on a non-dir inode.
+> > Leave the WARN_ON() only for directories, where assertion is still true.
+> >
+> > Fixes: adbf4f7ea834 ("ovl: consistent d_ino for non-samefs with xino")
+> > Cc: <stable@vger.kernel.org> # v4.17+
+> > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> > ---
+> >
+>
+> Miklos,
+>
+> If you have time, please send this one to Linus for v5.5.
+> It is a simple fix and the only one causing failure in the new xfstests [1]
+> that I posted.
+>
 
-I wish to inform you that the diplomatic agent conveying your ATM CARD
-valued the sum of $12.8Million United States Dollars has misplaced
-your address and he is currently stranded at (George Bush
-International Airport) Houston Texas USA now
-We required you to reconfirm the following information's below to him
-so that he can deliver your Payment CARD to you today or tomorrow
-morning as information provided with open communications via email and
-telephone for security reasons.
-HERE IS THE DETAILS  HE NEED FROM YOU URGENT
-YOUR FULL NAME:========
-ADDRESS:========
-MOBILE NO:========
-NAME OF YOUR NEAREST AIRPORT:========
-A COPY OF YOUR IDENTIFICATION :========
-
-Note; do contact the diplomatic agent immediately through the
-information's listed below
-Contact Person: Diplomatic Agent, Mr. Mcclaine John
-EMAIL: mcclainejohn.13@gmail.com
-Tel:(223) 777-7518
-
-Contact the diplomatic agent immediately
-because he is waiting to hear from you today with the needed information's.
-
-NOTE: The Diplomatic agent does not know that the content of the
-consignment box is $12.800,000,00 Million United States Dollars and on
-no circumstances should you let him know the content. The consignment
-was moved from here as family treasures, so never allow him to open
-the box. Please I have paid delivery fees for you but the only money
-you must send to Mcclaine John is your ATM CARD delivery fee $25.00
-only. text Him as you contact Him Immediately
+Gentle nudge..
 
 Thanks,
-with Regards.
-Prof, William Roberts
-Director DHL COURIER SERVICES-Benin
+Amir.
