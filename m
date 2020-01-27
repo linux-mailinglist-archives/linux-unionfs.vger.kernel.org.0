@@ -2,70 +2,65 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF8471487E3
-	for <lists+linux-unionfs@lfdr.de>; Fri, 24 Jan 2020 15:26:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0483714A311
+	for <lists+linux-unionfs@lfdr.de>; Mon, 27 Jan 2020 12:32:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388095AbgAXOZY (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 24 Jan 2020 09:25:24 -0500
-Received: from mail-io1-f53.google.com ([209.85.166.53]:35410 "EHLO
-        mail-io1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392237AbgAXOVu (ORCPT
+        id S1729919AbgA0Lcw (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 27 Jan 2020 06:32:52 -0500
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:38767 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729764AbgA0Lcw (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 24 Jan 2020 09:21:50 -0500
-Received: by mail-io1-f53.google.com with SMTP id h8so2111509iob.2
-        for <linux-unionfs@vger.kernel.org>; Fri, 24 Jan 2020 06:21:50 -0800 (PST)
+        Mon, 27 Jan 2020 06:32:52 -0500
+Received: by mail-qk1-f194.google.com with SMTP id k6so9214276qki.5
+        for <linux-unionfs@vger.kernel.org>; Mon, 27 Jan 2020 03:32:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=szeredi.hu; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=tngT/KiuTDoNCYSFhfNCEpcI5RfLQox8JGQztnGw/p0=;
-        b=a4IzuptxU62Rjh4maj91igzs3PgrqVmb01UwKtcuEOrx8l3o3Xymh59WVLGPanysYO
-         6I7a3aqlaLTx22LubQWvUHfmIbbFERCoi0g3e6JVMF7ionzpgg8GL7AnDPF6oaeaBoLc
-         /J5RNf+zVGWw/lffTU5sFJvSxQ+iAUQMJWdUI=
+        bh=AphZxboVMysVairYeCCsCZBOqk4cfY9EbLBe1193qaQ=;
+        b=GWRbnvAzj8H3EEKmXsMDYVku9L6GVEnIZE8H3hw7NQ3ausp3TfsWB5CQXw8JgdriiH
+         kuiioRtxKBk98Pn5/44PoRP+73JGu43K6QVZs9klpenrkHJ9e/bAxaL+NjPuqIjJ4a8k
+         +DLAc9BUsNnxnJjWW7878aO0zgil4VcWVj7IU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=tngT/KiuTDoNCYSFhfNCEpcI5RfLQox8JGQztnGw/p0=;
-        b=EIItwobuj8gIE3cYYDIhzZk1rGwNjMt1hC48LcvSqG8Z9m7CSsBhO0YTRiZYanhU3C
-         q5n3MbwOyTNOGSoB7fsZEEJH6ylYU5aG+EY8PrD0FlHCzVtInsSaxNQyt+ToMOtHyrzQ
-         EmJU/hkfVC6iy7uix+JKCUtlWWNtS3oNBFB5+t2DDkzjPDIfqdhUzVQOsg/kX3REQXU3
-         VWNoj+WWSagml/UTLEjirL2iHDs3xS0j75NNoC4BqkqYwolSRWag+yhvwT6NU0Bba1Ra
-         ooUNRUZoGj/eB1JoNS2XeF6aL8JZw7Z6vmGF2FJcx/hvxznEZ42k70S40wVD+wnn16g6
-         ZktA==
-X-Gm-Message-State: APjAAAU/Xdzt3wKny3RtZdiBcnn1PrHFABgFxSOZ8wclToQyj/6+KYlR
-        6DlLFOPlMwW/yBnG/rEw6vWou4NKHvUiVRrfLI6LvViSVOA=
-X-Google-Smtp-Source: APXvYqyEnSfBuuv0JvdO/kkl1iTrBxGgHBjYf4Y1YIfRIa9G+ozg+or7Y/LtwTy1scwEwcY/+opDFJOCqEfithD/VpM=
-X-Received: by 2002:a6b:c9c6:: with SMTP id z189mr2283669iof.285.1579875709841;
- Fri, 24 Jan 2020 06:21:49 -0800 (PST)
+        bh=AphZxboVMysVairYeCCsCZBOqk4cfY9EbLBe1193qaQ=;
+        b=a1UMOBckDkgy8rIW0/7fw4mVV+uCrsdBE7QGDf/9FOEqC6tQj7LUbWhlVEvdo256W2
+         AF9pdCwX51mVhgI0aK6J1HHX9m6Bj5nZ7ueH431QnE+Q+yXeFeR+HZnvO5F/yL++gQk2
+         X7hq2mQW0OYC5jW4ImsKpoapnFppiwkRVpizJs8bQXXQEn40GmdpfXeSYQO4Onzc1WzK
+         5gEEaTNCrhh1YcH52xbV3jdifUqMLmWm7AHkJ//r1r5INPZSyKOsx2ZIVVIsEpWxw4Qg
+         Y/TwbO3rxBoFUDYujhKSUJ29CymYSDVqg34o1N3YfTQqMWBkVcEhyFob8wDBzFEItLpU
+         /ouw==
+X-Gm-Message-State: APjAAAXSzyhXsJmNHK0cc3bnP0JuRWQNhQj7fxVwzqIAEu0e81kSJNUM
+        8tOkswX3N1NlV3NGJTUmCmIW+0DBdXaEMyhaK9v9ddqS5KQ=
+X-Google-Smtp-Source: APXvYqxgEEqyedw5IDybLs5KNfR1+Tf+lO0QgYO/uI+27WuAb+9aRctQ1AKWUVTOyX2mdIktvKlySsg2QJ/BffN9qtU=
+X-Received: by 2002:a05:6638:3b6:: with SMTP id z22mr12436906jap.35.1580123103114;
+ Mon, 27 Jan 2020 03:05:03 -0800 (PST)
 MIME-Version: 1.0
-References: <16d7200e45c.1398c37e020790.5506577327176178828@zoho.com.cn>
-In-Reply-To: <16d7200e45c.1398c37e020790.5506577327176178828@zoho.com.cn>
+References: <20200117124929.6nhgpd7mgcbwae5z@xzhoux.usersys.redhat.com>
+In-Reply-To: <20200117124929.6nhgpd7mgcbwae5z@xzhoux.usersys.redhat.com>
 From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Fri, 24 Jan 2020 15:21:38 +0100
-Message-ID: <CAJfpegv949oJAZQNjTsq5MQHz6LLkfihp4S_mWRuYsLRuPCgFg@mail.gmail.com>
-Subject: Re: syncfs improvement for overlayfs
-To:     cgxu519@zoho.com.cn
-Cc:     linux-unionfs <linux-unionfs@vger.kernel.org>
+Date:   Mon, 27 Jan 2020 12:04:52 +0100
+Message-ID: <CAJfpegvn+eOQVoAKiv1mSuZcFacdDVKPHo4gtkt-=d5+9_mDJA@mail.gmail.com>
+Subject: Re: [PATCH] fs/overlayfs: add splice file read write helper
+To:     Murphy Zhou <jencce.kernel@gmail.com>
+Cc:     overlayfs <linux-unionfs@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Fri, Sep 27, 2019 at 11:15 AM admin <cgxu519@zoho.com.cn> wrote:
+On Fri, Jan 17, 2020 at 1:49 PM Murphy Zhou <jencce.kernel@gmail.com> wrote:
 >
-> Hi Miklos,
+> Now overlayfs falls back to use default file splice read
+> and write, which is not compatiple with overlayfs, returning
+> EFAULT. xfstests generic/591 can reproduce part of this.
 >
-> It's been a while since I posted my last version of syncfs improvement patch[1]
-> and I noticed it isn't get merged yet. If you think this patch is still valuable then
-> I would like to do rebase on latest overlayfs tree and resend for review.
-> What do you think?
+> Tested this patch with xfstests auto group tests.
 
+Thanks, applied.
 
-Hi,
-
-Sorry, this has fallen off my radar.  Can you please rebase and resend?
-
-Thanks,
 Miklos
