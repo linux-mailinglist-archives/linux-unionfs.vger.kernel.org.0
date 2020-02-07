@@ -2,55 +2,72 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C497155563
-	for <lists+linux-unionfs@lfdr.de>; Fri,  7 Feb 2020 11:13:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D16C5156010
+	for <lists+linux-unionfs@lfdr.de>; Fri,  7 Feb 2020 21:44:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726867AbgBGKNM (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 7 Feb 2020 05:13:12 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33796 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726816AbgBGKNM (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 7 Feb 2020 05:13:12 -0500
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E0BA820838;
-        Fri,  7 Feb 2020 10:13:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581070391;
-        bh=aymen6h+oW13mB51w2muor2ByjcdV9gYJhBBx+DOBsk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UOwkWt+YrSgBCQyFZwlGofhya/RiacLWlKRO2/7tFAP3I+8pCiedF53Sx3ma8hTVa
-         oDYMWDzgRjD5aH9mll6LLHHhGvH8T7oH7CkTEpbEXKHB8BKz6xlvnZwnUm8Dt4dGB5
-         71eSi7mUAgsMezpCwGqVZc3b2JWpRhc/J1D4/PUY=
-Date:   Fri, 7 Feb 2020 11:13:08 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Ioanna Alifieraki <ioanna-maria.alifieraki@canonical.com>
-Cc:     ioanna.alifieraki@gmail.com, jay.vosburgh@canonical.com,
-        miklos@szeredi.hu, linux-unionfs@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        srivatsa@csail.mit.edu
-Subject: Re: [4.4.y PATCH] Revert "ovl: modify ovl_permission() to do checks
- on two inodes"
-Message-ID: <20200207101308.GA629374@kroah.com>
-References: <20200204184958.6586-1-ioanna-maria.alifieraki@canonical.com>
+        id S1727577AbgBGUoP (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 7 Feb 2020 15:44:15 -0500
+Received: from mail-yb1-f193.google.com ([209.85.219.193]:33168 "EHLO
+        mail-yb1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726947AbgBGUoK (ORCPT
+        <rfc822;linux-unionfs@vger.kernel.org>);
+        Fri, 7 Feb 2020 15:44:10 -0500
+Received: by mail-yb1-f193.google.com with SMTP id s35so368036ybi.0
+        for <linux-unionfs@vger.kernel.org>; Fri, 07 Feb 2020 12:44:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=WJgFJ9PR0yBQ+ciD08Pby60OVZzn3dTgtieZ17slfRQssKmPnwQmAwZPgDIpR6heck
+         dDY9m0nAiR73dL1CtCDLlqWI9lV6barO9i6phYUUcmMyI9lhyUunotwwGjtLNjZZXHps
+         B+ZJy7kS8IDHqb+LatDXLkBcGkPTiMku+kX9Fb92ZmFsnK1n3liOHkc4TmrSz2VBzqpm
+         gOXxQUuwBna/l8aq9nu864h1RGE/T5vMQdJwoV4IagKfmqrsTX7n4WpDLnLJobosvK0X
+         9Z7fBUirFx02ZREq+PBFhuGxFcksAi/eOnsjoHpvtfcuXe3k+tw0qtyYWnKvHtkX+Drl
+         CMWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=LkckgKgmbDxdlxAn4kJ8Vh6j3zWcvNbQ2rcfsa6lXSjNW+qRhApoF1tYGv+7Np9CPS
+         xN4g8UOvEptQSmOc4Vw7IjFX0k42+ORhD8aJceR0bT+DLZsWde4a08wEDVmQU5w2dcFs
+         5hanrl5kNDX0jUsOkFLGd7tTQ5VEDGEPAujAk2RXS0IF/U3Pr0blJBFiWXb9cONz5jUV
+         8o4DC0Q1n7vPuthG5Qqek3XuLcGMClLHIEcIpDbS/TSrpO6CadrMcxTiBRaCbJ7CWI+e
+         WDmEK2qL8zZits3mMqCPaxWvGw3hD0VIo0UuXd2LIBr6uCIuTQQcOiu6aPh23XlM7i9u
+         ISYw==
+X-Gm-Message-State: APjAAAUuieQgvtrK2LnMebUXjEsMq2aLhEQh4XRuTVqfwPq3h2hH3U9+
+        bqvsgL00f00+IsJ+jGMvBaj5WbLLw/vesabydwI/wMhu+hsbVg==
+X-Google-Smtp-Source: APXvYqxZ0BHxezvYatUCwR5ujJY2IO6fZCUlpHww8WEnDHAAAY+0VvtiMdEe6JnWZWwDRH8AP8uVvx3q0Y+IviYPdhQ=
+X-Received: by 2002:a9d:7305:: with SMTP id e5mr948882otk.64.1581108248790;
+ Fri, 07 Feb 2020 12:44:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200204184958.6586-1-ioanna-maria.alifieraki@canonical.com>
+Received: by 2002:a4a:d508:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:44:08 -0800 (PST)
+Reply-To: auch197722@gmail.com
+From:   "Mr. Theophilus Odadudu" <cristinamedina0010@gmail.com>
+Date:   Fri, 7 Feb 2020 15:44:08 -0500
+Message-ID: <CAPNvSTj-8q7w5QPmnH26+_3xCKjEWyE+9xcb8QyQs9Xie+iYgg@mail.gmail.com>
+Subject: LETTER OF INQUIRY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Tue, Feb 04, 2020 at 06:49:58PM +0000, Ioanna Alifieraki wrote:
-> This reverts commit b24be4acd17a8963a29b2a92e1d80b9ddf759c95.
-> 
-> Commit b24be4acd17a ("ovl: modify ovl_permission() to do checks on two
-> inodes") (stable kernel  id) breaks r/w access in overlayfs when setting
-> ACL to files, in 4.4 stable kernel. There is an available reproducer in
-> [1].
+Good Day,
 
-Thanks, now reverted.
+I work as a clerk in a Bank here in Nigeria, I have a very
+confidential Business Proposition for you. There is a said amount of
+money floating in the bank unclaimed, belonging to the bank Foreign
+customer who die with his family in the Ethiopian Airline crash of
+March 11, 2019.
 
-greg k-h
+I seek your good collaboration to move the fund for our benefit. we
+have agreed that 40% be yours once you help claim.
+
+Do get back to with 1) Your Full Name: (2) Residential Address: (3)
+Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
+funds.
+
+Regards
+Theophilus Odadudu
