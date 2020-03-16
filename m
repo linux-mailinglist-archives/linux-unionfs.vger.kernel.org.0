@@ -2,70 +2,79 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B4D7185E6F
-	for <lists+linux-unionfs@lfdr.de>; Sun, 15 Mar 2020 17:19:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEB0F186ADB
+	for <lists+linux-unionfs@lfdr.de>; Mon, 16 Mar 2020 13:29:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728900AbgCOQTE (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 15 Mar 2020 12:19:04 -0400
-Received: from mail-io1-f70.google.com ([209.85.166.70]:44448 "EHLO
-        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728898AbgCOQTE (ORCPT
+        id S1730896AbgCPM3F (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 16 Mar 2020 08:29:05 -0400
+Received: from mail-il1-f196.google.com ([209.85.166.196]:34939 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730999AbgCPM3F (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 15 Mar 2020 12:19:04 -0400
-Received: by mail-io1-f70.google.com with SMTP id q13so10087125iob.11
-        for <linux-unionfs@vger.kernel.org>; Sun, 15 Mar 2020 09:19:03 -0700 (PDT)
+        Mon, 16 Mar 2020 08:29:05 -0400
+Received: by mail-il1-f196.google.com with SMTP id v6so5106040ilq.2
+        for <linux-unionfs@vger.kernel.org>; Mon, 16 Mar 2020 05:29:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=EZGGRuaKQhMX4px0JtkjJt8BcVaQIFCUr3KcXBU9aDQ=;
+        b=iMuvtRM+LzR43x5s93l6b2B8+QyQA2vs1aaX/ZOXi/CSlZglWwdxKHgQ6aeuqiIlal
+         FY/U6gtTO3YJ6gbYLHDDrtdNlCC2u11bZd0/db1gwsATYgjpFhfR2ObBCPgzmnZwgIKh
+         bAtCEN+20RBvwYijKtp98myROfLY3PKcl7uas=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=aBVpr2lszHHXRhoIRtyr/UgZ7zigQ1Re4Bzqf5rEmB8=;
-        b=ZNlJwprYDhNiPWWTx7Y39kZ5L8tgroOQlNn4ueATSlKLjO/lZjc+5gREr1ikP3PDbe
-         nPye9dqW15AmhaTSCnoxZmiqRci43Fk1jHDz3D66Vd2qq3hknhVEQKalVXdPb8sStTMM
-         CvpFrd1LvNdfOKgkn9Oc6JJSaR87kISFeW0POd92Fvb6A93i7JTRXns32uQLMabRK+mO
-         EYmxE537K0I7t4ONpmumczS1l72KSFsD2GvorKmD8eRyNL1DdTnWOj/EECJab9hS5qtn
-         KtB8vNghPC4QKwIslnaqM519fBFyQTeneTsOk3e1fy7j7okZl/e6Q+dix95V18LoLjxl
-         vNIA==
-X-Gm-Message-State: ANhLgQ2c/8ty8yzEZgX1s86UBI3bufpPgTh0bJaPXzVRxJfCWb1wp7/f
-        m4bilvw2JhjBxu9Ax9Ams18ZGtlEXLbmyrEi6iBfxplvKpwN
-X-Google-Smtp-Source: ADFU+vvEpKjTJKXQNX4cXiEk/M0vqZw0uACkxtFRoJsmPwDzy61qIqim7f8/xuwV9rHXdGAII/j6tBy3274dpYif2g5SMTDAgQSk
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EZGGRuaKQhMX4px0JtkjJt8BcVaQIFCUr3KcXBU9aDQ=;
+        b=S26cojSQh3rMRYppNMkuDmqQ/alsMXkFvmyKMBzGgszpsek1x4TFofYCX60fhqYVal
+         wRrjNYCu92p2EwwzFiaJH8IdOiqyTdJ+HxprSXhaO3tbNXaDaFwi7oeGFxH4NEgEfNOR
+         OCoCnm1iXsd/fDJwqVWZ9q81aPOefsp4cK2tSaFriKeurBuZuJt1u8GW0mZtwv899mn1
+         Ta/rE8AXd/niyXSNP3vHfBiTmNrvkLHVUSp1c5BzDt5LUgHBn+GsSUExxQTuv+GF8m5S
+         DdiBaey7Nj8j6EYvJVWMv0/3D+J6YhMHxrWoko+B2XUnuq1aTbSTftSenLwHjn2qhq2r
+         /GNA==
+X-Gm-Message-State: ANhLgQ1jccer5fs14psKkdYdIREcCw4g4YPms75o9VIam1TaIFtx70IZ
+        LvWi+cZymyNAxZTC8SnlHwjVRLiSr6Q7ukKasbTlFg==
+X-Google-Smtp-Source: ADFU+vtrBIgdSTTlk46pFKF0XyNxSc2KxQlr6YZr+ZUSgjGGY3I2Um+kkJsTWw/BCGzuID3YwIxaetmqr78F8Z/kbZA=
+X-Received: by 2002:a92:aa87:: with SMTP id p7mr25070122ill.63.1584361744244;
+ Mon, 16 Mar 2020 05:29:04 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a92:3b11:: with SMTP id i17mr18499810ila.161.1584289143334;
- Sun, 15 Mar 2020 09:19:03 -0700 (PDT)
-Date:   Sun, 15 Mar 2020 09:19:03 -0700
-In-Reply-To: <000000000000fb27f1059aa202ea@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000009c33d905a0e70f63@google.com>
-Subject: Re: possible deadlock in pipe_lock (3)
-From:   syzbot <syzbot+217d60b447573313b211@syzkaller.appspotmail.com>
-To:     jencce.kernel@gmail.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org,
-        miklos@szeredi.hu, mszeredi@redhat.com,
-        syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
+References: <20191230141423.31695-1-amir73il@gmail.com> <20191230141423.31695-5-amir73il@gmail.com>
+In-Reply-To: <20191230141423.31695-5-amir73il@gmail.com>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Mon, 16 Mar 2020 13:28:53 +0100
+Message-ID: <CAJfpegvHAq+yT1qW4JqTBpviCHUrQqOPMfWEcvhy4Jpr2bLJfQ@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] overlay: test constant ino with nested overlay
+ over samefs lower
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Eryu Guan <guaneryu@gmail.com>,
+        Jeff Layton <jlayton@poochiereds.net>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        fstests <fstests@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-syzbot suspects this bug was fixed by commit:
+On Mon, Dec 30, 2019 at 3:14 PM Amir Goldstein <amir73il@gmail.com> wrote:
+>
+> Also test that d_ino of readdir entries and i_ino from /proc/locks are
+> consistent with st_ino and that inode numbers persist after rename to
+> new parent, drop caches and mount cycle.
 
-commit 1a980b8cbf0059a5308eea61522f232fd03002e2
-Author: Murphy Zhou <jencce.kernel@gmail.com>
-Date:   Fri Jan 17 12:49:29 2020 +0000
+overlay/070 and overlay/071 fail for me like this:
 
-    ovl: add splice file read write helper
+     QA output created by 071
+    +flock: cannot open lock file
+/scratch/ovl-mnt/lowertestdir/blkdev: No such device or address
+...
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=12dd7dc3e00000
-start commit:   46cf053e Linux 5.5-rc3
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=ed9d672709340e35
-dashboard link: https://syzkaller.appspot.com/bug?extid=217d60b447573313b211
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=116496c1e00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10104649e00000
+I.e. there's no block dev with rdev=1/1.
 
-If the result looks correct, please mark the bug fixed by replying with:
+I don't see any other way to fix this, than to remove the device
+tests.  Why are these needed?  Is locking code in any way dependent on
+file type?
 
-#syz fix: ovl: add splice file read write helper
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Thanks,
+Miklos
