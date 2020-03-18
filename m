@@ -2,62 +2,98 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55114188312
-	for <lists+linux-unionfs@lfdr.de>; Tue, 17 Mar 2020 13:09:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4857189C06
+	for <lists+linux-unionfs@lfdr.de>; Wed, 18 Mar 2020 13:33:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726550AbgCQMJc (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 17 Mar 2020 08:09:32 -0400
-Received: from sonic307-2.consmr.mail.ne1.yahoo.com ([66.163.190.121]:42063
-        "EHLO sonic307-2.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726705AbgCQMJc (ORCPT
+        id S1726663AbgCRMdo (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 18 Mar 2020 08:33:44 -0400
+Received: from mail-il1-f169.google.com ([209.85.166.169]:34113 "EHLO
+        mail-il1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726546AbgCRMdn (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 17 Mar 2020 08:09:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1584446971; bh=kcevCRoll2+Bsa3FDERpIV72LVcB1A4YV1b5N2AWYBk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=YO0tVrQVvzfL2xl61ElSaonc3517GXUr0CDAxIB/J60BNk++5+YDQYJCADuPQrgC3Nm7qQiarie3CGUkhklb/7KJKqEOdupkobzgSYzDXgwmLyelTzifPlQTOYbXnvdSr/ln0xMv6o5/eMeR+6LoSRP/jT3YvF7l5aQR64z3Ze/GcfVd4VpiUalS5GWMCarbzZLJGTwAMaMJoviyCW9zdohxsHwS4jmItVEn0tCD0w4Im8NTK0E3hGsYL8OL0szUmaOOJar6Q+a535fMn+5tzzWmg5j7MTm3OX+QOIdmfZjsMbdpAbJIYLVkLCuH2/OeLT/xDe8uXjcxDqq1SSZaVg==
-X-YMail-OSG: _SJfPigVM1kXmNt8jPd7ks7OdsTkH5cZ0rp5hOOs8vq95p1mnEQV.avInsHNaaQ
- iVSQL2q4IPnHNN6uquNiNhjK6GF_whiUZzxOiRvCbd_G9yG7EfomXrdZUljOpd6G8a0BtfoWpjTw
- B4ydA0EW1g84WDczFyRzb4oWWwJ2gFKbaK7immyHwy30eWmsNq96Z6UoHHRVOax_9NrXiZigaSkh
- V.z2.Zff0YsKE0290B7pLm7s5F4CB8jaIg1rI4qboAyT1lbZca9_1k7dNLpGER4bLd_Cf80aT2NW
- GXoIaWK9bgkICK1EmcxNuwPcsXuISpXjSK_HpfWI4ApF4sVKAat8zTiYvsSMq4T6pOVsVCcxVPUw
- 7UTGjvs9ntMfXF6XK3.42XYMxZbzD.q1GQhK_jwzcpv96MwLNlCggbV6S77lz7kL0T1.kAK5MtKP
- Zly4VDEyZC0cql2vHxyIscKMLiItoekWDfQ5YOH2pNN5UcQsgzy2F1UoSjb0edVVxHXh1u4uHq0_
- XhfRdZmEMYHQjGT8BJkNKBrf9WGfdW6tBxbHViH.M2OBVhAwZ8f.hThyCYqadd.2E8JKnAARe2CT
- eN5nGTbBI_16DKZtQoQAfT_Nfr5_ZtBG7sHmAVz0a8Jrw3tYwS0fs.CzocLk.BBBOp0F.ht8wY1J
- RbNL0SO7N4AAc6K64fhUC.m19l3dGKWdQow4iBVG4KgPbl8bmgwhN2T4tdeIHHYC.q5nCIZ2KVVZ
- PwTgZqUS3_f15qJPM0rjjhCvl7ZfJdgS2doo7Sa6D8N_Dmcux44tffYGpzCAq3YG9RnrnwvivuNo
- 1w2VSMdUCSAhzkSoF.TZkGymSAS4RN8texI1Gh6gmMUHRq_5ksx5amMayQp4phvn0epTiCAj6Tnz
- 7BB8b6yXGZSvw6nn4SvXeK3v2v4bhD_abJZS24h8RNgltg99S4INAxlcz0zB64DboO9AMorJVkF.
- IOUxoH1Y4gZeGjeOlHdnDkKJ_riC2Q9cF9CfAz0hk7v3yPJ4KhGsHVDbdcMHxWZNiGQdmI97y7c5
- U8ZIpwopgkRgHSC0Bm_ezDmUpG79TP7BPQwSXF63ilZY8ZswCPPWsq8IZ79W2575GwYL9Jlfx1ol
- 7z5KV0EmQCARXn6k13rk9vKhD.6mG5wIbiWKO1V77l0u8rHMSJbE9pmvKDgJ2LKSr2NUzQzsoVnx
- YiAhY6Aid7uVLw97G8OvQsFl68p6hAV9dpxybh2qyzrR01.k6UYyCB.hHb0Ap0_P48xTN.xAnMMY
- w.pSdEPLR25_A1f0_FCFQ..kcJK0Z0DZp53yJzNtOnx5O6zWu4549oTIZmgWDhElx_mGML01KQo2
- qgjzvoBsyizVdBaGiuZ.IM4G7rqw-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Tue, 17 Mar 2020 12:09:31 +0000
-Date:   Tue, 17 Mar 2020 12:07:31 +0000 (UTC)
-From:   Stephen Li <stenn7@gabg.net>
-Reply-To: stephli947701@gmail.com
-Message-ID: <1553052642.1814451.1584446851283@mail.yahoo.com>
-Subject: REF
+        Wed, 18 Mar 2020 08:33:43 -0400
+Received: by mail-il1-f169.google.com with SMTP id c8so23509261ilm.1
+        for <linux-unionfs@vger.kernel.org>; Wed, 18 Mar 2020 05:33:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=mGFF3i+WLQMQgRGTonNVpusjmRqhPUEEKKQyxV5O0u0=;
+        b=GnAQFVxSQzK7I7LMV/Hh5IsRcUF5qAMC40EA6t6mXSOwQV7Zke4mmdTvZ2rMa0zeZu
+         uw3CZV0tY/qxt3K7TR+TEmb4UcuVrM1Lxnp20QFpQYE/9j7tDF336VAVlt84yd1aefyp
+         n0H5WzAfiNpYvB07g9f13SKU5lctKpOmZHhK4KLR1v1pHIFwqHjt3sYuk6QeY5lDEVW/
+         yh8N0QD2hKuC+kAQACyo8XREXUfdK+fNmg/wy8vDS5QH0Zg2QRqnrabmfgCINyh1710G
+         je9aDXmBdruNbsNfO9RkOZ+VCWzGAYueaQ1e1FYmqOaqaaTCHRVNgTLbDsErasYJedGr
+         8upA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=mGFF3i+WLQMQgRGTonNVpusjmRqhPUEEKKQyxV5O0u0=;
+        b=rpxRNCJZy17bIezs/lGz+IWyazw0P35AKbQlWw8qT9Gu7Nd3odhGyHyZvSQfXaoe2k
+         yxQPYeZ3r/t7hUdhh36/D+AecNLwpCZ3Q5C/HnqjSbA96hseb8vbFaJOmvoQDBLhLX0i
+         SfmAgKIa4xzD4IaShuLfFgxTtKLeu7bPERMY+c+36sZ+ncVaEU/FzsSLPIzW2Q1wC4Hf
+         Q1SK3wYicg3yUTKPfE8oaxYdLGKdXnJgdeDY0XLWIObVy1VDcOwnh7/c3siU/SdNP4D6
+         gEdAUTSisHGQ67mm3zVcCffMTBWLXcjU+pk+1KbDZUlswe2arzZQC7u1rSBFTMocBYbD
+         5s4g==
+X-Gm-Message-State: ANhLgQ3Vw0Jm8cCBn2l/eFxlDoEiSYFOGU28qa44EW6OTvO5sU2K6tD/
+        b/P4zAbqbxik+27Mo3hteGalLu2v1BxGNMv8VOuQA7Zd
+X-Google-Smtp-Source: ADFU+vuVc+sFpkg/lqbCc2CDX8wpZZjZvfHhYL1GNol9BpzNVA5K96SOGyntthpQDd1aeVDE2tYUyqTGRcJZ4VvaDk0=
+X-Received: by 2002:a92:9f1a:: with SMTP id u26mr3802676ili.72.1584534821019;
+ Wed, 18 Mar 2020 05:33:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1553052642.1814451.1584446851283.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15342 YMailNodin Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+References: <CAOQ4uxjryJep94sLgVxV7sGab8K3yeeDUZwOYOfLtOOguW1pcA@mail.gmail.com>
+ <CAOQ4uxiHKjNba8HD5JUWFxxJqyJxPMk3fFfA3fi-nO6uJngTAg@mail.gmail.com> <CAOQ4uxhBBnr5zFOn1Dr-XtDSo=p3BovyhK6xZh22GA=dv1L8Bw@mail.gmail.com>
+In-Reply-To: <CAOQ4uxhBBnr5zFOn1Dr-XtDSo=p3BovyhK6xZh22GA=dv1L8Bw@mail.gmail.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Wed, 18 Mar 2020 14:33:30 +0200
+Message-ID: <CAOQ4uxiKdxujdKNWBRNxtvCrq5TDJuhoW5Oede0Hu1myoKfeEQ@mail.gmail.com>
+Subject: [ANNOUNCE] unionmount-testsuite: master branch updated to dc24a45
+To:     overlayfs <linux-unionfs@vger.kernel.org>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>, Vivek Goyal <vgoyal@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
+Hi All,
+
+The master branch on the unionmount-testsuite tree [1] has been updated.
+
+Changes in this update:
+- Align with v5.6-rc1 overlayfs code
+
+The previous release of unionmount-testsuite (1724ef2) exposed a kernel
+v4.17 regression:
+
+ ./run --ov=1 --verify hard-link
+ ...
+ /mnt/a/no_foo110: File unexpectedly on upper layer
+
+This kernel regression was fixed in v5.6-rc1 by commit  b7bf9908e17c
+("ovl: fix corner case of non-constant st_dev;st_ino").
+This release of unionmount-testsuite adapts the layer checks to the fixed
+logic of v5.6-rc1.
+
+The regression test above still fails on kernel v5.5, but with a
+different error:
+ ./run --ov=1 --verify hard-link
+ ...
+ /mnt/a/no_foo110: inode number/layer changed on copy up (got
+34:434190, was 34:430077)
 
 
-Greetings,
-I was searching through a local business directory when I found your
-profile. I am Soliciting On-Behalf of my private client who is
-interested in having a serious business investment in your country. If
-you have a valid business, investment or project he can invest
-back to me for more details. Your swift response is highly needed.
-Sincerely
-Stephen Li
-Please response back to me with is my private email below for more details
-stephli947701@gmail.com
+Thanks,
+Amir.
+
+[1] https://github.com/amir73il/unionmount-testsuite
+
+The head of the master branch is commit:
+
+dc24a45 Update layer check with pseudo st_dev for upper layer
+
+New commits:
+
+Amir Goldstein (1):
+  Update layer check with pseudo st_dev for upper layer
