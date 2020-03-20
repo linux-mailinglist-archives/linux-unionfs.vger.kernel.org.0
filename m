@@ -2,107 +2,71 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A89D18C267
-	for <lists+linux-unionfs@lfdr.de>; Thu, 19 Mar 2020 22:40:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8018418CC59
+	for <lists+linux-unionfs@lfdr.de>; Fri, 20 Mar 2020 12:08:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726680AbgCSVkv (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 19 Mar 2020 17:40:51 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([63.128.21.74]:57689 "EHLO
-        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725768AbgCSVkv (ORCPT
+        id S1727291AbgCTLIx (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 20 Mar 2020 07:08:53 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:41990 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727043AbgCTLIx (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 19 Mar 2020 17:40:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584654050;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=pD2QLHhMMC0hMij2LitoFlwgBXHTclhOvCrWdxE1e4s=;
-        b=Lrtb60We9ToI3CPEt1qUuJAzIx8YxV4vD2xp/Xz0qZoirbgFua7dx6jDnw+qti+mfYGJhi
-        ru9krS1Hbh1LJsagp8uTK4xrLgMENsl1cXJnTYhVD7LVySDsWezW+sJk9Dvoh6IRbw+HWZ
-        iyRUpxkifFDAkB48pzjIxhKRooqDcFw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-352-d-B74DyfOYu7Nq3RZue8rA-1; Thu, 19 Mar 2020 17:40:46 -0400
-X-MC-Unique: d-B74DyfOYu7Nq3RZue8rA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CD21918B5F69;
-        Thu, 19 Mar 2020 21:40:45 +0000 (UTC)
-Received: from horse.redhat.com (ovpn-116-200.rdu2.redhat.com [10.10.116.200])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7CEE5BBBC0;
-        Thu, 19 Mar 2020 21:40:45 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-        id CB986220001; Thu, 19 Mar 2020 17:40:44 -0400 (EDT)
-Date:   Thu, 19 Mar 2020 17:40:44 -0400
-From:   Vivek Goyal <vgoyal@redhat.com>
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>
-Subject: Re: unionmount testsuite with upper virtiofs
-Message-ID: <20200319214044.GB83565@redhat.com>
-References: <20200131115004.17410-5-mszeredi@redhat.com>
- <20200204145951.GC11631@redhat.com>
- <CAJfpegtq4A-m9vOPwUftiotC_Xv6w-dnhCi9=E0t-b1ZPJXPGw@mail.gmail.com>
- <CAOQ4uxj_pVp9-EN2Gmq9j6G3xozzpK_zQiRO-brx6PZ9VpgD0Q@mail.gmail.com>
- <CAOQ4uxjFYO28r+0pY+pKxK-dDJcQF2nf2EivnOUBgrgkYTFjPQ@mail.gmail.com>
- <CAOQ4uxhZ8a2ObfB9sUtrc=95mM70qurLtXkaNyHOXYxGEKvxFw@mail.gmail.com>
- <CAOQ4uxhkd5FkN5ynpQxQ0m1MR9MgzTBbvzjkoHfSRA2umb-JTA@mail.gmail.com>
- <20200316175453.GB4013@redhat.com>
- <CAOQ4uxgfTJwE2O1GGt-TY+6ijjKE13+ATTarijFGLiM69jk8HA@mail.gmail.com>
- <CAOQ4uxhWLjsxy21MMKUOvMsWmWTWhKP0hwLQoD99xVcWbbmFmA@mail.gmail.com>
+        Fri, 20 Mar 2020 07:08:53 -0400
+Received: by mail-ot1-f65.google.com with SMTP id f66so76516otf.9
+        for <linux-unionfs@vger.kernel.org>; Fri, 20 Mar 2020 04:08:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=kuhba0bbR9oJup1oQ7P5tNPZ9FqBHXE57QqcfHgaIHo=;
+        b=JAtXBJqr5hMz+TFFzUTYToXqzS7c51G8vKLiqCDy1i1/On+nQVdz02QZ1PRqL4CyBV
+         X4glRefjimK9GfDoVGwz8kikRgk33FnvkUhx6uO4BTbQbNm8S7O1AZPp10dlFLgtAz0x
+         rFL2qxUTruF+kToHLDhlYtTwze4TqFKBuWQhuO1oFhcmi9UjJZsAD/qhKChg4pw0VokL
+         SgTYqaqGQz81XLJqAqHOfKZ5rlEVViGHosb0tMGyvx04G/1DF2wv71hjcOE2AncHgCvI
+         Lc+mT4lwLkUcrLP/YwU6bt6V/8IAZf//w9FHMt91tLvtR+ljZtq+6uIqjb2GkwLz0CRD
+         0svQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=kuhba0bbR9oJup1oQ7P5tNPZ9FqBHXE57QqcfHgaIHo=;
+        b=gSLpcjxGhoP3A7oYeRnl5AEHobmFJltqO4So+f+/L3K7P4cuPyjjirgIeM2iMk7svY
+         hkvrPIAo/M71k7gRQ06foRhNdZUhCf7/b7JlDoLG1bKqWFuIOEp2TIjz+8oS/4i5gOPS
+         2h2k0y80LQ0/uDNuX2sOowodenp4j36ADARgqJkNFljT9cZ4tiMj9X9vVeAFM8/wiCFX
+         glWLnWAnJgjKPtBlzRSVjkIWl9GWGb6kPIX2VQNLuaP8wWJ/XjIzC6QZC+cGotqbRx4i
+         Jem0hy1EckHX7vlhWUcSIpspzPwm1DJU13NxDqUn2QNps0L/oaQEvwzwLDJcelxrVQlW
+         pgoQ==
+X-Gm-Message-State: ANhLgQ006C0D0h1gzFCRYNW+jO9HcoPh2PifkI4LfxuaB67t3FJFMV4d
+        p0ovVMa7v6oUHv3vPSRzQTPobcGQjVzEEtN1kvw=
+X-Google-Smtp-Source: ADFU+vvH+LGd+WFNKdJlGlEYryRTNsEjpn0AcYGn8HwXGyvhoRjiJZ82jJbccAGwHdEvKWUIlQW8FYcgRnFZ/M56vEw=
+X-Received: by 2002:a9d:282:: with SMTP id 2mr6105589otl.178.1584702532193;
+ Fri, 20 Mar 2020 04:08:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOQ4uxhWLjsxy21MMKUOvMsWmWTWhKP0hwLQoD99xVcWbbmFmA@mail.gmail.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Received: by 2002:a4a:c897:0:0:0:0:0 with HTTP; Fri, 20 Mar 2020 04:08:51
+ -0700 (PDT)
+From:   federa bureau of inteligence <federabureauofinteligence@gmail.com>
+Date:   Fri, 20 Mar 2020 11:08:51 +0000
+Message-ID: <CAE9o6LB8uVVDxDvXUM48MSUTPhbV1MGNW-EXBpanBopr0qXsMA@mail.gmail.com>
+Subject: HAPPY SURVIVAL OF CORONAVIRUS
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, Mar 18, 2020 at 03:36:44PM +0200, Amir Goldstein wrote:
-> > > I also wanted to run either overlay xfstests or unionmount-testsuite. But
-> > > none of these seem to give me enough flexibility where I can specify
-> > > that overlayfs needs to be mounted on top of virtiofs.
-> > >
-> > > I feel that atleast for unionmount-testsuite, there should be an
-> > > option where we can simply give a target directory and tests run
-> > > on that directory and user mounts that directory as needed.
-> > >
-> >
-> > Need to see how patches look.
-> > Don't want too much configuration complexity, but I agree that some
-> > flexibly is needed.
-> > Maybe the provided target directory should be the upper/work basedir?
-> >
-> 
-> Vivek,
-> 
-> I was going to see what's the best way to add the needed flexibility,
-> but then I realized I had already implemented this undocumented
-> feature.
-> 
-> I have been using this to test overlay over XFS as documented here:
-> https://github.com/amir73il/overlayfs/wiki/Overlayfs-testing#Setup_overlayfs_mount_over_XFS_with_reflink_support
-> 
-> That's an example of how to configure a custom /base mount for
-> --samefs to be xfs.
+Dear Sir,
 
-Hi Amir,
+HAPPY SURVIVAL OF CORONAVIRUS
 
-This seems to work for me. Thanks for the idea.
+We are reaching for a very interesting business transaction which we
+feel will of great benefit.We the FBI unit in the western subregion of
+Africa have a fund which we confiscated and lodge it in a bank
 
-I put following entries in /etc/fstab.
+This fund is worth of $12.5 million dollars.We will need your
+assistance to recieve this fund into your account for investment in
+your country.
 
-myfs	/mnt/virtiofs-lower_layer	virtiofs	defaults 0 0
-/mnt/virtiofs-lower_layer	/base	none	bind 0 0
+We will need your urgent response for details
 
-After that tests seem to start but soon I hit failures. Now its time
-to debug the failures one at a time.
-
-Vivek
-
+Inspector Greg Adams,
+For and on behalf of Cote D'Ivoire FBI
+Tel 00225 6716 6756
