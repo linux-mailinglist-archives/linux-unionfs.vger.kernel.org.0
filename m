@@ -2,45 +2,116 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E976918EC49
-	for <lists+linux-unionfs@lfdr.de>; Sun, 22 Mar 2020 21:50:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15C1E18F50A
+	for <lists+linux-unionfs@lfdr.de>; Mon, 23 Mar 2020 13:52:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726781AbgCVUud convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 22 Mar 2020 16:50:33 -0400
-Received: from mail.destinigroup.com ([175.144.213.75]:38568 "EHLO
-        mail.destinigroup.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726623AbgCVUud (ORCPT
+        id S1727362AbgCWMwm (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 23 Mar 2020 08:52:42 -0400
+Received: from mail-il1-f194.google.com ([209.85.166.194]:39596 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727326AbgCWMwm (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 22 Mar 2020 16:50:33 -0400
-X-Greylist: delayed 8945 seconds by postgrey-1.27 at vger.kernel.org; Sun, 22 Mar 2020 16:50:32 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.destinigroup.com (Postfix) with ESMTP id 01EB72DB6B7;
-        Mon, 23 Mar 2020 01:44:13 +0800 (MYT)
-Received: from mail.destinigroup.com ([127.0.0.1])
-        by localhost (mail.destinigroup.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id A3+lfGmR7aYW; Mon, 23 Mar 2020 01:44:12 +0800 (MYT)
-Received: from [45.143.223.46] (unknown [45.143.223.46])
-        by mail.destinigroup.com (Postfix) with ESMTPSA id 747932DB61C;
-        Mon, 23 Mar 2020 01:44:03 +0800 (MYT)
-Content-Type: text/plain; charset="iso-8859-1"
+        Mon, 23 Mar 2020 08:52:42 -0400
+Received: by mail-il1-f194.google.com with SMTP id r5so8246633ilq.6
+        for <linux-unionfs@vger.kernel.org>; Mon, 23 Mar 2020 05:52:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=IcOWTOtqmX1E/EYkmRLpi3dPVhI2hFkT9lG9qin39S0=;
+        b=QVxLYELjtHNt7D5QUtzraLo0QKuL02JWs392xNhXMGstbymSD5WHCygaSR6pfrhevX
+         R0omNQ/ykDjDXwxv4BH8TTFaRWFIwd90lBFJqaKqkxI/bfasvGEyUOyEEptSOXSl7IEn
+         saiHR6Jbsb6ZK52QuSchqX/95kr/ujvVkQDt4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=IcOWTOtqmX1E/EYkmRLpi3dPVhI2hFkT9lG9qin39S0=;
+        b=lNRntvh9x+Cz+locxtjiC8vobtzCXT0DpT/qgXzZe7DuZ4OZ/11j/c/f2rQJOtyE6M
+         1y5/SsM0MkiAGLO/I5/npju6Q+CokfuaN0pHHBd9gv9f+ZNh5wtMpzFNbU7epBEKGMyk
+         3nnd0OoJd1mZMY59uipl3CG5SImT4w6CEF6XVsqoqlqqno3BUm8F+bLSddepUbVvOGe2
+         lMEVoILxJSgb20tqUIs114ypAYBkYIOHDBqnHZg/fD+E6pf0gf4ao7SWnWwQCKCRcRT5
+         Gspsyz4pQTtqb8MWixp+Yg14ZxRK7Difaa1zN3fh6x4eNNn44yxuSjnpa/Y+Dg7h1+WF
+         9qZg==
+X-Gm-Message-State: ANhLgQ3STtBokbxha7aHuwPlA9mjAgPKHl/bFcGdpBMnumA12Ulqmu0i
+        w4ZmD7V8VUVvWZYX0Y7yCjB1Xh0aQ40hzdOH/iwylg==
+X-Google-Smtp-Source: ADFU+vuPuGnEwsk2AaxsNwI1rQNSgbYgs8SgjdaUagX3ASq4Kyi9XB8xoQQJCl8azyfj+/NDBNUu1XW5VKhcpFaDw3o=
+X-Received: by 2002:a92:3b8c:: with SMTP id n12mr20579886ilh.186.1584967959586;
+ Mon, 23 Mar 2020 05:52:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: YOUR EARLY REPLY
-To:     Recipients <amunoza@surnet.cl>
-From:   "Mr. Fu" <amunoza@surnet.cl>
-Date:   Sun, 22 Mar 2020 10:43:56 -0700
-Reply-To: fulanlan28@gmail.com
-Message-Id: <20200322174403.747932DB61C@mail.destinigroup.com>
+References: <CAFkON1U3cXdXFQYdkoQ3OQU+14GX7C88U6qre58vyfhrrFgKXw@mail.gmail.com>
+In-Reply-To: <CAFkON1U3cXdXFQYdkoQ3OQU+14GX7C88U6qre58vyfhrrFgKXw@mail.gmail.com>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Mon, 23 Mar 2020 13:52:28 +0100
+Message-ID: <CAJfpegsv+GayCtWtsfJZYWqH8DHw76U_cGOuqofgt895FBj0cg@mail.gmail.com>
+Subject: Re: Kernel warnings in fs/inode.c:302 drop_nlink+0x28/0x40
+To:     Phasip <phasip@gmail.com>
+Cc:     overlayfs <linux-unionfs@vger.kernel.org>
+Content-Type: multipart/mixed; boundary="00000000000036842a05a1851c95"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-YOUR EARLY REPLY
-I have a lucrative business proposal that I would like to share with you.
-I'm glad about your quick answer
-E-mail;fulanlan28@gmail.com
-greetings
-Mr. Fu Lan
+--00000000000036842a05a1851c95
+Content-Type: text/plain; charset="UTF-8"
+
+On Mon, Mar 23, 2020 at 9:50 AM Phasip <phasip@gmail.com> wrote:
+>
+> Hello!
+>
+> I have stumbled upon two ways of producing kernel warnings when using the overlayfs, both seem to be results of the same issue.
+>
+> The issue seems to be related to handling of hard links that are created directly in the upperdir.
+> Below is my system details and then two samples with a list of commands to reproduce and the corresponding kernel warning
+
+Hi,
+
+Thanks for the report.
+
+The problem is that i_nlink is not kept in sync with changes to
+underlying layers.   That would not in itself be an issue, since
+modification of the underlying layers may result in
+undefined/unexpected behavior.  The problem is that this manifests
+itself as a kernel warning.
+
+Since unlink/rename is synchronized on the victim inode (the one that
+is getting removed) it is possible to detect this condition and
+prevent drop_nlink() from being called.
+
+Attached patch fixes both of your testcases.
+
+We'll need an xfstests case for this as well.
+
+Thanks,
+Miklos
+
+--00000000000036842a05a1851c95
+Content-Type: text/x-patch; charset="US-ASCII"; name="ovl-prevent-negative-nlink.patch"
+Content-Disposition: attachment; filename="ovl-prevent-negative-nlink.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_k84gy7y30>
+X-Attachment-Id: f_k84gy7y30
+
+LS0tCiBmcy9vdmVybGF5ZnMvZGlyLmMgfCAgIDE4ICsrKysrKysrKysrKysrKystLQogMSBmaWxl
+IGNoYW5nZWQsIDE2IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgotLS0gYS9mcy9vdmVy
+bGF5ZnMvZGlyLmMKKysrIGIvZnMvb3ZlcmxheWZzL2Rpci5jCkBAIC04MTksNiArODE5LDIwIEBA
+IHN0YXRpYyBib29sIG92bF9wdXJlX3VwcGVyKHN0cnVjdCBkZW50cnkKIAkgICAgICAgIW92bF90
+ZXN0X2ZsYWcoT1ZMX1dISVRFT1VUUywgZF9pbm9kZShkZW50cnkpKTsKIH0KIAorc3RhdGljIHZv
+aWQgb3ZsX2Ryb3Bfbmxpbmsoc3RydWN0IGlub2RlICppbm9kZSkKK3sKKwlzdHJ1Y3QgZGVudHJ5
+ICphbGlhcyA9IGRfZmluZF9hbGlhcyhpbm9kZSk7CisKKwlkcHV0KGFsaWFzKTsKKwkvKgorCSAq
+IENoYW5nZXMgdG8gdW5kZXJseWluZyBsYXllcnMgbWF5IGNhdXNlIGlfbmxpbmsgdG8gbG9zZSBz
+eW5jIHdpdGgKKwkgKiByZWFsaXR5LiAgSW4gdGhpcyBjYXNlIHByZXZlbnQgdGhlIGxpbmsgY291
+bnQgZnJvbSBnb2luZyB0byB6ZXJvCisJICogcHJlbWF0dXJlbHkuCisJICovCisJaWYgKGlub2Rl
+LT5pX25saW5rID4gISFhbGlhcykKKwkJZHJvcF9ubGluayhpbm9kZSk7Cit9CisKIHN0YXRpYyBp
+bnQgb3ZsX2RvX3JlbW92ZShzdHJ1Y3QgZGVudHJ5ICpkZW50cnksIGJvb2wgaXNfZGlyKQogewog
+CWludCBlcnI7CkBAIC04NTYsNyArODcwLDcgQEAgc3RhdGljIGludCBvdmxfZG9fcmVtb3ZlKHN0
+cnVjdCBkZW50cnkgKgogCQlpZiAoaXNfZGlyKQogCQkJY2xlYXJfbmxpbmsoZGVudHJ5LT5kX2lu
+b2RlKTsKIAkJZWxzZQotCQkJZHJvcF9ubGluayhkZW50cnktPmRfaW5vZGUpOworCQkJb3ZsX2Ry
+b3BfbmxpbmsoZGVudHJ5LT5kX2lub2RlKTsKIAl9CiAJb3ZsX25saW5rX2VuZChkZW50cnkpOwog
+CkBAIC0xMjAxLDcgKzEyMTUsNyBAQCBzdGF0aWMgaW50IG92bF9yZW5hbWUoc3RydWN0IGlub2Rl
+ICpvbGRkCiAJCWlmIChuZXdfaXNfZGlyKQogCQkJY2xlYXJfbmxpbmsoZF9pbm9kZShuZXcpKTsK
+IAkJZWxzZQotCQkJZHJvcF9ubGluayhkX2lub2RlKG5ldykpOworCQkJb3ZsX2Ryb3Bfbmxpbmso
+ZF9pbm9kZShuZXcpKTsKIAl9CiAKIAlvdmxfZGlyX21vZGlmaWVkKG9sZC0+ZF9wYXJlbnQsIG92
+bF90eXBlX29yaWdpbihvbGQpIHx8Cg==
+--00000000000036842a05a1851c95--
