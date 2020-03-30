@@ -2,197 +2,68 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16200197249
-	for <lists+linux-unionfs@lfdr.de>; Mon, 30 Mar 2020 04:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F8B01979DA
+	for <lists+linux-unionfs@lfdr.de>; Mon, 30 Mar 2020 12:52:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727815AbgC3CA7 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 29 Mar 2020 22:00:59 -0400
-Received: from sender2-pp-o92.zoho.com.cn ([163.53.93.251]:25338 "EHLO
-        sender2-pp-o92.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727801AbgC3CA6 (ORCPT
+        id S1726127AbgC3Kw4 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 30 Mar 2020 06:52:56 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:37461 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729649AbgC3Kwp (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 29 Mar 2020 22:00:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1585533639;
-        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
-        h=Date:From:Reply-To:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=V8BtFv1nRF/dJFijfOShixx3l9aLBJnhnvf3PDjSV58=;
-        b=Km7Dbs/SkqBfrkFaEkEPGC6eDjUXpR9gy8MG+e9/QfBq8spfXyMqpDBJntR3gzoT
-        xgzZxA0mcZTIg6aJsSbAg7DlpkJDp/bvQBEVMSs+rMOxFbpF9h6JiigIKPAUkKatRPW
-        yjvKdAso6r1YMIOmasGD+Dw87c4TkcNhy8LNXPY0=
-Received: from mail.baihui.com by mx.zoho.com.cn
-        with SMTP id 1585533637034187.47135070607897; Mon, 30 Mar 2020 10:00:37 +0800 (CST)
-Date:   Mon, 30 Mar 2020 10:00:37 +0800
-From:   Chengguang Xu <cgxu519@mykernel.net>
-Reply-To: cgxu519@mykernel.net
-To:     "Amir Goldstein" <amir73il@gmail.com>,
-        "Hou Tao" <houtao1@huawei.com>
-Cc:     "linux-unionfs" <linux-unionfs@vger.kernel.org>,
-        "miklos" <miklos@szeredi.hu>
-Message-ID: <171292b51a7.c46ef0d428143.2315914367858349664@mykernel.net>
-In-Reply-To: <CAOQ4uxg+-nbV=pq_He7xTkBdikRAwq0DXpt9d-FV8tx0MdLV_w@mail.gmail.com>
-References: <171155f7fb1.fb0dc6a422928.8465401279980458758@mykernel.net>
- <CAOQ4uxgAubW72xGej-Tg4juicRe3nY0gmH32p0Sf3OWV45fviA@mail.gmail.com>
- <1711a6d7ebf.1251ea7b024963.4823296748033142049@mykernel.net>
- <CAOQ4uxj-6upXZkAKVDocuLSwveO8hb5_pdbd=_0zbRx2UD9gsg@mail.gmail.com> <17126a9038c.d17770b728105.8827100903005997785@mykernel.net> <CAOQ4uxg+-nbV=pq_He7xTkBdikRAwq0DXpt9d-FV8tx0MdLV_w@mail.gmail.com>
-Subject: Re: Inode limitation for overlayfs
+        Mon, 30 Mar 2020 06:52:45 -0400
+Received: by mail-vs1-f67.google.com with SMTP id o3so10690722vsd.4
+        for <linux-unionfs@vger.kernel.org>; Mon, 30 Mar 2020 03:52:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
+        b=I2bZK+Edwp7f1bl38ZDsYZ8gkHoLOp7N+SgwKjOSdbsqnWhmYlKKFyWTTwwdBuA4Vg
+         rwBHnP7ed1EksF/Uo6wi0daOtai1jA53B5b9RrMCwInP8fTj6xlf+N87Jxy7Sxa+QbUF
+         l2GP0Lv6JzwuZiPJAzgKXNfvaR6mAHzPBfBvakflfZ8B4h5bL4zPFQy+qXgn4TFvbTXz
+         A1ohkR077EumDiarvC1dhS/fXXyUHKbnnxfkdMVlwSlZiAQJvL50ZQklv05R+GT0yrBC
+         3q/4vjuGZ1FGpK3Ogg0O4Ce18OqauZECfFoMpKCzkd0qt9LKtlmIkWUwZqPjuntycFFN
+         I7DQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
+        b=cU6BqU9qLURnOdbXjUpfyfMn5lxx437Q/a9SZVbRSojbyC9rmN2DjqRIenBrGXhWKa
+         GwZHlxZmAoej/hEp1wzzJ0mSwo2mjF4pmMgouOKNCCvpcZOfycvjGTYEWczegqYP7IuI
+         XMsOTlTzD30qrOZm8cGnF+XPrsNBucMRVZjS5aQNIwRqnbxBDaNpP4lrmSZ+4wqm16Vi
+         VcoXf7J+egVFOL28M4BQaOinAfcFoWWs67S5qvAddiDhBnhF36T4q8isoJmHArecgorV
+         rCG7SzQW9DFm5aERXibaQr+obyHL8NtRNxZ7u+XVdtGYaY/P/+Dkf73aOi8BUKJVRZRH
+         vhdA==
+X-Gm-Message-State: AGi0PuZYvEamhNePRG+D3EoWpqhmQEB8Ad7BnWcLkDmkCE5+8BE9b2xk
+        xmuR468iU3agtbIYIoQjBwP/mrbmTnih8YY9KlI=
+X-Google-Smtp-Source: APiQypIWKERkhJyfw3nllppwlKx4Kg5tACX7YV91IKVmdYpKGJw8tan3l05zjbxOy64C+jzvYjD6e0YtF987t4KsIjw=
+X-Received: by 2002:a67:e24c:: with SMTP id w12mr8442912vse.153.1585565563772;
+ Mon, 30 Mar 2020 03:52:43 -0700 (PDT)
 MIME-Version: 1.0
+Received: by 2002:a67:c005:0:0:0:0:0 with HTTP; Mon, 30 Mar 2020 03:52:43
+ -0700 (PDT)
+Reply-To: maryalice00.12@postribe.com
+From:   Maryalice Williams <maryalicewilliams730@gmail.com>
+Date:   Mon, 30 Mar 2020 08:52:43 -0200
+Message-ID: <CAKwdjsr+YKgJk7z-UHX7Zo55cx5RUN3-bw03sWcArP4vbM2B5g@mail.gmail.com>
+Subject: Reply For More Details.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Priority: Medium
-User-Agent: ZohoCN Mail
-X-Mailer: ZohoCN Mail
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
- ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E6=97=A5, 2020-03-29 23:06:42 Amir Golds=
-tein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
- > On Sun, Mar 29, 2020 at 5:19 PM Chengguang Xu <cgxu519@mykernel.net> wro=
-te:
- > >
- > >  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=BA=94, 2020-03-27 17:45:37 Amir =
-Goldstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
- > >  > On Fri, Mar 27, 2020 at 8:18 AM Chengguang Xu <cgxu519@mykernel.net=
-> wrote:
- > >  > >
- > >  > >  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E5=9B=9B, 2020-03-26 15:34:13 =
-Amir Goldstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
- > >  > >  > On Thu, Mar 26, 2020 at 7:45 AM Chengguang Xu <cgxu519@mykerne=
-l.net> wrote:
- > >  > >  > >
- > >  > >  > > Hello,
- > >  > >  > >
- > >  > >  > > On container use case, in order to prevent inode exhaustion =
-on host file system by particular containers,  we would like to add inode l=
-imitation for containers.
- > >  > >  > > However,  current solution for inode limitation is based on =
-project quota in specific underlying filesystem so it will also count delet=
-ed files(char type files) in overlay's upper layer.
- > >  > >  > > Even worse, users may delete some lower layer files for gett=
-ing more usable free inodes but the result will be opposite (consuming more=
- inodes).
- > >  > >  > >
- > >  > >  > > It is somewhat different compare to disk size limitation for=
- overlayfs, so I think maybe we can add a limit option just for new files i=
-n overlayfs. What do you think?
- > >  >
- > >  > You are saying above that the goal is to prevent inode exhaustion o=
-n
- > >  > host file system,
- > >  > but you want to allow containers to modify and delete unlimited num=
-ber
- > >  > of lower files
- > >  > thus allowing inode exhaustion. I don't see the logic is that.
- > >  >
- > >
- > > End users do not understand kernel tech very well, so we just want to =
-mitigate
- > > container's different user experience as much as possible. In our poin=
-t of view,
- > > consuming more inode by deleting lower file is the feature of overlayf=
-s, it's not
- > > caused by user's  abnormal using. However, we have to limit malicious =
-user
- > > program which is endlessly creating new files until host inode exhaust=
-ing.
- > >
- > >
- > >  > Even if we only count new files and present this information on df =
--i
- > >  > how would users be able to free up inodes when they hit the limit?
- > >  > How would they know which inodes to delete?
- > >  >
- > >  > >  >
- > >  > >  > The questions are where do we store the accounting and how do =
-we maintain them.
- > >  > >  > An answer to those questions could be - in the inode index:
- > >  > >  >
- > >  > >  > Currently, with nfs_export=3Don, there is already an index dir=
- containing:
- > >  > >  > - 1 hardlink per copied up non-dir inode
- > >  > >  > - 1 directory per copied-up directory
- > >  > >  > - 1 whiteout per whiteout in upperdir (not an hardlink)
- > >  > >  >
- > >  > >
- > >  > > Hi Amir,
- > >  > >
- > >  > > Thanks for quick response and detail information.
- > >  > >
- > >  > > I think the simplest way is just store accounting info in memory(=
-maybe  in s_fs_info).
- > >  > > At very first, I just thought  doing it for container use case, f=
-or container, it will be
- > >  > > enough because the upper layer is always empty at starting time a=
-nd will be destroyed
- > >  > > at ending time.
- > >  >
- > >  > That is not a concept that overlayfs is currently aware of.
- > >  > *If* the concept is acceptable and you do implement a feature inten=
-ded for this
- > >  > special use case, you should verify on mount time that upperdir is =
-empty.
- > >  >
- > >  > >
- > >  > > Adding a meta info to index dir is a  better solution for general=
- use case but it seems
- > >  > > more complicated and I'm not sure if there are other use cases co=
-ncern with this problem.
- > >  > > Suggestion?
- > >  >
- > >  > docker already supports container storage quota using project quota=
-s
- > >  > on upperdir (I implemented it).
- > >  > Seems like a very natural extension to also limit no. of inodes.
- > >  > The problem, as you wrote it above is that project quotas
- > >  > "will also count deleted files(char type files) in overlay's upper =
-layer."
- > >  > My suggestion to you was a way to account for the whiteouts separat=
-ely,
- > >  > so you may deduct them from total inode count.
- > >  > If you are saying my suggestion is complicated, perhaps you did not
- > >  > understand it.
- > >  >
- > >
- > > I think the key point here is the count of whiteout inode. I would lik=
-e to
- > > propose share same inode with different whiteout files so that we can =
-save
- > > inode significantly for whiteout files. After this, I think we can jus=
-t implement
- > > normal inode limit for container just like block limit.
- > >
- >=20
- > Very good idea. See:
- > https://lore.kernel.org/linux-unionfs/20180301064526.17216-1-houtao1@hua=
-wei.com/
- >=20
- > I don't think Tao ever followed up with v3 patch.
- >=20
+-- 
+My dear,
 
-Thanks Amir, the feature looks exactly what we need.
+I am Mrs Maryalice Williams, I want to send you donation of two
+million seven hundred thousand Dollars ($2.7M) for volunteer projects
+in your country due to my ill health that could not permit me. Kindly
+reply for more details, and also send me the following details, as per
+below, your full Name ..........,  Address...........,
+Age...............,  Occupation ...............
 
-Hi Tao,
-
-Would you have plan to update the patch "overlay: hardlink all whiteout fil=
-es into a single one" in the recent future?
-I'm trying to fix a issue regarding to inode limitation in container and in=
-ode sharing with whiteout files is the key point to support the solution.
-
-
-Thanks,
-cgxu
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Remain blessed,
+Mrs. Maryalice Williams.
