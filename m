@@ -2,125 +2,81 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D676A19D6A1
-	for <lists+linux-unionfs@lfdr.de>; Fri,  3 Apr 2020 14:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C15471A065D
+	for <lists+linux-unionfs@lfdr.de>; Tue,  7 Apr 2020 07:15:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728140AbgDCMWi (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 3 Apr 2020 08:22:38 -0400
-Received: from mail-il1-f195.google.com ([209.85.166.195]:37441 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727927AbgDCMWh (ORCPT
+        id S1727115AbgDGFPP (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 7 Apr 2020 01:15:15 -0400
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:44007 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726996AbgDGFPP (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 3 Apr 2020 08:22:37 -0400
-Received: by mail-il1-f195.google.com with SMTP id a6so7027890ilr.4
-        for <linux-unionfs@vger.kernel.org>; Fri, 03 Apr 2020 05:22:35 -0700 (PDT)
+        Tue, 7 Apr 2020 01:15:15 -0400
+Received: by mail-vs1-f66.google.com with SMTP id w185so1400371vsw.10
+        for <linux-unionfs@vger.kernel.org>; Mon, 06 Apr 2020 22:15:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=jdCjOUpVKml8cexpt1fEMuHOcbSU65fsh92HPjb/GqE=;
-        b=jqfPpRJ4Q09waAQ0a/1Pd3Wn13zRY347Fk5/uk7M9BGgZaZumDv4tNp+a7qDDBr0qL
-         yc5CnIFDfu29RBOSokGcSAzFgUypdDi6WC/D7TO9kVlR2CyJ9DApvYvcKaysZ76/o/m1
-         zP/gOpgDPsSKhTUAL/4IIsZZKog08azz+5jiJE6cszcDoFFcAkYWtBa9n98LcP91OESv
-         OyTk8oWxTugA7R1tmwrGyIUdpbeoMz4AbdtxSPofVlEbuJ+Ik/sYmbSQC1K0WtGSRpoL
-         dXWNCax/DMnEHficL5cXSEh5Fgk1GKcfBzHbm2iyMWiqmKOLXPX1jd7hDwgijlGm8yBk
-         Rh6w==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=MfHDvIBIt69xqysjTBYVVNc0kV20i2uh+5pM5bA0kgqzaY38Y8DWEj01Pvo2lprKBQ
+         GeMPmsDw8mI8JPS3USlc7fo909SxPcbTvuuO8fmlDj3Epr1eVDtR360WKQPQyhZWRFR1
+         e2AVs/X8xmnpyFeBVbEpWkW/7xUX6BkoKcBNjhVPYru9i1s3MQXqsGzojyz2OPT8Gzuk
+         eAsRgBBtJfCcoxVL23nq2mmza5GNfLtG1Vewilonxc/7to20Va10m3hSWyxvaqvjeUuq
+         +R1bw/nay987q2JQWtF8qmoAYape5iyXc2fGu9oueeJmEOdg+02io2ZWkJnJglNvfVbH
+         fVHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=jdCjOUpVKml8cexpt1fEMuHOcbSU65fsh92HPjb/GqE=;
-        b=rl0BpVVULoNI/tjzcFvvrmoA8BjRPc2CGIEJccltmpwVCqIdYUP2mr6E7F9E1y6qd6
-         bbYFRjgeX/U13yfu6AnRmaj6p/DMexF8Qu6wELaPTKMC0g+ABv/opMq3um4KLrYbEg/t
-         IW9rQ8L8qc5kpKlb0ooRrJR7ig43WrR5c1+UecNz/VLmhpuSdNHOFyJGqAhO/ove4K07
-         UrkMavk3hscC8WkrGlGtt8ZUCFnEHO7Fm3Jl+UfWB/a3rkAF7yeP+A7D+Lxh7r1aP9n2
-         wjXAAIvL7+HCby3mfRw3AkQGaib1KNYv9q5LtTm79cA0t0iW4WWTaHIGHMRSvGp4K6RV
-         ZkKg==
-X-Gm-Message-State: AGi0PubgePb5juc4Fv4LXLtIiqmV9TUjLYuJjiBoy/lv7OE2Do192kBe
-        iHw622k8cWAVxp6fTwf2VQXspiJez30ww+RbvMEQ3g==
-X-Google-Smtp-Source: APiQypKfflHNe3JTSlg7oWarsQ6fJyZkvrZBl6GcYtmEOynmpK9WhYzSQC2qKoHaTmjsOLRq05WEWS2ZGJhwokSqrCE=
-X-Received: by 2002:a05:6e02:68a:: with SMTP id o10mr8625453ils.72.1585916555208;
- Fri, 03 Apr 2020 05:22:35 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=cEmcp5yK42mPDyoAnPBsWoEegQ6K0z6a04MDLw/2/IhIZphKcndy483o+VShxkRByn
+         JW+rCuuJZazCMQMxp1XaEU0bQFp/9Vm++RoN/gBxJzNFRChg59FU7U3ImmtqtF82G5aZ
+         wx3v5b1WKvIm4jrct+66wyU8mc+sMcsOrwxu4ROjdWnHBrBK6MLqF6F8DYoEZCABLXUd
+         Mr0+17nF763SeAGAjcNXOGwwF+6qd5k0o49vxVfBjcdUbMEB9+2IGt0XvJaGQckElNgN
+         ITeuHcITHBR4BiNq+A5GzxeIV/jJ2aw52oBDsNdQ/gxfLkUWnXZ9wn+Ju23JRDyZ576P
+         hKqw==
+X-Gm-Message-State: AGi0PuaTRZXJ2x1EPloOqGsHBOjaVy4nu9c10ybkGp4o9VYa95MTGark
+        uJ2QUATtNj6ntpm1Qk1P6IHsICjsK7DPbnFl95E=
+X-Google-Smtp-Source: APiQypL+ArhsKP1HCJpJZSuqqOKzmqGe03VSBcvbyU5XLwMdkDIdNu0ELlIqojTyqMNnJA6AEodSyvd4rSFXD4DVz/E=
+X-Received: by 2002:a67:fa85:: with SMTP id f5mr495699vsq.65.1586236514277;
+ Mon, 06 Apr 2020 22:15:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200402085808.17695-1-cgxu519@mykernel.net> <CAOQ4uxhwNpz-83xeTmDBvP7WtL=OXvjLH_gnUQ548PKj7=rvtw@mail.gmail.com>
- <1713ec320e1.f990d9b035470.9003463355312118650@mykernel.net> <CAOQ4uxjVAFAtWaN=Jgvvc93nrT6a-864YwoZKPwx__+VWV7ivQ@mail.gmail.com>
-In-Reply-To: <CAOQ4uxjVAFAtWaN=Jgvvc93nrT6a-864YwoZKPwx__+VWV7ivQ@mail.gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Fri, 3 Apr 2020 15:22:24 +0300
-Message-ID: <CAOQ4uxgOJiy5+RixqzW-XLnggPmF8DxjSkoczzkgYDoy=6wgzA@mail.gmail.com>
-Subject: Re: [PATCH] ovl: sharing inode with different whiteout files
-To:     Chengguang Xu <cgxu519@mykernel.net>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Hou Tao <houtao1@huawei.com>
+Received: by 2002:ab0:254a:0:0:0:0:0 with HTTP; Mon, 6 Apr 2020 22:15:12 -0700 (PDT)
+From:   SANDRA DEWI <sdewisandra@gmail.com>
+Date:   Tue, 7 Apr 2020 05:15:12 +0000
+Message-ID: <CALe9-EdG2aBp2yBY=t79ZuBObzzfY6nuVfAsra6+wc2BAYMhcg@mail.gmail.com>
+Subject: whether this is your correct email address or not
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Fri, Apr 3, 2020 at 11:15 AM Amir Goldstein <amir73il@gmail.com> wrote:
->
-> On Fri, Apr 3, 2020 at 9:38 AM Chengguang Xu <cgxu519@mykernel.net> wrote=
-:
-> >
-> >  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=BA=94, 2020-04-03 10:46:52 Amir G=
-oldstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
-> >  > On Thu, Apr 2, 2020 at 11:58 AM Chengguang Xu <cgxu519@mykernel.net>=
- wrote:
-> >  > >
-> >  > > Sharing inode with different whiteout files for saving
-> >  > > inode and speeding up delete opration.
-> >  > >
-> >  > > Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
-> >  > > ---
-> >  > >
-> >  > > Hi Miklos, Amir
-> >  > >
-> >  > > This is another inode sharing approach for whiteout files compare
-> >  > > to Tao's previous patch. I didn't receive feedback from Tao for
-> >  > > further update and this new approach seems more simple and reliabl=
-e.
-> >  > > Could you have a look at this patch?
-> >  > >
-> >  >
-> >  > I like the simplification, but there are some parts of Tao's patch y=
-ou
-> >  > removed without understanding they need to be restored.
-> >  >
-> >  > The main think you missed is that it is not safe to protect ofs->whi=
-teout
-> >  > with i_mutex on workdir, because workdir in ovl_whiteout() can be
-> >  > one of 2 directories.
-> >  > This is the point were the discussion on V3 got derailed.
-> >  >
-> >  > I will try to work on a patch unifying index/work dirs to solve this
-> >  > problem, so you won't need to change anything in your patch,
-> >  > but it will depend on this prerequisite.
-> >  > As alternative, if you do not wish to wait for my patch,
-> >  > please see the check for (workdir =3D=3D ofs->workdir) in Tao's patc=
-h.
-> >  >
-> >
-> > Hi Amir,
-> >
-> > Thanks for your review, the check is quite simple so I will add the che=
-ck in V2
-> > and we can remove it after your patch get merged. I will also fix all  =
-nits below
-> > in V2.
-> >
->
-> FYI, pushed my patches to https://github.com/amir73il/linux/commits/ovl-w=
-orkdir
-> still debugging some issue related to nfs export, but I don't expect your=
- patch
-> will need to be merged before that.
-> Feel free to test with my patches.
->
+Dear ,Pastor
 
-Pushed a fix. You may proceed to v3 based on this branch.
 
-Thanks,
-Amir.
+
+I have a client who is an oil business man and he made a fixed deposit
+of $26 million USD in my bank, where I am the director of the branch,
+My client died with his entire family in Jordanian
+
+50% of the fund will be for the church  for the work of God,the
+balance 50% we share it in the ratio of 50/50. Meaning 50% to you and
+50% for me
+
+intervention in the Syrian Civil War 2014 leaving behind no next of
+kin. I Propose to present you as next of kin to claim the funds, if
+interested reply me for full details and how we are to
+
+
+
+proceed to close this deal.
+
+
+
+
+Mrs. Sandra Dewi
+
+
+
+Email  mrsdewi@gmx.com
