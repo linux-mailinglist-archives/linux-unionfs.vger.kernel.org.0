@@ -2,54 +2,54 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65E651A4381
-	for <lists+linux-unionfs@lfdr.de>; Fri, 10 Apr 2020 10:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF4C51A4383
+	for <lists+linux-unionfs@lfdr.de>; Fri, 10 Apr 2020 10:25:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725912AbgDJIZs (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 10 Apr 2020 04:25:48 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:36360 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725858AbgDJIZr (ORCPT
+        id S1725839AbgDJIZt (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 10 Apr 2020 04:25:49 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:51677 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725858AbgDJIZt (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 10 Apr 2020 04:25:47 -0400
-Received: by mail-wr1-f67.google.com with SMTP id u13so998455wrp.3
-        for <linux-unionfs@vger.kernel.org>; Fri, 10 Apr 2020 01:25:47 -0700 (PDT)
+        Fri, 10 Apr 2020 04:25:49 -0400
+Received: by mail-wm1-f65.google.com with SMTP id x4so1750400wmj.1
+        for <linux-unionfs@vger.kernel.org>; Fri, 10 Apr 2020 01:25:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=1XGmJomvW9JjPrEsV8CRBwFKgJMNq2h+55QpbqT6KHM=;
-        b=P53BQzQYd6g0Vpb0I/zgOZD9SRrr4konLA7ZQ8NE/v3CIiICCwVgrZmxRKqBMrAW2P
-         wU9EcjsKSjQjtNHbX5tnStHYXbHbaWIeCChmMuk/xpVIa9PAe7aR5Q8eoNquhtGyfR8I
-         x8gWii+YFcUPNIEFvmfmy35foyL/wVX/kID4/6kRECupSTy6DYOqJz+LuBMb3ZKePeXk
-         NxxnLBlLMWMKmt4DDuvbzz0WV1pBRahc0fh7JWuBdqsCrAhzrHY36OFABpNY6Wvdas33
-         22GZncj2MNwSrjtvl251ApacvYSfOvVh0whH/ZcvpXrWWl1wVwf8XCxr9V8S47e0IOxL
-         2zhA==
+        bh=/dTESdeJHsLC2wR33md5cRNIroAylddzGPOwSa6YmKI=;
+        b=nz8/MHGDs8oxjcgVF3KXvITUPalXrAAHGriVDHrvM1PqwCiEvFTOJ0v463AbfG3FCC
+         vLLfRdWiktkaU+O1adDbEbJCHilsEcUzdA5YiwNOdy/tZqopic2rbikMlLhvgKRU1XF0
+         5Y3S0LSVfoLUflJUSgIQs7UiME++Nkkpp1LaWbWAUrB9ktKoO7DNIUTgsSdPQuiDtbwE
+         T1RBnWrp7kk0u9d04YIoze3eH7bhN9cy58Nzea33RjI6PxYsj8Xas5eE04s6uQX8im94
+         9fN7bEpc6sCK7a99wqtQKDBmP4Q/LYxMcOo1eLULGRhn2lVXlTCB0FenUk+d7rU2F+7x
+         jbCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=1XGmJomvW9JjPrEsV8CRBwFKgJMNq2h+55QpbqT6KHM=;
-        b=cFl8emLPpIr0pMl7g1Ok0/SRjGEyqEAnoBmBe8SPdbPXuSL//eDztqA5dBvHg9OIwF
-         Pwi7cVa8u7SCY8X0NApmCRJOe3XuNt/gT+uV9z31Eofd/oZs6f6KAo7HHuBWV8Gch1cm
-         idob7grvtSMj7K1ErjnGIV4JzNsxeZrf9JgSerAsriXt9SYeHAkKQ4CLygbE5B5y91bI
-         R0EnXtAXROAe2Y8kIaxwilDdgGJrZJuqNaaLQh/aIqhto6x7o5vu2he7YPtStupcbRbo
-         G6w7RJ+wt+7AGnWVBROywqYoZ0Z7wb8k92vs24nnhXrz09CIJ2X+RaR++oy+xGo6upO2
-         Mv9w==
-X-Gm-Message-State: AGi0PuZaUMqIAcXU/ZyA2ElkQ5rfXUeiBuIzsyHcCNNENuuKE84y6b8q
-        sqFGJRoxic45jn4dcyc8pjsHeXcM
-X-Google-Smtp-Source: APiQypKmQIM+G4v8uz4fDzIFS7mKprLBv4NdkOnM81uSUOUbn3EValXLxNieCWX3FKxi4K/aurbUMg==
-X-Received: by 2002:a5d:694a:: with SMTP id r10mr3455247wrw.228.1586507147327;
-        Fri, 10 Apr 2020 01:25:47 -0700 (PDT)
+        bh=/dTESdeJHsLC2wR33md5cRNIroAylddzGPOwSa6YmKI=;
+        b=UEjfWJtuZ8nbCsX9tJXQbm+OGKe+OrYpjXWBit6uO8ODHMTnfDaa4UwD47f9FJtCHN
+         Yat9zTSeUvNfo+zRsCkcmbpCvIacTHwWYvXAbk57rJY1gFhl4w9v75YIcCkysNRqZd6X
+         qr+Me1LeYRrp60J9bbF6a60mqeCGxw7jXfYoT1bpucOaEdIKE/igN+MgJPM/hILNFgIX
+         su52lvWxujDJoRoqSCGO8XxoUKRrCyVR+FDxARYrJDtfeJbXhBHnfSBDkHvdYHqzU4KH
+         haBJiCVBqZSqvLsl0kqd4Lp5uM9qo+8ZhHWafydLepWV+SEf6yqhxDOmsKsCN7/FwpIz
+         Mngw==
+X-Gm-Message-State: AGi0Pua8Bz3ym2xtAvI84X0H2hCrDwlRZQOPtX9ev/VUMO74ADvrt2qH
+        JkzcvdZeiKXgIE0QsEqbPno=
+X-Google-Smtp-Source: APiQypJt9H5UPIRGOTetZX/rFR/mFkA1DKqpLMDMkWBwFjbY3HSsp63UssCO87j3eD5veav84G4pPg==
+X-Received: by 2002:a1c:6241:: with SMTP id w62mr3928691wmb.27.1586507148678;
+        Fri, 10 Apr 2020 01:25:48 -0700 (PDT)
 Received: from localhost.localdomain ([141.226.12.123])
-        by smtp.gmail.com with ESMTPSA id b7sm1710327wrn.67.2020.04.10.01.25.46
+        by smtp.gmail.com with ESMTPSA id b7sm1710327wrn.67.2020.04.10.01.25.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2020 01:25:46 -0700 (PDT)
+        Fri, 10 Apr 2020 01:25:48 -0700 (PDT)
 From:   Amir Goldstein <amir73il@gmail.com>
 To:     Miklos Szeredi <miklos@szeredi.hu>
 Cc:     Chengguang Xu <cgxu519@mykernel.net>, linux-unionfs@vger.kernel.org
-Subject: [PATCH 1/3] ovl: cleanup non-empty directories in ovl_indexdir_cleanup()
-Date:   Fri, 10 Apr 2020 11:25:37 +0300
-Message-Id: <20200410082539.23627-2-amir73il@gmail.com>
+Subject: [PATCH 2/3] ovl: prepare to copy up without workdir
+Date:   Fri, 10 Apr 2020 11:25:38 +0300
+Message-Id: <20200410082539.23627-3-amir73il@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200410082539.23627-1-amir73il@gmail.com>
 References: <20200410082539.23627-1-amir73il@gmail.com>
@@ -58,75 +58,41 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Teach ovl_indexdir_cleanup() to remove temp directories containing
-whiteouts to prepare for using index dir instead of work dir for
-removing merge directories.
+With index=on, we copy up lower hardlinks to work dir and move them
+into index dir. Fix locking to allow work dir and index dir to be the
+same directory.
 
 Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 ---
- fs/overlayfs/overlayfs.h |  4 ++--
- fs/overlayfs/readdir.c   | 13 +++++++------
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ fs/overlayfs/copy_up.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
-index e6f3670146ed..e00b1ff6dea9 100644
---- a/fs/overlayfs/overlayfs.h
-+++ b/fs/overlayfs/overlayfs.h
-@@ -394,8 +394,8 @@ void ovl_cleanup_whiteouts(struct dentry *upper, struct list_head *list);
- void ovl_cache_free(struct list_head *list);
- void ovl_dir_cache_free(struct inode *inode);
- int ovl_check_d_type_supported(struct path *realpath);
--void ovl_workdir_cleanup(struct inode *dir, struct vfsmount *mnt,
--			 struct dentry *dentry, int level);
-+int ovl_workdir_cleanup(struct inode *dir, struct vfsmount *mnt,
-+			struct dentry *dentry, int level);
- int ovl_indexdir_cleanup(struct ovl_fs *ofs);
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index 9709cf22cab3..e523e63f604f 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -576,7 +576,7 @@ static int ovl_copy_up_workdir(struct ovl_copy_up_ctx *c)
+ 	struct inode *udir = d_inode(c->destdir), *wdir = d_inode(c->workdir);
+ 	struct dentry *temp, *upper;
+ 	struct ovl_cu_creds cc;
+-	int err;
++	int err = 0;
+ 	struct ovl_cattr cattr = {
+ 		/* Can't properly set mode on creation because of the umask */
+ 		.mode = c->stat.mode & S_IFMT,
+@@ -584,7 +584,11 @@ static int ovl_copy_up_workdir(struct ovl_copy_up_ctx *c)
+ 		.link = c->link
+ 	};
  
- /* inode.c */
-diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
-index e452ff7d583d..d6b601caf122 100644
---- a/fs/overlayfs/readdir.c
-+++ b/fs/overlayfs/readdir.c
-@@ -1071,14 +1071,13 @@ static void ovl_workdir_cleanup_recurse(struct path *path, int level)
- 	ovl_cache_free(&list);
- }
+-	err = ovl_lock_rename_workdir(c->workdir, c->destdir);
++	/* Are we copying up to indexdir which is also workdir? */
++	if (c->indexed && c->workdir == c->destdir)
++		inode_lock_nested(wdir, I_MUTEX_PARENT);
++	else
++		err = ovl_lock_rename_workdir(c->workdir, c->destdir);
+ 	if (err)
+ 		return err;
  
--void ovl_workdir_cleanup(struct inode *dir, struct vfsmount *mnt,
-+int ovl_workdir_cleanup(struct inode *dir, struct vfsmount *mnt,
- 			 struct dentry *dentry, int level)
- {
- 	int err;
- 
- 	if (!d_is_dir(dentry) || level > 1) {
--		ovl_cleanup(dir, dentry);
--		return;
-+		return ovl_cleanup(dir, dentry);
- 	}
- 
- 	err = ovl_do_rmdir(dir, dentry);
-@@ -1088,8 +1087,10 @@ void ovl_workdir_cleanup(struct inode *dir, struct vfsmount *mnt,
- 		inode_unlock(dir);
- 		ovl_workdir_cleanup_recurse(&path, level + 1);
- 		inode_lock_nested(dir, I_MUTEX_PARENT);
--		ovl_cleanup(dir, dentry);
-+		err = ovl_cleanup(dir, dentry);
- 	}
-+
-+	return err;
- }
- 
- int ovl_indexdir_cleanup(struct ovl_fs *ofs)
-@@ -1132,8 +1133,8 @@ int ovl_indexdir_cleanup(struct ovl_fs *ofs)
- 		if (!err) {
- 			goto next;
- 		} else if (err == -ESTALE) {
--			/* Cleanup stale index entries */
--			err = ovl_cleanup(dir, index);
-+			/* Cleanup stale index entries and leftover whiteouts */
-+			err = ovl_workdir_cleanup(dir, path.mnt, index, 1);
- 		} else if (err != -ENOENT) {
- 			/*
- 			 * Abort mount to avoid corrupting the index if
 -- 
 2.17.1
 
