@@ -2,111 +2,161 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCB8F1A65CA
-	for <lists+linux-unionfs@lfdr.de>; Mon, 13 Apr 2020 13:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4BFC1A6650
+	for <lists+linux-unionfs@lfdr.de>; Mon, 13 Apr 2020 14:27:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729217AbgDMLt4 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 13 Apr 2020 07:49:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43790 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729194AbgDMLtz (ORCPT
+        id S1729458AbgDMMTo (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 13 Apr 2020 08:19:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52868 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729455AbgDMMTn (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 13 Apr 2020 07:49:55 -0400
-X-Greylist: delayed 515 seconds by postgrey-1.27 at vger.kernel.org; Mon, 13 Apr 2020 07:49:46 EDT
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DE4FC0085BC
-        for <linux-unionfs@vger.kernel.org>; Mon, 13 Apr 2020 04:41:30 -0700 (PDT)
-Received: by mail-il1-x134.google.com with SMTP id t8so3501978ilj.3
-        for <linux-unionfs@vger.kernel.org>; Mon, 13 Apr 2020 04:41:30 -0700 (PDT)
+        Mon, 13 Apr 2020 08:19:43 -0400
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68CFEC03BC87;
+        Mon, 13 Apr 2020 05:14:30 -0700 (PDT)
+Received: by mail-io1-xd42.google.com with SMTP id f3so9109015ioj.1;
+        Mon, 13 Apr 2020 05:14:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=qlKWExEze9qCqlwbpw1q4+d2Zjr4ETGVa64TcX+dTlk=;
-        b=prjS9vX1/lBHBQnmn8S5eSRPyVAkL53RoKQzE5AAHbxvNYI4a2v2cjTji7kXTppOEc
-         z/YC5TVvRJiGk2ecDbuxQbDezIHvoL12TwU8A8MoLDqkPTvq0EUKN12xVXuoac5P5vPG
-         CDxQUahEZp79myUg0SW4XqnobzWbEdaMDOCEcwJOYEkU2vBAFQtTx1QiAdzIaX9heUrh
-         wXqF9HmIVWbzu+LjtyhWb9YxG3jDJu9H0/2YRuWHtIWQg0GYyRRf+7+N2+T4/5hNzYkA
-         0Td5bmAVNGOZBhXtNLv8DRN8PKs1LisEF6odwJbW1cWSeUhqmMnZAT2UKZl4iJ1E/PV6
-         qofQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pX60CIZDxTJDVxtmLuIDhxnCYtVvlBGG1nwF3uPB17c=;
+        b=flsy3bWGzRZU6MzfPzBxzboSCDFWdZzz7s9N6LL1RFoporjfmV0Vf0H27fRKAhpSo1
+         UlK0KMkD/oq8v2KA0pK2kTBDhlJqVCnQPVsKe36mvAeemEEZo2dMnugq3WW7wMoviM+B
+         iv2E/OBJO6dLeT4cgtXeYtCoiAdS38GYMPUObJy/kmfbJG7Th3WLSRM6CmMJOcZ3Mqxj
+         FA0fEDm2hSL1kYOrDI57okpoSsE2TjOC6LtVUHQKp0tHda8kv9bhbuaYeI0Kqshi6bnh
+         Fc0G13+TutQzKwxKcNRwNnAa15bt4RuVZV3onnFdSDv3YKV4Dmw/ZP6A47rmnHAQIDzD
+         7x2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=qlKWExEze9qCqlwbpw1q4+d2Zjr4ETGVa64TcX+dTlk=;
-        b=spkp6cdyaHpR+DMTfUMLoBL2wyo5DQoHQO3ji42YaaG+BIxXOj88CGJ72MIJzjbSJc
-         wHsiBVrPXKo5M7NTFm3SQFmxhZUo24/AGkaPFC7hliSZoYtWk/eiv2ypdi/Nk9DmiLK9
-         aD41L+n5sjXz0oCjtpg0VmEqkNwOz4HZu8zfRvRs+y8K/nZjQKyMwsqZ4f/bch/EYHj3
-         dNlrc+GpJXUOBgpxlkM/UJOG1QnL/BI/xkQBDOJaeqLHwIEJTM8ClZOA9bi7Q/1sh45a
-         O54luSgX5cPsM0rXXJw6yDtTHoh81XDOxqLfQdeOaUHuaB0RyThMZuJqdfQn2P9TqBHl
-         NXKA==
-X-Gm-Message-State: AGi0PubEuXEe4zOW5Mb0inXcYIho/Uj1DsLjXAZFsQU8zAK9s5J18sH0
-        D2fWLqQCW1DpzsuWXIoDIs9FeXZ0RZi4zw+0Ng==
-X-Google-Smtp-Source: APiQypL8TqJIeu3sv8q1i+SGhGHI+g2m6cjavfj0dEc+5JPmC3aVP4wfZgyktqWXbHy6/UF7VoKUuS2YyJ3E1gwa7Hs=
-X-Received: by 2002:a92:cccb:: with SMTP id u11mr9656514ilq.8.1586778089638;
- Mon, 13 Apr 2020 04:41:29 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pX60CIZDxTJDVxtmLuIDhxnCYtVvlBGG1nwF3uPB17c=;
+        b=MEMktLtgX+o//n8i2w8Z7VURHAuu6ja0llJwzXm/LttVGdi/wTDinkeAR0TcrH4qk6
+         IA/GWiDl7N2/wIrA4kCKiiPoUN2EXHAh8BrascD1lg3Zio/+r8eyvXJhpmW6gshedfx4
+         c8mR2A0d8wF87WdeyY6qB8Fde6G1OhwCw85UaANKLbiv1sE0cL38SHl6I2YeOoLV1SoG
+         GI9dF1wL2M1mqpsOarDYHTBUZfZEhPugYABI0iHZNO+h88rG1ITEM4a9nzir/RraJ4as
+         LHv9FBjHSFNYP1MQkJD2Pb4i3ttszZnRhcEYGxSHmNcoUPWBXHh8mFk12j2bQ8TuhnJs
+         3rlg==
+X-Gm-Message-State: AGi0PuYj83gBYbfgbwXx/7kmaRkkT7oMuzSk+ZgyYX6JNBfLGr68XG25
+        zJXNDCns1vgoRLkX27Ib4xl+Bbc3bo8LlFi3Ops=
+X-Google-Smtp-Source: APiQypK8ejY4GNjcEZTFDQ9m9vbH3DKpjUqNwtMHYKQb3L3Eut8B0R5eVefQiOvQK6Pf3dMviUxYTpjTw2Hug14rJfk=
+X-Received: by 2002:a02:4b03:: with SMTP id q3mr15321203jaa.30.1586780069759;
+ Mon, 13 Apr 2020 05:14:29 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a02:5e49:0:0:0:0:0 with HTTP; Mon, 13 Apr 2020 04:41:28
- -0700 (PDT)
-Reply-To: mgbenin903@gmail.com
-From:   Barrister Robert Richter UN-Attorney at Law Court-Benin 
-        <info.zennitbankplcnigerian@gmail.com>
-Date:   Mon, 13 Apr 2020 13:41:28 +0200
-Message-ID: <CABHzvrngm=rA5Ct9h+JGdbyDfHJmnfntceDPoyJToo8PZn+YZg@mail.gmail.com>
-Subject: I have already sent you first payment US$5000.00 this morning through
- MONEY Gram service.it is available to pick up in address now.
-To:     undisclosed-recipients:;
+References: <20200410012059.27210-1-cgxu519@mykernel.net> <20200410012059.27210-2-cgxu519@mykernel.net>
+ <CAOQ4uxghdvj9QVJ3DQ3g1p0hbvz5mfMoxgoEAKyQAf4v78p2YA@mail.gmail.com> <17173093df3.f6003c6d6224.1796766948671904062@mykernel.net>
+In-Reply-To: <17173093df3.f6003c6d6224.1796766948671904062@mykernel.net>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Mon, 13 Apr 2020 15:14:18 +0300
+Message-ID: <CAOQ4uxhKU8bgBEXXKZ91dzM4JFFKaM+DzxJ=+D6o9FDeDy4syQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] overlay/072: test for sharing inode with whiteout files
+To:     Chengguang Xu <cgxu519@mykernel.net>
+Cc:     Eryu Guan <guaneryu@gmail.com>, fstests <fstests@vger.kernel.org>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        Miklos Szeredi <miklos@szeredi.hu>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-ATTN DEAR BENEFICIARY.
+>  > > +
+>  > > +# Case1:
+>  > > +# Setting whiteout_link_max=0 will not share inode
+>  > > +# with whiteout files, it means each whiteout file
+>  > > +# will has it's own inode.
+>  > > +
+>  > > +file_count=10
+>  > > +link_max=0
+>  > > +link_count=1
+>  >
+>  > Would be nicer to put all the below in a run_test_case() function
+>  > with above as arguments.
+>  >
+>
+> Something like below?
+> ---------
+> # Arguments:
+> # $1: Maximum link count
+> # $2: Testing file number
+> # $3: Expected link count
+> run_test_case()
+> {
+>         _scratch_mkfs
+>         _set_fs_module_param $param_name ${1}
+>         make_lower_files ${2}
+>         _scratch_mount
+>         make_whiteout_files
+>         check_whiteout_files ${2} ${3}
+>         $UMOUNT_PROG $SCRATCH_MNT
+> }
+>
+> link_max=1
+> file_count=10
+> link_count=1
+> run_test_case $link_max $file_count $link_count
+> ---------
+>
 
-GOOD NEWS.
+Yes. That's better.
 
-I have already sent you first payment US$5000.00 this morning through
-MONEY Gram service.it is available to pick up in address now.
+>  > > +_scratch_mkfs
+>  > > +_set_fs_module_param $param_name $link_max
+>  > > +make_lower_files
+>  > > +_scratch_mount
+>  > > +make_whiteout_files
+>  > > +check_whiteout_files
+>  > > +$UMOUNT_PROG $OVL_BASE_SCRATCH_MNT/$OVL_MNT
+>  >
+>  > Better:
+>  > $UMOUNT_PROG $SCRATCH_MNT
+>  >
+>  > Even better:
+>  > _scratch_umount
+>
+> I haven't found the definition of _scratch_umount,
+> have we implemented it?
 
-So we advise you to Contact This Money Gram office to pick up your
-transfer $US5000.00 today.
+typo. I meant _scratch_unmount
 
+On top of $UMOUNT_PROG $SCRATCH_MNT
+_scratch_unmount also unmount the base fs.
 
-Note that your compensation payment funds is total amount $US2.800,000
-Million Dollars.We have instructed the Money Gram Agent,Mr. James
-Gadner to keep sending the transfer to you daily, but the maximum
-amount you will be receiving everyday is US$5000.00. Contact Agent now
-to pick up your first payment $US5000.00 immediately.
+...
 
-Contact Person, Mr. James Gadner, Dir. Money Gram Benin.
-Email: mgbenin903@gmail.com
-Telephone Numbers: +229 62819378/ +229 98477762
+>  > First, that is  strange outcome of whiteout_link_max=2
+>  > I would not expect it.
+>  > Second, how can every whiteout be shared with tmpfile?
+>  > There should be at most one tmpfile at all times, so the
+>  > whiteouts that already reached whiteout_link_max should
+>  > not be linked to any tmpfile.
+>
+> I think I misunderstood your comment in my kernel patch, so I changed
+> the logic to keep all tmpfiles in workdir and cleanup them during next mount.
+> I'll fix it in V3 kernel patch.
+>
 
-HERE IS YOUR PAYMENT DETAILS FOR THE FIRST =C2=A3US5000.00 SENT TODAY.
+Ah, so its good you posted the test ;-)
 
-Track View Website link:
-https://secure.moneygram.com/track
-Sender=E2=80=99s First name: David
-Sender=E2=80=99s Last Name: Joiner
-Money Transfer Control Number (MTCN) (REFERENCE)# 26046856
+>  >
+>  > Please add to test_case() verification that work dir contains
+>  > at most one tmpfile.
+>  > But please make sure that the test is clever enough to check
+>  > both work and index dirs for tmpfiles (names beginning with #).
+>  >
+>
+> So should I check module params of index and nfs_export for checking
+> tmpfile in index dir?
+>
 
-Contact the Mmoney Gram Urgent and reconfirm your address to the
-office before, they will allow you to pick up the transfer today.
+No need for that.
 
-HERE IS WHAT REQUIRED OF YOU.
+Verifying that both index and work dir contain no more than a single tmpfile
+together is good enough and should be pretty simple too:
 
-YOUR FULL NAME---------
-ADDRESS--------------
-COUNTRY-----------------------------
-TELEPHONE NUMBERS-----------------
+ls $workdir/work/#* $workdir/index/#*|wc -l
 
-Note, I paid the transfer fee for you, but only you are required to
-send to the office is $75 only,Been Your Payment File activation fee,
-Send once you contact the office,before you can able to pick up your
-transfer today.
-
-Let me know once you pick up first payment today.
-
-Barrister Robert Richter UN-Attorney at Law Court-Benin
+Thanks,
+Amir.
