@@ -2,59 +2,59 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C2361A9EEA
-	for <lists+linux-unionfs@lfdr.de>; Wed, 15 Apr 2020 14:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D843D1A9EE2
+	for <lists+linux-unionfs@lfdr.de>; Wed, 15 Apr 2020 14:06:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409448AbgDOMEN (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 15 Apr 2020 08:04:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44064 "EHLO
+        id S368264AbgDOMDj (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 15 Apr 2020 08:03:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S368167AbgDOMBo (ORCPT
+        with ESMTP id S368173AbgDOMBq (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 15 Apr 2020 08:01:44 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9777CC061A0E
-        for <linux-unionfs@vger.kernel.org>; Wed, 15 Apr 2020 05:01:43 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id i10so18773467wrv.10
-        for <linux-unionfs@vger.kernel.org>; Wed, 15 Apr 2020 05:01:43 -0700 (PDT)
+        Wed, 15 Apr 2020 08:01:46 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADF46C061A0F
+        for <linux-unionfs@vger.kernel.org>; Wed, 15 Apr 2020 05:01:45 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id t14so5565934wrw.12
+        for <linux-unionfs@vger.kernel.org>; Wed, 15 Apr 2020 05:01:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=3ldQjU+7Zq46i0kjWh+qplq7XP2+AUfS1ODeMVZ7Ftw=;
-        b=tmVEWoyF7NFLrF+L3PavoR8tbVUWKmsQTMEcoR02PYoFEZoI/VPWQ2hEh/1AAto9xy
-         6KgQMOPX+nbQGnamNeoLKmxYd779+POPo0JCiso2JoEvlrjqaTTk8SqUw0uXGp3AeV8e
-         BMuUunvl78N4nLYdGpNdV6bAOQKxJN6p/UYksyMdjD4rU1GgaW/SDdtWDt0BXwJJUFcU
-         pQ1ju9HoIie54rpGoEzZ7JPbQ5KFPtKDQd3pMckGMs//5jlLfo1IQtGKr2RtHRaZtS7Q
-         gcbGs6m4bsdC+C1V7K14V0i6N7PwCkcxs6eKhE/fqVsylXfSCvnFMOQrx7JwJCcMRGqQ
-         CPyQ==
+        bh=QvjRJW1eMluf/Un3MyFVLtiJyygih6w8KJ4WG6oU5ho=;
+        b=szBFFHXa0s1dD2gSZkxoAEYFgGeXCXBLVV87dgMrDqKd3rOU8MLyqQ/jqtRUCj/Em6
+         UHjjDa7q5pqxAukGtL2LHkH7wzuL8PtBKIGHFuRII31rKhIKc9bDSqMQe5J0p8jaaa0P
+         5ariY5be2e2e+zdeeGGP0bZZYeEJzgZVWQkSDSeKxYs9p3NHcvLwa+lFJTA6PDSGEzKR
+         ioHTRHASKbTLe7wzQVOaero02j6xlTgFLAVOKzrA5/SWZGYF9us4qLxDmYV7TUhZVXhj
+         Ic4lhmIaQw7R1gdk9fgV++Dt098lsacp3zvhRSFQESt1GyyRSDEgy3AyOvHP7Dcm9NXV
+         4kwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=3ldQjU+7Zq46i0kjWh+qplq7XP2+AUfS1ODeMVZ7Ftw=;
-        b=KNgEUGlWVyETVQ6+W46BweiZhB8a5qLp3bFKlY5Eq/cehmQOfrHazqUQYGJbjXGm8f
-         YKO9M5n8LTcVwL1AcX/yAkzOCGANLyxqHRKp1ZO/0x2JJIiXBxE1Nsrf6lkn4RYS1UQV
-         XJgnLjwB8FFA/I0fd/WPEH/zU5H6e5gUQVBxYLnk4uNVHPScqRPmAA6cUzVO95vQLhx0
-         ypavgVcjVX0rqaD7DN9DeJ2cW85b4oANFZ7hLKpOjVzQ29GemyjZnvJCG1wIbJV+/tMz
-         +uqPNUS+RFtJKKSdIzd1dXppNLKcdqunnAzQur+wQqMuB/J0qpw2d1DrCrJQ3qfGGfLD
-         o3tg==
-X-Gm-Message-State: AGi0PuZkYG/2aATIBDDH/wTzVmuudOAJBA7pRckz0RK0MSlBggOSMn+x
-        4iJ1DjqeNoucBdrZvhmBad/R6Hsu
-X-Google-Smtp-Source: APiQypJjZKoRvvqqOHUhg4ZWpAB3TsmE/mxw9wKnqDXYKF7wPF1TF+HUboOwspXpORrc4eEHG3v28g==
-X-Received: by 2002:adf:fad0:: with SMTP id a16mr31821431wrs.149.1586952102205;
-        Wed, 15 Apr 2020 05:01:42 -0700 (PDT)
+        bh=QvjRJW1eMluf/Un3MyFVLtiJyygih6w8KJ4WG6oU5ho=;
+        b=csEUYC6JWOyclQdDa7iC4hfcAKUgnOD4CaSO2lTYYDf+0dUru4QxH3mhfY8dek7ngo
+         RCplmhaskrpU+oafcUVXuroSDtfHAwY5XK/IshHu3cIAtVA3H+vg7p4hI5BSVrgTqEAy
+         YWEUK2i9G3pHCKKzLwHFWsmgR7OJpY4wPLYJMWmEVv05HXuKpm2mr9BDIibeW0Uv0fgz
+         lgNz4+Qeg9+jB47o60C8wDtWSJXrl0yJBbz4QsdRQZEGluNGBjucNr82qvIk+SLE6Zwr
+         eofxOYcWL2xNv621eziwZdfBa3pLuV7soxZFQ6FiujYJIjlwXDB5dxQYGdqzWjrh0bGn
+         kV6w==
+X-Gm-Message-State: AGi0PualpZuDK0+pHEG/w9OsKrOKCrCAAqNfatk4lAMaEFHLddi8gpex
+        U4Mjh5upibmunarEjYrb+dM=
+X-Google-Smtp-Source: APiQypLYeBINJcgCDT3yyhtj5tizf6eYacwnHwE0T6stdj8IAE/7nQyEhPDvkSv8RRSQipaXCSAl9w==
+X-Received: by 2002:adf:ea05:: with SMTP id q5mr31007532wrm.180.1586952103732;
+        Wed, 15 Apr 2020 05:01:43 -0700 (PDT)
 Received: from localhost.localdomain ([141.226.12.123])
-        by smtp.gmail.com with ESMTPSA id h137sm17578238wme.0.2020.04.15.05.01.40
+        by smtp.gmail.com with ESMTPSA id h137sm17578238wme.0.2020.04.15.05.01.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2020 05:01:41 -0700 (PDT)
+        Wed, 15 Apr 2020 05:01:43 -0700 (PDT)
 From:   Amir Goldstein <amir73il@gmail.com>
 To:     Vivek Goyal <vgoyal@redhat.com>
 Cc:     Giuseppe Scrivano <gscrivan@redhat.com>,
         Miklos Szeredi <miklos@szeredi.hu>,
         linux-unionfs@vger.kernel.org
-Subject: [PATCH 1/2] Stop using bind mounts for --samefs
-Date:   Wed, 15 Apr 2020 15:01:33 +0300
-Message-Id: <20200415120134.28154-2-amir73il@gmail.com>
+Subject: [PATCH 2/2] Configure custom layers via environment variables
+Date:   Wed, 15 Apr 2020 15:01:34 +0300
+Message-Id: <20200415120134.28154-3-amir73il@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200415120134.28154-1-amir73il@gmail.com>
 References: <20200415120134.28154-1-amir73il@gmail.com>
@@ -63,261 +63,163 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-The implementation of --samefs uses bind mount to mount
-/base/lower at /lower and /base/upper at /upper.
+The following environment variables are supported:
 
-Re-assign the value of cfg.{lower,upper}_mntroot to the path
-under base dir instead of using bind mounts.
+ UNIONMOUNT_BASEDIR  - base dir for --samefs (default: /base)
+ UNIONMOUNT_UPPERDIR - upper layer root path (default: /upper)
+ UNIONMOUNT_LOWERDIR - lower layer root path (default: /lower)
+ UNIONMOUNT_MNTPOINT - mount point for tests (default: /mnt)
 
-Also stop the habit of remounting lowerdir ro in set_up(), just to
-remount it again rw in mount_union() in case of --samefs.
+User provided paths for base/lower/upper should point at a pre-mounted
+filesystem, whereas tmpfs instances will be created on default paths.
+
+This is going to be used for running unionmount tests from xfstests.
 
 Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 ---
- mount_union.py   |  8 ++---
- set_up.py        | 84 +++++++++++++++++++++++++++---------------------
- settings.py      | 18 +++++++++++
- unmount_union.py | 19 ++++++-----
- 4 files changed, 78 insertions(+), 51 deletions(-)
+ README      | 11 +++++++++++
+ run         |  3 ++-
+ settings.py | 51 ++++++++++++++++++++++++++++++---------------------
+ 3 files changed, 43 insertions(+), 22 deletions(-)
 
-diff --git a/mount_union.py b/mount_union.py
-index 55515af..0b3316a 100644
---- a/mount_union.py
-+++ b/mount_union.py
-@@ -6,7 +6,6 @@ def mount_union(ctx):
-     testdir = cfg.testdir()
-     if cfg.testing_none():
-         lower_mntroot = cfg.lower_mntroot()
--        system("mount -o remount,rw " + lower_mntroot)
-         system("mount -o bind " + lower_mntroot + " " + union_mntroot)
-         ctx.note_upper_fs(lower_mntroot, testdir, testdir)
+diff --git a/README b/README
+index c352878..616135f 100644
+--- a/README
++++ b/README
+@@ -47,5 +47,16 @@ To run these tests:
+ 	./run --ov --fuse=<subfs-type>
  
-@@ -14,14 +13,11 @@ def mount_union(ctx):
-         lower_mntroot = cfg.lower_mntroot()
-         upper_mntroot = cfg.upper_mntroot()
-         if cfg.is_samefs():
--            base_mntroot = cfg.base_mntroot()
--            system("mount -o remount,rw " + base_mntroot)
-             try:
--                os.mkdir(base_mntroot + upper_mntroot)
-+                os.mkdir(upper_mntroot)
-             except OSError:
-                 pass
--            system("mount -o bind " + base_mntroot + upper_mntroot + " " + upper_mntroot)
--        else:
-+        elif cfg.should_mount_upper():
-             system("mount " + upper_mntroot + " 2>/dev/null"
-                     " || mount -t tmpfs upper_layer " + upper_mntroot)
-         layer_mntroot = upper_mntroot + "/" + ctx.curr_layer()
-diff --git a/set_up.py b/set_up.py
-index c3fad21..afdf5ba 100644
---- a/set_up.py
-+++ b/set_up.py
-@@ -12,9 +12,7 @@ def create_file(name, content):
- def set_up(ctx):
-     cfg = ctx.config()
-     lower_mntroot = cfg.lower_mntroot()
--    lowerdir = cfg.lowerdir()
--    lowerimg = cfg.lowerimg()
--    testdir = cfg.testdir()
-+    upper_mntroot = cfg.upper_mntroot()
  
-     os.sync()
- 
-@@ -26,12 +24,13 @@ def set_up(ctx):
-         except RuntimeError:
-             pass
- 
--        try:
--            while system("grep -q 'lower_layer " + lower_mntroot + "' /proc/mounts" +
--                         " && umount " + lower_mntroot):
-+        if cfg.should_mount_lower():
-+            try:
-+                while system("grep -q 'lower_layer " + lower_mntroot + "' /proc/mounts" +
-+                             " && umount " + lower_mntroot):
-+                    pass
-+            except RuntimeError:
-                 pass
--        except RuntimeError:
--            pass
- 
-     if cfg.testing_overlayfs():
-         try:
-@@ -41,59 +40,70 @@ def set_up(ctx):
-         except RuntimeError:
-             pass
- 
--        try:
--            while system("grep -q 'lower_layer " + cfg.base_mntroot() + "' /proc/mounts" +
--                         " && umount " + cfg.base_mntroot()):
-+        if cfg.should_mount_base():
-+            try:
-+                while system("grep -q 'lower_layer " + cfg.base_mntroot() + "' /proc/mounts" +
-+                             " && umount " + cfg.base_mntroot()):
-+                    pass
-+            except RuntimeError:
-                 pass
--        except RuntimeError:
--            pass
- 
--        try:
--            while system("grep -q 'lower_layer " + lower_mntroot + "' /proc/mounts" +
--                         " && umount " + lower_mntroot):
-+        if cfg.should_mount_lower():
-+            try:
-+                while system("grep -q 'lower_layer " + lower_mntroot + "' /proc/mounts" +
-+                             " && umount " + lower_mntroot):
-+                    pass
-+            except RuntimeError:
-                 pass
--        except RuntimeError:
--            pass
++The following environment variables are supported:
 +
-+        # Adjust lower/upper path in case of --samefs
-+        if cfg.is_samefs():
-+            base_mntroot = cfg.base_mntroot()
-+            lower_mntroot = base_mntroot + "/lower"
-+            cfg.set_lower_mntroot(lower_mntroot)
-+            upper_mntroot = base_mntroot + "/upper"
-+            cfg.set_upper_mntroot(upper_mntroot)
- 
-         try:
--            # grep filter to catch <lower|upper|N>_layer, in case upper and lower are on same fs
-+            # grep filter to catch <lower|upper|N>_layer, in case of --ovov --samefs
-             # and in case different layers are on different fs
--            while system("grep -q '_layer " + cfg.upper_mntroot() + "/' /proc/mounts" +
--                         " && umount " + cfg.upper_mntroot() + "/* 2>/dev/null"):
-+            while system("grep -q '_layer " + upper_mntroot + "/' /proc/mounts" +
-+                         " && umount " + upper_mntroot + "/* 2>/dev/null"):
-                 pass
-         except RuntimeError:
-             pass
- 
--        try:
--            # grep filter to catch <low|upp>er_layer, in case upper and lower are on same fs
--            while system("grep -q 'er_layer " + cfg.upper_mntroot() + "' /proc/mounts" +
--                         " && umount " + cfg.upper_mntroot()):
-+        if cfg.should_mount_upper():
-+            try:
-+                while system("grep -q 'upper_layer " + cfg.upper_mntroot() + "' /proc/mounts" +
-+                             " && umount " + cfg.upper_mntroot()):
-+                    pass
-+            except RuntimeError:
-                 pass
--        except RuntimeError:
--            pass
- 
--    if cfg.is_samefs() and cfg.testing_overlayfs():
-+    if cfg.should_mount_base():
-         # Create base fs for both lower and upper
--        base_mntroot = cfg.base_mntroot()
-         system("mount " + base_mntroot + " 2>/dev/null"
-                 " || mount -t tmpfs lower_layer " + base_mntroot)
-         system("mount --make-private " + base_mntroot)
++     UNIONMOUNT_BASEDIR  - base dir for --samefs (default: /base)
++     UNIONMOUNT_UPPERDIR - upper layer root path (default: /upper)
++     UNIONMOUNT_LOWERDIR - lower layer root path (default: /lower)
++     UNIONMOUNT_MNTPOINT - mount point for tests (default: /mnt)
 +
-+    if cfg.is_samefs():
-         try:
--            os.mkdir(base_mntroot + lower_mntroot)
-+            os.mkdir(lower_mntroot)
-         except OSError:
-             pass
--        system("mount -o bind " + base_mntroot + lower_mntroot + " " + lower_mntroot)
--    else:
-+    elif cfg.should_mount_lower():
-         # Create a lower layer to union over
-         system("mount " + lower_mntroot + " 2>/dev/null"
-                 " || mount -t tmpfs lower_layer " + lower_mntroot)
--
--    # Systemd has weird ideas about things
--    system("mount --make-private " + lower_mntroot)
-+        system("mount --make-private " + lower_mntroot)
++     User provided paths for base/lower/upper should point at a pre-mounted
++     filesystem, whereas tmpfs instances will be created on default paths.
++
++
+ For more advanced overlayfs test options and more examples, see:
+      https://github.com/amir73il/overlayfs/wiki/Overlayfs-testing
+diff --git a/run b/run
+index e6262b8..60d5d0d 100755
+--- a/run
++++ b/run
+@@ -20,10 +20,11 @@ def show_format(why):
+     print("\t", sys.argv[0], "--<fsop> <file> [<args>*] [-aLlv] [-R <content>] [-B] [-E <err>]")
+     sys.exit(2)
  
-     #
-     # Create a few test files we can use in the lower layer
-     #
-+    lowerdir = cfg.lowerdir()
-+    lowerimg = cfg.lowerimg()
-+    testdir = cfg.testdir()
-     try:
-         os.mkdir(lowerdir)
-     except OSError:
-@@ -176,7 +186,7 @@ def set_up(ctx):
-         system("mksquashfs " + lowerdir + " " + lowerimg + " -keep-as-directory > /dev/null");
-         system("mount -o loop,ro " + lowerimg + " " + lower_mntroot)
-         system("mount --make-private " + lower_mntroot)
--    else:
--        # The mount has to be read-only for us to make use of it
-+    elif cfg.should_mount_lower_ro():
-+        # Make overlay lower layer read-only
-         system("mount -o remount,ro " + lower_mntroot)
-     ctx.note_lower_fs(lowerdir)
++cfg = config(sys.argv[0])
++
+ if len(sys.argv) < 2:
+     show_format("Insufficient arguments")
+ 
+-cfg = config(sys.argv[0])
+ args = sys.argv[1:]
+ 
+ ###############################################################################
 diff --git a/settings.py b/settings.py
-index 12015c8..ced9cae 100644
+index ced9cae..f065494 100644
 --- a/settings.py
 +++ b/settings.py
-@@ -61,10 +61,28 @@ class config:
-         self.__union_mntroot = "/mnt"
+@@ -20,15 +20,27 @@ along with this program; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ """
+ 
++import os
++
+ class config:
+     def __init__(self, progname):
+         self.__progname = progname
+         self.__testing_overlayfs = False
+         self.__testing_none = False
+-        self.__base_mntroot = None
+-        self.__lower_mntroot = None
+-        self.__upper_mntroot = None
+-        self.__union_mntroot = None
++        self.__base_mntroot = os.getenv('UNIONMOUNT_BASEDIR')
++        self.__lower_mntroot = os.getenv('UNIONMOUNT_LOWERDIR')
++        self.__upper_mntroot = os.getenv('UNIONMOUNT_UPPERDIR')
++        self.__union_mntroot = os.getenv('UNIONMOUNT_MNTPOINT')
++        print("Environment variables:")
++        if self.__base_mntroot:
++            print("UNIONMOUNT_BASEDIR=" + self.__base_mntroot)
++        if self.__lower_mntroot:
++            print("UNIONMOUNT_LOWERDIR=" + self.__lower_mntroot)
++        if self.__upper_mntroot:
++            print("UNIONMOUNT_UPPERDIR=" + self.__upper_mntroot)
++        if self.__union_mntroot:
++            print("UNIONMOUNT_MNTPOINT=" + self.__union_mntroot)
++        print()
+         self.__verbose = False
+         self.__verify = False
+         self.__maxfs = 0
+@@ -50,49 +62,46 @@ class config:
+         return self.__testing_overlayfs
+ 
+     def set_testing_none(self):
+-        self.__lower_mntroot = "/lower"
+-        self.__union_mntroot = "/mnt"
+         self.__testing_none = True
+ 
+     def set_testing_overlayfs(self):
+-        self.__base_mntroot = "/base"
+-        self.__lower_mntroot = "/lower"
+-        self.__upper_mntroot = "/upper"
+-        self.__union_mntroot = "/mnt"
          self.__testing_overlayfs = True
  
-+    # base dir is mounted only for --ov --samefs
-+    def should_mount_base(self):
-+        return self.testing_overlayfs() and self.is_samefs()
+     # base dir is mounted only for --ov --samefs
++    # A user provided base dir should already be mounted
+     def should_mount_base(self):
+-        return self.testing_overlayfs() and self.is_samefs()
++        return self.__base_mntroot is None and self.testing_overlayfs() and self.is_samefs()
      def base_mntroot(self):
-         return self.__base_mntroot
-+    # lower dir is mounted ro for --ov (without --samefs) ...
-+    def should_mount_lower_ro(self):
-+        return self.testing_overlayfs() and not self.is_samefs()
-+    # ... and mounted rw for --no
-+    def should_mount_lower_rw(self):
-+        return self.testing_none()
-+    def should_mount_lower(self):
-+        return self.should_mount_lower_ro() or self.should_mount_lower_rw()
-+    def set_lower_mntroot(self, path):
-+        self.__lower_mntroot = path
+-        return self.__base_mntroot
++        return self.__base_mntroot or "/base"
+     # lower dir is mounted ro for --ov (without --samefs) ...
+     def should_mount_lower_ro(self):
+-        return self.testing_overlayfs() and not self.is_samefs()
++        return self.__lower_mntroot is None and self.testing_overlayfs() and not self.is_samefs()
+     # ... and mounted rw for --no
++    # A user provided lower dir should already be mounted
+     def should_mount_lower_rw(self):
+-        return self.testing_none()
++        return self.__lower_mntroot is None and self.testing_none()
+     def should_mount_lower(self):
+         return self.should_mount_lower_ro() or self.should_mount_lower_rw()
+     def set_lower_mntroot(self, path):
+         self.__lower_mntroot = path
      def lower_mntroot(self):
-         return self.__lower_mntroot
-+    # upper dir is mounted for --ov (without --samefs)
-+    def should_mount_upper(self):
-+        return self.testing_overlayfs() and not self.is_samefs()
-+    def set_upper_mntroot(self, path):
-+        self.__upper_mntroot = path
+-        return self.__lower_mntroot
++        return self.__lower_mntroot or "/lower"
+     # upper dir is mounted for --ov (without --samefs)
++    # A user provided upper dir should already be mounted
+     def should_mount_upper(self):
+-        return self.testing_overlayfs() and not self.is_samefs()
++        return self.__upper_mntroot is None and self.testing_overlayfs() and not self.is_samefs()
+     def set_upper_mntroot(self, path):
+         self.__upper_mntroot = path
      def upper_mntroot(self):
-         return self.__upper_mntroot
+-        return self.__upper_mntroot
++        return self.__upper_mntroot or "/upper"
      def union_mntroot(self):
-diff --git a/unmount_union.py b/unmount_union.py
-index a83d457..f8f38af 100644
---- a/unmount_union.py
-+++ b/unmount_union.py
-@@ -6,18 +6,21 @@ def unmount_union(ctx):
-     check_not_tainted()
+-        return self.__union_mntroot
++        return self.__union_mntroot or "/mnt"
+     def lowerdir(self):
+-        return self.__lower_mntroot + "/a"
++        return self.lower_mntroot() + "/a"
+     def lowerimg(self):
+-        return self.__lower_mntroot + "/a.img"
++        return self.lower_mntroot() + "/a.img"
+     def testdir(self):
+-        return self.__union_mntroot + "/a"
++        return self.union_mntroot() + "/a"
  
-     if cfg.testing_overlayfs():
--        if cfg.is_samefs():
--            system("umount " + cfg.base_mntroot())
--            check_not_tainted()
-         # unmount individual layers with maxfs > 0
-         if cfg.maxfs() > 0 or cfg.is_nested:
-             try:
-                 system("umount " + cfg.upper_mntroot() + "/* 2>/dev/null")
-             except RuntimeError:
-                 pass
--        check_not_tainted()
--        system("umount " + cfg.upper_mntroot())
--        check_not_tainted()
-+            check_not_tainted()
- 
--    system("umount " + cfg.lower_mntroot())
--    check_not_tainted()
-+        if cfg.should_mount_base():
-+            system("umount " + cfg.base_mntroot())
-+            check_not_tainted()
-+        elif cfg.should_mount_upper():
-+            system("umount " + cfg.upper_mntroot())
-+            check_not_tainted()
-+
-+    if cfg.should_mount_lower():
-+        system("umount " + cfg.lower_mntroot())
-+        check_not_tainted()
+     def set_verbose(self, to=True):
+         self.__verbose = to
 -- 
 2.17.1
 
