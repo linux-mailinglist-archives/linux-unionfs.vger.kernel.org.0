@@ -2,268 +2,94 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5C241A9C30
-	for <lists+linux-unionfs@lfdr.de>; Wed, 15 Apr 2020 13:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6701F1AA270
+	for <lists+linux-unionfs@lfdr.de>; Wed, 15 Apr 2020 14:59:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2896973AbgDOL1B (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 15 Apr 2020 07:27:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38656 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2896945AbgDOL0y (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 15 Apr 2020 07:26:54 -0400
-Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 960EDC061A0C
-        for <linux-unionfs@vger.kernel.org>; Wed, 15 Apr 2020 04:26:52 -0700 (PDT)
-Received: by mail-il1-x143.google.com with SMTP id t8so2964000ilj.3
-        for <linux-unionfs@vger.kernel.org>; Wed, 15 Apr 2020 04:26:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=tNBcsi45lqEGus+BFktvgVteQqW7B0Vol9uoT03+xIQ=;
-        b=ZI2H9k6Ns/RwRYQJSYQ9A6Vg5G3afIitYhlT00yseq0nwcz4ypEMbQtosgpFZ7OzU2
-         xzNCiT7qPFktP5Zn7GBhQkxYXO8fvQDZfqC+zP+paR5SbewIXmB8NdL8hAxsLsX6/Kvd
-         kZRmMJPmuWyUzzCTStsYMOHLbVsGDP/TaBP2s8lg8vkpFIH1eKqs7HINhHpap60XueYb
-         Bqo76KHZ0WXtLmEQ8Hf813VE7/d6IXBP5CVoVxIqwNnA/gd/oNC+GeAotgoed4EFVd/H
-         WWI1M4wrxVpG0+ZU4xkhvtSYcYQ4vv1x4ZyWwIx08PAYW9X9X3W0eS4Op3aaqFALR9uE
-         Oaxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=tNBcsi45lqEGus+BFktvgVteQqW7B0Vol9uoT03+xIQ=;
-        b=q3ygWRzOyK+IT6AIiPJlCjoTkHESMfcuy10uer4xYQI759cTHZGboNH+A8Az7+xbJn
-         pvm9fNZ9YZfp40776C/qa2Vq1xoVXhvfi0WLWr38fMxYZzd1IzcHjRuM+FG41MVIrQgq
-         BDHmv8tljG1Yta7CiD7eDQSXpQQtoDatYutANtJk8wqt78El8d1ocj1IViD1+AoW2Lav
-         +btfJ03Lt9TcGizd83ZyJSW6bzi+hFsNVL+9t5fqV6gXNo1nrLe56xcbgvb/rwZU0gca
-         zPudFhTJ7HiEKi92hBufv8gII8qaPd7LSIEo+Nxa9YJY/neiGVB7rtoKU4dHAAbgID1o
-         O5lQ==
-X-Gm-Message-State: AGi0PubNXCDpQmD+g9P6Sa64mI3LV0iHRtpm55pLkqV3vb6DmtR4oY+f
-        42RLEE2wCb8afqjRf0vcK5Vda84KymyOf1TJ7DU=
-X-Google-Smtp-Source: APiQypIe3e/0nkk/IPa1Ofz/fl0yavw1zTzswDoZ6p9vif2g5gJptVD9S5B1ZLKt1hLO6zS8zYXefo/NRPevjJuvd7A=
-X-Received: by 2002:a92:7e86:: with SMTP id q6mr597955ill.9.1586950011817;
- Wed, 15 Apr 2020 04:26:51 -0700 (PDT)
+        id S2441304AbgDOMzH (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 15 Apr 2020 08:55:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56808 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2897207AbgDOLhG (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Wed, 15 Apr 2020 07:37:06 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 77A50214AF;
+        Wed, 15 Apr 2020 11:37:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586950626;
+        bh=eOjHPZ2hM8yY0lMQEmFgXJ6RCmnDAUY8hOw/b5roVIc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=BFKRXdbidmVfYJiFlIgYZFZXJzwme/vKCZUUf2mVV6vuDPoQDwmWgF4IydPsaTnTx
+         f/lb7Y/b/wje1BNWzPe6ns/Bok/WJQeyxIF1EOe/mkF8MjuzRTm72mpvQCAq1O7VLg
+         1jQMb2Wfxq0Y50Mz0ollNxfCD2X7BBs2/68dkJfo=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Amir Goldstein <amir73il@gmail.com>,
+        Miklos Szeredi <mszeredi@redhat.com>,
+        Sasha Levin <sashal@kernel.org>, linux-unionfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 117/129] ovl: fix value of i_ino for lower hardlink corner case
+Date:   Wed, 15 Apr 2020 07:34:32 -0400
+Message-Id: <20200415113445.11881-117-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200415113445.11881-1-sashal@kernel.org>
+References: <20200415113445.11881-1-sashal@kernel.org>
 MIME-Version: 1.0
-References: <20200414095310.31491-1-cgxu519@mykernel.net> <CAOQ4uxja_CV5SE57GpS5KyBDudBNn8S9VfT=f_O_qNrwKi8RTg@mail.gmail.com>
- <1717b5c51ab.f6b667969599.7086962587723946588@mykernel.net>
- <CAOQ4uxg+ds5O9gHZs3+sgo08Ut84LPn5MeC=duRqPBtuAOtezw@mail.gmail.com>
- <1717cdb4bcf.11544259d10401.8883493846177492528@mykernel.net>
- <CAOQ4uxg0CYuQ-EfOphk-v-o5hvyVr0UbD5nngse9Zi4M5ZxNgw@mail.gmail.com> <1717cf65ddb.d406587710513.3094673612298718285@mykernel.net>
-In-Reply-To: <1717cf65ddb.d406587710513.3094673612298718285@mykernel.net>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Wed, 15 Apr 2020 14:26:40 +0300
-Message-ID: <CAOQ4uxgXtjsZXkm60J2omXmnj-2cHwQZ=jmf3+GYN_KdW8JovA@mail.gmail.com>
-Subject: Re: [PATCH v3] ovl: whiteout inode sharing
-To:     Chengguang Xu <cgxu519@mykernel.net>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        overlayfs <linux-unionfs@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, Apr 15, 2020 at 11:30 AM Chengguang Xu <cgxu519@mykernel.net> wrote=
-:
->
->  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=B8=89, 2020-04-15 16:12:04 Amir Gol=
-dstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
->  > On Wed, Apr 15, 2020 at 11:01 AM Chengguang Xu <cgxu519@mykernel.net> =
-wrote:
->  > >
->  > >  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=B8=89, 2020-04-15 15:03:09 Ami=
-r Goldstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
->  > >  > On Wed, Apr 15, 2020 at 4:03 AM Chengguang Xu <cgxu519@mykernel.n=
-et> wrote:
->  > >  > >
->  > >  > >  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=BA=8C, 2020-04-14 21:44:3=
-9 Amir Goldstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
->  > >  > >  > On Tue, Apr 14, 2020 at 12:53 PM Chengguang Xu <cgxu519@myke=
-rnel.net> wrote:
->  > >  > >  > >
->  > >  > >  > > Sharing inode with different whiteout files for saving
->  > >  > >  > > inode and speeding up deleting operation.
->  > >  > >  > >
->  > >  > >  > > Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
->  > >  > >  > > ---
->  > >  > >  > > v1->v2:
->  > >  > >  > > - Address Amir's comments in v1
->  > >  > >  > >
->  > >  > >  > > v2->v3:
->  > >  > >  > > - Address Amir's comments in v2
->  > >  > >  > > - Rebase on Amir's "Overlayfs use index dir as work dir" p=
-atch set
->  > >  > >  > > - Keep at most one whiteout tmpfile in work dir
->  > >  > >  > >
->  > >  > >  > >  fs/overlayfs/dir.c       | 35 +++++++++++++++++++++++++++=
-+-------
->  > >  > >  > >  fs/overlayfs/overlayfs.h |  9 +++++++--
->  > >  > >  > >  fs/overlayfs/ovl_entry.h |  4 ++++
->  > >  > >  > >  fs/overlayfs/readdir.c   |  3 ++-
->  > >  > >  > >  fs/overlayfs/super.c     |  9 +++++++++
->  > >  > >  > >  fs/overlayfs/util.c      |  3 ++-
->  > >  > >  > >  6 files changed, 52 insertions(+), 11 deletions(-)
->  > >  > >  > >
->  > >  > >  > > diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
->  > >  > >  > > index 279009dee366..dbe5e54dcb16 100644
->  > >  > >  > > --- a/fs/overlayfs/dir.c
->  > >  > >  > > +++ b/fs/overlayfs/dir.c
->  > >  > >  > > @@ -62,35 +62,55 @@ struct dentry *ovl_lookup_temp(struct =
-dentry *workdir)
->  > >  > >  > >  }
->  > >  > >  > >
->  > >  > >  > >  /* caller holds i_mutex on workdir */
->  > >  > >  > > -static struct dentry *ovl_whiteout(struct dentry *workdir=
-)
->  > >  > >  > > +static struct dentry *ovl_whiteout(struct ovl_fs *ofs, st=
-ruct dentry *workdir)
->  > >  > >  > >  {
->  > >  > >  > >         int err;
->  > >  > >  > > +       bool retried =3D false;
->  > >  > >  > > +       bool should_link =3D (ofs->whiteout_link_max > 1);
->  > >  > >  > >         struct dentry *whiteout;
->  > >  > >  > >         struct inode *wdir =3D workdir->d_inode;
->  > >  > >  > >
->  > >  > >  > > +retry:
->  > >  > >  > >         whiteout =3D ovl_lookup_temp(workdir);
->  > >  > >  > >         if (IS_ERR(whiteout))
->  > >  > >  > >                 return whiteout;
->  > >  > >  > >
->  > >  > >  > > +       if (should_link && ofs->whiteout) {
->  > >  > >  >
->  > >  > >  > What happens with ofs->whiteout_link_max =3D=3D 2 is that ha=
-lf of the
->  > >  > >  > times, whiteout gets linked and then unlinked.
->  > >  > >  > That is not needed.
->  > >  > >  > I think code would look better like this:
->  > >  > >  >
->  > >  > >  >           if (ovl_whiteout_linkable(ofs)) {
->  > >  > >  >                   err =3D ovl_do_link(ofs->whiteout, wdir, w=
-hiteout);
->  > >  > >  > ...
->  > >  > >  >           } else if (ofs->whiteout) {
->  > >  > >  >                   ovl_cleanup(wdir, ofs->whiteout);
->  > >  > >  > ....
->  > >  > >  >
->  > >  > >  > With:
->  > >  > >  >
->  > >  > >  > static inline bool ovl_whiteout_linkable(struct ovl_fs *ofs)
->  > >  > >  > {
->  > >  > >  >        return ofs->whiteout &&
->  > >  > >  >                  ofs->whiteout->d_inode->i_nlink < ofs->whit=
-eout_link_max;
->  > >  > >  > }
->  > >  > >  >
->  > >  > >
->  > >  > > tmpfile has occupied one link, so the maximum link count of whi=
-teout inode
->  > >  > > in your code will be ofs->whiteout_link_max - 1, right?
->  > >  > >
->  > >  >
->  > >  > Right, but I wrote wrong pseudo code to use this helper.
->  > >  > The intention is that ovl_whiteout_linkable(ofs) means there is a=
- tmp whiteout
->  > >  > and it may be linked to a new tmp whiteout.
->  > >  > The only reason to cleanup tmp whiteout is if link has unexpected=
-ly failed and
->  > >  > in this case I think we should disable whiteout sharing.
->  > >  >
->  > >  > Let me try again:
->  > >  >
->  > >  > +       err =3D -EMLINK;
->  > >  > +       if (ovl_whiteout_linkable(ofs)) {
->  > >  > +               err =3D ovl_do_link(ofs->whiteout, wdir, whiteout=
-);
->  > >  > +               if (!err)
->  > >  > +                       return whiteout;
->  > >  > +        }
->  > >  > +        if (err && ofs->whiteout) {
->  > >  > +               pr_warn("failed to link whiteout - disabling whit=
-eout
->  > >  > sharing (nlink=3D%u, err =3D %i)\n",
->  > >  > +                             ofs->whiteout->d_inode->i_nlink, er=
-r);
->  > >  > +               ofs->whiteout_link_max =3D 0;
->  > >  > +               should_link =3D false;
->  > >  > +               ovl_cleanup(wdir, ofs->whiteout);
->  > >  > +               dput(ofs->whiteout);
->  > >  > +               ofs->whiteout =3D NULL;
->  > >  > +       }
->  > >  > +
->  > >  >          err =3D ovl_do_whiteout(wdir, whiteout);
->  > >  >
->  > >  > Is that better?
->  > >  >
->  > >
->  > > I don't fully understand why should we limit to share only one inode=
- for whiteout files.
->  > > Consider deleting a lot of files(not dir) in lowerdir, we will get -=
-EMLINK error because
->  > > the link count of shared inode exceeds the maximum link limit in und=
-erlying file system.
->  > > In this case, we can choose another whiteout inode for sharing.
->  > >
->  >
->  > I got it wrong again. I forgot the maxed out case. Take #3:
->  >
->  > +       err =3D 0;
->  > +       if (ovl_whiteout_linkable(ofs)) {
->  > +               err =3D ovl_do_link(ofs->whiteout, wdir, whiteout);
->  > +               if (!err)
->  > +                       return whiteout;
->  > +        } else if (ofs->whiteout) {
->  > +               dput(whiteout);
->  > +               whiteout =3D ofs->whiteout;
->  > +               ofs->whiteout =3D NULL;
->  > +               return whiteout;
->  > +        }
->  > +        if (err) {
->  > +               pr_warn("failed to link whiteout - disabling whiteout
->  > sharing (nlink=3D%u, err =3D %i)\n",
->  > +                             ofs->whiteout->d_inode->i_nlink, err);
->  > +               ofs->whiteout_link_max =3D 0;
->  > +               should_link =3D false;
->  > +               ovl_cleanup(wdir, ofs->whiteout);
->  > +       }
->  > +
->  >          err =3D ovl_do_whiteout(wdir, whiteout);
->  >
->  >
->  > I hope I got the logic right this time.
->  > Feel free to organize differently.
->  > Disabling should be in the case where failure is not expected
->  > so we want to avoid having every whiteout creation try and fail.
->  > For example if filesystem reported s_max_links is incorrect.
->  >
->
-> In case of any unexpected errors, we could set a error limit(for example,=
- 10),
-> if link error count exceeds the limit then we disable the feature.
->
+From: Amir Goldstein <amir73il@gmail.com>
 
-As far as I am concerned, you may post the patch without auto disable,
-but I object to using an arbitrary number of errors (10) as trigger for aut=
-o
-disable.
+[ Upstream commit 300b124fcf6ad2cd99a7b721e0f096785e0a3134 ]
 
-I do think that it is important to communicate to admin that the whiteout
-sharing is not working as expected and it is not acceptable to flood
-log with warning on each and every whiteout creation, not even with
-pr_warn_ratelimited.
+Commit 6dde1e42f497 ("ovl: make i_ino consistent with st_ino in more
+cases"), relaxed the condition nfs_export=on in order to set the value of
+i_ino to xino map of real ino.
 
-There are several ways you can go about this, but here is a suggestion:
+Specifically, it also relaxed the pre-condition that index=on for
+consistent i_ino. This opened the corner case of lower hardlink in
+ovl_get_inode(), which calls ovl_fill_inode() with ino=0 and then
+ovl_init_inode() is called to set i_ino to lower real ino without the xino
+mapping.
 
-+        if (err) {
-+               ofs->whiteout_link_max >>=3D 1;
-+               pr_warn("failed to link whiteout (nlink=3D%u, err =3D %i)
-- lowering whiteout_link_max to %u\n",
-+                             ofs->whiteout->d_inode->i_nlink, err,
-ofs->whiteout_link_max);
-+               should_link =3D false;
-+               ovl_cleanup(wdir, ofs->whiteout);
-+       }
+Pass the correct values of ino;fsid in this case to ovl_fill_inode(), so it
+can initialize i_ino correctly.
 
-Thanks,
-Amir.
+Fixes: 6dde1e42f497 ("ovl: make i_ino consistent with st_ino in more ...")
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/overlayfs/inode.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
+index 79e8994e3bc1a..3f993c114829e 100644
+--- a/fs/overlayfs/inode.c
++++ b/fs/overlayfs/inode.c
+@@ -891,7 +891,7 @@ struct inode *ovl_get_inode(struct super_block *sb,
+ 	struct dentry *lowerdentry = lowerpath ? lowerpath->dentry : NULL;
+ 	bool bylower = ovl_hash_bylower(sb, upperdentry, lowerdentry,
+ 					oip->index);
+-	int fsid = bylower ? oip->lowerpath->layer->fsid : 0;
++	int fsid = bylower ? lowerpath->layer->fsid : 0;
+ 	bool is_dir, metacopy = false;
+ 	unsigned long ino = 0;
+ 	int err = oip->newinode ? -EEXIST : -ENOMEM;
+@@ -941,6 +941,8 @@ struct inode *ovl_get_inode(struct super_block *sb,
+ 			err = -ENOMEM;
+ 			goto out_err;
+ 		}
++		ino = realinode->i_ino;
++		fsid = lowerpath->layer->fsid;
+ 	}
+ 	ovl_fill_inode(inode, realinode->i_mode, realinode->i_rdev, ino, fsid);
+ 	ovl_inode_init(inode, upperdentry, lowerdentry, oip->lowerdata);
+-- 
+2.20.1
+
