@@ -2,38 +2,38 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6701F1AA270
-	for <lists+linux-unionfs@lfdr.de>; Wed, 15 Apr 2020 14:59:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDEC11AA0EB
+	for <lists+linux-unionfs@lfdr.de>; Wed, 15 Apr 2020 14:33:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2441304AbgDOMzH (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 15 Apr 2020 08:55:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56808 "EHLO mail.kernel.org"
+        id S369663AbgDOMc5 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 15 Apr 2020 08:32:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37394 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2897207AbgDOLhG (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 15 Apr 2020 07:37:06 -0400
+        id S2409066AbgDOLob (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Wed, 15 Apr 2020 07:44:31 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 77A50214AF;
-        Wed, 15 Apr 2020 11:37:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6152B215A4;
+        Wed, 15 Apr 2020 11:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586950626;
-        bh=eOjHPZ2hM8yY0lMQEmFgXJ6RCmnDAUY8hOw/b5roVIc=;
+        s=default; t=1586951064;
+        bh=sJRlZ3mJya5wdFuThA+patbUhvI8Xqv0PFU2vE8Muh8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BFKRXdbidmVfYJiFlIgYZFZXJzwme/vKCZUUf2mVV6vuDPoQDwmWgF4IydPsaTnTx
-         f/lb7Y/b/wje1BNWzPe6ns/Bok/WJQeyxIF1EOe/mkF8MjuzRTm72mpvQCAq1O7VLg
-         1jQMb2Wfxq0Y50Mz0ollNxfCD2X7BBs2/68dkJfo=
+        b=pdhuse+BJeWVy2fVQhWV0EWwn206jHA/qD4M84xJgGVD1+OpKFbatqnjgbl3jxygZ
+         vcydalWSBlRyy8E2uAsiWURLvR0UcXk/ZXmfVij6HwxIA0Y2LV4dlx/DXz4mz93m8l
+         yZaoMeWScPtnsYg0FLqklRpJLt1UR6L2bGonmy/g=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Amir Goldstein <amir73il@gmail.com>,
         Miklos Szeredi <mszeredi@redhat.com>,
         Sasha Levin <sashal@kernel.org>, linux-unionfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 117/129] ovl: fix value of i_ino for lower hardlink corner case
-Date:   Wed, 15 Apr 2020 07:34:32 -0400
-Message-Id: <20200415113445.11881-117-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.5 096/106] ovl: fix value of i_ino for lower hardlink corner case
+Date:   Wed, 15 Apr 2020 07:42:16 -0400
+Message-Id: <20200415114226.13103-96-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200415113445.11881-1-sashal@kernel.org>
-References: <20200415113445.11881-1-sashal@kernel.org>
+In-Reply-To: <20200415114226.13103-1-sashal@kernel.org>
+References: <20200415114226.13103-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -69,10 +69,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index 79e8994e3bc1a..3f993c114829e 100644
+index b045cf1826fc4..bb980721502dd 100644
 --- a/fs/overlayfs/inode.c
 +++ b/fs/overlayfs/inode.c
-@@ -891,7 +891,7 @@ struct inode *ovl_get_inode(struct super_block *sb,
+@@ -881,7 +881,7 @@ struct inode *ovl_get_inode(struct super_block *sb,
  	struct dentry *lowerdentry = lowerpath ? lowerpath->dentry : NULL;
  	bool bylower = ovl_hash_bylower(sb, upperdentry, lowerdentry,
  					oip->index);
@@ -81,7 +81,7 @@ index 79e8994e3bc1a..3f993c114829e 100644
  	bool is_dir, metacopy = false;
  	unsigned long ino = 0;
  	int err = oip->newinode ? -EEXIST : -ENOMEM;
-@@ -941,6 +941,8 @@ struct inode *ovl_get_inode(struct super_block *sb,
+@@ -931,6 +931,8 @@ struct inode *ovl_get_inode(struct super_block *sb,
  			err = -ENOMEM;
  			goto out_err;
  		}
