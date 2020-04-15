@@ -2,94 +2,106 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7BD21A9F4C
-	for <lists+linux-unionfs@lfdr.de>; Wed, 15 Apr 2020 14:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 346F01A9EE5
+	for <lists+linux-unionfs@lfdr.de>; Wed, 15 Apr 2020 14:06:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2441283AbgDOMIs (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 15 Apr 2020 08:08:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42284 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2897595AbgDOLrF (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 15 Apr 2020 07:47:05 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0E4EE21569;
-        Wed, 15 Apr 2020 11:47:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586951224;
-        bh=h1ql2/BDJX9O8+6Tedw2yO7TNwFdReVLH5QvEUZ2310=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PvqCh1ALw6238zhOwyEbCVhBsKj3K2Sq1+UOQLf2LVUuy0+J56gubP6lrRs3DtR4z
-         4/cR8ALX4JH521MHXZbDSICwj+4DjQe+/zE2rvtAoVKQftC0hy69vdXQMXNyuaxc9k
-         mF439K2j4xE43Ix+7wUkJx9bc8JQHO5HxO6BhhqI=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Amir Goldstein <amir73il@gmail.com>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        Sasha Levin <sashal@kernel.org>, linux-unionfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 35/40] ovl: fix value of i_ino for lower hardlink corner case
-Date:   Wed, 15 Apr 2020 07:46:18 -0400
-Message-Id: <20200415114623.14972-35-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200415114623.14972-1-sashal@kernel.org>
-References: <20200415114623.14972-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        id S368270AbgDOMDt (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 15 Apr 2020 08:03:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44058 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S368163AbgDOMBo (ORCPT
+        <rfc822;linux-unionfs@vger.kernel.org>);
+        Wed, 15 Apr 2020 08:01:44 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB10AC061A0C
+        for <linux-unionfs@vger.kernel.org>; Wed, 15 Apr 2020 05:01:41 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id h26so7384314wrb.7
+        for <linux-unionfs@vger.kernel.org>; Wed, 15 Apr 2020 05:01:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=aFCr6bBy3R3TEO37u2HkvHSEa2pPKYgA93DL9q5KAlo=;
+        b=fbVLwExNShZ+WgJdDksycstRDhT0igNYc5jYS62uKV3pYMw4eQQJFrbzjbEOcE/brq
+         H3oCcAiYtjTcjuvZkUCg3e91mUJ0kPTPldxbcmjxlp+Bq60H1h3SX2C6j52e5Gzy04JR
+         uGx7IGFKIj7xo84ZfwCA2cgJ3hZqHJdyGaFN1LVGKUns8hA+/zR8honMLEybXPAlzljt
+         GuZ8HL7DDRMTbope8+5LXu35z4d8XLpSh9AhXuYbIc4GGqQE44tigqchSBYKVz8mJYDZ
+         1PO/KEVGJEhMsIhqGArivvsRsLyDqjLOo7O4zfiooXk2tWAViifyknKHm/XLaUbAaIJ6
+         0UNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=aFCr6bBy3R3TEO37u2HkvHSEa2pPKYgA93DL9q5KAlo=;
+        b=Bl+P/c09tYuxk1cH8WCGQzCIdudDIXKggCB9GL2heEP4itD7I4qXJWHm1dRb6GlZ6Q
+         xVh3ks/GNwDyPqR+zRNj73eb2PWx0mosuQ2GkbOWeMG+SKzMcfgnZ5wQ2rQ9LWg/T1dh
+         DoC0ISZ0kFnas8YGomxKPvAGX0ceToklvis0B2hJZSoh0vj1IkT9Fqpjynzl2ZZzrnAY
+         ITENvFUR0Ql8DVKMcpmEjLbzP7znw0v9ZN4tYyWIC6h0BeOEEnkPUHmQAC3b7orSb1oB
+         kLKdga8uJK4l9v/ewamOP0qy7aXmfT/vVKDxXtUdWtYgArGZ4ilJdLSluf1jtd46hOCR
+         KlRA==
+X-Gm-Message-State: AGi0PuafhAUtqlfn2dhn5XXskc8hZjxHBUG8UCM6F/+iH/2BqtT7UnBl
+        zX42TcU9LC5mmYd2LlQu8Cs=
+X-Google-Smtp-Source: APiQypIcUwUXD9bVzzc7PyFU6a17soSp7/p0ZNmgtodjdrNNqjYwoYVl1KEm7Lv02/mN2ZxSolSvPA==
+X-Received: by 2002:adf:dfcd:: with SMTP id q13mr6783285wrn.423.1586952100370;
+        Wed, 15 Apr 2020 05:01:40 -0700 (PDT)
+Received: from localhost.localdomain ([141.226.12.123])
+        by smtp.gmail.com with ESMTPSA id h137sm17578238wme.0.2020.04.15.05.01.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2020 05:01:39 -0700 (PDT)
+From:   Amir Goldstein <amir73il@gmail.com>
+To:     Vivek Goyal <vgoyal@redhat.com>
+Cc:     Giuseppe Scrivano <gscrivan@redhat.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        linux-unionfs@vger.kernel.org
+Subject: [PATCH 0/2] Prepare for running unionmount testssuite from
+Date:   Wed, 15 Apr 2020 15:01:32 +0300
+Message-Id: <20200415120134.28154-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-From: Amir Goldstein <amir73il@gmail.com>
+Vivek,
 
-[ Upstream commit 300b124fcf6ad2cd99a7b721e0f096785e0a3134 ]
+You mentioned the need to run unionmount tests on custom layers
+(virtiofs in your case) and I provided you the /etc/fstab solution,
+which you said works for you.
 
-Commit 6dde1e42f497 ("ovl: make i_ino consistent with st_ino in more
-cases"), relaxed the condition nfs_export=on in order to set the value of
-i_ino to xino map of real ino.
+I now added a new way to run unionmount tests on custom layers,
+which I am going to use for xfstests integration [1].
 
-Specifically, it also relaxed the pre-condition that index=on for
-consistent i_ino. This opened the corner case of lower hardlink in
-ovl_get_inode(), which calls ovl_fill_inode() with ino=0 and then
-ovl_init_inode() is called to set i_ino to lower real ino without the xino
-mapping.
+I'd be interested to know if this method serves your use case as well.
 
-Pass the correct values of ino;fsid in this case to ovl_fill_inode(), so it
-can initialize i_ino correctly.
+Note that I overloaded the meaning of configuring base/lower/upper path:
+  1. Use path different than the default
+  2. Do not mount tmpfs nor unmount this path
 
-Fixes: 6dde1e42f497 ("ovl: make i_ino consistent with st_ino in more ...")
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/overlayfs/inode.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+I realize that it might have been better to split the two meanings into
+different config options.  However, I am not fond of maintaining config
+permutations that nobody is using.  So unless a user comes forward with
+a use case, that's the way I intend to leave it.
 
-diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index a138bb3bc2a5d..8b3c284ce92ea 100644
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -884,7 +884,7 @@ struct inode *ovl_get_inode(struct super_block *sb,
- 	struct dentry *lowerdentry = lowerpath ? lowerpath->dentry : NULL;
- 	bool bylower = ovl_hash_bylower(sb, upperdentry, lowerdentry,
- 					oip->index);
--	int fsid = bylower ? oip->lowerpath->layer->fsid : 0;
-+	int fsid = bylower ? lowerpath->layer->fsid : 0;
- 	bool is_dir, metacopy = false;
- 	unsigned long ino = 0;
- 	int err = oip->newinode ? -EEXIST : -ENOMEM;
-@@ -934,6 +934,8 @@ struct inode *ovl_get_inode(struct super_block *sb,
- 			err = -ENOMEM;
- 			goto out_err;
- 		}
-+		ino = realinode->i_ino;
-+		fsid = lowerpath->layer->fsid;
- 	}
- 	ovl_fill_inode(inode, realinode->i_mode, realinode->i_rdev, ino, fsid);
- 	ovl_inode_init(inode, upperdentry, lowerdentry, oip->lowerdata);
+Would love to get comments from anyone else of course.
+
+Would love to get testing feedback from people that use the --fuse option,
+because I am not testing it regularly.
+
+Thanks,
+Amir.
+
+[1] https://github.com/amir73il/xfstests/commits/unionmount
+
+Amir Goldstein (2):
+  Stop using bind mounts for --samefs
+  Configure custom layers via environment variables
+
+ README           | 11 +++++++
+ mount_union.py   |  8 ++---
+ run              |  3 +-
+ set_up.py        | 84 +++++++++++++++++++++++++++---------------------
+ settings.py      | 61 +++++++++++++++++++++++++----------
+ unmount_union.py | 19 ++++++-----
+ 6 files changed, 117 insertions(+), 69 deletions(-)
+
 -- 
-2.20.1
+2.17.1
 
