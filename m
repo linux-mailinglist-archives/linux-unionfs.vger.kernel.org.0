@@ -2,38 +2,38 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 644BD1AEE67
-	for <lists+linux-unionfs@lfdr.de>; Sat, 18 Apr 2020 16:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ACD91AF152
+	for <lists+linux-unionfs@lfdr.de>; Sat, 18 Apr 2020 16:56:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726144AbgDROJQ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 18 Apr 2020 10:09:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36564 "EHLO mail.kernel.org"
+        id S1728069AbgDRO4J (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 18 Apr 2020 10:56:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49380 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726086AbgDROJQ (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 18 Apr 2020 10:09:16 -0400
+        id S1726762AbgDROkx (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Sat, 18 Apr 2020 10:40:53 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E479321D82;
-        Sat, 18 Apr 2020 14:09:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4D8BC21D7E;
+        Sat, 18 Apr 2020 14:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587218955;
+        s=default; t=1587220853;
         bh=sJRlZ3mJya5wdFuThA+patbUhvI8Xqv0PFU2vE8Muh8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lbeIGqBcxtrgNWafZlBuYO+yPoqrKJEJIfEgOPG2S2N9znpsy67V1pB8+jKf/NWub
-         lE22W0/B8BV0ctCzkfrmhD/bj47MDO7ZtB0IDBHEmjr+19UUJLgZOJF+523q0x9iIl
-         bW5bdE+1omMsuftG2Wo/HgVx3sh8uZWoYP1+sqPo=
+        b=z0aJj8VwhCcmSGuY+jo45ovtd8Gib7bhtWya8eu6FCDAud28Qf64GtYVWrbGYtyc2
+         exDedAk+NBSfdnOA9uUvJubtnMZZ+PMMx8f8wyR3nNkpwRaxbQgPQqP7y89A7j0dXG
+         oKbWwW+3CcC8UI5dmtVpG+TPz1x+NkTH5FAK640g=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Amir Goldstein <amir73il@gmail.com>,
         Miklos Szeredi <mszeredi@redhat.com>,
         Sasha Levin <sashal@kernel.org>, linux-unionfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.5 04/75] ovl: fix value of i_ino for lower hardlink corner case
-Date:   Sat, 18 Apr 2020 10:07:59 -0400
-Message-Id: <20200418140910.8280-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 04/78] ovl: fix value of i_ino for lower hardlink corner case
+Date:   Sat, 18 Apr 2020 10:39:33 -0400
+Message-Id: <20200418144047.9013-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200418140910.8280-1-sashal@kernel.org>
-References: <20200418140910.8280-1-sashal@kernel.org>
+In-Reply-To: <20200418144047.9013-1-sashal@kernel.org>
+References: <20200418144047.9013-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
