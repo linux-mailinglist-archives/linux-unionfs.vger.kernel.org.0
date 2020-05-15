@@ -2,79 +2,98 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E96271D292C
-	for <lists+linux-unionfs@lfdr.de>; Thu, 14 May 2020 09:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60C0B1D46F6
+	for <lists+linux-unionfs@lfdr.de>; Fri, 15 May 2020 09:22:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725935AbgENH4U (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 14 May 2020 03:56:20 -0400
-Received: from sender2-of-o52.zoho.com.cn ([163.53.93.247]:21186 "EHLO
+        id S1726664AbgEOHW1 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 15 May 2020 03:22:27 -0400
+Received: from sender2-of-o52.zoho.com.cn ([163.53.93.247]:21134 "EHLO
         sender2-of-o52.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725911AbgENH4T (ORCPT
+        by vger.kernel.org with ESMTP id S1726532AbgEOHW1 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 14 May 2020 03:56:19 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1589442953; cv=none; 
+        Fri, 15 May 2020 03:22:27 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1589527294; cv=none; 
         d=zoho.com.cn; s=zohoarc; 
-        b=pGVjwX9opdRDDSOwUs6ouvq/TFZmAaYVrXZpYP0mMDxwe5x5GOlaHOlI89EjQm4Lh/keQUt/ZrNuFMY6hOfmYn63u+2t3dZvEw2Fru7vqPLEdm5v0iQV0RUtjzz+RK6nXjQvQzaXANHjT1XxXlqIM4q3tuBgqgoXjSCisGkc3KI=
+        b=EFc1uQB7l7xjkb3C+RSIFj7DzCX2VJeZ0xBDc6Qajr7bdBMwJtmSOsg6jY18f9D+ZOD1B2hDqvp6gdiczf5J6fwujVd7MisykWm7PAhMkusbHwHAOYFmU9gVk2asDkuBU24EaDAfvufdJMmHGsZyuSbYjfgmDHxiFp+7XxWo6YA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
-        t=1589442953; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:Reply-To:References:Subject:To; 
-        bh=wrMXfPBLjgSZ6yRzDQD2sFAT1nm/D9kdJnylqFwsu/k=; 
-        b=DDZnyEZAZtbEi1ggvTy6KQIn9VYmX7YmbO8sTq2eFLtfF+uxbn9JpnqStD9KxiqAeAkpd1d9m/gGixmoeScJUsYPTz8+2CDY+G+R7WPuSWu5lw4DHuGLvArAn+NQFWDXOO9HChFdKNB1nkiNtku4MSmXHF1Znsu0Rs+47PhnAZA=
+        t=1589527294; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=uz5a/I6fmPyoWma24bkyijFguEj6/Hc4VExouZ++fLo=; 
+        b=NCQW+RXCNWwgtsrvyC5PcY+D8hFhuvNvjqHxj/tzmfmuj6hVlcpbsl9KPkNBkjco9LAN93z5VCDujZxRtj494gZfOXhZPdjHoc0f7yPHIyfMw4dDsMDbCLhtfxzqrZ+6wc9NpNtJ4gO7+xbpGNYf8ILWTcvmXrtm3tgWXfPVBYA=
 ARC-Authentication-Results: i=1; mx.zoho.com.cn;
         dkim=pass  header.i=mykernel.net;
         spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
         dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1589442953;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1589527294;
         s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
-        h=Date:From:Reply-To:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=wrMXfPBLjgSZ6yRzDQD2sFAT1nm/D9kdJnylqFwsu/k=;
-        b=I1tSoZ6lH5T2WkZYW8fBg8AWdshhFasc4dzKOQ362zVGgAxYsCSYq15Xq15l62wE
-        sLqDGodvqYKD5JsXc36tsaaRV5OOiBkaqkkZiO3y83Y1CdtCBXQK1SYdfrHKi/MkL6F
-        NYw02/neLsWZPb+TDfNS59MEcnR3CJOCgs4gBwLk=
-Received: from mail.baihui.com by mx.zoho.com.cn
-        with SMTP id 1589442949816657.1906318521994; Thu, 14 May 2020 15:55:49 +0800 (CST)
-Date:   Thu, 14 May 2020 15:55:49 +0800
+        h=From:To:Cc:Message-ID:Subject:Date:MIME-Version:Content-Transfer-Encoding:Content-Type;
+        bh=uz5a/I6fmPyoWma24bkyijFguEj6/Hc4VExouZ++fLo=;
+        b=QHf+m4K6MHz6Y54mL7bO31wl/t/Kz13BpYCIa5zyOv/SrOkbSYWnT8+kgzTG11Ip
+        PSpaQiFXLkpXi2ydRjz89OUkhK0Lvdgc4eY1MFMSJBuy88C6F9vifiz9Kwsv1bFa5/M
+        aTAKTIKJAm5EYrUq5Jcrn6Q2WZFCr8U/a/U2W/YM=
+Received: from localhost.localdomain (218.18.229.179 [218.18.229.179]) by mx.zoho.com.cn
+        with SMTPS id 1589527291227106.70977229530297; Fri, 15 May 2020 15:21:31 +0800 (CST)
 From:   Chengguang Xu <cgxu519@mykernel.net>
-Reply-To: cgxu519@mykernel.net
-To:     "Amir Goldstein" <amir73il@gmail.com>
-Cc:     "Eryu Guan" <guaneryu@gmail.com>,
-        "Miklos Szeredi" <miklos@szeredi.hu>,
-        "linux-unionfs" <linux-unionfs@vger.kernel.org>,
-        "fstests" <fstests@vger.kernel.org>
-Message-ID: <172122eb2b5.d3d184ba3999.3522413627709473953@mykernel.net>
-In-Reply-To: <20200513192338.13584-1-amir73il@gmail.com>
-References: <20200513192338.13584-1-amir73il@gmail.com>
-Subject: =?UTF-8?Q?=E5=9B=9E=E5=A4=8D:[PATCH_v5]_overlay:_test?=
- =?UTF-8?Q?_for_whiteout_inode_sharing?=
+To:     miklos@szeredi.hu, viro@zeniv.linux.org.uk, amir73il@gmail.com
+Cc:     linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org,
+        Chengguang Xu <cgxu519@mykernel.net>
+Message-ID: <20200515072047.31454-1-cgxu519@mykernel.net>
+Subject: [RFC PATCH v3 0/9] Suppress negative dentry
+Date:   Fri, 15 May 2020 15:20:38 +0800
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Importance: Medium
-User-Agent: ZohoCN Mail
-X-Mailer: ZohoCN Mail
+X-ZohoCNMailClient: External
+Content-Type: text/plain; charset=utf8
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
- ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E5=9B=9B, 2020-05-14 03:23:38 Amir Golds=
-tein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
- > From: Chengguang Xu <cgxu519@mykernel.net>
- >=20
- > This is a test for whiteout inode sharing feature.
- >=20
- > [Amir] added check for whiteout sharing support
- >        and whiteout of lower dir.
- >=20
- > Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
- > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
- > ---
- >=20
- > Chengguang,
- >=20
- > I decided to take a stab at Eryu's challenge ;-)
-=20
-Thanks for doing this, I've also tested in both sharing/non-sharing ENVs an=
-d the case worked as expected.=20
+This series adds a new lookup flag LOOKUP_DONTCACHE_NEGATIVE
+to indicate to drop negative dentry in slow path of lookup.
 
-Thanks,
-cgxu
+In overlayfs, negative dentries in upper/lower layers are useless
+after construction of overlayfs' own dentry, so in order to
+effectively reclaim those dentries, specify LOOKUP_DONTCACHE_NEGATIVE
+flag when doing lookup in upper/lower layers.
+
+Patch 1 adds flag LOOKUP_DONTCACHE_NEGATIVE and related logic in vfs layer.
+Patch 2 does lookup optimazation for overlayfs.
+Patch 3-9 just adjusts function argument when calling
+lookup_positive_unlocked() and lookup_one_len_unlocked().
+
+v1->v2:
+- Only drop negative dentry in slow path of lookup.
+
+v2->v3:
+- Drop negative dentry in vfs layer.
+- Rebase on latest linus-tree(5.7.0-rc5).
+
+Chengguang Xu (9):
+  fs/dcache: Introduce a new lookup flag LOOKUP_DONTCACHE_NEGATIVE
+  ovl: Suppress negative dentry in lookup
+  cifs: Adjust argument for lookup_positive_unlocked()
+  debugfs: Adjust argument for lookup_positive_unlocked()
+  ecryptfs: Adjust argument for lookup_one_len_unlocked()
+  exportfs: Adjust argument for lookup_one_len_unlocked()
+  kernfs: Adjust argument for lookup_positive_unlocked()
+  nfsd: Adjust argument for lookup_positive_unlocked()
+  quota: Adjust argument for lookup_positive_unlocked()
+
+ fs/cifs/cifsfs.c      |  2 +-
+ fs/debugfs/inode.c    |  2 +-
+ fs/ecryptfs/inode.c   |  2 +-
+ fs/exportfs/expfs.c   |  2 +-
+ fs/kernfs/mount.c     |  2 +-
+ fs/namei.c            | 14 ++++++++++----
+ fs/nfsd/nfs3xdr.c     |  2 +-
+ fs/nfsd/nfs4xdr.c     |  3 ++-
+ fs/overlayfs/namei.c  |  9 +++++----
+ fs/quota/dquot.c      |  3 ++-
+ include/linux/namei.h |  9 +++++++--
+ 11 files changed, 32 insertions(+), 18 deletions(-)
+
+--=20
+2.20.1
+
+
