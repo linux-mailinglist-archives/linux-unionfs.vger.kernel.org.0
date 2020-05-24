@@ -2,66 +2,109 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC4191DFA07
-	for <lists+linux-unionfs@lfdr.de>; Sat, 23 May 2020 20:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9884C1DFE55
+	for <lists+linux-unionfs@lfdr.de>; Sun, 24 May 2020 12:29:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388273AbgEWSAx (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 23 May 2020 14:00:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55828 "EHLO
+        id S1726354AbgEXK27 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 24 May 2020 06:28:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726868AbgEWSAm (ORCPT
+        with ESMTP id S1725882AbgEXK27 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 23 May 2020 14:00:42 -0400
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2CC6C0258F1
-        for <linux-unionfs@vger.kernel.org>; Sat, 23 May 2020 11:00:39 -0700 (PDT)
-Received: by mail-qt1-x842.google.com with SMTP id e16so5068266qtg.0
-        for <linux-unionfs@vger.kernel.org>; Sat, 23 May 2020 11:00:39 -0700 (PDT)
+        Sun, 24 May 2020 06:28:59 -0400
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB208C061A0E
+        for <linux-unionfs@vger.kernel.org>; Sun, 24 May 2020 03:28:57 -0700 (PDT)
+Received: by mail-io1-xd2d.google.com with SMTP id r2so5740654ioo.4
+        for <linux-unionfs@vger.kernel.org>; Sun, 24 May 2020 03:28:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=vhvRG4iP0p/cCM0/gHqK0xx0MaMNF3/azTtn5P0fCT1b4XLjGRAoR85FXgvwYtowP6
-         J1ev3dPiedOMtPyOzUYmKFEqsj6BkIi2lR8s0YRNLylOZ8MbeWQpwNTWDXPX57LUrKeO
-         FLL54WToKnc9WyFCTQNZdn8yjuqVF61dsdwJrbIWn1f8+mXNgwQXd1Xox425XdFJLCTr
-         UNYtD5Mkr7J8HytQpl125rrGiBWdOVTtdeDic18s2v1Ex5H4EMrCDseWe8z8QJUA2DPl
-         pMcmWf9nM5lni1dYRbVMyTKtLHSFCzrJM5oRvB7Hp9K31CMWsqtaG47ZQbJG6ZEre6uU
-         kwNQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vMt/zjgPSaavMH3EHZOPXfBfjSGAnTzC/1ULA/QAqbg=;
+        b=pwC91qRET7eqo1160ZFmEcEX6Ju6JlOAQ2WCgg5DEr74TNc3N8r0PTnVXA47BJOhrz
+         7sA5C3DOurmR1urCmY0HE7VksDSAfAF3aGIH/+IAeTQ4mIrBO9xVoQsMCCa8VxhPV7ZP
+         hxRMJzrScafTRKKgiO6v+X8BrbbUx5HZ7vR3V5F3L8D7ktHK9XfLpx2e0Bke2eKHQycG
+         fjuXRYvI0NeD26cTj31i5ECSHfrGgXbqJXk3BsOCfg7fug+MmNbfpitM4GG9GXRo8r6y
+         EKga+BtrION/RvZMb+Jad0GQL5zP3d+2yiPnpgEfdWAO1qMr/AMODPvsfMkxI+Rxx2ls
+         KW2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=e4zW1oJylYMxI4O/zVlp+R33CZVhvKzxM90CcGCuA4BnEX1v4GneMtTzYWHbtX5xoP
-         0ZwFvsnjRYWeX566/tobslMwFOYnu1+X/K4FBs87x37E0DqpZ9VqU4jbTYJBRr4VdyfF
-         Jru579Wy8B8j1BxjFiWOwlSf/19XmacP95bq+JMJjgN5aTi/uBJWsKSmEg5QO2ZzBRLY
-         pGOjfVehvdp087yPNos45jCQbiapoLeZoK6zyYVjVRXgdglaM3Q7BMAtidxZoM35rdKn
-         4c7tE0Hq9E/MYsHGW1aRbE0AJgDFCm6D10rOXOi1VRx3ukQngeV2++QnKvVeoMBq5uzu
-         /acA==
-X-Gm-Message-State: AOAM533RV8GdXGoTR+9rId3Pt7gUzZwzQimLl1WQvqi4CjXsFh/1Dxa8
-        l+fXGO7PpI6fiECVIqgj8Q7aWJXb/gRO3TN6UYw=
-X-Google-Smtp-Source: ABdhPJw4JSLl4s8hKmdikxPHOZTjp7LuShJQWo5DKJXfhdyHNpRWrWLXX1iWw/azZwGF2Nz0kU5bTrWvyq5YmK6naS0=
-X-Received: by 2002:ac8:1e16:: with SMTP id n22mr21502226qtl.78.1590256838401;
- Sat, 23 May 2020 11:00:38 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vMt/zjgPSaavMH3EHZOPXfBfjSGAnTzC/1ULA/QAqbg=;
+        b=bdWi8MM/zbAGoOxBNzWpWHeM35HtuInziOmFZbl4pxzepwsuGD41FZ+SH6NpXaL9U0
+         05lQRn0Menb4X4p32esKZ+FApE+3UX6aBGQ9xm0sgfqW7sM0Vg41dHQ0IAJjvT9CECi9
+         3m/y/f527lgC+++z2yTNWDGiBfH4butemo+fOfHkb++VFuzTONsEeESuWLOalCZADr1r
+         1VW7WCuctZFAsiiHs11otC15AkMGf15b1ssHz040BJ8UytxBYIAjCk6tTQlScAxubQwA
+         ofeBmkIWY4eDS5+zQRYtx42dy5JJUubAiQoawIHJkPoTfY6gqB6VS/WQffnz6k2wvUMq
+         ED3g==
+X-Gm-Message-State: AOAM532AUXrjyHxGX5wXqKgndqQ3ji3jpINuos0R/hwJf5flUIaH0Hth
+        1KpqhGcFTzs52dVI6j6GHt+Ea4A0NJoX4HHWNsuIpXEd
+X-Google-Smtp-Source: ABdhPJwTB++y9wLOmFlStR1A8gQLdwiUhjMQgQaOgaW21aKwvuXhE5ulWfFhMMwZWKW5dKGXes8JBeLYvrbRQHLVyo0=
+X-Received: by 2002:a05:6638:45d:: with SMTP id r29mr14503440jap.93.1590316136936;
+ Sun, 24 May 2020 03:28:56 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a37:9fd3:0:0:0:0:0 with HTTP; Sat, 23 May 2020 11:00:37
- -0700 (PDT)
-Reply-To: mrs.chantala2055@gmail.com
-From:   mrs chantal <mrs.chantalas1@gmail.com>
-Date:   Sat, 23 May 2020 18:00:37 +0000
-Message-ID: <CAMdkyyDY_0O7YgysHCjgRTJ=8-B7XurK7o1razRHDVOjgr2V2g@mail.gmail.com>
-Subject: jjCompliment
-To:     undisclosed-recipients:;
+References: <20200415153032.GC239514@redhat.com> <CAOQ4uxhmxxjGGB3bBoK1OmcAWDsoNi3WdORtH7WDLOcp8=sYSQ@mail.gmail.com>
+ <20200415194243.GE239514@redhat.com> <CAOQ4uxjZ4Yd3ZWi+Fe64fVkrD=XMDjF1=C=XN_PNdywbGx_gzQ@mail.gmail.com>
+ <20200416125807.GB276932@redhat.com> <CAOQ4uxi=mT2JYGSXro5YW8gTE5256cxauBddYe2HXM=ZfZ=+ZA@mail.gmail.com>
+ <CAOQ4uxjvtGLn=SvLXy3KU6uKbonBUznL==OjdVVjjB6sM=-mgg@mail.gmail.com>
+ <20200420191453.GA21057@redhat.com> <CAOQ4uxjVU6gcQMmyMiBsVV73gik931-7QjAO9TCu+N2ik6109w@mail.gmail.com>
+ <CAOQ4uxgVnT3ZXZZa4-YktZaRDpU1hHujPoEtZ2vdFmsGxj=66A@mail.gmail.com>
+ <20200522143606.GB58162@redhat.com> <CAOQ4uxj8Qhw-r8E+Fb-YYnMwmApkCPXD1136CA=oNo-81rzdVQ@mail.gmail.com>
+In-Reply-To: <CAOQ4uxj8Qhw-r8E+Fb-YYnMwmApkCPXD1136CA=oNo-81rzdVQ@mail.gmail.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Sun, 24 May 2020 13:28:44 +0300
+Message-ID: <CAOQ4uxgnRFZ8uTWV1_woCFutACc193X9eTzTOn4wzDkE8-huDQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] Configure custom layers via environment variables
+To:     Vivek Goyal <vgoyal@redhat.com>
+Cc:     Giuseppe Scrivano <gscrivan@redhat.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        overlayfs <linux-unionfs@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-     Compliment of the day to you. I am Mrs.CHANTAL I am sending this brief
-    letter to solicit your partnership to transfer $13.5 Million US
-    Dollars.I shall send you more information and procedures when I receive
-    positive response From you. Please send me a message in My private
-    email address is ( mrschantal066@gmail.com  )
-    Best Regards
-    MrS.Chantal
+> > Hi Amir,
+> >
+> > Do you want to mention a word upper dir also when UNIONMOUNT_BASEDIR. That
+> > is upperdir is also created under UNIONMOUNT_BASEDIR. IOW, all directories
+> > lower, upper and mount point are under UNIONMOUNT_BASEDIR (until and
+> > unless overridden by other environment variables).
+>
+
+Hi Vivek,
+
+Please approve this text before I update master.
+Pushed this work to branch 'envvars'
+
+Thanks,
+Amir.
+
+-----
+The following environment variables are supported:
+
+     UNIONMOUNT_BASEDIR  - parent dir of all samefs layers (default: /base)
+     UNIONMOUNT_LOWERDIR - lower layer path for non samefs (default: /lower)
+     UNIONMOUNT_MNTPOINT - mount point for executing tests (default: /mnt)
+
+     When user provides UNIONMOUNT_LOWERDIR:
+
+     1) Path should be an existing directory whose content will be deleted.
+     2) Path is assumed to be on a different filesystem than base dir, so
+        --samefs setup is not supported.
+
+     When user provides UNIONMOUNT_BASEDIR:
+
+     1) Path should be an existing directory whose content will be deleted.
+     2) Upper layer and middle layers will be created under base dir.
+     3) If UNIONMOUNT_MNTPOINT is not provided, the overlay mount point will
+        be created under base dir.
+     4) If UNIONMOUNT_LOWERDIR is not provided, the lower layer dir will be
+        created under base dir.
+     5) If UNIONMOUNT_LOWERDIR is not provided, the test setup defaults to
+        --samefs (i.e. lower and upper layers are on the same base fs).
+        However, if --maxfs=<M> is specified, a tmpfs instance will be mounted
+        on the lower layer dir that was created under base dir.
