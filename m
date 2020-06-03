@@ -2,102 +2,77 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 905F51ED147
-	for <lists+linux-unionfs@lfdr.de>; Wed,  3 Jun 2020 15:49:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 221341ED3B3
+	for <lists+linux-unionfs@lfdr.de>; Wed,  3 Jun 2020 17:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726120AbgFCNtC (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 3 Jun 2020 09:49:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50114 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725995AbgFCNsw (ORCPT
+        id S1726087AbgFCPqB (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 3 Jun 2020 11:46:01 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:56894 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725884AbgFCPqB (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 3 Jun 2020 09:48:52 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0548EC0085CA
-        for <linux-unionfs@vger.kernel.org>; Wed,  3 Jun 2020 06:48:50 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id x22so1367036lfd.4
-        for <linux-unionfs@vger.kernel.org>; Wed, 03 Jun 2020 06:48:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=H8rDQEJouwBJIElP/Vpqq+PrvTZxQQy2H7A/MvyMMB0=;
-        b=LImzFWfFZ5MGhzJT1qzCsgEXVo7xW37sUIdrDLCKiXHQE0/Tq0rYX6Af/ld5dvlhmE
-         opFt8B8vUrhAfyxGIRs7eIQZmnu+cHCt7Dz4gEu/fnBWHDlMa8iVHDbM7XgqJUtNcgor
-         I4Oj1yGJ3ygOniFn6Dr+FHDS5BV48N/ldz+eBwWbR5/ADnYCL6KuztRZu9mrKJOxMODU
-         fmVICwwGmTYXXsgICTxE6unupuMdGq6+YZvkWKysZVLYK3Wwxrg7U2ecMo3WGycHWcU1
-         w35jxyjuynpm30G3kj/I18A4vO2Y2WN0kfTajUkGc1Xe9t84eQuWhnB4AGlAS8dbrawc
-         iC3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=H8rDQEJouwBJIElP/Vpqq+PrvTZxQQy2H7A/MvyMMB0=;
-        b=PrYC9vS8LKELBBpj4jHwmlx1JkuYfCgPTLOLwJaBYLQwHmwLRMA3e1aBwlMp4D9Xdv
-         rYiMqHG+J+ej+uU9NOLsirvuVda0ODNtmlCMULzKf3faIdw36GlBx9SXUrtF2YnnRr3u
-         G8re+mw8lCThNSfcIOzMfdpzzIVJ/i9QkcLd5I7jI/LhlQnbDlMyp0chR7xF5OJeG+LT
-         186GVPvbPv6Ta/fIx+4DPpge/Ll1vznu3kwI3ktUQ8oEA7njJbTTprphXJAA2PlV3Vga
-         afIaUXIwtVodHyCxj5v2eiXhT0aZBFGNeoTk7pnxOfxRwmlxRWiHFGhsb4qzrv7RmT4K
-         6Wfw==
-X-Gm-Message-State: AOAM530dU9V50EjNTr/0vDj4dKSYJkCKdek5eitLZ+jDLt+06LCSG9vI
-        LdtM6csFF2Dpi3li2+HsogIYt1fDZjtNVlp/X0lbPntL28k=
-X-Google-Smtp-Source: ABdhPJzc66PsPJ7uf2JiXrqj7zfh07Ra5BpBms0TPKeexmxkWkfXYY+ch/Os+E85wJbdOE6Lm+0ANdybV/7KRG4HAcU=
-X-Received: by 2002:a05:6512:308e:: with SMTP id z14mr2566308lfd.29.1591192127287;
- Wed, 03 Jun 2020 06:48:47 -0700 (PDT)
+        Wed, 3 Jun 2020 11:46:01 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1jgVaZ-00052R-Na; Wed, 03 Jun 2020 15:45:59 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] ovl: fix null pointer dereference on null stack pointer on error return
+Date:   Wed,  3 Jun 2020 16:45:59 +0100
+Message-Id: <20200603154559.140418-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Reply-To: susanjones.wife@gmail.com
-Received: by 2002:a19:a405:0:0:0:0:0 with HTTP; Wed, 3 Jun 2020 06:48:46 -0700 (PDT)
-From:   "Mrs.Susan Jones" <joneswife.susan@gmail.com>
-Date:   Wed, 3 Jun 2020 14:48:46 +0100
-X-Google-Sender-Auth: aH2vam-ZraP3yG1gz3ryctMgTE4
-Message-ID: <CALBhdBfusXWup1N4iFuTS3D1AZxWbZbTDS_qa-wA3FkbkE7MrQ@mail.gmail.com>
-Subject: HELLO: I AM MRS SUSAN JONES
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
+
+There are two error return paths where the call to path_put is
+dereferencing the null pointer 'stack'.  Fix this by avoiding the
+error exit path via label 'out_err' that will lead to the path_put
+calls and instead just return the error code directly.
+
+Addresses-Coverity: ("Dereference after null check)"
+Fixes: 4155c10a0309 ("ovl: clean up getting lower layers")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ fs/overlayfs/super.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 1094836f7e31..4be1b041b32c 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1594,20 +1594,18 @@ static struct ovl_entry *ovl_get_lowerstack(struct super_block *sb,
+ 	unsigned int i;
+ 	struct ovl_entry *oe;
+ 
+-	err = -EINVAL;
+ 	if (!ofs->config.upperdir && numlower == 1) {
+ 		pr_err("at least 2 lowerdir are needed while upperdir nonexistent\n");
+-		goto out_err;
++		return ERR_PTR(-EINVAL);
+ 	} else if (!ofs->config.upperdir && ofs->config.nfs_export &&
+ 		   ofs->config.redirect_follow) {
+ 		pr_warn("NFS export requires \"redirect_dir=nofollow\" on non-upper mount, falling back to nfs_export=off.\n");
+ 		ofs->config.nfs_export = false;
+ 	}
+ 
+-	err = -ENOMEM;
+ 	stack = kcalloc(numlower, sizeof(struct path), GFP_KERNEL);
+ 	if (!stack)
+-		goto out_err;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	err = -EINVAL;
+ 	for (i = 0; i < numlower; i++) {
 -- 
-OUR GOLDEN OPPORTUNITY
+2.25.1
 
-Hello Dear Friend,
-
-Complement of the day, i hope you are doing great today. However, I am
-Mrs.Susan Jones, an auditor with one of the new generation banks here
-in Burkina Faso.
-
-I am writing you this letter based on the latest development at my
-Department. i discovered some abandoned huge amount of money, Ten
-Million, Five hundred thousand  United States Dollars.($10.500.000).
-Now I am only contacting you as a foreigner because this money cannot
-be approved to a local bank account here, but can only be approved to
-any foreign account and foreign beneficiary because the money is in US
-dollars
-
-This will be  a legitimate transaction once you accept to build trust
-with me and follow simple instruction doing the transfer process,
-until the total sum transfer out of the bank here to your own bank
-account any where in the world, and I agreed to share the total money
-50/50 with you once you successful confirmed it in your bank account.
-But any expenses doing the transfer process will be deduct from the
-amount before sharing, If you are interested to work with me and
-provide a good receiving bank account, get back to me as soon as
-possible with the following details below.
-
-Your full name
-Your Profession
-Your direct mobile phone number
-Your Scanned International passport or any of your identity
-
-NOTE: PLEASE IT YOU ARE NOT INTERESTED DON'T BORDER TO RESPOND BACK TO
-AVOID TIME WASTED.
-
-As soon as I receive these data's, I will forward to you the
-application form which you will send to the bank for the claim and
-transfer of the fund into your bank account as the  new beneficial.
-
-I am waiting to hear from you soon
-
-Yours
-Mrs.Susan Jones
