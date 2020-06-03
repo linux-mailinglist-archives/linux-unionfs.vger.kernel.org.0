@@ -2,68 +2,102 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 509A91ECB00
-	for <lists+linux-unionfs@lfdr.de>; Wed,  3 Jun 2020 10:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 905F51ED147
+	for <lists+linux-unionfs@lfdr.de>; Wed,  3 Jun 2020 15:49:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726099AbgFCIGt (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 3 Jun 2020 04:06:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53206 "EHLO
+        id S1726120AbgFCNtC (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 3 Jun 2020 09:49:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726083AbgFCIGt (ORCPT
+        with ESMTP id S1725995AbgFCNsw (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 3 Jun 2020 04:06:49 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FD72C05BD43
-        for <linux-unionfs@vger.kernel.org>; Wed,  3 Jun 2020 01:06:49 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id a2so1149662ejb.10
-        for <linux-unionfs@vger.kernel.org>; Wed, 03 Jun 2020 01:06:49 -0700 (PDT)
+        Wed, 3 Jun 2020 09:48:52 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0548EC0085CA
+        for <linux-unionfs@vger.kernel.org>; Wed,  3 Jun 2020 06:48:50 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id x22so1367036lfd.4
+        for <linux-unionfs@vger.kernel.org>; Wed, 03 Jun 2020 06:48:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Xj3EoPtDiRqI+Y48kRjGkX4jJF0Z7hbG4cQQxjLyj+s=;
-        b=O6FL79P0pl37y02cm8oJ+lYyTtjzExLcwedsPPImNRPFOD80dPCldGgLqzoti294Q3
-         Piq7K6A9Ke410G9Mmexq3YcxzzKkhBKlduYO0Gy8JYXeCZX0ZRmSDxltbdoo5LqHsEIE
-         6DPg5xuD7pcrLMaORwyc5wi37IGLX9VbC5uso=
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=H8rDQEJouwBJIElP/Vpqq+PrvTZxQQy2H7A/MvyMMB0=;
+        b=LImzFWfFZ5MGhzJT1qzCsgEXVo7xW37sUIdrDLCKiXHQE0/Tq0rYX6Af/ld5dvlhmE
+         opFt8B8vUrhAfyxGIRs7eIQZmnu+cHCt7Dz4gEu/fnBWHDlMa8iVHDbM7XgqJUtNcgor
+         I4Oj1yGJ3ygOniFn6Dr+FHDS5BV48N/ldz+eBwWbR5/ADnYCL6KuztRZu9mrKJOxMODU
+         fmVICwwGmTYXXsgICTxE6unupuMdGq6+YZvkWKysZVLYK3Wwxrg7U2ecMo3WGycHWcU1
+         w35jxyjuynpm30G3kj/I18A4vO2Y2WN0kfTajUkGc1Xe9t84eQuWhnB4AGlAS8dbrawc
+         iC3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Xj3EoPtDiRqI+Y48kRjGkX4jJF0Z7hbG4cQQxjLyj+s=;
-        b=LolMJYS9dm6GoE89dLHOFHMkxQr7ClUEZ3ohLry32j1+jTn4NuURyv/qZyEhkMu4kD
-         Cl9dYdeWobQ7aHHgCjLj/e+aps1Y0H3j2mqFr9m2wZsHFAbJ0kDttb01NUKOcwOtynXS
-         HD6yXpHkXNU/Eh5RxaiJklON3KpMubw0iuYJFLz6P9ByuYXu8S/t/iYi8H0qksNVhMIZ
-         Y9mKYX+6BLrlT07smeRzQ2G8MQbQe9yD2NEzt2JbHZdZxGKQWIBSJ6AT2J7xb7Uk2Ush
-         CkY3PLJmb37Ti28f3sOsqqepCdrdiDNsYzVngLFVhx/1EM6ecnR+wnNtqLon9CmDO087
-         UX8A==
-X-Gm-Message-State: AOAM531uGinvWDSoXGc/HyfhNvkME3mdI7yv5DDdAmQrYY9n9X019GzY
-        J0DvLw1E7yEz0otIz+xQclStEHLl1TNNHXbQC9gYvg==
-X-Google-Smtp-Source: ABdhPJy0S6ltgsKCVvIgeaiUEMmOpsf09tB7qhu4Z9Tdz00IIOUDn4RV6KSWIjNMEl06fSKFrbq1MU6fGEN4sWjfIrY=
-X-Received: by 2002:a17:906:31d2:: with SMTP id f18mr16271281ejf.110.1591171607893;
- Wed, 03 Jun 2020 01:06:47 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=H8rDQEJouwBJIElP/Vpqq+PrvTZxQQy2H7A/MvyMMB0=;
+        b=PrYC9vS8LKELBBpj4jHwmlx1JkuYfCgPTLOLwJaBYLQwHmwLRMA3e1aBwlMp4D9Xdv
+         rYiMqHG+J+ej+uU9NOLsirvuVda0ODNtmlCMULzKf3faIdw36GlBx9SXUrtF2YnnRr3u
+         G8re+mw8lCThNSfcIOzMfdpzzIVJ/i9QkcLd5I7jI/LhlQnbDlMyp0chR7xF5OJeG+LT
+         186GVPvbPv6Ta/fIx+4DPpge/Ll1vznu3kwI3ktUQ8oEA7njJbTTprphXJAA2PlV3Vga
+         afIaUXIwtVodHyCxj5v2eiXhT0aZBFGNeoTk7pnxOfxRwmlxRWiHFGhsb4qzrv7RmT4K
+         6Wfw==
+X-Gm-Message-State: AOAM530dU9V50EjNTr/0vDj4dKSYJkCKdek5eitLZ+jDLt+06LCSG9vI
+        LdtM6csFF2Dpi3li2+HsogIYt1fDZjtNVlp/X0lbPntL28k=
+X-Google-Smtp-Source: ABdhPJzc66PsPJ7uf2JiXrqj7zfh07Ra5BpBms0TPKeexmxkWkfXYY+ch/Os+E85wJbdOE6Lm+0ANdybV/7KRG4HAcU=
+X-Received: by 2002:a05:6512:308e:: with SMTP id z14mr2566308lfd.29.1591192127287;
+ Wed, 03 Jun 2020 06:48:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200602152338.GA3311@redhat.com> <20200602183920.GC3311@redhat.com>
-In-Reply-To: <20200602183920.GC3311@redhat.com>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Wed, 3 Jun 2020 10:06:36 +0200
-Message-ID: <CAJfpegvr+Ltbo+1Pw4NK4T=5dxLZSFYh1ULqo1nysHCdbZ4cGw@mail.gmail.com>
-Subject: Re: [PATCH] overlayfs: Fix redirect traversal on metacopy dentries
-To:     Vivek Goyal <vgoyal@redhat.com>
-Cc:     Amir Goldstein <amir73il@gmail.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>
+Reply-To: susanjones.wife@gmail.com
+Received: by 2002:a19:a405:0:0:0:0:0 with HTTP; Wed, 3 Jun 2020 06:48:46 -0700 (PDT)
+From:   "Mrs.Susan Jones" <joneswife.susan@gmail.com>
+Date:   Wed, 3 Jun 2020 14:48:46 +0100
+X-Google-Sender-Auth: aH2vam-ZraP3yG1gz3ryctMgTE4
+Message-ID: <CALBhdBfusXWup1N4iFuTS3D1AZxWbZbTDS_qa-wA3FkbkE7MrQ@mail.gmail.com>
+Subject: HELLO: I AM MRS SUSAN JONES
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Tue, Jun 2, 2020 at 8:39 PM Vivek Goyal <vgoyal@redhat.com> wrote:
->
-> On Tue, Jun 02, 2020 at 11:23:38AM -0400, Vivek Goyal wrote:
-> > Amir pointed me to metacopy test cases in unionmount-testsuite and
-> > I decided to run "./run --ov=10 --meta" and it failed while running
-> > test "rename-mass-5.py".
+-- 
+OUR GOLDEN OPPORTUNITY
 
-Thanks, applied.
+Hello Dear Friend,
 
-Miklos
+Complement of the day, i hope you are doing great today. However, I am
+Mrs.Susan Jones, an auditor with one of the new generation banks here
+in Burkina Faso.
+
+I am writing you this letter based on the latest development at my
+Department. i discovered some abandoned huge amount of money, Ten
+Million, Five hundred thousand  United States Dollars.($10.500.000).
+Now I am only contacting you as a foreigner because this money cannot
+be approved to a local bank account here, but can only be approved to
+any foreign account and foreign beneficiary because the money is in US
+dollars
+
+This will be  a legitimate transaction once you accept to build trust
+with me and follow simple instruction doing the transfer process,
+until the total sum transfer out of the bank here to your own bank
+account any where in the world, and I agreed to share the total money
+50/50 with you once you successful confirmed it in your bank account.
+But any expenses doing the transfer process will be deduct from the
+amount before sharing, If you are interested to work with me and
+provide a good receiving bank account, get back to me as soon as
+possible with the following details below.
+
+Your full name
+Your Profession
+Your direct mobile phone number
+Your Scanned International passport or any of your identity
+
+NOTE: PLEASE IT YOU ARE NOT INTERESTED DON'T BORDER TO RESPOND BACK TO
+AVOID TIME WASTED.
+
+As soon as I receive these data's, I will forward to you the
+application form which you will send to the bank for the claim and
+transfer of the fund into your bank account as the  new beneficial.
+
+I am waiting to hear from you soon
+
+Yours
+Mrs.Susan Jones
