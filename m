@@ -2,99 +2,59 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96368202B0C
-	for <lists+linux-unionfs@lfdr.de>; Sun, 21 Jun 2020 16:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE335203BEB
+	for <lists+linux-unionfs@lfdr.de>; Mon, 22 Jun 2020 18:02:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730185AbgFUObH (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 21 Jun 2020 10:31:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33436 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729649AbgFUObG (ORCPT
+        id S1729655AbgFVQCt (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 22 Jun 2020 12:02:49 -0400
+Received: from sonic302-21.consmr.mail.ne1.yahoo.com ([66.163.186.147]:40197
+        "EHLO sonic302-21.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729618AbgFVQCW (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 21 Jun 2020 10:31:06 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCA87C061794
-        for <linux-unionfs@vger.kernel.org>; Sun, 21 Jun 2020 07:31:06 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id d6so7131576pjs.3
-        for <linux-unionfs@vger.kernel.org>; Sun, 21 Jun 2020 07:31:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:reply-to;
-        bh=xQISDFi7OtSQENMvfNsJZYStJ++HTm3ZfKITsq8Ytpg=;
-        b=qpBXEPZOsaCEMI6gix14Iq18mD/41WhnUbDbayVx8P6iDCsxpTSoCso/EnlyJysr1A
-         e+V/71NAkFEsTyMxQBn/S9NjXNNru2kKPHEHtmbPAcmS2M3MZB/1NJLvwH9yZ6tLL8rX
-         exgFxoKg0+ttuhEHT2IUqKEWMY9u0AO5mKB4Juf1FzfwWHZ0xCO7J1pJ0QV+7Xg2qDgd
-         OBcxK47s5fmko6XWVZxX3Dr0kW0fRIYhLv31KsrgV4bc3FUn1ibKMCzqccr4n9pvgCL1
-         o/t4srcXcBGuJsWFziiutkR9RgreuvypbkXTNixr1h2Q3GmFFUD1QWx/MeHoPqBTaeoG
-         Y5Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xQISDFi7OtSQENMvfNsJZYStJ++HTm3ZfKITsq8Ytpg=;
-        b=KpKtx8SoIHH/GFB8iklrN+5FeA4rUjwSnd5cLR3KnOVK2sPZ1RbwyMknrDsIjKidaT
-         3ObZD9GOJMNU0wiQ+l3KFm/NwVNGqr6yqxNguxRdDq/Eg0/Xqve52SNPCuaB+UNtSYQM
-         erTxxQoYQDQEBSgxSIhKU/Ymf/tHZhobg1T+Ks0i6WgibXbVU4Nfbaov6fNRBylNvGgL
-         xiXjr9EqSQC6CX5OoUF0Mc6xHNrbY4+S8LAG3pZn3Zb1LQcI+43TYDQnou8FMQw97XM0
-         DKLxBZs4W+kxmBVUKNTXPW88uWEoCAyWi01pZLmRYtXkalsNm6LxV6yyn2OXhg+uzEUi
-         Q5gw==
-X-Gm-Message-State: AOAM532ffaYgliRxfJ3pKxY6V1+ffc2RCknXHnUlrMwDGSExSqH/W5Pa
-        4CVDXK2zOQ1IYtu+5F/Udz09gi/Fucg=
-X-Google-Smtp-Source: ABdhPJxzGp530CKqMgB44KnpNfkiaZ7m/O0roN/rFz6PQapXW456ElrZDtYgSGtD3fdDaCc1djLBTg==
-X-Received: by 2002:a17:90a:e60d:: with SMTP id j13mr13948626pjy.127.1592749866513;
-        Sun, 21 Jun 2020 07:31:06 -0700 (PDT)
-Received: from ubuntu.localdomain ([220.116.27.194])
-        by smtp.gmail.com with ESMTPSA id d23sm10803092pjv.45.2020.06.21.07.31.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jun 2020 07:31:06 -0700 (PDT)
-From:   youngjun <her0gyugyu@gmail.com>
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     linux-unionfs@vger.kernel.org, youngjun <her0gyugyu@gmail.com>
-Subject: [PATCH v2] ovl: change ovl_copy_up_flags static
-Date:   Sun, 21 Jun 2020 07:30:59 -0700
-Message-Id: <20200621143059.66313-1-her0gyugyu@gmail.com>
-X-Mailer: git-send-email 2.17.1
-Reply-To: CAOQ4uxgXiL1AZroRAe=mqJhuxXfv57moCdNxL7yAHuV_ONLPiw@mail.gmail.com
+        Mon, 22 Jun 2020 12:02:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1592841741; bh=cK2qy9Lv5SAgMg9nAvfVmkJPj46H3ss3vOVyjpHm6Nk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=imnMzKvnrwdEkzevY9v55JCHWrS7mFcRp2xLflBpdsWBX5v32iTt1Jwj292Sqyxc6zTWfVf6UW3RltjDxv8H8ZAxxFg96tpPBoXA2f/GRkfTuiNcUr3yDzOGiHeT9IqR//B+9C8c9YoGDJPnAeuuKcQvLl1HS8J+STK4/r0WZ3jbtWFF0MKDjydg+AbeXShoRDHqwsqAaAi7D9jDq8wNDWBIR81puaAh7APGDPK32RqjpFS85hxXrbmotW59Gm/gC9SoLB52q4udtwMI++FS4HYmIHt+kUh9tNcMAsNUvFYo0HWMN59EiLf7lYGm/4AR40adfmghUfkmt4dYpTZmZQ==
+X-YMail-OSG: AhKkJLAVM1lDQ3XPPTTJWpEw.A_YPk4v7tBrtMEv9XTYrBN0vKxPyUyPokZyCLH
+ 0NPJEnbM.Ixt5u0eXkMwZesEBqS.rCtCLJgnod2Yg.I9TXOm0suNzcmJ92mBaA3mHgRFUusjI.6E
+ 3Gu4LEq019.le8uhDgpgUZ.YgtmiKAQJK6Bd4WPLqozbdEc8urSPipLpvwJTvKec65xmptWyRiVv
+ 5wejfhjut7ltVV2EWvbGnxpPsKrHXW63gZY0z7W.qC8yTTTM6xXIAPM6OYdYDYNn.6t5yJFWlC1P
+ OIdbZEYbWLsjaYGAZ3nhw68imywZs7JgVqTzxfR4ZQQxpuo3K8t9CM9O0hpOCt10FP__XXwyrmrD
+ TCoCE7B_Edu3G.zjOUn_rksR4jYB.m1Rp.1vZ_bLxnQwCiAul5Wqfj8PNdUGzT.zvxnBCUVqWq9J
+ 8hXM6oMyn8gklCF.R8KCTVo6NRJRq4thjGWIexrpJEGu0QolvkJTIALFEd6_slAReLmAOEup3xKy
+ .77XY9y0L2WZlQcf1QY4ryEv90HkLK9R59Zd1MxuC8qefRgY6y6xUFmVBWO8SDJCCjnQpB48PRDP
+ pRTSfD8hEjxrcMoyLQRR8ik6SRBEuL1N.zoJ2juJT7TtdJItukcqyaFlw7VOC6cm49vWb13NtnZ0
+ gQ2bWEWTG5v0uAlc54_ulltpKs.Fgm6hkagBtyzunEJ52PGAuturV.LPWyLoBYPiB1KC1HlV8gI8
+ yJqtTplsyPL2eALndgi_xv5WXRslUdVun50zfx9iDK5v_kT1lyZrnl7BpPa5N7roHYs5FCR3fGlt
+ 00HJ7sf.lnan3Im8PEbT96k38NwI6o6wqQk3XTx1x0TOib38VwKLgaWNY916uiRI1upzFCMVqmW6
+ hKW.i_z2qDWeeQaZVyBhDmfLTpSCKpEZXqJt.HWEa0uB7F6lyRoT1rQEzhMY_zbISz6YbRmtNDlq
+ VLlEzjYA6uILpMVD7EkmwXGP0XOJgDIix93HShigByDXDbmOlbnVPelpKvxPRFg3gnhpf.0Rc47i
+ 08Ic.liUMCD9zHGFCga9cXgoGaM8kFbRyDB3CB8uLHuuV8rIwOstkm24RLt0t3H1wtfuP85AC7r8
+ v042NbRsPX1Mj80LTxFt.KStV8ND4Dc1.IiPBslhVUpEA9f2YrGnkjCHG4.U4j0M0U489djAouYX
+ y9F8lECiGIH30pwUi5p9NUzViYBtaTM7ID67rbGjIKdkEdFs14rCm3KSzct0U2izLUB1NerwsRiF
+ IQWasnNhp61WOxqpf4zyo6bEJMCV1B8QkTG.8HvHCcJtAwYQhWHkE5SwAzxSGopkwGBC4.Xf9
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ne1.yahoo.com with HTTP; Mon, 22 Jun 2020 16:02:21 +0000
+Date:   Mon, 22 Jun 2020 16:02:19 +0000 (UTC)
+From:   Karim Zakari <kariim1960z@gmail.com>
+Reply-To: kzakari04@gmail.com
+Message-ID: <1507214802.1850985.1592841739314@mail.yahoo.com>
+Subject: URGENT REPLY.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <1507214802.1850985.1592841739314.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16138 YMailNodin Mozilla/5.0 (Windows NT 6.1; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-"ovl_copy_up_flags" is used in copy_up.c.
-so, change it static.
 
-Signed-off-by: youngjun <her0gyugyu@gmail.com>
----
- fs/overlayfs/copy_up.c   | 2 +-
- fs/overlayfs/overlayfs.h | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index 79dd052c7dbf..5e0cde85bd6b 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -895,7 +895,7 @@ static int ovl_copy_up_one(struct dentry *parent, struct dentry *dentry,
- 	return err;
- }
- 
--int ovl_copy_up_flags(struct dentry *dentry, int flags)
-+static int ovl_copy_up_flags(struct dentry *dentry, int flags)
- {
- 	int err = 0;
- 	const struct cred *old_cred = ovl_override_creds(dentry->d_sb);
-diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
-index b725c7f15ff4..29bc1ec699e7 100644
---- a/fs/overlayfs/overlayfs.h
-+++ b/fs/overlayfs/overlayfs.h
-@@ -483,7 +483,6 @@ void ovl_aio_request_cache_destroy(void);
- /* copy_up.c */
- int ovl_copy_up(struct dentry *dentry);
- int ovl_copy_up_with_data(struct dentry *dentry);
--int ovl_copy_up_flags(struct dentry *dentry, int flags);
- int ovl_maybe_copy_up(struct dentry *dentry, int flags);
- int ovl_copy_xattr(struct dentry *old, struct dentry *new);
- int ovl_set_attr(struct dentry *upper, struct kstat *stat);
--- 
-2.17.1
-Thanks Amir.
-I remove the content which is not part of this patch. 
-(the message-id which I sent is wrong. so I resend it.)
+Good-Day Friend,
+
+ Hope you are doing great Today. I have a proposed business deal worthy (US$16.5 Million Dollars) that will benefit both parties. This is legitimate' legal and your personality will not be compromised.
+
+Waiting for your response for more details, As you are willing to execute this business opportunity with me.
+
+Sincerely Yours,
+Mr. Karim Zakari.
