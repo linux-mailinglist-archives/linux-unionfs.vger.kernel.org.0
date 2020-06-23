@@ -2,93 +2,105 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7923C203E28
-	for <lists+linux-unionfs@lfdr.de>; Mon, 22 Jun 2020 19:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7628205047
+	for <lists+linux-unionfs@lfdr.de>; Tue, 23 Jun 2020 13:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729864AbgFVRkL (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 22 Jun 2020 13:40:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58488 "EHLO
+        id S1732458AbgFWLPY (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 23 Jun 2020 07:15:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729836AbgFVRkL (ORCPT
+        with ESMTP id S1732245AbgFWLPR (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 22 Jun 2020 13:40:11 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13A10C061573
-        for <linux-unionfs@vger.kernel.org>; Mon, 22 Jun 2020 10:40:10 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id q8so20478814iow.7
-        for <linux-unionfs@vger.kernel.org>; Mon, 22 Jun 2020 10:40:10 -0700 (PDT)
+        Tue, 23 Jun 2020 07:15:17 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BB4BC061573
+        for <linux-unionfs@vger.kernel.org>; Tue, 23 Jun 2020 04:15:17 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id f18so2785146wml.3
+        for <linux-unionfs@vger.kernel.org>; Tue, 23 Jun 2020 04:15:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0VETalAsyRX8R2M1Qi64c0TggjJOHQ9+QXX7+R39tCk=;
-        b=a2ARfufi3PgY12LyX2uBSvHs5UjVmpEgGB7JDqbweGIndbgGw0h4vV2gYlKGgeM1nZ
-         AKxKE7dfvwm1pCI5KFfwpj9geXP90aA3uOlD3KR/HbVdV4KGYz1YTEsRkQfeixTfaxZg
-         p3I8+ojKr6R6Bs3XthlvwSkKMsPgXD3SyXCqOxt3CbqH9nFbpIw2iMp+Xp2ac6HtBWP3
-         WI7+fDDN0AXbLEyGDvL4SUXO08pVXYmDSBft/X4jhr7PcZLMfOSiVzlauWRPwm89iYtd
-         KNcldHYiMx1jlc88DjkomlBdsYvM5oWiZXfUJTnVjTrnJ9+rXxsORDOeGcCKNjzO0Gx1
-         zv/w==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=ZxmeZSlTKrBE7SIwCgUr5+IQXg0VboTRBMAPFefZfO9Y0QFQt27pNiz9D343jyqCUK
+         iaukbTFgnP7KKKusIyTazti58H93KSxj5LxKpIJd73ae/UrIM+D2EydiZsgEHWrBVUHY
+         A49p4eYwxffCDetzsfxQQ5f2VIoHaS415E/jSLFd+D1X1bKNgiZ98vBg9LdIQ7Zjx+BS
+         wClobk34EJhAFFoD4AFbiZv4S8CawNY7AMsJ0JPyNPDbdARs8NuXUDeVFTvfTpqMkwxw
+         u6E/ZhJKOYRnmbknRM2i4voRN+Bd5YK+CQapxhy1jB12K4/pkPKclZ+p4G7ceGTNd0Hh
+         pBMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0VETalAsyRX8R2M1Qi64c0TggjJOHQ9+QXX7+R39tCk=;
-        b=GUzHg6xQ6HTIidc+T5c4IsBHypvdb304CDKgUjWqDi6rWog8EQmsFFEUsNkGWGkpR7
-         IWIUXew9klU/T/v7WmF5k8L0IuArhlA0XZuqHhnu4+NcfK7im2zYy3lPfcEmOceinqKg
-         IQ03rUn7VnbcA250r6g3yDngufl409iG0YzSsPENnq/cuL6+19oqpsDHQsWb/i4JxkNZ
-         3a9ceju82tiJ/ur/ZxuBQshcnt6QpQL8euyrsYc7wgwTXdudVXTw50XBlYpzPM9yl6wh
-         XCybsm6gKzzDgRxozfwI9tZTPWDruyZvcu9Ki3CEbWJJhAOfzSk81vQZsVWV8huPxwv9
-         OpZQ==
-X-Gm-Message-State: AOAM533p+nDnpaBYIDSwXSazOfHBaqzcE4reHzTcleRnNaTCq6lwPX4f
-        AtHTLk7lo6Xe9QM+Kzw/y4ce3ciTlxLNsOM0c0vH0V79
-X-Google-Smtp-Source: ABdhPJy1FFYWQUTQYZnxsLxQaLMzTU6WzbUwNi8Xf6iCL7mgMHhRPagstznUWBi1ZEj89w4QoV1Od+ZWl/qtue2alHE=
-X-Received: by 2002:a05:6602:14d0:: with SMTP id b16mr20655206iow.5.1592847609466;
- Mon, 22 Jun 2020 10:40:09 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=BE56ihc20K9piGNvC9iQbMoexbT1XRsiHs9nH7kQqzGXyVyCooN3MjWTnZUCJk/PQy
+         dxDRr/kgjLa+4YCdHTPEo6rHWyYwNs2AsD6Yik/1aG/BpP7ClJX1jpkbfrGD9XvD6yYr
+         bgc70szHV3Zmm0FKUdbE14D0wk+MmSZaIE1/xGF1jCIvbsiC2mDhkh1hDHKsiQSzopcK
+         2+q+W1iZnSG3++nSFAlY0d8QLDccz8QP1OpQEQp0JkMDRBfjKo3wVuaVOqRb6splUnWT
+         kJmheGPMWjF9q9G9YkDc8U/xYi/osEuKJDGn8g4cxJE7RSksF1NdMEjErJj2dS9w0mWc
+         4HrQ==
+X-Gm-Message-State: AOAM531YVHUTlN68Sz+zm9OL3ds1c/WvI48L3gyfTCRRSxyBByhuBnHd
+        9rG4xedjgbUUctBf6VEhEAYjd2yX3kv24cc4heo=
+X-Google-Smtp-Source: ABdhPJzAyLvva5MDt9FtQlBzIToXQYgdJw2LiJAYqbGSCL3ZKk62C2z69LEYyraGzIlr1C9AOifE6eGCp9CB5XxUKNE=
+X-Received: by 2002:a05:600c:2317:: with SMTP id 23mr2028887wmo.72.1592910915898;
+ Tue, 23 Jun 2020 04:15:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200622172155.73579-1-her0gyugyu@gmail.com>
-In-Reply-To: <20200622172155.73579-1-her0gyugyu@gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Mon, 22 Jun 2020 20:39:58 +0300
-Message-ID: <CAOQ4uxiv9jn=uyeev3_gdPwhZE__0PaorFk+jtyD15d73O6N9w@mail.gmail.com>
-Subject: Re: [PATCH] ovl: credential not reverted in ovl_copy_up_flags on
- error case
-To:     youngjun <her0gyugyu@gmail.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        overlayfs <linux-unionfs@vger.kernel.org>
+Received: by 2002:a1c:f002:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 04:15:15
+ -0700 (PDT)
+Reply-To: sarahkoffi389@yahoo.co.jp
+From:   Sarah Koffi <paulwiliam782@gmail.com>
+Date:   Tue, 23 Jun 2020 12:15:15 +0100
+Message-ID: <CAHqcnY1KD3hKmPHEgt8yiB2mN+LLiSnOh+cvFm_AesZ7xtOqUQ@mail.gmail.com>
+Subject: Greetings From Mrs. Sarah Koffi
+To:     sarahkoffi389@yahoo.co.jp
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Mon, Jun 22, 2020 at 8:24 PM youngjun <her0gyugyu@gmail.com> wrote:
->
-> In "ovl_copy_up_flags" on disconnected dir case(error case),
-> credential not reverted.
->
-> Fixes: aa3ff3c152ff9("ovl: copy up of disconnected dentries")
-> Signed-off-by: youngjun <her0gyugyu@gmail.com>
-> ---
->  fs/overlayfs/copy_up.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-> index 79dd052c7dbf..53daa54ac859 100644
-> --- a/fs/overlayfs/copy_up.c
-> +++ b/fs/overlayfs/copy_up.c
-> @@ -906,8 +906,10 @@ int ovl_copy_up_flags(struct dentry *dentry, int flags)
->          * In this case, we will copy up lower inode to index dir without
->          * linking it to upper dir.
->          */
-> -       if (WARN_ON(disconnected && d_is_dir(dentry)))
-> +       if (WARN_ON(disconnected && d_is_dir(dentry))) {
-> +               revert_creds(old_cred);
->                 return -EIO;
-> +       }
->
+Greetings From Mrs. Sarah Koffi
 
-It is better to move ovl_override_creds() after the WARN_ON test.
-which does not require any credentials.
+I'm contacting you based on your good profiles I read and for a good
+reasons, I am in search of a property to buy in your country as I
+intended to come over to your
+country for investment, Though I have not meet with you before but I
+believe that one has to risk confiding in someone to succeed sometimes
+in life.
 
-Thanks,
-Amir.
+My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
+Federal Government of Sudan and he has a personal Oil firm in Bentiu
+Oil zone town and Upper
+Nile city. What I have experience physically, I don't wish to
+experience it again in my life due to the recent civil Ethnic war
+cause by our President Mr. Salva Kiir
+and the rebel leader Mr Riek Machar, I have been Under United Nation
+refuge camp in chad to save my life and that of my little daughter.
+
+Though, I do not know how you will feel to my proposal, but the truth
+is that I sneaked into Chad our neighboring country where I am living
+now as a refugee.
+I escaped with my little daughter when the rebels bust into our house
+and killed my husband as one of the big oil dealers in the country,
+ever since then, I have being on the run.
+
+I left my country and move to Chad our neighboring country with the
+little ceasefire we had, due to the face to face peace meeting accord
+coordinated by the US Secretary of State, Mr John Kerry and United
+Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
+and the rebel leader Mr Riek Machar to stop this war.
+
+I want to solicit for your partnership with trust to invest the $8
+million dollars deposited by my late husband in Bank because my life
+is no longer safe in our country, since the rebels are looking for the
+families of all the oil business men in the country to kill, saying
+that they are they one that is milking the country dry.
+
+I will offer you 20% of the total fund for your help while I will
+partner with you for the investment in your country.
+If I get your reply.
+
+I will wait to hear from you so as to give you details.With love from
+
+ i need you to contact me here sarahkoffi389@yahoo.co.jp
+
+Mrs. Sarah Koffi
