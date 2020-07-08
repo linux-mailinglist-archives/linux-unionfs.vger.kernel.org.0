@@ -2,96 +2,109 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9362F218773
-	for <lists+linux-unionfs@lfdr.de>; Wed,  8 Jul 2020 14:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 415912188B9
+	for <lists+linux-unionfs@lfdr.de>; Wed,  8 Jul 2020 15:16:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729237AbgGHMdf (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 8 Jul 2020 08:33:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60360 "EHLO
+        id S1729167AbgGHNQ3 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 8 Jul 2020 09:16:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729245AbgGHMdc (ORCPT
+        with ESMTP id S1729069AbgGHNQ3 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 8 Jul 2020 08:33:32 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B24E6C08E85B
-        for <linux-unionfs@vger.kernel.org>; Wed,  8 Jul 2020 05:33:30 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id d18so4664178ion.0
-        for <linux-unionfs@vger.kernel.org>; Wed, 08 Jul 2020 05:33:30 -0700 (PDT)
+        Wed, 8 Jul 2020 09:16:29 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B0C8C08C5DC
+        for <linux-unionfs@vger.kernel.org>; Wed,  8 Jul 2020 06:16:29 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id 22so3076184wmg.1
+        for <linux-unionfs@vger.kernel.org>; Wed, 08 Jul 2020 06:16:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
-        b=CtDA46Te1kJYGFqAkgr9Vub/YrG6WB2S+VlEURQEEM4x6m9sjli+Jz/yotFRmV/AMR
-         T/h2d+e8At09eChsFX2C+mUFLH+FsdwAy78KAtzHqTPpG69rhvmbmMUpZSALFUdgKxT3
-         rKV4TF8A0J+Za5tWsTPtObTKnCJJSeTUvLM0KCUCLapZUiUA/CE0qJguNsnmAcBYT7Bw
-         PUSSiRKtit7eL05YbTu8d4vZk3Rk52mtpEQs926eluhEg6IUrqIesfOKILheZFFzZp0P
-         0kRnPxRkSyAb2gIupk6cQmoDhkGW5ga2ONIfRh7Ui0T+vXHI9OfE4hLpnUDNkQjQgdsE
-         pxTA==
+        h=from:to:cc:subject:date:message-id;
+        bh=C+weSM7SmGUDidr6DMCAWtk9egU2z5p5ksX2U0k8Fiw=;
+        b=L+YSQBp/YOAlJwVbLHGdRDE2clq78gn36EpXIGUpUXsFTdyEyZimh+BnqZBaQS3Hm6
+         P7DEUwr90iL/NL0/RH0yQ/JG7SUsOsn+jUKDJ4CP9SDzr1JXq8vuatPDpOudW+rwLXJC
+         q5xGf3xTXqtH8rHqaXtrtPbnddmk0Qb/r+2PWOR+1TuBCOf24ZIG4ntryDXR/X7zZ+pQ
+         pXoe799b9M2dnTVs0N42VcLeY1CWIyl+smx1LlgP+GHF80YfqrmsGSqQE8eVot35snoi
+         Ud4nFJ7F9pmdhBTZygbaCDGmh1NTmARdI3d9P3piq7unFUKcPDwuYZ1Hy63RMxYlxC7k
+         wtNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
-        b=qRTlqxXlPjqngSv9AEDckA1q5vFg2xsiohBCA0qFuussV/B+h6L0xT8+1YjeSUsPDp
-         wx1JDu6TtWcbtbrjvTF0vQyBAbvZslfyi8FN5m8roNPovRwF5jcN8CiUMwngS0oMLlpQ
-         GkvdH9NP/xY+SycwO1OjTtdcMjsG2hMyX+ihqs1jhR8wfr8zk0WTk1ETr9/d6vESdEvl
-         TbhjspjItx1+UzMMVOQbyeQnzqdcejQZmrJJCDsCh/saKUH4d9+4354HApagB+Uy89kv
-         qW2Q6eviR65HFlIoK9bPx5ySAcL5qrx3Qu1LEqdw/uG5efWPmC/cU7KsgZfJXZYzl1O9
-         Anbw==
-X-Gm-Message-State: AOAM5337HNhRK8ApG3byVsVF+XSBkIrIAOg0fFgWAn5QRLfhda7dx0T5
-        qiUY5YVVZ/6OhOqn4PZRT9QzuUNeRoonZapyUQg=
-X-Google-Smtp-Source: ABdhPJy69qBRFRW2d2u+0xyGHVfmVbQRW6SQ4gKLQIvGwSNWfhZDhNcIlxNh+7AirNZFy3An0aJSkt25Q8y7juQZu8o=
-X-Received: by 2002:a05:6638:12c7:: with SMTP id v7mr64754290jas.56.1594211609022;
- Wed, 08 Jul 2020 05:33:29 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a05:6602:1582:0:0:0:0 with HTTP; Wed, 8 Jul 2020 05:33:28
- -0700 (PDT)
-Reply-To: mmsafiatou057@gmail.com
-From:   "Mrs. Safitaou Zoungrana" <richardlaurentdr@gmail.com>
-Date:   Wed, 8 Jul 2020 12:33:28 +0000
-Message-ID: <CALJAiTVXhrKZYOHVoupnx6hmXXD0i2k4MOSO6HW+mj1BAydXhA@mail.gmail.com>
-Subject: My Dear Beloved One,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=C+weSM7SmGUDidr6DMCAWtk9egU2z5p5ksX2U0k8Fiw=;
+        b=IWRERMCR4HriD+VXnoSa4DRCkGb7QGjxUjsb0dXClizIDsIN4IzFL/UIA8FgEkmspG
+         UfNy3Ur3K9OYRnzlrOYG64zyT2LAXXFTPhj6ALixezD3ZSLleTP+gXxDf+xisR0vFkI4
+         BwJm/AmjunQjw3VcK9BYUGDREg8tK3jtfYooXDUCo8NNUDhOJPwUHRoaYSHKBbilkEF0
+         ym1pboiDmM7LwVv+vwAa8AfUc91eW9FzReudd8zQN8tz74gdga7vKPEpOmbBrMLSA8wp
+         njO7AiHN5fk34kBlEU6Wi1+hHAgM5M/GfFWbKy0IXMFY26kPWa52xbPUJNPYlOPY0hOA
+         kpfg==
+X-Gm-Message-State: AOAM533fhe3MF/JKQyfQ3mqkBpEjnSy3jUiH6cXkE6US0hadh/VJ74og
+        l5y6oiBE9R8calA+S9uwq3JVA/SV
+X-Google-Smtp-Source: ABdhPJz9FogQubbtFNDjbFKBQig5XDGDR+HvPlmG0a2hbb51kAfNIYW3j9B8hF2qDgAcvLo5fD/OvQ==
+X-Received: by 2002:a1c:2183:: with SMTP id h125mr9923393wmh.83.1594214188104;
+        Wed, 08 Jul 2020 06:16:28 -0700 (PDT)
+Received: from localhost.localdomain ([141.226.183.23])
+        by smtp.gmail.com with ESMTPSA id f16sm6006460wmf.17.2020.07.08.06.16.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2020 06:16:27 -0700 (PDT)
+From:   Amir Goldstein <amir73il@gmail.com>
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     Fabian <godi.beat@gmx.net>, linux-unionfs@vger.kernel.org
+Subject: [PATCH] ovl: fix regression with re-formatted lower squashfs
+Date:   Wed,  8 Jul 2020 16:16:13 +0300
+Message-Id: <20200708131613.30038-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-My Dear Beloved One,
+Commit 9df085f3c9a2 ("ovl: relax requirement for non null uuid of lower
+fs") relaxed the requirement for non null uuid with single lower layer to
+allow enabling index and nfs_export features with single lower squashfs.
 
-I greet you in the name of God almighty the givers of all good things
-in life. Please kindly pardon me for any inconvenience this letter may
-cost you because I know it may come to you as a surprise as we have no
-previous correspondence.  I sent this mail praying for it to reach you
-in good health, since I myself are in a very critical health condition
-in which I sleep every night without knowing if I may be alive to see
-the next day.
+Fabian reported a regression in a setup when overlay re-uses an existing
+upper layer and re-formats the lower squashfs image.  Because squashfs
+has no uuid, the origin xattr in upper layer are decoded from the new
+lower layer where they may resolve to a wrong origin file and user may
+get an ESTALE or EIO error on lookup.
 
-I am Mrs. Safiatou Zoungrana,  the wife of late Engineer Ralph
-Alphonso Zoungrana from Paris France but based here in Burkina Faso
-West Africa since eight years ago as a business woman dealing with
-gold exportation and Sales. We have been married for years before his
-sudden death although we were childless. I have been diagnosed with
-ovarian cancer and I have been battling with the sickness when my late
-lovely husband of a blessed memory was alive. May his soul rest in
-peace, Amen.
+To avoid the reported regression while still allowing the new features
+with single lower squashfs, do not allow decoding origin with lower null
+uuid unless user opted-in to one of the new features that require
+following the lower inode of non-dir upper (index, xino, metacopy).
 
-My late Husband left the sum of =E2=82=AC7.900.000.00 Seven Million Nine
-Hundred Thousand Euros in a fix/suspense account in one of the prime
-bank here in Burkina Faso. Recently, my Doctor told me that I have few
-days to live due to the cancer problem. The one that disturbs me most
-is my blood pressure sickness.
+Reported-by: Fabian <godi.beat@gmx.net>
+Link: https://lore.kernel.org/linux-unionfs/32532923.JtPX5UtSzP@fgdesktop/
+Fixes: 9df085f3c9a2 ("ovl: relax requirement for non null uuid...")
+Cc: stable@vger.kernel.org # v4.20+
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+---
+ fs/overlayfs/super.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-Having known my health condition I decided to seek for your kind
-assistance to transfer this fund into your account and you will use it
-to establish an orphanage home in my name. I will give you more
-details about the project as soon as I receive your reply in my
-private email (mmsafiatou057@gmail.com) to handle this project because
-I do not want to state all here until I see your reply, desire and
-commitment to handle this project.
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 15939ab39c1c..06ec3cb977e6 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1402,6 +1402,18 @@ static bool ovl_lower_uuid_ok(struct ovl_fs *ofs, const uuid_t *uuid)
+ 	if (!ofs->config.nfs_export && !ovl_upper_mnt(ofs))
+ 		return true;
+ 
++	/*
++	 * We allow using single lower with null uuid for index and nfs_export
++	 * for example to support those features with single lower squashfs.
++	 * To avoid regressions in setups of overlay with re-formatted lower
++	 * squashfs, do not allow decoding origin with lower null uuid unless
++	 * user opted-in to one of the new features that require following the
++	 * lower inode of non-dir upper.
++	 */
++	if (!ofs->config.index && !ofs->config.metacopy && !ofs->config.xino &&
++	    uuid_is_null(uuid))
++		return false;
++
+ 	for (i = 0; i < ofs->numfs; i++) {
+ 		/*
+ 		 * We use uuid to associate an overlay lower file handle with a
+-- 
+2.17.1
 
-My Regards to your family.
-Mrs. Safiatou Zoungrana.
