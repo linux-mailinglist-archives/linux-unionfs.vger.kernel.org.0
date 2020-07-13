@@ -2,101 +2,106 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C0FA21D835
-	for <lists+linux-unionfs@lfdr.de>; Mon, 13 Jul 2020 16:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4EC521D836
+	for <lists+linux-unionfs@lfdr.de>; Mon, 13 Jul 2020 16:19:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730021AbgGMOTz (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 13 Jul 2020 10:19:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56354 "EHLO
+        id S1730050AbgGMOT5 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 13 Jul 2020 10:19:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729659AbgGMOTz (ORCPT
+        with ESMTP id S1729659AbgGMOT5 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 13 Jul 2020 10:19:55 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AACAC061755
-        for <linux-unionfs@vger.kernel.org>; Mon, 13 Jul 2020 07:19:55 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id o2so13346686wmh.2
-        for <linux-unionfs@vger.kernel.org>; Mon, 13 Jul 2020 07:19:55 -0700 (PDT)
+        Mon, 13 Jul 2020 10:19:57 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0076AC061755
+        for <linux-unionfs@vger.kernel.org>; Mon, 13 Jul 2020 07:19:56 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id o2so13346778wmh.2
+        for <linux-unionfs@vger.kernel.org>; Mon, 13 Jul 2020 07:19:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=CF35P0ICQFNHJuAP+TJn7xyU+B+CjPxp5kEDL7YU3E8=;
-        b=a7laz5DkOXzA/wVkc6AsBRncd/Bj1DaHYGyLS07MAfYPtid4TyHtEQxNM+KGwZQEie
-         I2E++7rpVL4JvQeSd8+7FZuHV+xSsjF/FQPAP/4qANvL2mQSc+UTNOqg+K7HSEyksrob
-         BfJYzCTP04TjapuKMZKRGUg8W4D9naNCawYKyu45t+4a60gWYdKPrVCHLLheHos/AENk
-         VCGm2LV4ecG5naPZbMvLqzhogXMchAF02Q1XZOP5l8cFd3YQPaPnfPNDgNKr+NJV74qJ
-         wkFsr/TUEn+oUda2ozUFUHX3pStiMb8KyOwRXl+ImuPdJLum8gRa5m4x5KsQdQ9JG2NI
-         SgRQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=s/tJ2tVhwkzCFnUVD1krC2IRsi+8XkybACDah8AUlOg=;
+        b=l2FU1jz4CaB3ru8mxi/A/55n5Ckb3NsbHI+R/Z/NIj3GM6xOESMVqHcx+4A8H7mDge
+         CUnhsYwjM/AKEOPnoTTaT90Uhq4jEerqUTTJ25pJhecOMcFhibzGvfTymfAS0x7qT5jp
+         5d7vjs+3T5o+4YDUG1kz0VP60Iv7BtY7qTS2PmfhZ/00Xlzlx8E+wYPweix8aE42Y/nv
+         64jMdYv0wlNkfDxQff+ciCmYJy+prI9KN9J3paTWAm5lzcww0N+wojvb8h+piVFsaHrX
+         nLyf0IYEyNznB3qv0WvsurY43HjugqnGFWNCWNPBhpUXhCbve1TyW3RFZrCgiEKwvSAX
+         6RVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=CF35P0ICQFNHJuAP+TJn7xyU+B+CjPxp5kEDL7YU3E8=;
-        b=oT//zLlQGTYvJVZ4VxSDx4PgfSvO5asOwyVC5SAsrERGX/l0d3aSFEIOZuHQtWtJYB
-         z8ZxiNJSKH66bKfBXc5KYfQcoTB4DZYVlD3xgK+lb91crybmj/OJKR8f+HTL3l3ISHeZ
-         KgK7FJN71KbGfNLVnrurZckOvMByrqRDUJEewvWLUQRJ75mpQSQlyxEL6d8BFAc0BnnE
-         K1GeqvgVx9ONh179rV7WTsHlny+ki2Ab0hjdzlSLlon3rGI6c6P9TDHeytSm85kblsyX
-         voHhDJAfJSzgfZZvfP+eVUVT7Fq/wQQaI7c4Y6bGPkOeKEyNq0Jgm1T1zRp3T6EPSldZ
-         3JjQ==
-X-Gm-Message-State: AOAM533/lSx1HZjTJqu0uHmol6rCfCCGbJ/dORUBfOuhflrOnHzYKOoi
-        Ttl0gPq7BH35xA4fyc7y3nhmH18r
-X-Google-Smtp-Source: ABdhPJzHKH4BLTGqnSx6TlIpUFSqrM9IB/BiBXs7Eqknjamk1YzczxoKzGrL3vxvbV9fkImCCJMi4A==
-X-Received: by 2002:a7b:c208:: with SMTP id x8mr176876wmi.49.1594649994191;
-        Mon, 13 Jul 2020 07:19:54 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=s/tJ2tVhwkzCFnUVD1krC2IRsi+8XkybACDah8AUlOg=;
+        b=YiVZZqvR4LOpfSZx4bFaExgG8DnYZDrTrkVd4JHhwAm7l3I5sJ7GJ3k1+JJ4XcHo8n
+         aw9EOdosxoHQJFOaFa4Ddt1MEikgJkXj/kQ4iD1RzsVFTBhRv71iLViHAg79IylkVZ5H
+         dzk5g5Of+3YZxRtpSAyZeECbUoXWwLUhDGpDwl5Cw0hm98Jts5Wpno0yaJrDJ+lIByCW
+         XIL8kCciOD9dkbDFpbowEjtXl7lB0PPts/PSw3ELPYRecXvrrXzOZiAeY9yPlh3MmoZ7
+         suZouidBHpjkOywvcGPmD86AmTdeeH60H5pq4iwJbe9ghNuWZkQjLC7Dr2ySAeuoyPue
+         rmpw==
+X-Gm-Message-State: AOAM532fpN+0kGWKVkeGDEGTkd0A4s3+mCxxHkikwwgXT69If6ESCnCc
+        UbXmv8mSUD9jLIcRxT4+su3UWiCj
+X-Google-Smtp-Source: ABdhPJyUd0PMThUgXhQBseb2MGqVnnUfrO847WNShaLt7rmemVeaTnktAVOqDr0ON9VHEbLQUQCasg==
+X-Received: by 2002:a7b:c394:: with SMTP id s20mr200266wmj.31.1594649995749;
+        Mon, 13 Jul 2020 07:19:55 -0700 (PDT)
 Received: from localhost.localdomain ([141.226.183.23])
-        by smtp.gmail.com with ESMTPSA id 1sm21681024wmf.21.2020.07.13.07.19.52
+        by smtp.gmail.com with ESMTPSA id 1sm21681024wmf.21.2020.07.13.07.19.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2020 07:19:53 -0700 (PDT)
+        Mon, 13 Jul 2020 07:19:55 -0700 (PDT)
 From:   Amir Goldstein <amir73il@gmail.com>
 To:     Miklos Szeredi <miklos@szeredi.hu>
 Cc:     Vivek Goyal <vgoyal@redhat.com>, linux-unionfs@vger.kernel.org
-Subject: [PATCH 0/3] Misc. redirect_dir=nofollow fixes
-Date:   Mon, 13 Jul 2020 17:19:42 +0300
-Message-Id: <20200713141945.11719-1-amir73il@gmail.com>
+Subject: [PATCH 1/3] ovl: force read-only sb on failure to create index dir
+Date:   Mon, 13 Jul 2020 17:19:43 +0300
+Message-Id: <20200713141945.11719-2-amir73il@gmail.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200713141945.11719-1-amir73il@gmail.com>
+References: <20200713141945.11719-1-amir73il@gmail.com>
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Miklos, Vivek,
+With index feature enabled, on failure to create index dir, overlay
+is being mounted read-only.  However, we do not forbid user to remount
+overlay read-write.  Fix that by setting ofs->workdir to NULL, which
+prevents remount read-write.
 
-Following discussion on following an unsafe non-dir origin [1]
-and in a addition to a fix for the reported null uuid case [2] and to
-Vivek's doc clarification [3], I am proposing to piggy back existing
-config redirect_dir=nofollow to also not follow non-dir origin.
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+---
+ fs/overlayfs/super.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-Like in the case of non-dir origin, following redirects behavior was
-added with no opt-out option in kernel v4.10.  Later security concerns
-about following malformed redirects resulted in the redirect_dir=nofollow
-config option.
-
-Without giving too much thought into how unsafe it can be to follow
-a bad origin, there is very low motication IMO to follow non-dir origin
-with redirect_dir=nofollow, because it is a configuration that prefers
-safety over correctness, so it just seems like the right thing to do.
-
-The first two patches are independent bug fixes related to read-only
-NFS export, which can be taken regardless of non-dir origin nofollow.
-FYI, I found those bugs because I am using ro,index=off NFS export
-configuration for the new overlay fsnotify snaphsot series.
-
-Thanks,
-Amir.
-
-[1] https://lore.kernel.org/linux-unionfs/CAJfpegv9h7ubuGy_6K4OCdZd3R7Z4HGmCDB2L7mO5bVoGd6MSA@mail.gmail.com/
-[2] https://lore.kernel.org/linux-unionfs/20200708131613.30038-1-amir73il@gmail.com/
-[3] https://lore.kernel.org/linux-unionfs/20200709140220.GC150543@redhat.com/
-
-Amir Goldstein (3):
-  ovl: force read-only sb on failure to create index dir
-  ovl: fix mount option checks for nfs_export with no upperdir
-  ovl: do not follow non-dir origin with redirect_dir=nofollow
-
- Documentation/filesystems/overlayfs.rst |  4 +--
- fs/overlayfs/namei.c                    |  2 +-
- fs/overlayfs/super.c                    | 42 ++++++++++++++-----------
- 3 files changed, 27 insertions(+), 21 deletions(-)
-
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 4b7cb2d98203..41d7fe2b8129 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1374,12 +1374,13 @@ static int ovl_get_indexdir(struct super_block *sb, struct ovl_fs *ofs,
+ 		goto out;
+ 	}
+ 
++	/* index dir will act also as workdir */
++	iput(ofs->workdir_trap);
++	ofs->workdir_trap = NULL;
++	dput(ofs->workdir);
++	ofs->workdir = NULL;
+ 	ofs->indexdir = ovl_workdir_create(ofs, OVL_INDEXDIR_NAME, true);
+ 	if (ofs->indexdir) {
+-		/* index dir will act also as workdir */
+-		iput(ofs->workdir_trap);
+-		ofs->workdir_trap = NULL;
+-		dput(ofs->workdir);
+ 		ofs->workdir = dget(ofs->indexdir);
+ 
+ 		err = ovl_setup_trap(sb, ofs->indexdir, &ofs->indexdir_trap,
+@@ -1884,7 +1885,7 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
+ 	if (!ovl_upper_mnt(ofs))
+ 		sb->s_flags |= SB_RDONLY;
+ 
+-	if (!(ovl_force_readonly(ofs)) && ofs->config.index) {
++	if (!ovl_force_readonly(ofs) && ofs->config.index) {
+ 		err = ovl_get_indexdir(sb, ofs, oe, &upperpath);
+ 		if (err)
+ 			goto out_free_oe;
 -- 
 2.17.1
 
