@@ -2,98 +2,132 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0ECB221BB8
-	for <lists+linux-unionfs@lfdr.de>; Thu, 16 Jul 2020 07:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5DBA2223C9
+	for <lists+linux-unionfs@lfdr.de>; Thu, 16 Jul 2020 15:22:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726234AbgGPFBA (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 16 Jul 2020 01:01:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44530 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725935AbgGPFBA (ORCPT
+        id S1728096AbgGPNW2 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 16 Jul 2020 09:22:28 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:50338 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727044AbgGPNW1 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 16 Jul 2020 01:01:00 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AC02C061755
-        for <linux-unionfs@vger.kernel.org>; Wed, 15 Jul 2020 22:01:00 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id a12so4675796ion.13
-        for <linux-unionfs@vger.kernel.org>; Wed, 15 Jul 2020 22:01:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Nywb/JnF+FFmI97dAm2KUbe0k7mzDPxA7A1OvkMH4OM=;
-        b=Nuwi5yVNJwTsQa//c59IkvxBnD2oVpgxGa0P98DKf/CYbCvR9YIxLxEjKGs2L1v5/3
-         6c7ig9F+rEicHGcWoe9dFAItTX1FzVz5U2EjqGOG5/l6znCh9nrticTfumn2xPDBXx2+
-         /RxqnMlRRPrUsSOrEWJ+OqkhcKNvMfDNDXoc4r7ZBbTW0uAmxYfCTPM0kheaW0rwl0LU
-         JTufMzdcOfIEZJhHRgS7Hu5Lm+ddzEZ79X171V+p2Kgs2kRS5eKGmg/6pfwr453glAT9
-         YzpDbn5ZET3XX5Qxw3ToESg4RHoXbuGQ6yDApqBp+caq19/LbQcj2zhDVdnvQJEli0yP
-         ST3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Nywb/JnF+FFmI97dAm2KUbe0k7mzDPxA7A1OvkMH4OM=;
-        b=WdjY1Y6YR0/fesTHzvyUjULFM8gEOwHlfc/KQBevvuPjoyg1ojO26dRHlLW+t1SOUZ
-         JzgKjfVk/fz3qtpjb0rgkl/mt0dPAN1dwDm14MtVH7FoEItSXy0aWrKr6OaDIMOSXGSw
-         0wUQdOZRQGC72MkKpq9TUKkhIgJURj3YvNtWVC1JLjd6MQ8dN2SNlqr0clfVG1u96THd
-         h58j0i/N4Jorn3KACCiBexRVY/S+1eEpwg5heAUuFEUmIOSlt9asTd3kpMyIwyJKxodi
-         MZa24Co8Gvuow1MQaFYb+OTVR86InEjrxrJ35A9cNDsdP+PhHfGI9JbqN3pAM2Zpjpix
-         lOqw==
-X-Gm-Message-State: AOAM533m9OVNtp586XJTXv09aHRrnMp3FQLi8fecMdMx7XyZiYtWOOEl
-        XOWks6yvQoZ3BnQKDWk4oTYbvRozrUk8PQZ1pos=
-X-Google-Smtp-Source: ABdhPJzAzLaWtPb3Iz4yIkgXtd7Nt+oOZ9yRBpdz4WyRo0slcogavfiiJAI1a2lPm7AQb5dvc0kPQH+RWpX+G75rrBg=
-X-Received: by 2002:a05:6638:61b:: with SMTP id g27mr3138551jar.123.1594875659500;
- Wed, 15 Jul 2020 22:00:59 -0700 (PDT)
+        Thu, 16 Jul 2020 09:22:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1594905746;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=VYQ3P4Qmt9yiO1Oqv3ZgBkO8+VeoHrsbGfSYDAVsJiA=;
+        b=ZBq4BXAcAzkoCQ4rko8TitR6U5nmnAm8NMixSZTrai4stdpeV2nKtibHVbDyr7JFVzXhhM
+        yoqRsg8OWxaLY/NgsoyfTVsKLpoEOA4lF8wqe+n5/lq5UZkniRHyV9VYdUlTDWDkSFAaup
+        HJ1vN8+fmw9rZBGTHlZsRW6YYYFeOwg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-458-6DjtKoWlPHue2OzvJCBiJw-1; Thu, 16 Jul 2020 09:22:23 -0400
+X-MC-Unique: 6DjtKoWlPHue2OzvJCBiJw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C66318015FB;
+        Thu, 16 Jul 2020 13:22:21 +0000 (UTC)
+Received: from horse.redhat.com (ovpn-114-241.rdu2.redhat.com [10.10.114.241])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6ABD360C47;
+        Thu, 16 Jul 2020 13:22:21 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+        id 0788F225777; Thu, 16 Jul 2020 09:22:20 -0400 (EDT)
+Date:   Thu, 16 Jul 2020 09:22:20 -0400
+From:   Vivek Goyal <vgoyal@redhat.com>
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org
+Subject: Re: [PATCH] ovl: fix lookup of indexed hardlinks with metacopy
+Message-ID: <20200716132220.GA422759@redhat.com>
+References: <20200715133808.7146-1-amir73il@gmail.com>
 MIME-Version: 1.0
-References: <20200713141945.11719-1-amir73il@gmail.com> <20200713141945.11719-2-amir73il@gmail.com>
- <20200714181804.GF324688@redhat.com> <CAOQ4uxj_GMcWvSGSWkTQvKj2gPCP1=R9T-t=baDrH+V3Q1mPrQ@mail.gmail.com>
- <20200714183819.GH324688@redhat.com> <CAJfpegsW_FHO5He1VdKvE6KG02S=47-Nv=6O2Wh5xARUn40bfw@mail.gmail.com>
-In-Reply-To: <CAJfpegsW_FHO5He1VdKvE6KG02S=47-Nv=6O2Wh5xARUn40bfw@mail.gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 16 Jul 2020 08:00:48 +0300
-Message-ID: <CAOQ4uxg4-zsCUKHzefr2jRhBnzW-=Di1_HnZroDa8RthitHPuw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ovl: force read-only sb on failure to create index dir
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Vivek Goyal <vgoyal@redhat.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200715133808.7146-1-amir73il@gmail.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-> > I dont see it here.
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/vfs.git/log/?h=overlayfs-next
-> >
-> > Is there another tree/branch miklos is maintaining which I should use? Or
-> > you just happen to know that Miklos has committed this internally and
-> > not published yet.
->
-> Will push shortly to #overlayfs-next.
->
+On Wed, Jul 15, 2020 at 04:38:08PM +0300, Amir Goldstein wrote:
+> We recently moved setting inode flag OVL_UPPERDATA to ovl_lookup().
+> 
+> When looking up an overlay dentry, upperdentry may be found by index
+> and not by name.  In that case, we fail to read the metacopy xattr
+> and falsly set the OVL_UPPERDATA on the overlay inode.
+> 
+> This caused a regression in xfstest overlay/033 when run with
+> OVERLAY_MOUNT_OPTIONS="-o metacopy=on".
+> 
+> Fixes: 28166ab3c875 ("ovl: initialize OVL_UPPERDATA in ovl_lookup()")
+> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 
-Miklos,
+Reviewed-by: Vivek Goyal <vgoyal@redhat.com>
 
-Thanks for the notice.
-I think it is good practice to announce when #overlayfs-next is updated and
-ask if anyone knows of a patch that fell under the chairs.
-I see that other maintainers do that sometimes.
+Good catch Amir. Thanks.
 
-I am missing two of my patches that I wonder if you left out intentionally
-or did not get to yet:
 
-1. ovl: fix unneeded call to ovl_change_flags()
+> ---
+> 
+> Miklos,
+> 
+> I just ran xfstests -g overlay/quick tests with metacopy enabled
+> and one test failed.
+> 
+> Vivek,
+> 
+> Do you by any chance run this sort of test regularly?
 
-One month old posting, so maybe it skipped your radar.
-Seems like an obvious fix and needed for stable too.
+No I don't. I will start testing this configuration. Actually I don't
+have any automated setup and all the testing I do manually. I think
+its time that atleast I have a script which runs bunch of tests
+always.
 
-2. ovl: fix lookup of indexed hardlinks with metacopy
+> 
+> You have asked about running unionmount tests with metacopy before.
+> I just pushed a commit to my xfstests 'unionmount' branch:
+>   7859f22b ovl: test unionmount tests with metacopy
+> 
+> It allows you to run xfstests -g overlay/union with
+> OVERLAY_MOUNT_OPTIONS="-o metacopy=on", to excercise all the unionmount
+> test configurations I created with metacopy enabled.
 
-From yesterday, so perhaps you did not get to it yet.
-v5.8-rc1 regression.
+Nice, I will check it out. Will be nice if this gets pushed to
+xfstest tree.
 
-They are both pushed to my rebased ovl-fixes branch.
+Thanks
+Vivek
 
-Thanks,
-Amir.
+> 
+> Maybe not so surprising that the sub-group overlay/union.nested tests
+> fail with metacopy enabled. This is just a test setup bug and I pushed
+> a fix commit to unionmount overlayfs-devel branch to fix it.
+> 
+> Thanks,
+> Amir.
+> 
+>  fs/overlayfs/namei.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
+> index 3566282a9199..0c5a624600c1 100644
+> --- a/fs/overlayfs/namei.c
+> +++ b/fs/overlayfs/namei.c
+> @@ -1073,6 +1073,10 @@ struct dentry *ovl_lookup(struct inode *dir, struct dentry *dentry,
+>  			upperredirect = NULL;
+>  			goto out_free_oe;
+>  		}
+> +		err = ovl_check_metacopy_xattr(upperdentry);
+> +		if (err < 0)
+> +			goto out_free_oe;
+> +		uppermetacopy = err;
+>  	}
+>  
+>  	if (upperdentry || ctr) {
+> -- 
+> 2.17.1
+> 
+
