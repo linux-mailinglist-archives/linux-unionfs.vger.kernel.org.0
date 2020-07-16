@@ -2,132 +2,131 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5DBA2223C9
-	for <lists+linux-unionfs@lfdr.de>; Thu, 16 Jul 2020 15:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE92D2223E1
+	for <lists+linux-unionfs@lfdr.de>; Thu, 16 Jul 2020 15:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728096AbgGPNW2 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 16 Jul 2020 09:22:28 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:50338 "EHLO
+        id S1728119AbgGPN1t (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 16 Jul 2020 09:27:49 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:27647 "EHLO
         us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727044AbgGPNW1 (ORCPT
+        by vger.kernel.org with ESMTP id S1728248AbgGPN1s (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 16 Jul 2020 09:22:27 -0400
+        Thu, 16 Jul 2020 09:27:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1594905746;
+        s=mimecast20190719; t=1594906067;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=VYQ3P4Qmt9yiO1Oqv3ZgBkO8+VeoHrsbGfSYDAVsJiA=;
-        b=ZBq4BXAcAzkoCQ4rko8TitR6U5nmnAm8NMixSZTrai4stdpeV2nKtibHVbDyr7JFVzXhhM
-        yoqRsg8OWxaLY/NgsoyfTVsKLpoEOA4lF8wqe+n5/lq5UZkniRHyV9VYdUlTDWDkSFAaup
-        HJ1vN8+fmw9rZBGTHlZsRW6YYYFeOwg=
+        bh=2DpcnHmBCFXpU5RsivSoJZI/dcs6lw01BCUSAkRxywc=;
+        b=bMnjeHGOSXH6Guc9D7UjIpBz/iR6Qr5BQuBsjEVQpKBV1nSQzWOp4Ef1dUzBPNVNbjW5OU
+        vE6iVgJA5eHMUzBMTtZxy5a0F9157cUU9bYI1vupBRs+qC3YiZp4Bi1WI/HSHHbudqQO0h
+        8JNyU9VwdGcd300ghpO0EMHCnRyyekY=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-458-6DjtKoWlPHue2OzvJCBiJw-1; Thu, 16 Jul 2020 09:22:23 -0400
-X-MC-Unique: 6DjtKoWlPHue2OzvJCBiJw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+ us-mta-161-YSAGHjIaM8if5PjyZxOV8g-1; Thu, 16 Jul 2020 09:27:45 -0400
+X-MC-Unique: YSAGHjIaM8if5PjyZxOV8g-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C66318015FB;
-        Thu, 16 Jul 2020 13:22:21 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1C060107BEF6;
+        Thu, 16 Jul 2020 13:27:44 +0000 (UTC)
 Received: from horse.redhat.com (ovpn-114-241.rdu2.redhat.com [10.10.114.241])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6ABD360C47;
-        Thu, 16 Jul 2020 13:22:21 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id F24BA17D04;
+        Thu, 16 Jul 2020 13:27:43 +0000 (UTC)
 Received: by horse.redhat.com (Postfix, from userid 10451)
-        id 0788F225777; Thu, 16 Jul 2020 09:22:20 -0400 (EDT)
-Date:   Thu, 16 Jul 2020 09:22:20 -0400
+        id 8D3BC225777; Thu, 16 Jul 2020 09:27:43 -0400 (EDT)
+Date:   Thu, 16 Jul 2020 09:27:43 -0400
 From:   Vivek Goyal <vgoyal@redhat.com>
 To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org
-Subject: Re: [PATCH] ovl: fix lookup of indexed hardlinks with metacopy
-Message-ID: <20200716132220.GA422759@redhat.com>
-References: <20200715133808.7146-1-amir73il@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
+        overlayfs <linux-unionfs@vger.kernel.org>
+Subject: Re: [PATCH 0/3] Misc. redirect_dir=nofollow fixes
+Message-ID: <20200716132743.GB422759@redhat.com>
+References: <20200713141945.11719-1-amir73il@gmail.com>
+ <20200714180705.GE324688@redhat.com>
+ <CAOQ4uxh-fUKhiQOhRmZ5LT2sjtM3Wx5wo_wcKYtX+-DbYjXp0Q@mail.gmail.com>
+ <20200715130648.GA379396@redhat.com>
+ <CAOQ4uxjV93TAUGLAL_1uAtm2+eJv7poj_mmO5K_-07TYjBh7vA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200715133808.7146-1-amir73il@gmail.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+In-Reply-To: <CAOQ4uxjV93TAUGLAL_1uAtm2+eJv7poj_mmO5K_-07TYjBh7vA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, Jul 15, 2020 at 04:38:08PM +0300, Amir Goldstein wrote:
-> We recently moved setting inode flag OVL_UPPERDATA to ovl_lookup().
+On Wed, Jul 15, 2020 at 04:56:45PM +0300, Amir Goldstein wrote:
+> > > TBH I never really understood the thread that led to redirect_dir=nofollow.
+> > > I don't think anyone has presented a proper use case that can be discussed,
+> >
+> > IIUC, idea was that automated mounting can mount a handcrafted upper on
+> > usb hence allow access to directories on host which are otherwise
+> > inaccessible.
+> >
 > 
-> When looking up an overlay dentry, upperdentry may be found by index
-> and not by name.  In that case, we fail to read the metacopy xattr
-> and falsly set the OVL_UPPERDATA on the overlay inode.
+> That is an *idea* described by hand waving.
+> That is not a threat I can seriously comment on.
+> How exactly is that USB auto mounted? where to?
+> How is that related to overlay?
 > 
-> This caused a regression in xfstest overlay/033 when run with
-> OVERLAY_MOUNT_OPTIONS="-o metacopy=on".
+> > > so I just treat this config option as "paranoia" or "don't give me anything that
+> > > very old overlay did not give me".
+> > > Therefore I suggested piggybacking on it.
+> >
+> > Even if it is paranoia, put more unrelated checks under this option does
+> > not make much sense to me. It will make things just more confusing.
+> >
+> > Anyway, redirect_dir=nofollow is a thing of past. Now if you want to
+> > not follow origin, then we first need to have a genuine explanation
+> > of why to do that (and not be driven by just paranoia).
+> >
+> > > Of course if we do, we will need to document that.
+> >
+> > redirect_dir=nofollow resulting in origin not being followed is plain
+> > unintuitive to me. Why not introduce another option if not following
+> > origin is so important.
+> >
 > 
-> Fixes: 28166ab3c875 ("ovl: initialize OVL_UPPERDATA in ovl_lookup()")
-> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> Because cluttering the user with more and more config options for
+> minor and mostly unimportant behaviors is not ideal either.
+> See what Kconfig help has to say about the config option:
+> 
+> config OVERLAY_FS_REDIRECT_ALWAYS_FOLLOW
+>         bool "Overlayfs: follow redirects even if redirects are turned off"
+>         default y
+> 
+>        Disable this to get a possibly more secure configuration, but that
+>        might not be backward compatible with previous kernels.
+> 
+> That is a VERY generic description that fits not following origin very
+> well IMO, and not following unverified dir origin as well for that matter.
+> Nobody outside overlayfs developers knows what "redirects" means
+> anyway. To me, following non-dir origin sounds exactly the same
+> as following non-dir metacopy redirect or dir redirect. It's just the
+> implementation details that differ.
+> 
+> So my claim is that we *can* piggyback on it because I really
+> don't believe anybody is using this config out there for anything
+> other than "to be on the safe side".
 
-Reviewed-by: Vivek Goyal <vgoyal@redhat.com>
+On one hand you are saying redirect=nofollow is paranoia, most people
+don't understand it and don't use it. And on top of that you want
+to add more to it. Adding more to something which nobody does not
+understand and uses, sounds like more trouble to me.
 
-Good catch Amir. Thanks.
-
-
-> ---
-> 
-> Miklos,
-> 
-> I just ran xfstests -g overlay/quick tests with metacopy enabled
-> and one test failed.
-> 
-> Vivek,
-> 
-> Do you by any chance run this sort of test regularly?
-
-No I don't. I will start testing this configuration. Actually I don't
-have any automated setup and all the testing I do manually. I think
-its time that atleast I have a script which runs bunch of tests
-always.
-
-> 
-> You have asked about running unionmount tests with metacopy before.
-> I just pushed a commit to my xfstests 'unionmount' branch:
->   7859f22b ovl: test unionmount tests with metacopy
-> 
-> It allows you to run xfstests -g overlay/union with
-> OVERLAY_MOUNT_OPTIONS="-o metacopy=on", to excercise all the unionmount
-> test configurations I created with metacopy enabled.
-
-Nice, I will check it out. Will be nice if this gets pushed to
-xfstest tree.
+Anyway, before we go further into this, what's the use case. Why
+do you want to provide option to disable following origin for non-dir?
 
 Thanks
 Vivek
 
 > 
-> Maybe not so surprising that the sub-group overlay/union.nested tests
-> fail with metacopy enabled. This is just a test setup bug and I pushed
-> a fix commit to unionmount overlayfs-devel branch to fix it.
+> But I do not make the calls here and it doesn't look like I managed
+> to convince you to take my side of the argument :-)
 > 
 > Thanks,
 > Amir.
-> 
->  fs/overlayfs/namei.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
-> index 3566282a9199..0c5a624600c1 100644
-> --- a/fs/overlayfs/namei.c
-> +++ b/fs/overlayfs/namei.c
-> @@ -1073,6 +1073,10 @@ struct dentry *ovl_lookup(struct inode *dir, struct dentry *dentry,
->  			upperredirect = NULL;
->  			goto out_free_oe;
->  		}
-> +		err = ovl_check_metacopy_xattr(upperdentry);
-> +		if (err < 0)
-> +			goto out_free_oe;
-> +		uppermetacopy = err;
->  	}
->  
->  	if (upperdentry || ctr) {
-> -- 
-> 2.17.1
 > 
 
