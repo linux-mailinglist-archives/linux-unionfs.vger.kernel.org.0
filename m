@@ -2,81 +2,97 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 253642446ED
-	for <lists+linux-unionfs@lfdr.de>; Fri, 14 Aug 2020 11:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BFBD245829
+	for <lists+linux-unionfs@lfdr.de>; Sun, 16 Aug 2020 16:32:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726140AbgHNJX7 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 14 Aug 2020 05:23:59 -0400
-Received: from sender2-op-o12.zoho.com.cn ([163.53.93.243]:17165 "EHLO
-        sender2-op-o12.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726122AbgHNJX7 (ORCPT
+        id S1729594AbgHPOcR (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 16 Aug 2020 10:32:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57180 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728794AbgHPOb0 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 14 Aug 2020 05:23:59 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1597397020; cv=none; 
-        d=zoho.com.cn; s=zohoarc; 
-        b=eZcUHJUkriGZAGHLzB2v3HzpNV1EzPzYwiofLvlW3FCUFx7RZWGoWprUAFOEIQ2vz8IF2sZJGaVbmdVn7HnYjoySbQjOrsh33PLT5K258gX+JnGRJJdgS3W6ZN5uRx9CCVuslbVVSiJo+RatjnoK3LksJ/lFBXGlIm+TadTI6DE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
-        t=1597397020; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=rIbBJDVli+lSzpsCfcVO4h4zX71fzh02Aedv10jLZYE=; 
-        b=f91Zxr030KM1Lx0dsyOofC6rqPENgdrZikh7Ot/MyA/zVl/KITDkdxwqm7BoS1lEG4IRpqkw5EDwfU1g5PgHo59wSzJ5vE+bwUHBeagR85iWFiPJFIQLP4vWTen//3S13GHIsh/xLjgTduZ32zSRb/qIsIb45nJmu8oSVPCxD+I=
-ARC-Authentication-Results: i=1; mx.zoho.com.cn;
-        dkim=pass  header.i=mykernel.net;
-        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
-        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1597397020;
-        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
-        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        bh=rIbBJDVli+lSzpsCfcVO4h4zX71fzh02Aedv10jLZYE=;
-        b=Fj2MEnTuu/2NlYJbT8BD99dofQGOG/7nO7WDgWkdC4wyO/AnPcXOxcpKZq37Hyjt
-        cdZrfgQfDAqnGyhM/hc1Ful0gnZ8SWd+TicE3KtRlyq8uDTIP8sdu9zyxTmtlsxT/+V
-        9vhcnpV/HSwbCVUU5CgoBFpD9Kviak7GDIAZnkiU=
-Received: from [10.0.0.2] (116.30.195.169 [116.30.195.169]) by mx.zoho.com.cn
-        with SMTPS id 1597397017749438.73368801375614; Fri, 14 Aug 2020 17:23:37 +0800 (CST)
-Subject: Re: [PATCH] ovl: fix incorrect extent info in metacopy case
-To:     miklos@szeredi.hu
-Cc:     linux-unionfs@vger.kernel.org
-References: <20200624102011.4861-1-cgxu519@mykernel.net>
-From:   cgxu <cgxu519@mykernel.net>
-Message-ID: <c9faf864-c515-2657-fa7c-6ba24a9ea89f@mykernel.net>
-Date:   Fri, 14 Aug 2020 17:23:36 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Sun, 16 Aug 2020 10:31:26 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27692C0612EE
+        for <linux-unionfs@vger.kernel.org>; Sun, 16 Aug 2020 07:28:40 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id g8so11269058wmk.3
+        for <linux-unionfs@vger.kernel.org>; Sun, 16 Aug 2020 07:28:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
+        b=NAKDDu3zYGlp6/1rTFA3zLXzfLNUWElMFpld1DGXTqZ3f2C1G5vMMGgQBtzYdv61gR
+         j0gW2VjYzcAEQEK9JcrA+yGSHFEXNhE9RNkaz3uxkanP37gacJrIVytgT7/c7zGkA2Dy
+         XJB3L8ToVDoWAD9Rvm7U849RIrxncLk9xI9S/Uu5ZGT/cXsim2IUQmYeZsKFSBsv6kJT
+         3kDR9KLYjND6JPpx0YTAndrQaTelzP3558OkivI4ykhj79/nak1F6z80uX1/EQIXmTKV
+         I+kUa6Zt2XAbNuMItIuLndMdaWWyo32PYvWKoOywYCMLUV2UDlYdbpJ66arhF+MiPCa0
+         yMKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
+        b=ISFM9MNK2r+xpPbNTmV4wIoUD9itR7MsmA/u3vnAubGsTBmZYdpb8g4NyMpkNclzFO
+         0dsEKZ6yDKmuql+ZbNbqmyFoKhx7YqFsO9uaV7q/UzQ7xBh8AjPK0Xcwqn3w2hIrg2Tz
+         /fapDmmCkuuS5zVihhA79+JeBC0S39p1THK/aoxSI0yDQAjIWHK31MPf3a20nvK/eWCk
+         Ogn2rXvxBfX6vr1zjId1xY0xW49ZqRmLsNEJjfbSdhR/8b3f5BG0UeAf+iryYWkmEwng
+         cbPVlSnq9uermb50eBjJvR16qVVnGgm5RQQsqegGtwjkpKGRZ1tMQQy5d6LDMIYF18P/
+         OFQQ==
+X-Gm-Message-State: AOAM532E+3jBoSX82W2W6o0pcZ4UFBsobENG8MtMyEdFxsVok4QO4tvE
+        nDEbgDqbIgfWBAndDBsa91befrXczv23yJdkuMt/GJ8T0NQ=
+X-Google-Smtp-Source: ABdhPJydZZ8FQlFGmrB/EDLy0Z8gH5X03F6EFXypW4K1vf8iv94WhLhI3iwPKgeJEaRZZocHWED4lUmYPOBkTFPeX+4=
+X-Received: by 2002:a1c:a1c7:: with SMTP id k190mr10461870wme.1.1597588111746;
+ Sun, 16 Aug 2020 07:28:31 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200624102011.4861-1-cgxu519@mykernel.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ZohoCNMailClient: External
+Received: by 2002:a5d:6cd3:0:0:0:0:0 with HTTP; Sun, 16 Aug 2020 07:28:30
+ -0700 (PDT)
+Reply-To: sctnld11170@tlen.pl
+From:   "Mr. Scott Donald" <confianzayrentabilidad@gmail.com>
+Date:   Sun, 16 Aug 2020 07:28:30 -0700
+Message-ID: <CANrrfX7wwL97G=jb--8nb9jH8oRO8T90L6NGSfg1HfnzMyyHcw@mail.gmail.com>
+Subject: Hello, Please
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On 6/24/20 6:20 PM, Chengguang Xu wrote:
-> In metacopy case, we should use ovl_inode_realdata() instead of
-> ovl_inode_real() to get real inode which has data, so that
-> we can get correct information of extentes in ->fiemap operation.
-> 
-> Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
+--=20
+Dear Friend,
 
-ping
+I'm Mr. Scott Donald a Successful businessMan dealing with
+Exportation, I got your mail contact through search to let you know my
+intension and my Ugly Situation Am a dying Man here in Los Angeles
+California Hospital Bed in (USA), I Lost my Wife and my only Daughter
+for Covid-19 and I also have a problem in my Health and I can die
+anytime I Know,
 
+I have a project that I am about to hand over to you. and I already
+instructed the Bankia S.A. Madrid, Spain(BSA) to transfer my fund sum
+of =C2=A33,7M GBP. Equivalent to =E2=82=AC4,077,033.91 EUR, to you as to en=
+able you
+to give 50% of this fund to Charitable Home in your State and take 50%
+don't think otherwise and why would anybody send someone you barely
+know to help you deliver a message, help me do this for the happiness
+of my soul and for God to mercy me and my Family and give Us a good
+place.
 
-> ---
->   fs/overlayfs/inode.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-> index 981f11ec51bc..a524af04b71d 100644
-> --- a/fs/overlayfs/inode.c
-> +++ b/fs/overlayfs/inode.c
-> @@ -472,7 +472,7 @@ static int ovl_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
->   		      u64 start, u64 len)
->   {
->   	int err;
-> -	struct inode *realinode = ovl_inode_real(inode);
-> +	struct inode *realinode = ovl_inode_realdata(inode);
->   	const struct cred *old_cred;
->   
->   	if (!realinode->i_op->fiemap)
-> 
+please, do as I said there was someone from your State that I deeply
+love so very very much and I miss her so badly I have no means to
+reach any Charitable Home there. that is why I go for a personal
+search of the Country and State and I got your mail contact through
+search to let you know my Bitterness and please, help me is getting
+Dark I ask my Doctor to help me keep you notice failure for me to
+reach you in person Your urgent Response, here is my Doctor Whats-app
+Number for urgent notice +13019692737
+
+Hope To Hear From You. I'm sending this email to you for the second
+time yet no response from you.
+
+My Regards.
+
+Mr. Scott Donald
+CEO
