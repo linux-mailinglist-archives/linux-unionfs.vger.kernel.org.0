@@ -2,91 +2,75 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06209255E4C
-	for <lists+linux-unionfs@lfdr.de>; Fri, 28 Aug 2020 17:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5042A2566AF
+	for <lists+linux-unionfs@lfdr.de>; Sat, 29 Aug 2020 11:52:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726379AbgH1P67 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 28 Aug 2020 11:58:59 -0400
-Received: from mx2.suse.de ([195.135.220.15]:43322 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725814AbgH1P66 (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 28 Aug 2020 11:58:58 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 1A69FAE33;
-        Fri, 28 Aug 2020 15:59:30 +0000 (UTC)
-Date:   Sat, 29 Aug 2020 01:58:49 +1000
-From:   Aleksa Sarai <asarai@suse.de>
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     Amir Goldstein <amir73il@gmail.com>,
-        Linux Containers <containers@lists.linux-foundation.org>,
-        overlayfs <linux-unionfs@vger.kernel.org>
-Subject: Re: Overlayfs @Plumbers
-Message-ID: <20200828155849.k46uk3x63aio3g3o@yavin.dot.cyphar.com>
-References: <CAOQ4uxjXZdXZAaeiJ_p9n7NJziBv2yvWqSDs0hDd1ONUrVKxOQ@mail.gmail.com>
- <87tuwmiy4j.fsf@x220.int.ebiederm.org>
+        id S1726912AbgH2JwE (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 29 Aug 2020 05:52:04 -0400
+Received: from sender2-op-o12.zoho.com.cn ([163.53.93.243]:17133 "EHLO
+        sender2-op-o12.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726900AbgH2JwD (ORCPT
+        <rfc822;linux-unionfs@vger.kernel.org>);
+        Sat, 29 Aug 2020 05:52:03 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1598694686; cv=none; 
+        d=zoho.com.cn; s=zohoarc; 
+        b=If0As52fb25P6rlWhPCodjf1Av7iwB0m0zxiaeQANQkvBEBn4giVeky3gfL2lS531GkMQrF3Lsl8IgVTGrAGBysZhEcASu/KD1wbXmXakrqXl0+CGhHQxtoAepJpvLh6JP3i1FgsmgUXuT8reh8VoESeN2YnpKhgpV5tuL52RsQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
+        t=1598694686; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=tX3B1l15hO/83TfyRX4DcvD2+Bkx6ul/guU7N9R9v20=; 
+        b=cn5VK5fqCkHvJkzRGC9oxGx3KtVS6y7UIvoy4Go5iwfoLp85tTWQ6LP5yhUbp5lfCi3D5QLPDu6G4zZuxEtwYkAdtB/mxNhqZdhWXu/uz9IC5D6H8HA6r91C0ylH/FoxEMOi2r3zKWEe0PUST70WyZZwuXDNSEHTpM9jPxPPgjA=
+ARC-Authentication-Results: i=1; mx.zoho.com.cn;
+        dkim=pass  header.i=mykernel.net;
+        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
+        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1598694686;
+        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
+        h=From:To:Cc:Message-ID:Subject:Date:MIME-Version:Content-Transfer-Encoding:Content-Type;
+        bh=tX3B1l15hO/83TfyRX4DcvD2+Bkx6ul/guU7N9R9v20=;
+        b=D0xMOiZCEQ5QLo9vnsW5fSlWlBv18sFoH3Fz4TrAI/VgcJbposK9VXLQa5AaZ+b4
+        gPo+H3PDgKliuZHOm5GS9dqOjD1mTHKcx8FoPYvzsz1hcf6coi1D6stFj6KfpXM5Zw5
+        9cDOTgzrP1jRaluONAWX498ZaMEm/tUGyTkbC2Xs=
+Received: from localhost.localdomain (116.30.194.36 [116.30.194.36]) by mx.zoho.com.cn
+        with SMTPS id 1598694683536758.9096728812141; Sat, 29 Aug 2020 17:51:23 +0800 (CST)
+From:   Chengguang Xu <cgxu519@mykernel.net>
+To:     linux-unionfs@vger.kernel.org, linux-mm@kvack.org
+Cc:     miklos@szeredi.hu, akpm@linux-foundation.org, amir73il@gmail.com,
+        riteshh@linux.ibm.com, Chengguang Xu <cgxu519@mykernel.net>
+Message-ID: <20200829095101.25350-1-cgxu519@mykernel.net>
+Subject: [RFC PATCH 0/3] ovl: stacked mmap for shared map
+Date:   Sat, 29 Aug 2020 17:50:58 +0800
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="64q7cgtfjbzz72kq"
-Content-Disposition: inline
-In-Reply-To: <87tuwmiy4j.fsf@x220.int.ebiederm.org>
+Content-Transfer-Encoding: quoted-printable
+X-ZohoCNMailClient: External
+Content-Type: text/plain; charset=utf8
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
+Currently, there is still ro/rw inconsistency related to shared mmap
+in overlayfs, this patch set implements stacked mmap for shared map
+and transfer necessary operations to upper inode, so that we can keep
+data consistency in any kind of mmap.=20
 
---64q7cgtfjbzz72kq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Patch 1 exports necessary functions from kernel to module.
+Patch 2 introduces struct ovl_file_entry to store real vm_ops.
+Patch 3 implements stacked mmap for shared map to keep data
+consistency.
 
-On 2020-08-28, Eric W. Biederman <ebiederm@xmission.com> wrote:
-> Amir Goldstein <amir73il@gmail.com> writes:
->=20
-> > Hi Guys,
-> >
-> > It's been nice to virtually meet with you yesterday.
-> > Some of you wanted to follow up on overlayfs related issues.
-> >
-> > If you want to discuss, try to find me in one of the
-> > https://meet.2020.linuxplumbersconf.org/hackrooms
-> > today between 16:00-17:00 UTC
-> > (No need to enter the room to see who's inside)
-> >
-> > If those times do not work for you, contact me and we can try
-> > to schedule another time.
->=20
-> Did this conversation wind up happening?  Do we need to reschedule?
+Chengguang Xu (3):
+  mm: mmap: export necessary functions for overlayfs' mmap
+  ovl: introduce struct ovl_file_entry
+  ovl: implement stacked mmap for shared map
 
-This conversation already happened in a Hackroom on Tuesday. I'm not
-sure if the Hackrooms will have their recordings published, so maybe
-Amir can post any of the takeaways we had?
+ fs/overlayfs/file.c | 178 ++++++++++++++++++++++++++++++++++++++++----
+ include/linux/mm.h  |   2 +
+ mm/filemap.c        |  28 +++++++
+ mm/internal.h       |  22 ------
+ 4 files changed, 195 insertions(+), 35 deletions(-)
 
 --=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
+2.20.1
 
---64q7cgtfjbzz72kq
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEXzbGxhtUYBJKdfWmnhiqJn3bjbQFAl9JKbYACgkQnhiqJn3b
-jbRxtA/8CDIRnaVZFFR7O5KU/N/W7OVpiiBU7eysBq03gxJRNy6MvXXp9zxyaZWH
-2yeq0qnpFnbmCYBUUxCQowGlcgLwtkVvN28Q7UtC7kH8qYIPoWFUl1MS9gFn3OQi
-+O+dPN/TOLVV2mtwb4FsJlFyQTP6TSqRKzp/nZsA8uqmD7dcW3zoESf0SKwXBOuO
-lLi4xCtDBiIOIaggMg8lQQVF9GGxyQykPQi3m4V8wdBL1xxeIKaJd0IcIQ9U2Sgz
-8I8WB/uHFWfgUEFYYIJSrVpubRvY7vNr7LmVts+ETsZbwmhp9nDFbliSajDXHhpO
-wsTk2AefZzPFmkCCgP7/MfnmbR/fqqDW8da3duC05OYpLlDpmu7AGjXmOFwJMiuE
-qgTa3uiIhaPAg8Uz1ORYk/Dk1Zwp9QuFMLvSVUh7xAQGoMbryc9bcHt5d6Ym5OJY
-wBTLwqRcnH9cjMn7MYvYiht24KvwEBQVkpvp2Fee7HnCrv+reb+C4MAeXNsgJIyW
-XriXS4z6CYCjPWhCNyDn2Ie7DOq9OgbaH9cx2IbyykCiEF6f8oUFXgFtqcRl2i75
-I0iE4qhgX93xFxj8v3aHc6ZHu3Wxh7CHwQkd17GFx+4Nxv81qu5bAN9jiSqk1GlG
-Vt7taY0TAkTYNWdm6gEljl/AeDqdxZddHqw5A/5Bon5YI0alBLY=
-=5YKN
------END PGP SIGNATURE-----
-
---64q7cgtfjbzz72kq--
