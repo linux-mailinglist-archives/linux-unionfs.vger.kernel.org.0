@@ -2,112 +2,101 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 013542647C4
-	for <lists+linux-unionfs@lfdr.de>; Thu, 10 Sep 2020 16:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D8E82656E7
+	for <lists+linux-unionfs@lfdr.de>; Fri, 11 Sep 2020 04:16:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731125AbgIJOKy (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 10 Sep 2020 10:10:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52620 "EHLO
+        id S1725385AbgIKCQ2 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 10 Sep 2020 22:16:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731057AbgIJOJr (ORCPT
+        with ESMTP id S1725306AbgIKCQZ (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 10 Sep 2020 10:09:47 -0400
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BC93C06179E;
-        Thu, 10 Sep 2020 07:00:03 -0700 (PDT)
-Received: by mail-il1-x141.google.com with SMTP id b17so5755782ilh.4;
-        Thu, 10 Sep 2020 07:00:03 -0700 (PDT)
+        Thu, 10 Sep 2020 22:16:25 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A085C061573;
+        Thu, 10 Sep 2020 19:16:25 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id f18so6050334pfa.10;
+        Thu, 10 Sep 2020 19:16:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lvPkRRhrBGbOAlVQcxU7oQ3T9OZp7RX6WB3tEAcEMIM=;
-        b=BOLC6ok+FtrWxvDoFQHvg1oXi/Li71f3ZP9QY39h/3aOjLanIvFM9Nt8+imGdoHPAQ
-         Ax2UZCIlWvuqE4lz7pZkGbT4vG4/bgCZ83WGRB77i2+UFRtM+X05Baa5pP0TW+boNel8
-         ZKnfC7rplPWkLfSg8eFACDLqLLX/blObYEZQlPYK5KrDtWiNby7orVH9TLaOUHd8VhB2
-         JncmogazqXpFrYdZcX6hRWsj56fwhaRavrAy7Q8qFbCCtZ81/RjF7ngxO8UWLLDz2XAX
-         H3lzG9bd1DDYutcuY/DmNQsaP2qZ0HIcSIg8L5pE69ok0w1Ua8kPu4/lhsOt1usR1tVs
-         Dpvw==
+        h=date:from:to:cc:message-id:mime-version:content-disposition;
+        bh=h6RteTEWRGaRRul/zeyNJMwRQ9wMfdVP93BUTmIAZ+Q=;
+        b=vEjBmARvPmeZGNE4zcmlYrBJj5M+13i9O9pfg2VaiXHvRf2hMRZ72ujKDMIRBU5xvj
+         LtK68xI+1Pw+6QlSlPK6Add3HbsYvwIqtqOdepnmUeyDt7VbO8U9zEASDQwD2HAEPsz7
+         BGR0vE0FS4njCkeEgsbYwqaPV8DBLIhBf+wox4sb6LWhX+SO/aTsQZnzkK7eENWiTTff
+         T/PSaQexvofON3sXZMRcYii8T5woOURllvzmRndsvFFT1HbhthctGnrtSiJBr19s2JLh
+         YruhQBl+8xRBtO1ePHUSNohZtOqADkE5yqalONXkS2FWkNwHvr7kpL6DPtiQ0r508qKJ
+         Ik7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lvPkRRhrBGbOAlVQcxU7oQ3T9OZp7RX6WB3tEAcEMIM=;
-        b=offtcsy5x6CGEiacHJgK8tjKCOzmmkU+2d4/FShxrJiiopjoYUntRNK86F+gpOXSjn
-         zWxoUg03pttqIaherjkVAge6ZkbZtbiRjIGAsSEmdoKuuB+234Q+p1FuCbt7QhM5sDpX
-         m1VDzosM7M4IOcUNCviJqXHjAIFogDd73LwsKQTeP63ZeK2V4YIJL4do1EQPfuT8KWrR
-         sbVlB7m4gWPAIzq4+tnwdSpLhUVutNsbzozmDWXsUxNitQ+AP03tsQWioxDUxUaQHxKO
-         kQoAEBV7t+C0OY5rBQ/v+Z2YBS/zbYNaJsRHqMS+EXKHRG365drG9Cn3lQLB5MlyockB
-         CbqA==
-X-Gm-Message-State: AOAM532ncgyd9Zr54bW0+xEKeZSrq7epLHrKVaiaw1cD4xiPYO/x1VsV
-        oYMAPG6u6qgEg+z1NdR2ZiuJQvrRbXQJGM8gpbg=
-X-Google-Smtp-Source: ABdhPJz7yCF3IRdTtj8SfS9zPkBKUsxpLDdYgI9tnCpdTmGaG2UcbqmPuZSeBl2BBLPJ/SYwLWuV8StOqK8vHb3oAF4=
-X-Received: by 2002:a05:6e02:1141:: with SMTP id o1mr7798003ill.275.1599746401618;
- Thu, 10 Sep 2020 07:00:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200910055110.3lumztku3ld4vf2j@xzhoux.usersys.redhat.com>
-In-Reply-To: <20200910055110.3lumztku3ld4vf2j@xzhoux.usersys.redhat.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 10 Sep 2020 16:59:50 +0300
-Message-ID: <CAOQ4uxh+ppPMOSeAZU3sdwxwb_ixMHEpHLF9ZO_MTiedNJRgsw@mail.gmail.com>
-Subject: Re: [PATCH] overlay/073: test with nfs_export being off
-To:     Murphy Zhou <jencce.kernel@gmail.com>
-Cc:     Chengguang Xu <cgxu519@mykernel.net>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:message-id:mime-version
+         :content-disposition;
+        bh=h6RteTEWRGaRRul/zeyNJMwRQ9wMfdVP93BUTmIAZ+Q=;
+        b=UbKMY5rLAFXu2asv7+4bnEHpRPXZzNzTz8HAJGLdha9p3xvU+aG5jt9oM1QfzLP04g
+         SrF7evaPcI3TzG+uq2n/2LimutFOkaeYlfm+M6JrCHOKi9Cwzy5JvWNviMsKr9Oep9U2
+         BQ/TBcmEzo768KzQyY9ylVYxfiFK0cg5dF77DzhSt8yv4r9xDzKFNYzx346W7LrlsF75
+         dRo9kfHZVRlfUdE7opQzh3hds6Kb34RNNos3vFxga6KpdVgqEd+/3ppzxM36/btwK5ot
+         +aLsjew7g6AvdNQEoIDc/70Lf2na6rXYMe+P/bKkX5NCSjpPt2gDowkbt0GF5OM5OY8K
+         TjwA==
+X-Gm-Message-State: AOAM532SrLE6JnVPfTBlZQGOnkd3+yiK61MWB3p8viTaZ3bdqQoMAprp
+        ZNJgefEZfZ59Dj7zHUzmWQAWCPuFe+s=
+X-Google-Smtp-Source: ABdhPJy5CVsMktsX6SKj9aqIv93hK9DZBtQ9SnQM8ypVx7ZHChv2V1o8+/s1s8VaKVTTAqKq6HF2Rg==
+X-Received: by 2002:a62:1ac3:0:b029:13f:7c9b:5a8a with SMTP id a186-20020a621ac30000b029013f7c9b5a8amr125223pfa.12.1599790584628;
+        Thu, 10 Sep 2020 19:16:24 -0700 (PDT)
+Received: from localhost ([209.132.188.80])
+        by smtp.gmail.com with ESMTPSA id j9sm388571pfe.170.2020.09.10.19.16.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2020 19:16:24 -0700 (PDT)
+Date:   Fri, 11 Sep 2020 10:16:16 +0800
+From:   Murphy Zhou <jencce.kernel@gmail.com>
+To:     Amir Goldstein <amir73il@gmail.com>,
         fstests <fstests@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     Murphy Zhou <jencce.kernel@gmail.com>,
+        Chengguang Xu <cgxu519@mykernel.net>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        overlayfs <linux-unionfs@vger.kernel.org>
+Message-ID: <20200911021616.rguccu54epvxso4d@xzhoux.usersys.redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Thu, Sep 10, 2020 at 8:51 AM Murphy Zhou <jencce.kernel@gmail.com> wrote:
->
-> When nfs_export is enabled, the link count of upper dir
-> objects are more then the expected number in this testcase.
-> Because extra index entries are linked to upper inodes.
->
->  QA output created by 073
-> +Expected link count is 12 but real count is 23, file name is dir
-> +Expected link count is 12 but real count is 23, file name is 1
-> ...
-> +Expected link count is 12 but real count is 23, file name is 10
->  Silence is golden
->
-> Signed-off-by: Murphy Zhou <jencce.kernel@gmail.com>
-> ---
-> Hi folks,
->
-> Please help review that with nfs_export enabled, this is expected.
-> I think so but I'm not 100% sure about it. Maybe it's a bug in
-> the kernel.
->
+Bcc:
+Subject: [PATCH v2] overlay/073: test with nfs_export being off
+Reply-To:
+In-Reply-To: <CAOQ4uxh+ppPMOSeAZU3sdwxwb_ixMHEpHLF9ZO_MTiedNJRgsw@mail.gmail.com>
 
-Indeed this is expected.
-With nfs_export, for every unlinked lower file/dir there is a whiteout
-"tombstone" in the index directory, whose name is the file handle
-of the unlinked inode.
+When nfs_export is enabled, the link count of upper dir
+objects are more then the expected number in this testcase.
+Because extra index entries are linked to upper inodes.
 
-So this test creates extra 11 tombstones with nfs_export enabled.
+Signed-off-by: Murphy Zhou <jencce.kernel@gmail.com>
+---
+v2: Add comment about why we need it
 
-> Thanks.
->
->  tests/overlay/073 | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tests/overlay/073 b/tests/overlay/073
-> index 37860c92..b78551eb 100755
-> --- a/tests/overlay/073
-> +++ b/tests/overlay/073
-> @@ -99,7 +99,7 @@ run_test_case()
->  {
->         _scratch_mkfs
->         make_lower_files ${1}
-> -       _scratch_mount -o "index=on"
-> +       _scratch_mount -o "index=on,nfs_export=off"
+Thanks Amir!
 
-So the fix looks fine, but let's document why nfs_export=off is needed.
+ tests/overlay/073 | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Thanks,
-Amir.
+diff --git a/tests/overlay/073 b/tests/overlay/073
+index 37860c92..c5deccc6 100755
+--- a/tests/overlay/073
++++ b/tests/overlay/073
+@@ -99,7 +99,9 @@ run_test_case()
+ {
+ 	_scratch_mkfs
+ 	make_lower_files ${1}
+-	_scratch_mount -o "index=on"
++	# There will be extra hard links with nfs_export enabled which
++	# is expected. Turn it off explicitly to avoid the false alarm.
++	_scratch_mount -o "index=on,nfs_export=off"
+ 	make_whiteout_files
+ 	check_whiteout_files ${1} ${2}
+ 	_scratch_unmount
+-- 
+2.20.1
+
