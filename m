@@ -2,52 +2,53 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D8E82656E7
-	for <lists+linux-unionfs@lfdr.de>; Fri, 11 Sep 2020 04:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5158A2656EC
+	for <lists+linux-unionfs@lfdr.de>; Fri, 11 Sep 2020 04:18:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725385AbgIKCQ2 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 10 Sep 2020 22:16:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53212 "EHLO
+        id S1725385AbgIKCSY (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 10 Sep 2020 22:18:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725306AbgIKCQZ (ORCPT
+        with ESMTP id S1725300AbgIKCSX (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 10 Sep 2020 22:16:25 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A085C061573;
-        Thu, 10 Sep 2020 19:16:25 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id f18so6050334pfa.10;
-        Thu, 10 Sep 2020 19:16:25 -0700 (PDT)
+        Thu, 10 Sep 2020 22:18:23 -0400
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12A3AC061573;
+        Thu, 10 Sep 2020 19:18:22 -0700 (PDT)
+Received: by mail-pg1-x52c.google.com with SMTP id v15so5493972pgh.6;
+        Thu, 10 Sep 2020 19:18:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:message-id:mime-version:content-disposition;
-        bh=h6RteTEWRGaRRul/zeyNJMwRQ9wMfdVP93BUTmIAZ+Q=;
-        b=vEjBmARvPmeZGNE4zcmlYrBJj5M+13i9O9pfg2VaiXHvRf2hMRZ72ujKDMIRBU5xvj
-         LtK68xI+1Pw+6QlSlPK6Add3HbsYvwIqtqOdepnmUeyDt7VbO8U9zEASDQwD2HAEPsz7
-         BGR0vE0FS4njCkeEgsbYwqaPV8DBLIhBf+wox4sb6LWhX+SO/aTsQZnzkK7eENWiTTff
-         T/PSaQexvofON3sXZMRcYii8T5woOURllvzmRndsvFFT1HbhthctGnrtSiJBr19s2JLh
-         YruhQBl+8xRBtO1ePHUSNohZtOqADkE5yqalONXkS2FWkNwHvr7kpL6DPtiQ0r508qKJ
-         Ik7g==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :in-reply-to;
+        bh=9COwpGPUTtYFhNsODwjx7n06JVCAVuNB72tBEEjeDqo=;
+        b=CIUMVGG1vOmSOZqqWXmMKnn2A7B7WLsizbhu/KD2dPlXlt0eOWAlG5F0IZ8ZcLNnei
+         AKB7k1eLRh2QxbzTKOkkMbehuzWywQ/PLEktW75jScEmX3fb0sYOvADYz/Lmlwhljzmr
+         tC4FHC6XSV/eqnrFWs3VImXeIjq//d6ey4897h17f2XOFoQ+D3GZTGjU7EOo2binqGuJ
+         4CioVcj596IctufjMEW5qbTnekXIuLLNDI3dmWxLUYk2eoa6sR0VZiRn0qC24vRcgC7E
+         SYa56E6hSsuZ6qaWeHBQGTpBvtNQnAUj4YM2gNT3GJMuMWHV7hGym4YcrwlSUQoDrLNf
+         0H1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:message-id:mime-version
-         :content-disposition;
-        bh=h6RteTEWRGaRRul/zeyNJMwRQ9wMfdVP93BUTmIAZ+Q=;
-        b=UbKMY5rLAFXu2asv7+4bnEHpRPXZzNzTz8HAJGLdha9p3xvU+aG5jt9oM1QfzLP04g
-         SrF7evaPcI3TzG+uq2n/2LimutFOkaeYlfm+M6JrCHOKi9Cwzy5JvWNviMsKr9Oep9U2
-         BQ/TBcmEzo768KzQyY9ylVYxfiFK0cg5dF77DzhSt8yv4r9xDzKFNYzx346W7LrlsF75
-         dRo9kfHZVRlfUdE7opQzh3hds6Kb34RNNos3vFxga6KpdVgqEd+/3ppzxM36/btwK5ot
-         +aLsjew7g6AvdNQEoIDc/70Lf2na6rXYMe+P/bKkX5NCSjpPt2gDowkbt0GF5OM5OY8K
-         TjwA==
-X-Gm-Message-State: AOAM532SrLE6JnVPfTBlZQGOnkd3+yiK61MWB3p8viTaZ3bdqQoMAprp
-        ZNJgefEZfZ59Dj7zHUzmWQAWCPuFe+s=
-X-Google-Smtp-Source: ABdhPJy5CVsMktsX6SKj9aqIv93hK9DZBtQ9SnQM8ypVx7ZHChv2V1o8+/s1s8VaKVTTAqKq6HF2Rg==
-X-Received: by 2002:a62:1ac3:0:b029:13f:7c9b:5a8a with SMTP id a186-20020a621ac30000b029013f7c9b5a8amr125223pfa.12.1599790584628;
-        Thu, 10 Sep 2020 19:16:24 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:in-reply-to;
+        bh=9COwpGPUTtYFhNsODwjx7n06JVCAVuNB72tBEEjeDqo=;
+        b=pzP0o99PkayDpmQ0ZEGI43vBV4Qa35APzQMzC3yTE+g/pQjEjuFv/+p3nNtaTwbPcG
+         NywtgrM+jaiE7X2m5MHO9jyQ/YfbMWypaHaRr4riSFBIfA5Y/KQxm+UFAd721OlS40aL
+         pR+sH7o0hmkftL7rAAVL7UvP/tGqAiAD1qKdPJYvjhPMvZK3Lf4gjiJn83aGh6Zzy+H/
+         Rk9X8Rjq3b7TD5dHvOzQqtz9lAZX61BIzdsKeFvE949Cs+Szl35fJmBEjSFoyRg3pJ6D
+         bHcbFXxG7O6OBGfl/4ozgWmMab9m9xI96v0ZwD2kcaEzLlXlRkZD9BlGvPPnjnEt4Bv+
+         KYWg==
+X-Gm-Message-State: AOAM531ksWtY8ZOCMvlqYguQQ5USAbMLpdiK0cJUagq1PSDktgfo/zaN
+        m4bI4KvilS7Tq4NCnujhers=
+X-Google-Smtp-Source: ABdhPJyRxv+l0c86YWswOlvQttk9BndOq4Pl/WAKL/ZVwyi9R/xdb3D+wiFor9UrYty9uKw7kpGaQQ==
+X-Received: by 2002:a17:902:aa01:: with SMTP id be1mr3360741plb.93.1599790701579;
+        Thu, 10 Sep 2020 19:18:21 -0700 (PDT)
 Received: from localhost ([209.132.188.80])
-        by smtp.gmail.com with ESMTPSA id j9sm388571pfe.170.2020.09.10.19.16.23
+        by smtp.gmail.com with ESMTPSA id l9sm298790pgg.29.2020.09.10.19.18.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2020 19:16:24 -0700 (PDT)
-Date:   Fri, 11 Sep 2020 10:16:16 +0800
+        Thu, 10 Sep 2020 19:18:21 -0700 (PDT)
+Date:   Fri, 11 Sep 2020 10:18:13 +0800
 From:   Murphy Zhou <jencce.kernel@gmail.com>
 To:     Amir Goldstein <amir73il@gmail.com>,
         fstests <fstests@vger.kernel.org>
@@ -55,19 +56,16 @@ Cc:     Murphy Zhou <jencce.kernel@gmail.com>,
         Chengguang Xu <cgxu519@mykernel.net>,
         Miklos Szeredi <miklos@szeredi.hu>,
         overlayfs <linux-unionfs@vger.kernel.org>
-Message-ID: <20200911021616.rguccu54epvxso4d@xzhoux.usersys.redhat.com>
+Subject: [PATCH v2] overlay/073: test with nfs_export being off
+Message-ID: <20200911021813.o6vtueabupevfgab@xzhoux.usersys.redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <CAOQ4uxh+ppPMOSeAZU3sdwxwb_ixMHEpHLF9ZO_MTiedNJRgsw@mail.gmail.com>
 Sender: linux-unionfs-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
-
-Bcc:
-Subject: [PATCH v2] overlay/073: test with nfs_export being off
-Reply-To:
-In-Reply-To: <CAOQ4uxh+ppPMOSeAZU3sdwxwb_ixMHEpHLF9ZO_MTiedNJRgsw@mail.gmail.com>
 
 When nfs_export is enabled, the link count of upper dir
 objects are more then the expected number in this testcase.
@@ -75,10 +73,6 @@ Because extra index entries are linked to upper inodes.
 
 Signed-off-by: Murphy Zhou <jencce.kernel@gmail.com>
 ---
-v2: Add comment about why we need it
-
-Thanks Amir!
-
  tests/overlay/073 | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
