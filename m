@@ -2,96 +2,111 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D99EC265700
-	for <lists+linux-unionfs@lfdr.de>; Fri, 11 Sep 2020 04:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EB6F271C47
+	for <lists+linux-unionfs@lfdr.de>; Mon, 21 Sep 2020 09:50:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725355AbgIKC1a (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 10 Sep 2020 22:27:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54888 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725300AbgIKC1Y (ORCPT
+        id S1726338AbgIUHuG (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 21 Sep 2020 03:50:06 -0400
+Received: from mail.cn.fujitsu.com ([183.91.158.132]:13599 "EHLO
+        heian.cn.fujitsu.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726211AbgIUHuD (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 10 Sep 2020 22:27:24 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E7F3C061573;
-        Thu, 10 Sep 2020 19:27:24 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id g128so9419727iof.11;
-        Thu, 10 Sep 2020 19:27:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Ux1GKKyrONJOhwhWD6nhJU/dB/RXXJ31hFVy+2EHZyc=;
-        b=l+fKGVqwTc6l6ugGzosyni9oKAPVl9UZz8eZkgtjGvAalxO9aYQxhXPVb4PX5OGMLw
-         Phxh2BlzEaBjMJQYdbf0JyRDaFXLro5Vw+tPLFR2ZHW2yAg+Zhx0eoYgJp7nlVtZH4+S
-         VvQFO8bX1x12d7I6R7nRrqw3ssrqS8j3xF5/KPpnPhftbPKMQHKKeIZwlEn9HZLu6cJa
-         nTfMcOo3WedE07JH55tAaj/11gqjVHDPnjrC7Q4lPjcFxnmtCJV958OYb4Ov+m4paHKg
-         20APH96c7TlGk9n3jhf8aUFaZzBOSqUZPLE7QlceCMPLjAi2WCJiTfJC1h9fHkwLb5VK
-         3bAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Ux1GKKyrONJOhwhWD6nhJU/dB/RXXJ31hFVy+2EHZyc=;
-        b=uih0bph3AkDXINVZ9XCejiDkTJ9eDzVAVP87HbDaONxfXSWeOiwKtccCJEeofWXdoQ
-         /etcwPWZGGLtgxA6CKFuzxEiZhhJnwVwk35KpGdaXHWQSiaLWhi2rAnBtIrUyAt/n1lZ
-         gOeecXanMsz+2RTUtOMVGovP54cK44C3TiBUUei7ryb7fCYSO3xQU3AvF7ch5cWehY5M
-         dchIeNBPH120510uHMmD3Ko7YtM052iKXrNyim/2zIweQ4//JummrNmJRIpG5jfIC8vz
-         msMAu6NcwUWOkU5FsChkMhVDIYPOv1yLe7kCBOnr7V7xHeAeCsaxeFsgZhb8oVhP/aTw
-         Gi8Q==
-X-Gm-Message-State: AOAM533FY0+hBadVqwhgzQxUa3wk0CDvULST00sP3/JGx02ttYDB+wvO
-        9+RQ4BMNLh/Cg3MkngOEPUeBFYUjWEYidiU28U4=
-X-Google-Smtp-Source: ABdhPJyBwgknh3qslnJhE0LAQxrg8auZoHU8vIfsVUoZ/UnozwbDLqg/pTO1emAcDB9Wbb7OqIPiRlvM9D7wmbneg+k=
-X-Received: by 2002:a05:6602:240c:: with SMTP id s12mr49109ioa.5.1599791243661;
- Thu, 10 Sep 2020 19:27:23 -0700 (PDT)
+        Mon, 21 Sep 2020 03:50:03 -0400
+X-Greylist: delayed 594 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 03:49:53 EDT
+X-IronPort-AV: E=Sophos;i="5.77,286,1596470400"; 
+   d="scan'208";a="99456458"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 21 Sep 2020 15:39:58 +0800
+Received: from G08CNEXMBPEKD04.g08.fujitsu.local (unknown [10.167.33.201])
+        by cn.fujitsu.com (Postfix) with ESMTP id C4B0248990EC;
+        Mon, 21 Sep 2020 15:39:54 +0800 (CST)
+Received: from G08CNEXCHPEKD06.g08.fujitsu.local (10.167.33.205) by
+ G08CNEXMBPEKD04.g08.fujitsu.local (10.167.33.201) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Mon, 21 Sep 2020 15:39:55 +0800
+Received: from Fedora-31.g08.fujitsu.local (10.167.220.31) by
+ G08CNEXCHPEKD06.g08.fujitsu.local (10.167.33.205) with Microsoft SMTP Server
+ id 15.0.1497.2 via Frontend Transport; Mon, 21 Sep 2020 15:39:51 +0800
+From:   Xiao Yang <yangx.jy@cn.fujitsu.com>
+To:     <linux-unionfs@vger.kernel.org>
+CC:     <miklos@szeredi.hu>, <amir73il@gmail.com>,
+        <darrick.wong@oracle.com>, <hch@infradead.org>,
+        <fstests@vger.kernel.org>, Xiao Yang <yangx.jy@cn.fujitsu.com>
+Subject: [PATCH] ovl: Support FS_IOC_[SG]ETFLAGS and FS_IOC_FS[SG]ETXATTR ioctls on directories
+Date:   Mon, 21 Sep 2020 15:21:27 +0800
+Message-ID: <20200921072127.373125-1-yangx.jy@cn.fujitsu.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <CAOQ4uxh+ppPMOSeAZU3sdwxwb_ixMHEpHLF9ZO_MTiedNJRgsw@mail.gmail.com>
- <20200911021813.o6vtueabupevfgab@xzhoux.usersys.redhat.com>
-In-Reply-To: <20200911021813.o6vtueabupevfgab@xzhoux.usersys.redhat.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Fri, 11 Sep 2020 05:27:12 +0300
-Message-ID: <CAOQ4uxhd8Sn54iWRiPAgPnOXqt=PaPuQchrVzeARhgUCVzASgA@mail.gmail.com>
-Subject: Re: [PATCH v2] overlay/073: test with nfs_export being off
-To:     Murphy Zhou <jencce.kernel@gmail.com>
-Cc:     fstests <fstests@vger.kernel.org>,
-        Chengguang Xu <cgxu519@mykernel.net>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        overlayfs <linux-unionfs@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Sender: linux-unionfs-owner@vger.kernel.org
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-yoursite-MailScanner-ID: C4B0248990EC.AAE95
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: yangx.jy@cn.fujitsu.com
+X-Spam-Status: No
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Fri, Sep 11, 2020 at 5:18 AM Murphy Zhou <jencce.kernel@gmail.com> wrote:
->
-> When nfs_export is enabled, the link count of upper dir
-> objects are more then the expected number in this testcase.
-> Because extra index entries are linked to upper inodes.
->
-> Signed-off-by: Murphy Zhou <jencce.kernel@gmail.com>
+Factor out ovl_ioctl() and ovl_compat_ioctl() and take use of them for
+directories.
 
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Xiao Yang <yangx.jy@cn.fujitsu.com>
+---
+ fs/overlayfs/file.c      | 5 ++---
+ fs/overlayfs/overlayfs.h | 2 ++
+ fs/overlayfs/readdir.c   | 2 ++
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-> ---
->  tests/overlay/073 | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/overlay/073 b/tests/overlay/073
-> index 37860c92..c5deccc6 100755
-> --- a/tests/overlay/073
-> +++ b/tests/overlay/073
-> @@ -99,7 +99,9 @@ run_test_case()
->  {
->         _scratch_mkfs
->         make_lower_files ${1}
-> -       _scratch_mount -o "index=on"
-> +       # There will be extra hard links with nfs_export enabled which
-> +       # is expected. Turn it off explicitly to avoid the false alarm.
-> +       _scratch_mount -o "index=on,nfs_export=off"
->         make_whiteout_files
->         check_whiteout_files ${1} ${2}
->         _scratch_unmount
-> --
-> 2.20.1
->
+diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+index 0d940e29d62b..94ad7f9c9c76 100644
+--- a/fs/overlayfs/file.c
++++ b/fs/overlayfs/file.c
+@@ -640,7 +640,7 @@ static long ovl_ioctl_set_fsxflags(struct file *file, unsigned int cmd,
+ 				   ovl_fsxflags_to_iflags(fa.fsx_xflags));
+ }
+ 
+-static long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
++long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	long ret;
+ 
+@@ -665,8 +665,7 @@ static long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 	return ret;
+ }
+ 
+-static long ovl_compat_ioctl(struct file *file, unsigned int cmd,
+-			     unsigned long arg)
++long ovl_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	switch (cmd) {
+ 	case FS_IOC32_GETFLAGS:
+diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+index 29bc1ec699e7..bfb499314dcc 100644
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -301,6 +301,8 @@ bool ovl_is_metacopy_dentry(struct dentry *dentry);
+ char *ovl_get_redirect_xattr(struct dentry *dentry, int padding);
+ ssize_t ovl_getxattr(struct dentry *dentry, char *name, char **value,
+ 		     size_t padding);
++long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
++long ovl_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
+ 
+ static inline bool ovl_is_impuredir(struct dentry *dentry)
+ {
+diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
+index 6918b98faeb6..cde909b6fe7d 100644
+--- a/fs/overlayfs/readdir.c
++++ b/fs/overlayfs/readdir.c
+@@ -945,6 +945,8 @@ const struct file_operations ovl_dir_operations = {
+ 	.llseek		= ovl_dir_llseek,
+ 	.fsync		= ovl_dir_fsync,
+ 	.release	= ovl_dir_release,
++	.unlocked_ioctl = ovl_ioctl,
++	.compat_ioctl   = ovl_compat_ioctl,
+ };
+ 
+ int ovl_check_empty_dir(struct dentry *dentry, struct list_head *list)
+-- 
+2.25.1
+
+
+
