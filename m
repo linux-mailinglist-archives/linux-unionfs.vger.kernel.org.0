@@ -2,94 +2,95 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2BC1271E8F
-	for <lists+linux-unionfs@lfdr.de>; Mon, 21 Sep 2020 11:09:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E5ED273644
+	for <lists+linux-unionfs@lfdr.de>; Tue, 22 Sep 2020 01:11:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726395AbgIUJJl (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 21 Sep 2020 05:09:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48112 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726341AbgIUJJk (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 21 Sep 2020 05:09:40 -0400
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FBF2C061755;
-        Mon, 21 Sep 2020 02:09:40 -0700 (PDT)
-Received: by mail-il1-x142.google.com with SMTP id h2so12938671ilo.12;
-        Mon, 21 Sep 2020 02:09:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/sDkrkrhqpXsn1Gqof4RKPAhDHfhg/8IddrNAB2HIEE=;
-        b=n+rdN8pYG5NsF+grD9KNE87KmGb5HVSg6YsQhF4zm3d+nenZlVS+XrgcH/o6Ra6YU7
-         199bkREPEbRkiC4yX+1c/+l0uvBfeM4PD5tOuDR/lX4lJ/UlmmnRUm3Nm4rJKlQA5iLY
-         PKBOTrtix/7EWnj07KvaaPTVVcLO+KgMQIYz47gqG4EWePyrIJqRTIve/noOtXIymRjO
-         SzDxiX2/7ngPfpc/ryQr6eQ6hrBZOgNW1QcLQu8Uc6wyVCSeYDz8YZby1oDxcENf9En/
-         RTKrRKAPb14IBe7VRGKZYJWCfUcjsZF7Ll/lmcBrBuKBqTGtL/XxREieSuk1Ii9ZaF2f
-         xVIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/sDkrkrhqpXsn1Gqof4RKPAhDHfhg/8IddrNAB2HIEE=;
-        b=dDXYK4JOJ81Jn648bd4fCiOm4Dv0cMbWN4Y3u4HsCKtEyPXHF2axnu6xMb2sSnVS2S
-         2ZNFhgoTLv991XxoG5zeQWKiyoJ9p2zvC3pjYDg7g1wtlBV3D3QTRWyS1P8TSOBa4aY8
-         vha3wYzHTnYGOd4E3I8A8FrnHIcIsnbhXfjPo0cyAr7cSalsh2pAuwC90S0npJ3PDk1m
-         k3svtDPptbKgD+QcjWDIwEJBrcVTyneB1RI5X7wBhVUWvqNjgrBlyMSJmTJ/+vrrLbsq
-         Ak4rrdj+hKvVwLHo6CLhGzxNUrQF/+3tGFozmCwhUHrKyLvEhozQw1tmdQfM6ySyRGhs
-         rY8Q==
-X-Gm-Message-State: AOAM532YtrIUhqtzJBj1a+QVAuco3DQqu5w9XgCr3qWUGqRf3lARMF0r
-        mM879eEez1Zh7vnvVBDq9SCm/ImQ2b7NJ5Giatc=
-X-Google-Smtp-Source: ABdhPJwPrs9N3C7D7CaTfCxDYGAMY80U2ZX5M0PTApU6biwp12t8sVVLVCvIzV5PpLCyl9Bws49JRvm6jlqIXFMB0wA=
-X-Received: by 2002:a92:d0c7:: with SMTP id y7mr3445665ila.250.1600679379959;
- Mon, 21 Sep 2020 02:09:39 -0700 (PDT)
+        id S1728827AbgIUXLd (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 21 Sep 2020 19:11:33 -0400
+Received: from mail.rusoil.net ([188.128.114.25]:57383 "EHLO mail.rusoil.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726457AbgIUXLb (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Mon, 21 Sep 2020 19:11:31 -0400
+X-Greylist: delayed 374 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 19:11:22 EDT
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.rusoil.net (Postfix) with ESMTP id 3CFBD40D5B;
+        Tue, 22 Sep 2020 04:08:14 +0500 (YEKT)
+Received: from mail.rusoil.net ([127.0.0.1])
+        by localhost (mail.rusoil.net [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id EV4tl_rVLSS7; Tue, 22 Sep 2020 04:08:13 +0500 (YEKT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.rusoil.net (Postfix) with ESMTP id 2C0DD40CEA;
+        Tue, 22 Sep 2020 04:08:13 +0500 (YEKT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rusoil.net 2C0DD40CEA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rusoil.net;
+        s=maildkim; t=1600729693;
+        bh=6R3BgBYiA7fkqGiiNDuwPskBnpH9JXyNAW/l3ZEA+wY=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=Vnjy6nBVnSTcINEW6kER3ugTxQ4KBYKS36YiGFr6YA3B4INc+KiGVhbak8MS9Qjs4
+         d1hbAool1vpcT5tqzIahdEndE3qiAPgBOX6jsmCcvHSMZhz19GFDJ1aQySn107enqY
+         lwxWqbZRY2a+BQ8VxoJh3Rpje7MgA+/fhr9SupmU=
+X-Virus-Scanned: amavisd-new at mail.rusoil.net
+Received: from mail.rusoil.net ([127.0.0.1])
+        by localhost (mail.rusoil.net [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id K7O08Fi_YWVd; Tue, 22 Sep 2020 04:08:12 +0500 (YEKT)
+Received: from mail.rusoil.net (mail.rusoil.net [172.16.7.34])
+        by mail.rusoil.net (Postfix) with ESMTP id 6147940C07;
+        Tue, 22 Sep 2020 04:08:10 +0500 (YEKT)
+Date:   Tue, 22 Sep 2020 04:08:09 +0500 (YEKT)
+From:   Blue Oak Mortgage and Loans <em@rusoil.net>
+Reply-To: Blue Oak Mortgage and Loans <info@bluelmtg.net>
+Message-ID: <2020026523.907101.1600729689731.JavaMail.zimbra@rusoil.net>
+Subject: Wir finanzieren Projekte und Unternehmen
 MIME-Version: 1.0
-References: <20200921072127.373125-1-yangx.jy@cn.fujitsu.com>
- <CAOQ4uxitZDVjbvBnb95UHWD6CzaBeoJ8deqR6nbmgRRJ3P2=UA@mail.gmail.com> <5F686A74.4040002@cn.fujitsu.com>
-In-Reply-To: <5F686A74.4040002@cn.fujitsu.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Mon, 21 Sep 2020 12:09:28 +0300
-Message-ID: <CAOQ4uxhfUbFhecA9ShKUxyjS=LsMoyztXwWUJw-ZXm+Z0eJ6DQ@mail.gmail.com>
-Subject: Re: [PATCH] ovl: Support FS_IOC_[SG]ETFLAGS and FS_IOC_FS[SG]ETXATTR
- ioctls on directories
-To:     Xiao Yang <yangx.jy@cn.fujitsu.com>
-Cc:     overlayfs <linux-unionfs@vger.kernel.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        "Darrick J. Wong" <darrick.wong@oracle.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        fstests <fstests@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [192.210.183.69]
+X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF79 (Win)/8.8.12_GA_3794)
+Thread-Index: IhGK+mMcCqn+S/Et9t28g8ApaUDaLg==
+Thread-Topic: Wir finanzieren Projekte und Unternehmen
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Mon, Sep 21, 2020 at 11:55 AM Xiao Yang <yangx.jy@cn.fujitsu.com> wrote:
->
-> On 2020/9/21 16:17, Amir Goldstein wrote:
-> > On Mon, Sep 21, 2020 at 10:41 AM Xiao Yang<yangx.jy@cn.fujitsu.com>  wrote:
-> >> Factor out ovl_ioctl() and ovl_compat_ioctl() and take use of them for
-> >> directories.
-> >>
-> >> Signed-off-by: Xiao Yang<yangx.jy@cn.fujitsu.com>
-> >> ---
-> > This change is buggy. I had already posted it and self NACKed myself [1].
-> >
-> > You can find an hopefully non-buggy version of it on my ovl-shutdown [2] branch.
-> >
-> > As long as you are changing ovl_ioctl(), please also take the second
-> > commit on that
-> > branch to replace the open coded capability check with the
-> > vfs_ioc_setflags_prepare()
-> > generic helper.
-> Hi Amir,
->
-> Thanks a lot for your quick reply. :-)
-> I will try to read and understand the metioned patches on your
-> ovl-shutdown branch.
 
-Please also verify my claim in the patch commit message, that the
-the test result of xfstest generic/079 changes from "notrun" to "success".
 
-Thanks,
-Amir.
+Dies ist ein Newsletter von Blue Oak Mortgage and Loans. Bitte melden Sie s=
+ich ab, wenn Sie keine E-Mail mehr von uns erhalten m=C3=B6chten.
+
+
+Eine kurze Einf=C3=BChrung.
+
+Wir sind ein f=C3=BChrendes Finanzierungsunternehmen in Europa. Wir finanzi=
+eren Startups / etablierte Unternehmen, finanzieren Gro=C3=9Fprojekte (Bau,=
+ Landwirtschaft, Immobilien und dergleichen) zu einem niedrigen Zinssatz vo=
+n 2% pro Jahr.
+
+
+Darlehensverfahren
+
+1. Sie m=C3=BCssen das Online-Bewerbungsformular ausf=C3=BCllen und eine or=
+dnungsgem=C3=A4=C3=9F unterschriebene Kopie an uns zur=C3=BCcksenden.
+
+2. M=C3=B6glicherweise m=C3=BCssen Sie Finanzdokumente als unterst=C3=BCtze=
+nden Nachweis f=C3=BCr die F=C3=A4higkeit zur R=C3=BCckzahlung von Krediten=
+ vorlegen.
+
+3. Wenn Ihr Darlehen genehmigt wurde, m=C3=BCssen Sie eine Versicherungsgar=
+antie f=C3=BCr die Darlehenssicherheit vorlegen. Wir empfehlen eine Versich=
+erungsgesellschaft. Sie sind allein verantwortlich f=C3=BCr die Zahlung und=
+ den Erwerb der Anleihe, die als Sicherheit dienen. Die H=C3=B6he der Anlei=
+he h=C3=A4ngt von Ihrem Darlehensbetrag ab. Die Versicherungsgesellschaft w=
+ird Sie durch den Prozess f=C3=BChren. (F=C3=BCr Gro=C3=9Fprojekte)
+
+4. Ihr =C3=9Cberweisungsprozess wird eingeleitet, sobald die Versicherungsa=
+nleihe =C3=BCberpr=C3=BCft wurde. Ihr Darlehensr=C3=BCckzahlungsplan wird i=
+m NC-Darlehensvertragsformular aufgef=C3=BChrt.
+
+Wenn die Bedingungen Sie beruhigen, k=C3=B6nnen Sie uns =C3=BCber die Whats=
+App-Nummer / E-Mail kontaktieren und auch unsere Website besuchen, um weite=
+re Informationen zu erhalten. Wir freuen uns darauf, von Ihnen zu h=C3=B6re=
+n.
+
+WhatsApp: + 90-552-365-3483
+E-Mail: info@bluelmtg.net
