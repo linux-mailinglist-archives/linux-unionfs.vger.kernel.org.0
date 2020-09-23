@@ -2,136 +2,280 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0816427584B
-	for <lists+linux-unionfs@lfdr.de>; Wed, 23 Sep 2020 14:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32E75275904
+	for <lists+linux-unionfs@lfdr.de>; Wed, 23 Sep 2020 15:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726638AbgIWMxp (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 23 Sep 2020 08:53:45 -0400
-Received: from mail-am6eur05on2090.outbound.protection.outlook.com ([40.107.22.90]:5089
-        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
+        id S1726487AbgIWNol (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 23 Sep 2020 09:44:41 -0400
+Received: from relay.sw.ru ([185.231.240.75]:57826 "EHLO relay3.sw.ru"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726130AbgIWMxp (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 23 Sep 2020 08:53:45 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Za9AyjWouFehPWx87iMa9vvzGxgnA1u9EWmLokTrgoop7vGkxaCoWb4P5su6pNHHVrwG/VYo4X0Q6HQzmalvkplQHs8q9V0pzB6vSCXx3ZWR31T1vsYjPgwrfs5A5AWDSM6pZ8ct1Bi+b7YFIhggskaSVuyJWcwCNBv5u3C6rEDVoTHKidBQy7vibRynrWdpByOsm14W7Av3H851fZgS6492O6lLrae5/osg6y2LtLwQ2+mgY1fzn7WzDRWYVGKIuwh5BgfCUBB3v720TJDKiYKnRedDAmysVHonkxkcnr7JvslTEdjcRUwKG4R9U7VDuhLmF6dvsFrhpqsl0sj9mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mECJz6l/hPVTi5uo1BrOuTzdwm7ipOj/xhKO3W4iGO0=;
- b=B+XwtA6q/E8vjG4PKM9+EfP4nbdIwoYZj0hAlVwgqcGZItv57k6COSml/vHeAGnecnsdGvfGfM6aMe52dlg8p9kD/MNmkE60Wtqf1i15hZCyfeCE/qLQdSb28WuXc8t0EmTlXWMyrYPeHtX17ScKCh+B+rqOSY04KsJNmtkbha0X4gmkttQRiK463tD6AfTl4b64zVN3yhTE1/Ofduap01z8l+1WP4IrHaJRmCs3viWtTaKZnAtA7+oJWlhTJGpJmbv1Bw4z1ZWHeaePNU3nfY4qIqhc80ScBmDRW6egqQPR6sJ4yT7uq19CdpKCBSMdqJyiii2znPqqeMxPPnQ8dg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mECJz6l/hPVTi5uo1BrOuTzdwm7ipOj/xhKO3W4iGO0=;
- b=L12sg0z0B08XleVMxgMNhF2w3Yc/olarjiCVNcOStVksSetTXAhmIF4HeBfV/EpTwNqdm5Xtehl/eUpRLu8Mg4XuaLGeG9jnM13N30vuR/qQ3DLyHO87CKa+cOoRb19d0p/tfbVnHOWHTAFbFGTMMFKJGZ25gtVRFrAa005QePQ=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=virtuozzo.com;
-Received: from AM6PR08MB4756.eurprd08.prod.outlook.com (2603:10a6:20b:cd::17)
- by AM7PR08MB5415.eurprd08.prod.outlook.com (2603:10a6:20b:10d::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.15; Wed, 23 Sep
- 2020 12:53:41 +0000
-Received: from AM6PR08MB4756.eurprd08.prod.outlook.com
- ([fe80::71e0:46d9:2c06:2322]) by AM6PR08MB4756.eurprd08.prod.outlook.com
- ([fe80::71e0:46d9:2c06:2322%7]) with mapi id 15.20.3391.027; Wed, 23 Sep 2020
- 12:53:41 +0000
-Subject: Re: Copying overlayfs directories with index=on
-To:     Amir Goldstein <amir73il@gmail.com>,
-        Vivek Goyal <vgoyal@redhat.com>
-Cc:     Pavel Tikhomirov <snorcht@gmail.com>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        linux-unionfs@vger.kernel.org
-References: <a8828676-210a-99e8-30d7-6076f334ed71@virtuozzo.com>
- <CAOQ4uxgZ08ePA5WFOYFoLZaq_-Kjr-haNzBN5Aj3MfF=f9pjdg@mail.gmail.com>
- <1bb71cbf-0a10-34c7-409d-914058e102f6@virtuozzo.com>
- <CAOQ4uxieqnKENV_kJYwfcnPjNdVuqH3BnKVx_zLz=N_PdAguNg@mail.gmail.com>
- <dc696835-bbb5-ed4e-8708-bc828d415a2b@virtuozzo.com>
- <CAOQ4uxg0XVEEzc+HyyC63WWZuA2AsRjJmbZBuNimtj=t+quVyg@mail.gmail.com>
- <20200922212534.GH57620@redhat.com>
- <CAOQ4uxjp6NpF_Q0QqUTzE5=YiKz9w6JbUVyROG+rNFcHPAThFg@mail.gmail.com>
+        id S1726156AbgIWNok (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Wed, 23 Sep 2020 09:44:40 -0400
+X-Greylist: delayed 3226 seconds by postgrey-1.27 at vger.kernel.org; Wed, 23 Sep 2020 09:44:37 EDT
+Received: from [192.168.15.198] (helo=snorch.sw.ru)
+        by relay3.sw.ru with esmtp (Exim 4.94)
+        (envelope-from <ptikhomirov@virtuozzo.com>)
+        id 1kL4Dz-000pYm-D6; Wed, 23 Sep 2020 15:50:19 +0300
 From:   Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Message-ID: <e928fcf0-45f2-f2a8-f8f1-1ad300eb6fde@virtuozzo.com>
-Date:   Wed, 23 Sep 2020 15:53:40 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
-In-Reply-To: <CAOQ4uxjp6NpF_Q0QqUTzE5=YiKz9w6JbUVyROG+rNFcHPAThFg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM0PR04CA0102.eurprd04.prod.outlook.com
- (2603:10a6:208:be::43) To AM6PR08MB4756.eurprd08.prod.outlook.com
- (2603:10a6:20b:cd::17)
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Vivek Goyal <vgoyal@redhat.com>, linux-unionfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ovl: introduce new "index=nouuid" option for inodes index feature
+Date:   Wed, 23 Sep 2020 15:50:14 +0300
+Message-Id: <20200923125014.181931-1-ptikhomirov@virtuozzo.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.1.41] (95.179.127.150) by AM0PR04CA0102.eurprd04.prod.outlook.com (2603:10a6:208:be::43) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.22 via Frontend Transport; Wed, 23 Sep 2020 12:53:41 +0000
-X-Originating-IP: [95.179.127.150]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 6983530f-9fb4-4697-bc7e-08d85fbfb2c4
-X-MS-TrafficTypeDiagnostic: AM7PR08MB5415:
-X-Microsoft-Antispam-PRVS: <AM7PR08MB541512D6E8A8295AB49117E9B7380@AM7PR08MB5415.eurprd08.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ThgJgaeZHrXe7asJl08B2qRJWKD32YPB9Xo1M/vUGVDg2/tBkz6dggvocmQlUQhhFVjaem7eZi8CRoW8wcB+pGUuueMNUqKhGgFFsC3NpAVRaH6plNoyt3VAy1C+o9AeNXf2MKNHltFxbcki/fedL1r+SjFlu5WEFQKTjjLV0/YWnSvNs5sIgbaMyLN39d5R04r8ixuWYHkz366hDVxFrQb9ElOlGVGHnvglF8ddTClkurK583aQsZqvwe/BwaxsD541s7trG8r+SnUQ7gPpns/atmmVt/l1GWWmT8rW//TEz+/0MCpXMcMmEv7nYzqbmhtLUCVT2xkLs4rExEBDWHBZfBNdu/rI43SLaQbQ9lb7tulaqmrtgnkL3NhS4KXWmnC1znt9lmOe1SxzmYsCI4FRqRgzpEdnvz0KtHbQTQ/KxfEqGZFRanwq8HU/uUWr5GdLUI8V9E4QE1NTCPQDS0RZQXFeBJmJKlIiafuiD+TcVBYd/pBa3bye9qO2w6Mg
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR08MB4756.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(39840400004)(366004)(136003)(376002)(346002)(8676002)(36756003)(316002)(478600001)(66946007)(66556008)(66476007)(8936002)(2906002)(2616005)(4326008)(956004)(31696002)(5660300002)(26005)(966005)(110136005)(31686004)(52116002)(54906003)(86362001)(6486002)(16526019)(53546011)(186003)(16576012)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: AonzWlzaiWJWmYPRwLJJYE7UVdpJ7MjaHcaXD8qm8IJVTz/NxqvCAlTO5qAWJ5d9Me11fL52ktU4q0Tu0090YTQRl9YG4e5IKJI2XdDWRShK4k6DH4RqfFeP39l2XhWcCnCwrPbGraKAVHcur8pPEiRdLVN/BWqgWq3rlxxngW/TSgJ3Jm+OOqnXKnozr3NCSwlIbuBmoIcFxThREIrThzJyO0FHMaqUvuaDLFH1GVng/moC/BZax3O/fOvncyn8VNE7prdPV+xwnfjh445vX4ovMDgVQtF0CFjOtUA8Vj5JHF2tnycIBDlm1n00dLImfSjDzh7GSf8s9yVvOshGPGldzxUJywVHhPCPatl9CodlyvKwZqgC9kMT8tfYabAyNb/P0eke/EGge6Ik3Yyqec+zeYNoTqnlyCZ83zvR3sXRjTCE5ES5cfkoNLaMwWppD4VqJIDQOFP3ktbWBCl9j6rAVvrW13H9qdKnOiMJyNqIZ1eNdlG9MYBpNb6WviIpAZ0ub7kyf93HOmFE6VrdumvD79e4ovjlR+NwtA/Zv2kt1eCTrieOmDFkTNWW6QZCAQyWj2c1NfzJtUei9Yxk9pGTB56fnpxYwstyyziqudZy8vaM5u64TfbEvcg5ZkUjR5RmazlRvB/WN4HY/V24og==
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6983530f-9fb4-4697-bc7e-08d85fbfb2c4
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR08MB4756.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2020 12:53:41.7923
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L6mzV4SWTswRysB3yS1xqNwciUvDSbZqGZL6seVfP4GsrYNTIHNzAnGRUejRqRqO9RHZa/8ByUHPWYd73ugWSESg0AvrmbFvyJ3GV+XsCqY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR08MB5415
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Hi, I've sent a patch which is trying to acheive what Amir had 
-suggested. Please take a look:
+This relaxes uuid checks for overlay index feature. It is only possible
+in case there is only one filesystem for all the work/upper/lower
+directories and bare file handles from this backing filesystem are uniq.
+In case we have multiple filesystems here just fall back to normal
+"index=on".
 
-[PATCH] ovl: introduce new "index=nouuid" option for inodes index feature
+This is needed when overlayfs is/was mounted in a container with
+index enabled (e.g.: to be able to resolve inotify watch file handles on
+it to paths in CRIU), and this container is copied and started alongside
+with the original one. This way the "copy" container can't have the same
+uuid on the superblock and mounting the overlayfs from it later would
+fail.
 
-On 9/23/20 5:10 AM, Amir Goldstein wrote:
-> On Wed, Sep 23, 2020 at 12:25 AM Vivek Goyal <vgoyal@redhat.com> wrote:
->>
->> On Tue, Sep 22, 2020 at 02:15:55PM +0300, Amir Goldstein wrote:
->>
->> [..]
->>>
->>> No objection, but if I were you I wouldn't bother re-writing new ovl_fh.
->>> If you know you don't care about matching uuid in the first place,
->>> it is better to add a mount option to overlayfs 'index=nouuid' to relax the
->>> uuid comparison check for ovl_fh.
->>
->> So is it possible that somebody uses "nouuid" and then a different file
->> got same file handle (as stored in upper). I think that's one issue
->> you were worried about while addressing squashfs fix. IIRC, Miklos had said
->> with-in same filesystem it will not happen and across filesystems
->> sb->uuid check will ensure this does not happen. IOW, "nouuid" will
->> open the possibility of upper file handle matching a different file?
->>
-> 
-> Well, to be accurate, I did write that when cloning a base lower fs (like with
-> dm-thinp) the problem reported with re-created lower squashfs still exists but
-> that it is a corner case [1].
-> 
-> But what I suggested is that index=nouuid will only be allowed for all layers
-> on the same fs, where this is not a problem.
-> 
-> Thanks,
-> Amir.
-> 
-> [1] https://lore.kernel.org/linux-unionfs/CAOQ4uxiq7hkaew4LoFZkf4R73iH_pU7OHOriycLCnnywtA0O0w@mail.gmail.com/
-> 
+That is an example of the problem on top of loop+ext4:
 
+dd if=/dev/zero of=loopbackfile.img bs=100M count=10
+losetup -fP loopbackfile.img
+losetup -a
+  #/dev/loop0: [64768]:35 (/loop-test/loopbackfile.img)
+mkfs.ext4 /root/loopbackfile.img
+mkdir loop-mp
+mount -o loop /dev/loop0 loop-mp
+mkdir loop-mp/{lower,upper,work,merged}
+mount -t overlay overlay -oindex=on,lowerdir=loop-mp/lower,\
+upperdir=loop-mp/upper,workdir=loop-mp/work loop-mp/merged
+umount loop-mp/merged
+umount loop-mp
+e2fsck -f /dev/loop0
+tune2fs -U random /dev/loop0
+
+mount -o loop /dev/loop0 loop-mp
+mount -t overlay overlay -oindex=on,lowerdir=loop-mp/lower,\
+upperdir=loop-mp/upper,workdir=loop-mp/work loop-mp/merged
+  #mount: /loop-test/loop-mp/merged:
+  #mount(2) system call failed: Stale file handle.
+
+If you just change the uuid of the backing filesystem, overlay is not
+mounting any more. In Virtuozzo we copy container disks (ploops) when
+crate the copy of container and we require fs uuid to be uniq for a new
+container.
+
+CC: Amir Goldstein <amir73il@gmail.com>
+CC: Vivek Goyal <vgoyal@redhat.com>
+CC: Miklos Szeredi <miklos@szeredi.hu>
+CC: linux-unionfs@vger.kernel.org
+CC: linux-kernel@vger.kernel.org
+Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+---
+ fs/overlayfs/Kconfig     | 16 ++++++++++++
+ fs/overlayfs/ovl_entry.h |  2 +-
+ fs/overlayfs/super.c     | 56 ++++++++++++++++++++++++++++++----------
+ 3 files changed, 59 insertions(+), 15 deletions(-)
+
+diff --git a/fs/overlayfs/Kconfig b/fs/overlayfs/Kconfig
+index dd188c7996b3..b00fd44006f9 100644
+--- a/fs/overlayfs/Kconfig
++++ b/fs/overlayfs/Kconfig
+@@ -61,6 +61,22 @@ config OVERLAY_FS_INDEX
+ 
+ 	  If unsure, say N.
+ 
++config OVERLAY_FS_INDEX_NOUUID
++	bool "Overlayfs: relax uuid checks of inodes index feature"
++	depends on OVERLAY_FS
++	depends on OVERLAY_FS_INDEX
++	help
++	  If this config option is enabled then overlay will skip uuid checks
++	  for index lower to upper inode map, this only can be done if all
++	  upper and lower directories are on the same filesystem where basic
++	  fhandles are uniq.
++
++	  It is needed to overcome possible change of uuid on superblock of the
++	  backing filesystem, e.g. when you copied the virtual disk and mount
++	  both the copy of the disk and the original one at the same time.
++
++	  If unsure, say N.
++
+ config OVERLAY_FS_NFS_EXPORT
+ 	bool "Overlayfs: turn on NFS export feature by default"
+ 	depends on OVERLAY_FS
+diff --git a/fs/overlayfs/ovl_entry.h b/fs/overlayfs/ovl_entry.h
+index b429c80879ee..2fd2cc515ad2 100644
+--- a/fs/overlayfs/ovl_entry.h
++++ b/fs/overlayfs/ovl_entry.h
+@@ -13,7 +13,7 @@ struct ovl_config {
+ 	bool redirect_dir;
+ 	bool redirect_follow;
+ 	const char *redirect_mode;
+-	bool index;
++	int index;
+ 	bool nfs_export;
+ 	int xino;
+ 	bool metacopy;
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 4b38141c2985..617a5083e659 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -38,10 +38,16 @@ module_param_named(redirect_always_follow, ovl_redirect_always_follow,
+ MODULE_PARM_DESC(redirect_always_follow,
+ 		 "Follow redirects even if redirect_dir feature is turned off");
+ 
+-static bool ovl_index_def = IS_ENABLED(CONFIG_OVERLAY_FS_INDEX);
+-module_param_named(index, ovl_index_def, bool, 0644);
++#define OVL_INDEX_OFF          0
++#define OVL_INDEX_ON           1
++#define OVL_INDEX_NOUUID       2
++
++static int ovl_index_def = IS_ENABLED(CONFIG_OVERLAY_FS_INDEX_NOUUID) ?
++			   OVL_INDEX_NOUUID :
++			   IS_ENABLED(CONFIG_OVERLAY_FS_INDEX);
++module_param_named(index, ovl_index_def, int, 0644);
+ MODULE_PARM_DESC(index,
+-		 "Default to on or off for the inodes index feature");
++		 "Default to on, off or nouuid for the inodes index feature");
+ 
+ static bool ovl_nfs_export_def = IS_ENABLED(CONFIG_OVERLAY_FS_NFS_EXPORT);
+ module_param_named(nfs_export, ovl_nfs_export_def, bool, 0644);
+@@ -352,8 +358,18 @@ static int ovl_show_options(struct seq_file *m, struct dentry *dentry)
+ 		seq_puts(m, ",default_permissions");
+ 	if (strcmp(ofs->config.redirect_mode, ovl_redirect_mode_def()) != 0)
+ 		seq_printf(m, ",redirect_dir=%s", ofs->config.redirect_mode);
+-	if (ofs->config.index != ovl_index_def)
+-		seq_printf(m, ",index=%s", ofs->config.index ? "on" : "off");
++	if (ofs->config.index != ovl_index_def) {
++		switch (ofs->config.index) {
++		case OVL_INDEX_OFF:
++			seq_puts(m, ",index=off");
++			break;
++		case OVL_INDEX_NOUUID:
++			seq_puts(m, ",index=nouuid");
++			break;
++		default:
++			seq_puts(m, ",index=on");
++		}
++	}
+ 	if (ofs->config.nfs_export != ovl_nfs_export_def)
+ 		seq_printf(m, ",nfs_export=%s", ofs->config.nfs_export ?
+ 						"on" : "off");
+@@ -404,6 +420,7 @@ enum {
+ 	OPT_REDIRECT_DIR,
+ 	OPT_INDEX_ON,
+ 	OPT_INDEX_OFF,
++	OPT_INDEX_NOUUID,
+ 	OPT_NFS_EXPORT_ON,
+ 	OPT_NFS_EXPORT_OFF,
+ 	OPT_XINO_ON,
+@@ -422,6 +439,7 @@ static const match_table_t ovl_tokens = {
+ 	{OPT_REDIRECT_DIR,		"redirect_dir=%s"},
+ 	{OPT_INDEX_ON,			"index=on"},
+ 	{OPT_INDEX_OFF,			"index=off"},
++	{OPT_INDEX_NOUUID,		"index=nouuid"},
+ 	{OPT_NFS_EXPORT_ON,		"nfs_export=on"},
+ 	{OPT_NFS_EXPORT_OFF,		"nfs_export=off"},
+ 	{OPT_XINO_ON,			"xino=on"},
+@@ -532,12 +550,17 @@ static int ovl_parse_opt(char *opt, struct ovl_config *config)
+ 			break;
+ 
+ 		case OPT_INDEX_ON:
+-			config->index = true;
++			config->index = OVL_INDEX_ON;
+ 			index_opt = true;
+ 			break;
+ 
+ 		case OPT_INDEX_OFF:
+-			config->index = false;
++			config->index = OVL_INDEX_OFF;
++			index_opt = true;
++			break;
++
++		case OPT_INDEX_NOUUID:
++			config->index = OVL_INDEX_NOUUID;
+ 			index_opt = true;
+ 			break;
+ 
+@@ -592,7 +615,7 @@ static int ovl_parse_opt(char *opt, struct ovl_config *config)
+ 			pr_info("option \"index=on\" is useless in a non-upper mount, ignore\n");
+ 			index_opt = false;
+ 		}
+-		config->index = false;
++		config->index = OVL_INDEX_OFF;
+ 	}
+ 
+ 	err = ovl_parse_redirect_mode(config, config->redirect_mode);
+@@ -644,7 +667,7 @@ static int ovl_parse_opt(char *opt, struct ovl_config *config)
+ 			config->nfs_export = false;
+ 		} else {
+ 			/* Automatically enable index otherwise. */
+-			config->index = true;
++			config->index = OPT_INDEX_ON;
+ 		}
+ 	}
+ 
+@@ -859,7 +882,7 @@ static int ovl_lower_dir(const char *name, struct path *path,
+ 	fh_type = ovl_can_decode_fh(path->dentry->d_sb);
+ 	if ((ofs->config.nfs_export ||
+ 	     (ofs->config.index && ofs->config.upperdir)) && !fh_type) {
+-		ofs->config.index = false;
++		ofs->config.index = OVL_INDEX_OFF;
+ 		ofs->config.nfs_export = false;
+ 		pr_warn("fs on '%s' does not support file handles, falling back to index=off,nfs_export=off.\n",
+ 			name);
+@@ -1259,7 +1282,7 @@ static int ovl_make_workdir(struct super_block *sb, struct ovl_fs *ofs,
+ 	err = ovl_do_setxattr(ofs->workdir, OVL_XATTR_OPAQUE, "0", 1, 0);
+ 	if (err) {
+ 		ofs->noxattr = true;
+-		ofs->config.index = false;
++		ofs->config.index = OPT_INDEX_OFF;
+ 		ofs->config.metacopy = false;
+ 		pr_warn("upper fs does not support xattr, falling back to index=off and metacopy=off.\n");
+ 		err = 0;
+@@ -1282,7 +1305,7 @@ static int ovl_make_workdir(struct super_block *sb, struct ovl_fs *ofs,
+ 	/* Check if upper/work fs supports file handles */
+ 	fh_type = ovl_can_decode_fh(ofs->workdir->d_sb);
+ 	if (ofs->config.index && !fh_type) {
+-		ofs->config.index = false;
++		ofs->config.index = OVL_INDEX_OFF;
+ 		pr_warn("upper fs does not support file handles, falling back to index=off.\n");
+ 	}
+ 
+@@ -1458,7 +1481,7 @@ static int ovl_get_fsid(struct ovl_fs *ofs, const struct path *path)
+ 	if (!ovl_lower_uuid_ok(ofs, &sb->s_uuid)) {
+ 		bad_uuid = true;
+ 		if (ofs->config.index || ofs->config.nfs_export) {
+-			ofs->config.index = false;
++			ofs->config.index = OVL_INDEX_OFF;
+ 			ofs->config.nfs_export = false;
+ 			pr_warn("%s uuid detected in lower fs '%pd2', falling back to index=off,nfs_export=off.\n",
+ 				uuid_is_null(&sb->s_uuid) ? "null" :
+@@ -1889,9 +1912,14 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
+ 	if (err)
+ 		goto out_free_oe;
+ 
++	if (ofs->config.index == OVL_INDEX_NOUUID && ofs->numfs > 1) {
++		pr_warn("The index=nouuid requires a single fs for lower and upper, falling back to index=on.\n");
++		ofs->config.index = OVL_INDEX_ON;
++	}
++
+ 	/* Show index=off in /proc/mounts for forced r/o mount */
+ 	if (!ofs->indexdir) {
+-		ofs->config.index = false;
++		ofs->config.index = OVL_INDEX_OFF;
+ 		if (ovl_upper_mnt(ofs) && ofs->config.nfs_export) {
+ 			pr_warn("NFS export requires an index dir, falling back to nfs_export=off.\n");
+ 			ofs->config.nfs_export = false;
 -- 
-Best regards, Tikhomirov Pavel
-Software Developer, Virtuozzo.
+2.26.2
+
