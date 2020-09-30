@@ -2,188 +2,46 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A685E27BE56
-	for <lists+linux-unionfs@lfdr.de>; Tue, 29 Sep 2020 09:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5495927FA80
+	for <lists+linux-unionfs@lfdr.de>; Thu,  1 Oct 2020 09:47:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727521AbgI2Hrj (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 29 Sep 2020 03:47:39 -0400
-Received: from mail.cn.fujitsu.com ([183.91.158.132]:16796 "EHLO
-        heian.cn.fujitsu.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725535AbgI2Hri (ORCPT
+        id S1731504AbgJAHrT (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 1 Oct 2020 03:47:19 -0400
+Received: from mail2.grupovidela.com ([212.31.54.87]:47588 "EHLO
+        grupovidela.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725938AbgJAHrF (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 29 Sep 2020 03:47:38 -0400
-X-IronPort-AV: E=Sophos;i="5.77,317,1596470400"; 
-   d="scan'208";a="99706516"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 29 Sep 2020 15:47:32 +0800
-Received: from G08CNEXMBPEKD06.g08.fujitsu.local (unknown [10.167.33.206])
-        by cn.fujitsu.com (Postfix) with ESMTP id C06AF48990F6;
-        Tue, 29 Sep 2020 15:47:28 +0800 (CST)
-Received: from G08CNEXCHPEKD06.g08.fujitsu.local (10.167.33.205) by
- G08CNEXMBPEKD06.g08.fujitsu.local (10.167.33.206) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Tue, 29 Sep 2020 15:47:25 +0800
-Received: from Fedora-31.g08.fujitsu.local (10.167.220.31) by
- G08CNEXCHPEKD06.g08.fujitsu.local (10.167.33.205) with Microsoft SMTP Server
- id 15.0.1497.2 via Frontend Transport; Tue, 29 Sep 2020 15:47:25 +0800
-From:   Xiao Yang <yangx.jy@cn.fujitsu.com>
-To:     <linux-unionfs@vger.kernel.org>
-CC:     <miklos@szeredi.hu>, <amir73il@gmail.com>, <hch@infradead.org>,
-        <darrick.wong@oracle.com>, <fstests@vger.kernel.org>,
-        Xiao Yang <yangx.jy@cn.fujitsu.com>
-Subject: [PATCH v2 2/2] ovl: use generic vfs_ioc_setflags_prepare() helper
-Date:   Tue, 29 Sep 2020 15:28:48 +0800
-Message-ID: <20200929072848.853877-2-yangx.jy@cn.fujitsu.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200929072848.853877-1-yangx.jy@cn.fujitsu.com>
-References: <20200929072848.853877-1-yangx.jy@cn.fujitsu.com>
+        Thu, 1 Oct 2020 03:47:05 -0400
+X-Greylist: delayed 62085 seconds by postgrey-1.27 at vger.kernel.org; Thu, 01 Oct 2020 03:47:00 EDT
+Received: from User ([94.102.54.226])
+        (user=varios@grupovidela.com mech=LOGIN bits=0)
+        by fortimail.grupovidela.com  with ESMTP id 08UEUh9R015477-08UEUh9T015477;
+        Wed, 30 Sep 2020 16:30:44 +0200
+Message-Id: <202009301430.08UEUh9R015477-08UEUh9T015477@fortimail.grupovidela.com>
+Reply-To: <fulanlan28@gmail.com>
+From:   "Mr. Fu Lan" <aitor@coacan.es>
+Subject: YOUR EARLY REPLY
+Date:   Wed, 30 Sep 2020 07:30:48 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-yoursite-MailScanner-ID: C06AF48990F6.ABAE1
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: yangx.jy@cn.fujitsu.com
-X-Spam-Status: No
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-FEAS-AUTH-USER: varios@grupovidela.com
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-From: Amir Goldstein <amir73il@gmail.com>
+YOUR EARLY REPLY 
 
-Canonalize to ioctl FS_* flags instead of inode S_* flags.
-
-Note that we do not call the helper vfs_ioc_fssetxattr_check()
-for FS_IOC_FSSETXATTR ioctl. The reason is that underlying filesystem
-will perform all the checks. We only need to perform the capability
-check before overriding credentials.
-
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Xiao Yang <yangx.jy@cn.fujitsu.com>
-Reviewed-by: Xiao Yang <yangx.jy@cn.fujitsu.com>
----
-
-V1->v2:
-1) Rebase on top of the following branch:
-   git://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/vfs.git overlayfs-nex
-
- fs/overlayfs/file.c | 62 ++++++++++++++++++++++-----------------------
- 1 file changed, 30 insertions(+), 32 deletions(-)
-
-diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
-index 90b9aaebdf57..7f82c9fc9d9a 100644
---- a/fs/overlayfs/file.c
-+++ b/fs/overlayfs/file.c
-@@ -559,12 +559,28 @@ static long ovl_real_ioctl(struct file *file, unsigned int cmd,
- 	return ret;
- }
- 
-+static unsigned int ovl_iflags_to_fsflags(unsigned int iflags)
-+{
-+	unsigned int flags = 0;
-+
-+	if (iflags & S_SYNC)
-+		flags |= FS_SYNC_FL;
-+	if (iflags & S_APPEND)
-+		flags |= FS_APPEND_FL;
-+	if (iflags & S_IMMUTABLE)
-+		flags |= FS_IMMUTABLE_FL;
-+	if (iflags & S_NOATIME)
-+		flags |= FS_NOATIME_FL;
-+
-+	return flags;
-+}
-+
- static long ovl_ioctl_set_flags(struct file *file, unsigned int cmd,
--				unsigned long arg, unsigned int iflags)
-+				unsigned long arg, unsigned int flags)
- {
- 	long ret;
- 	struct inode *inode = file_inode(file);
--	unsigned int old_iflags;
-+	unsigned int oldflags;
- 
- 	if (!inode_owner_or_capable(inode))
- 		return -EACCES;
-@@ -576,10 +592,9 @@ static long ovl_ioctl_set_flags(struct file *file, unsigned int cmd,
- 	inode_lock(inode);
- 
- 	/* Check the capability before cred override */
--	ret = -EPERM;
--	old_iflags = READ_ONCE(inode->i_flags);
--	if (((iflags ^ old_iflags) & (S_APPEND | S_IMMUTABLE)) &&
--	    !capable(CAP_LINUX_IMMUTABLE))
-+	oldflags = ovl_iflags_to_fsflags(READ_ONCE(inode->i_flags));
-+	ret = vfs_ioc_setflags_prepare(inode, oldflags, flags);
-+	if (ret)
- 		goto unlock;
- 
- 	ret = ovl_maybe_copy_up(file_dentry(file), O_WRONLY);
-@@ -598,22 +613,6 @@ static long ovl_ioctl_set_flags(struct file *file, unsigned int cmd,
- 
- }
- 
--static unsigned int ovl_fsflags_to_iflags(unsigned int flags)
--{
--	unsigned int iflags = 0;
--
--	if (flags & FS_SYNC_FL)
--		iflags |= S_SYNC;
--	if (flags & FS_APPEND_FL)
--		iflags |= S_APPEND;
--	if (flags & FS_IMMUTABLE_FL)
--		iflags |= S_IMMUTABLE;
--	if (flags & FS_NOATIME_FL)
--		iflags |= S_NOATIME;
--
--	return iflags;
--}
--
- static long ovl_ioctl_set_fsflags(struct file *file, unsigned int cmd,
- 				  unsigned long arg)
- {
-@@ -622,24 +621,23 @@ static long ovl_ioctl_set_fsflags(struct file *file, unsigned int cmd,
- 	if (get_user(flags, (int __user *) arg))
- 		return -EFAULT;
- 
--	return ovl_ioctl_set_flags(file, cmd, arg,
--				   ovl_fsflags_to_iflags(flags));
-+	return ovl_ioctl_set_flags(file, cmd, arg, flags);
- }
- 
--static unsigned int ovl_fsxflags_to_iflags(unsigned int xflags)
-+static unsigned int ovl_fsxflags_to_fsflags(unsigned int xflags)
- {
--	unsigned int iflags = 0;
-+	unsigned int flags = 0;
- 
- 	if (xflags & FS_XFLAG_SYNC)
--		iflags |= S_SYNC;
-+		flags |= FS_SYNC_FL;
- 	if (xflags & FS_XFLAG_APPEND)
--		iflags |= S_APPEND;
-+		flags |= FS_APPEND_FL;
- 	if (xflags & FS_XFLAG_IMMUTABLE)
--		iflags |= S_IMMUTABLE;
-+		flags |= FS_IMMUTABLE_FL;
- 	if (xflags & FS_XFLAG_NOATIME)
--		iflags |= S_NOATIME;
-+		flags |= FS_NOATIME_FL;
- 
--	return iflags;
-+	return flags;
- }
- 
- static long ovl_ioctl_set_fsxflags(struct file *file, unsigned int cmd,
-@@ -652,7 +650,7 @@ static long ovl_ioctl_set_fsxflags(struct file *file, unsigned int cmd,
- 		return -EFAULT;
- 
- 	return ovl_ioctl_set_flags(file, cmd, arg,
--				   ovl_fsxflags_to_iflags(fa.fsx_xflags));
-+				   ovl_fsxflags_to_fsflags(fa.fsx_xflags));
- }
- 
- long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
--- 
-2.25.1
-
-
-
+It is understandable that you might be a little bit apprehensive because
+you do not know me but I have a lucrative business proposal of mutual
+interest to share with you.$222,695.415.00 million United States dollars
+your earliest response will be appreciated.
+Email: fulanlan28@gmail.com
+Kind Regards,
+Mr. Fu Lan
