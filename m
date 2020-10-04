@@ -2,64 +2,123 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37746281BF9
-	for <lists+linux-unionfs@lfdr.de>; Fri,  2 Oct 2020 21:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8E33282D55
+	for <lists+linux-unionfs@lfdr.de>; Sun,  4 Oct 2020 21:45:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388386AbgJBT1V convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-unionfs@lfdr.de>); Fri, 2 Oct 2020 15:27:21 -0400
-Received: from mx.metalurgs.lv ([81.198.125.103]:61997 "EHLO mx.metalurgs.lv"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387806AbgJBT1V (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 2 Oct 2020 15:27:21 -0400
-X-Greylist: delayed 604 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 15:27:21 EDT
-Received: from mx.metalurgs.lv (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id CDA0962EB9
-        for <linux-unionfs@vger.kernel.org>; Fri,  2 Oct 2020 22:16:47 +0300 (EEST)
-Received: from kas30pipe.localhost (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id 67F5762E77
-        for <linux-unionfs@vger.kernel.org>; Fri,  2 Oct 2020 22:16:47 +0300 (EEST)
-Received: by mx.metalurgs.lv (Postfix, from userid 1005)
-        id 35D6462DB4; Fri,  2 Oct 2020 22:16:45 +0300 (EEST)
-Received: from [100.64.1.74] (unknown [190.15.125.50])
-        (Authenticated sender: admin)
-        by mx.metalurgs.lv (Postfix) with ESMTPA id 4E1BF62AD1;
-        Fri,  2 Oct 2020 22:16:38 +0300 (EEST)
-MIME-Version: 1.0
-Content-Description: Mail message body
-To:     Recipients <financialcapability6@gmail.com>
-From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
-Date:   Fri, 02 Oct 2020 16:16:30 -0300
-Reply-To: binmurrah@gmail.com
-X-SpamTest-Envelope-From: financialcapability6@gmail.com
-X-SpamTest-Group-ID: 00000000
-X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
-X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
-X-SpamTest-Info: {DATE: unreal year}
-X-SpamTest-Method: none
-X-SpamTest-Rate: 55
-X-SpamTest-Status: Not detected
-X-SpamTest-Status-Extended: not_detected
-X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
-Message-ID: <20201002191645.35D6462DB4@mx.metalurgs.lv>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: Low Rate Loan.
-X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
-         bases: 20140401 #7726142, check: 20201002 notchecked
+        id S1726289AbgJDTpB (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 4 Oct 2020 15:45:01 -0400
+Received: from relay.sw.ru ([185.231.240.75]:47904 "EHLO relay3.sw.ru"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726085AbgJDTpB (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Sun, 4 Oct 2020 15:45:01 -0400
+X-Greylist: delayed 1197 seconds by postgrey-1.27 at vger.kernel.org; Sun, 04 Oct 2020 15:44:59 EDT
+Received: from [172.16.25.93] (helo=amikhalitsyn-pc0.sw.ru)
+        by relay3.sw.ru with esmtp (Exim 4.94)
+        (envelope-from <alexander.mikhalitsyn@virtuozzo.com>)
+        id 1kP9cE-00318e-8c; Sun, 04 Oct 2020 22:24:14 +0300
+From:   Alexander Mikhalitsyn <alexander.mikhalitsyn@virtuozzo.com>
+To:     miklos@szeredi.hu
+Cc:     Alexander Mikhalitsyn <alexander.mikhalitsyn@virtuozzo.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Andrei Vagin <avagin@gmail.com>,
+        Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+        David Howells <dhowells@redhat.com>,
+        linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/1] overlayfs: C/R enhancments (RFC)
+Date:   Sun,  4 Oct 2020 22:24:00 +0300
+Message-Id: <20201004192401.9738-1-alexander.mikhalitsyn@virtuozzo.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Hello Dear,
+Some time ago we discussed about the problem of Checkpoint-Restoring
+overlayfs mounts [1]. Big thanks to Amir for review and suggestions.
 
-We are Investment Company offering Corporate and Personal
-Loan at 3% Interest Rate for a duration of 10Years.
+Brief from previous discussion.
+Problem statement: to checkpoint-restore overlayfs mounts we need
+to save overlayfs mount state and save it into the image. Basically,
+this state for us it's just mount options of overlayfs mount. But
+here we have two problems:
 
-We also pay 1% commission to brokers, who introduce project
-owners for finance or other opportunities.
+I. during mounting overlayfs user may specify relative paths in upperdir,
+workdir, lowerdir options
 
-Please get back to me if you are interested for more
-details.
+II. also user may unmount mount from which these paths was opened during mounting
 
-Yours faithfully,
-Hashim Bin 
+This is real problems for us. My first patch was attempt to address both problems.
+1. I've added refcnt get for mounts from which overlayfs was mounted.
+2. I've changed overlayfs mountinfo show algorithm, so overlayfs started to *always*
+show full paths for upperdir,workdir,lowerdirs.
+3. I've added mnt_id show-time only option which allows to determine from which mnt_id
+we opened options paths.
+
+Pros:
+- we can determine full information about overlayfs mount
+- we hold refcnt to mount, so, user may unmount source mounts only
+with lazy flag
+
+Cons:
+- by adding refcnt get for mount I've changed possible overlayfs usecases
+- by showing *full* paths we can more easily reache PAGE_SIZE limit of 
+mounts options in procfs
+- by adding mnt_id show-only option I've added inconsistency between
+mount-time options and show-time mount options
+
+After very productive discussion with Amir and Pavel I've decided to write new
+implementation. In new approach we decided *not* to take extra refcnts to mounts.
+Also we decided to use exportfs fhandles instead of full paths. To determine
+full path we plan to use the next algo:
+1. Export {s_dev; fhandle} from overlayfs for *all* sources
+2. User open_by_handle_at syscall to open all these fhandles (we need to
+determine mount for each fhandle, looks like we can do this by s_dev by linear
+search in /proc/<pid>/mountinfo)
+3. Then readlink /proc/<pid>/fd/<opened fd>
+4. Dump this full path+mnt_id
+
+But there is question. How to export this {s_dev; fhandle} from kernel to userspace?
+- We decided not to use procfs.
+- Amir proposed solution - use xattrs. But after diving into it I've meet problem
+where I can set this xattrs?
+If I set this xattrs on overlayfs dentries then during rsync, or cp -p=xattr we will copy
+this temporary information.
+- ioctls? (this patchset implements this approach)
+- fsinfo subsystem (not merged yet) [2]
+
+Problems with ioctls:
+1. We limited in output data size (16 KB AFAIK)
+but MAX_HANDLE_SZ=128(bytes), OVL_MAX_STACK=500(num lowerdirs)
+So, MAX_HANDLE_SZ*OVL_MAX_STACK = 64KB which is bigger than limit.
+So, I've decided to give user one fhandle by one call. This is also
+bad from the performance point of view.
+2. When using ioctls we need to have *fixed* size of input and output.
+So, if MAX_HANDLE_SZ will change in the future our _IOR('o', 2, struct ovl_mnt_opt_fh)
+will also change with struct ovl_mnt_opt_fh.
+
+So, I hope that we discuss about this patchset and try to make possible solutions together.
+
+Thanks.
+Regards, Alex.
+
+[1] https://lore.kernel.org/linux-unionfs/20200604161133.20949-1-alexander.mikhalitsyn@virtuozzo.com/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=fsinfo-core
+
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: Andrei Vagin <avagin@gmail.com>
+Cc: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: David Howells <dhowells@redhat.com>
+Cc: linux-unionfs@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Alexander Mikhalitsyn (1):
+  overlayfs: add ioctls that allows to get fhandle for layers dentries
+
+ fs/overlayfs/readdir.c | 160 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 160 insertions(+)
+
+-- 
+2.25.1
+
