@@ -2,82 +2,67 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9616284EA7
-	for <lists+linux-unionfs@lfdr.de>; Tue,  6 Oct 2020 17:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C85A6285D86
+	for <lists+linux-unionfs@lfdr.de>; Wed,  7 Oct 2020 12:52:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725947AbgJFPNj (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 6 Oct 2020 11:13:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42394 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725902AbgJFPNi (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 6 Oct 2020 11:13:38 -0400
-Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B93CC061755
-        for <linux-unionfs@vger.kernel.org>; Tue,  6 Oct 2020 08:13:38 -0700 (PDT)
-Received: by mail-vs1-xe42.google.com with SMTP id e2so6282930vsr.7
-        for <linux-unionfs@vger.kernel.org>; Tue, 06 Oct 2020 08:13:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=24vAgql5Dqcn8/iHEJwevkJshhxRgPh777MgK3JWTsY=;
-        b=pnmDEAYzNx9gWXPcfR0aRKzsSXPzwRgvhgbj7H/Vizqzd6iuFianxXf/KSWglOHbLR
-         ojrNXPnrz8dC9sefKr5f+COQ6ufaaPG6Rp9APm733BpQWqwNwYk5bAp9qrtxyP0FVlqW
-         Ui48aZxx4smn/FiFt4W5ohVuZFbIK5g76f0U0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=24vAgql5Dqcn8/iHEJwevkJshhxRgPh777MgK3JWTsY=;
-        b=ujtP3jBLYKmZ3j0iDU9cnofO3TE+OqG7a/AaYj+MqxbjxHCIVNez4LVajT3cyU85NP
-         XQ/IavuiTBoQzjxfjYzownnGZQVLFex1U1nOZYZ/jYQALByiTxUtM0Llf70LQVzW1N2q
-         Kh6CVDwkvCkAIbYLSTg/7bqQCHR5925Oq+oNzBPLPBWO6FBoERYlgXqpvKAiySjSlCVj
-         5maJGqD5SSaVCYMsVffiyzX2CpwXcgJCQB7H3MteWhdsaTeWVIcnye3AxH4Gff3/YsjT
-         XVZ4m5dQXkD3s3pHYiW5RNWpG+6Wb4lFpvwWmM4y5vDm4sEbJSIEXGiEAHx74B5FdV0K
-         3P7A==
-X-Gm-Message-State: AOAM530OCmquxisM18YL27a/vhmsxae1f/GPrzrDWgVQ9BGszZy1Zy0Q
-        Oa7VSTWzBO3zWDsifuf/YuCpccEkA3sTuiaX/fr5HTQuGSk=
-X-Google-Smtp-Source: ABdhPJwne6XwG4rCqz7el40G36q5VtevxEWc60abwElUWGgAA5HzmqXYaOA70Ubk9BY4LaFmDcaFwZe4Kz2wK8eLBrQ=
-X-Received: by 2002:a67:a603:: with SMTP id p3mr3833722vse.4.1601997217529;
- Tue, 06 Oct 2020 08:13:37 -0700 (PDT)
+        id S1728275AbgJGKwY convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-unionfs@lfdr.de>); Wed, 7 Oct 2020 06:52:24 -0400
+Received: from mx.metalurgs.lv ([81.198.125.103]:61402 "EHLO mx.metalurgs.lv"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728272AbgJGKwX (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Wed, 7 Oct 2020 06:52:23 -0400
+Received: from mx.metalurgs.lv (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 7697F65C5F
+        for <linux-unionfs@vger.kernel.org>; Wed,  7 Oct 2020 13:51:44 +0300 (EEST)
+Received: from kas30pipe.localhost (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 1953F65B20
+        for <linux-unionfs@vger.kernel.org>; Wed,  7 Oct 2020 13:51:44 +0300 (EEST)
+Received: by mx.metalurgs.lv (Postfix, from userid 1005)
+        id 948C964AA6; Wed,  7 Oct 2020 13:51:43 +0300 (EEST)
+Received: from [100.64.1.74] (unknown [190.15.125.55])
+        (Authenticated sender: admin)
+        by mx.metalurgs.lv (Postfix) with ESMTPA id 4BBF262441;
+        Wed,  7 Oct 2020 13:51:37 +0300 (EEST)
 MIME-Version: 1.0
-References: <20200925083507.13603-1-ptikhomirov@virtuozzo.com> <20200925083507.13603-3-ptikhomirov@virtuozzo.com>
-In-Reply-To: <20200925083507.13603-3-ptikhomirov@virtuozzo.com>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Tue, 6 Oct 2020 17:13:25 +0200
-Message-ID: <CAJfpegvgmnWrmsACuWe_hYCfVm2r0Ltv0C+sN+3T1DBMzrGE9w@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] ovl: introduce new "uuid=off" option for inodes
- index feature
-To:     Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Cc:     Amir Goldstein <amir73il@gmail.com>,
-        Vivek Goyal <vgoyal@redhat.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Description: Mail message body
+To:     Recipients <financialcapability6@gmail.com>
+From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date:   Wed, 07 Oct 2020 07:51:30 -0300
+Reply-To: hmurrah39@gmail.com
+X-SpamTest-Envelope-From: financialcapability6@gmail.com
+X-SpamTest-Group-ID: 00000000
+X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
+X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
+X-SpamTest-Info: {DATE: unreal year}
+X-SpamTest-Method: none
+X-SpamTest-Rate: 55
+X-SpamTest-Status: Not detected
+X-SpamTest-Status-Extended: not_detected
+X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
+Message-ID: <20201007105143.948C964AA6@mx.metalurgs.lv>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Low Rate Loan./mmm,
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+         bases: 20140401 #7726142, check: 20201007 notchecked
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Fri, Sep 25, 2020 at 10:35 AM Pavel Tikhomirov
-<ptikhomirov@virtuozzo.com> wrote:
+Hello Dear,
 
-> Note: In our (Virtuozzo) use case users inside a container can create
-> "regular" overlayfs mounts without any "index=" option, but we still
-> want to migrate this containers with CRIU so we set "index=on" as kernel
-> default so that all the container overlayfs mounts get support of file
-> handles automatically. With "uuid=off" we want the same thing (to be
-> able to "copy" container with uuid change) - we would set kernel default
-> so that all the container overlayfs mounts get "uuid=off" automatically.
 
-I'm not sure I buy that argument for a kernel option.   It should
-rather be a "container" option in that case, but AFAIK the kernel
-doesn't have a concept of a container.  I think this needs to be
-discussed on the relevant mailing lists.
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
 
-As of now mainline kernel doesn't support unprivileged overlay mounts,
-so I guess this is not an issue.  Let's just merge this without the
-kernel and the module options.
 
-Thanks,
-Miklos
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
+
+
+Please get back to me if you are interested for more
+
+details.
+
+
+Yours faithfully,
+
+Hashim Murrah
