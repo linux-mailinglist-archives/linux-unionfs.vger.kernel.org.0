@@ -2,79 +2,91 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04591286491
-	for <lists+linux-unionfs@lfdr.de>; Wed,  7 Oct 2020 18:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CE2B28A314
+	for <lists+linux-unionfs@lfdr.de>; Sun, 11 Oct 2020 01:07:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727449AbgJGQf3 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 7 Oct 2020 12:35:29 -0400
-Received: from sonic313-56.consmr.mail.ne1.yahoo.com ([66.163.185.31]:45832
-        "EHLO sonic313-56.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727857AbgJGQf2 (ORCPT
+        id S2390719AbgJJW61 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 10 Oct 2020 18:58:27 -0400
+Received: from sender2-op-o12.zoho.com.cn ([163.53.93.243]:17114 "EHLO
+        sender2-op-o12.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732365AbgJJWbH (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 7 Oct 2020 12:35:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1602088527; bh=PxMwWzXvs+dqOoH0/FHvFmQpYH2JguaCUHYAVLLmaiw=; h=Date:From:Reply-To:Subject:References:From:Subject; b=RIwQxXgeOH2av4cxVTuE0ANPB+DY0KfNlr0xoyZARpFIclcyQJRUSEc0Pn81+q4APr9GYRoTTUzR2AjtEwiZ+3aPDmXz2cQpI9jK3T5MXILUUE1kucJUVhORrhDexzmDmBLP+Rp2WyUOWyjq3UQKG+nnj0eHMPSwYpbM4l9LaTWPWmX7GN8U2SMmsX+VQCOfV2JUh01tMVdsElXAh7WhrUlFFXIWt9ZZxIVrbMVU+h+nwGfKXNBpjzRnqnzbW9DtB9U33dg6RPjWeousX9qpGjhRT5XPu4clz41/4TYi0dJEBmm1bH+jOd5+D8FllmgTVRFakVrY046UX3Ymho3k8g==
-X-YMail-OSG: 3mIMCWwVM1mB62Jju8jKegKSswvqWi0Yy7NSBHwxXwShbRYqi_xpkWM8rSDQ4nf
- j0PynUopVBkt1eeKZg5B0ZTPv_fg8N3WHhZrdneFEyjltyFpuBKkxSnBgZKraGkOhny0tG_5CjT4
- Yok.v74ZBqfenVNbVCqEqzg7GanB_qzyJXal1ERsa8cplGPV2.9UgsEj9PVUSl5ILSfLS8zt_Mkz
- 6U2gYKOIVIVZohqDBv_tC8TPJnLnN5pvY_n4a1.CFZanGCgquv9t5KoHvcQmQoxcJrHvnbohMthR
- fJg5iHsDYXe.9E4RyYaexZJmRUIy4QN0I_D7uFP9yNCpnHsRho2YOFiPNq4MSx11wX6C932r4l7X
- IxhTI8ad3QtoJyGsmt8SXmW8mmk2LlidsAqNzYEXQo3_EqGnsSm85SjpQs542TtngRT_VHjLELlU
- T58EleToOpB0xGECrkmjntw33zgQQ.jtX0afkyL825EDS76FqLH2jn8pS_g4oZ6zP6qAmx74aj.A
- WKxlyzq0fnL7v_qIhLWr_pTuyJAmdYSnasLv2x5cxuFm7Yaf9DF.IHVfI7xGRyG_pucwOKaKnfvp
- WYS5Q9_VKDtL0UuRC5k4eIt4XCooMRm3ge4s2q.dnfg6WBEOGurqEL9FmXO8zp8tblSwvVCdokZw
- VGW.hPCeUO7ffNy6xd2ekmhhccaJ6yc4W2pTTP.aHXChsGCwZcRH052pbj33VeThdgbjAnyo_xWj
- A_ln5McUScpX7J.nMAy.bvHkncOIIddfMDjShirVZtYmkOjWn7jcD2ERbOWjC28uuAEwWUZdsVMs
- 4q.Sg7UO_47fPM0BB_sFqjAGXDUVtfIsP9RjBc48IC8SBbcWuT20tID9ve_uQiMHiijdgNsNlJ0k
- 8cOaIysCwVsP5wI7M0NCylkAppWHOg1a1Ft2Mip0Wk1CzcS9vQsFtc1DsVub7b8SUQfhy9T00xkY
- wbgdThQ6RCUvtM0oF4A3j04CTxhADnVISsjDCvOdpGDpYTX8kdS6RlhejUcsga2aMZeH7i8H55kf
- BL8i4mhlEvxF0.UZA5mpGTRZV95l2KJzt0L9Tb2hgeEHu37KGnA5ItzKZ07JO4QRdCGmZ0Aupy51
- C0OWRGO_M2inN1n2eglSZv9js8Mob_WoYbdi0tEh3kpdzk.wK8QHuUWYcbiWHXmv3UgahoxZuc5N
- 6Ze17zVznK4QEutHo7Fy23EdVrkI6WWXqZmi2HIcrRMA6c03kcdPPiz8yH8sMnDJFVXpD2xcnoYA
- 3z5tuafOScYMOCWzwN.11rd2DhmJ1wJsKiM69r53IeGMbUCag9MKCCqu5UbV80YtWqBb4iS3F3oB
- a9epeZMKGShsqIhiDUF6DmtTvma9HtGOKJc6jkKygkBVeSsVoZ92cPLJtiWBb0XJbVPwRBGIRwGf
- sai4LtdT6q6H4SvYYO.o2CXllwXRX.5jScG.RVwFmVaw-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ne1.yahoo.com with HTTP; Wed, 7 Oct 2020 16:35:27 +0000
-Date:   Wed, 7 Oct 2020 16:35:22 +0000 (UTC)
-From:   Marilyn Robert <fredodinga22@gmail.com>
-Reply-To: marilyobert@gmail.com
-Message-ID: <1401049150.295640.1602088522534@mail.yahoo.com>
-Subject: =?UTF-8?B?0J3QsNGY0LzQuNC70LAg0LrQsNGYINCz0L7RgdC/0L7QtNCw0YDQvtGC?=
+        Sat, 10 Oct 2020 18:31:07 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1602339873; cv=none; 
+        d=zoho.com.cn; s=zohoarc; 
+        b=bPFdI5lmODAmNuVN03rvV9d5Z58EQdVV3Z7Cbz7Hw7EZgCA91IEzHl+ObmbAxae8np6t/cagtH0Mo5yp+yZZL8z++Xov7shNdz43uM1PH45I/ZqOE0Wd5UNtVn3Ce4wqivV6z9rlFnKAukVkhk1IQo1qGV+V0m5kgWjsOm+TmKI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
+        t=1602339873; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=2WezVly39CQFkXB4lbgvDcPDlLIRYLTPNO7O33eQLyQ=; 
+        b=hBzXd5VCNxk2+qTi0Qo1L/i1Sp2hHg5RAU49nmDFQuyswivdQSFC8NXC7woh9hPuRQMlysXLTegGYJ54PUDwp8Z2oJ5qBwkVhDgO60u+OMvITN+CMIV9PhWnhW+D2Knb5QEdP0xSj9Yzy2QYBwyhZAgvuoBLp3bzeQvT/RsSa54=
+ARC-Authentication-Results: i=1; mx.zoho.com.cn;
+        dkim=pass  header.i=mykernel.net;
+        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
+        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1602339873;
+        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
+        h=From:To:Cc:Message-ID:Subject:Date:MIME-Version:Content-Transfer-Encoding:Content-Type;
+        bh=2WezVly39CQFkXB4lbgvDcPDlLIRYLTPNO7O33eQLyQ=;
+        b=dppto3P4yNNiO4Who0YhUE3cgUHLpIj0hOw95pE5Ck6Kc8vZkPtBtlP3Az5lPzpE
+        /RMTm3oE09ttD9XCOlAKj1o+zOn9NcD7wl/6BfSQGLKF3jUD4hGb5XjSIZZK5TWcCpp
+        iJWTpeIjqaUxogElPMqeFy1iSyaZczAumq11/mZo=
+Received: from localhost.localdomain (113.116.157.74 [113.116.157.74]) by mx.zoho.com.cn
+        with SMTPS id 1602339870186975.2760882460268; Sat, 10 Oct 2020 22:24:30 +0800 (CST)
+From:   Chengguang Xu <cgxu519@mykernel.net>
+To:     miklos@szeredi.hu, amir73il@gmail.com, jack@suse.cz
+Cc:     linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        Chengguang Xu <cgxu519@mykernel.net>
+Message-ID: <20201010142355.741645-1-cgxu519@mykernel.net>
+Subject: [RFC PATCH 0/5] implement containerized syncfs for overlayfs
+Date:   Sat, 10 Oct 2020 22:23:50 +0800
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-References: <1401049150.295640.1602088522534.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16795 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: quoted-printable
+X-ZohoCNMailClient: External
+Content-Type: text/plain; charset=utf8
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-DQoNCtCd0LDRmNC80LjQu9CwINC60LDRmCDQs9C+0YHQv9C+0LTQsNGA0L7Rgg0KDQrQiNCw0YEg
-0YHRg9C8IDY4LdCz0L7QtNC40YjQvdCwINC20LXQvdCwLCDQutC+0ZjQsCDRgdGC0YDQsNC00LAg
-0L7QtCDQv9GA0L7QtNC+0LvQttC10L0g0LrQsNGA0YbQuNC90L7QvCDQvdCwINC00L7RmNC60LAs
-INC+0LQg0YHQuNGC0LUg0LzQtdC00LjRhtC40L3RgdC60Lgg0LjQvdC00LjQutCw0YbQuNC4LCDQ
-vNC+0ZjQsNGC0LAg0YHQvtGB0YLQvtGY0LHQsCDQvdCw0LLQuNGB0YLQuNC90LAg0YHQtSDQstC7
-0L7RiNC4INC4INC+0YfQuNCz0LvQtdC00L3QviDQtSDQtNC10LrQsCDQvNC+0LbQtdCx0Lgg0L3Q
-tdC80LAg0LTQsCDQttC40LLQtdCw0Lwg0L/QvtCy0LXRnNC1INC+0LQg0YjQtdGB0YIg0LzQtdGB
-0LXRhtC4INC60LDQutC+INGA0LXQt9GD0LvRgtCw0YIg0L3QsCDQsdGA0LfQuNC+0YIg0YDQsNGB
-0YIg0Lgg0LHQvtC70LrQsNGC0LAg0YjRgtC+INGB0LUg0ZjQsNCy0YPQstCwINC60LDRmCDQvdC1
-0LAuINCc0L7RmNC+0YIg0YHQvtC/0YDRg9CzINC/0L7Rh9C40L3QsCDQvdC10LrQvtC70LrRgyDQ
-s9C+0LTQuNC90Lgg0L3QsNC90LDQt9Cw0LQg0Lgg0L3QsNGI0LjRgtC1INC00L7Qu9Cz0Lgg0LPQ
-vtC00LjQvdC4INCx0YDQsNC6INC90LUg0LHQtdCwINCx0LvQsNCz0L7RgdC70L7QstC10L3QuCDR
-gdC+INC90LjRgtGDINC10LTQvdC+INC00LXRgtC1LCDQv9C+INC90LXQs9C+0LLQsNGC0LAg0YHQ
-vNGA0YIg0LPQviDQvdCw0YHQu9C10LTQuNCyINGG0LXQu9C+0YLQviDQvdC10LPQvtCy0L4g0LHQ
-vtCz0LDRgtGB0YLQstC+Lg0KDQrQlNC+0LDRk9Cw0Lwg0LrQsNGYINCy0LDRgSDQvtGC0LrQsNC6
-0L4g0YHQtSDQv9C+0LzQvtC70LjQsiDQt9CwINGC0L7QsCwg0L/QvtC00LPQvtGC0LLQtdC9INGB
-0YPQvCDQtNCwINC00L7QvdC40YDQsNC8INGB0YPQvNCwINC+0LQgMiwgMzAwLCAwMDAg0LXQstGA
-0LAg0LfQsCDQv9C+0LzQvtGIINC90LAg0YHQuNGA0L7QvNCw0YjQvdC40YLQtSwg0YHQuNGA0L7Q
-vNCw0YjQvdC40YLQtSDQuCDQv9C+0LzQsNC70LrRgyDQv9GA0LjQstC40LvQtdCz0LjRgNCw0L3Q
-uNGC0LUg0LzQtdGT0YMg0LLQsNGI0LjRgtC1INGB0L7QsdGA0LDQvdC40ZjQsCAvINC+0L/RiNGC
-0LXRgdGC0LLQvi4g0JfQsNCx0LXQu9C10LbQtdGC0LUg0LTQtdC60LAg0L7QstC+0Zgg0YTQvtC9
-0LQg0LUg0LTQtdC/0L7QvdC40YDQsNC9INCy0L4g0LHQsNC90LrQsCDQutCw0LTQtSDRiNGC0L4g
-0YDQsNCx0L7RgtC10YjQtSDQvNC+0ZjQvtGCINGB0L7Qv9GA0YPQsy4gQXBwcmVjaWF0ZdC1INGG
-0LXQvdCw0Lwg0LDQutC+INC+0LHRgNC90LXRgtC1INCy0L3QuNC80LDQvdC40LUg0L3QsCDQvNC+
-0LXRgtC+INCx0LDRgNCw0ZrQtSDQt9CwINC/0YDQvtC/0LDQs9C40YDQsNGa0LUg0L3QsCDQvNCw
-0YHQsNC20LDRgtCwINC90LAg0LrRgNCw0LvRgdGC0LLQvtGC0L4sINGc0LUg0LLQuCDQtNCw0LTQ
-sNC8INC/0L7QstC10ZzQtSDQtNC10YLQsNC70Lgg0LfQsCDRgtC+0LAg0LrQsNC60L4g0LTQsCDQ
-v9C+0YHRgtCw0L/QuNGC0LUuDQoNCtCR0LvQsNCz0L7QtNCw0YDQsNC8DQrQky3Rk9CwINCc0LXR
-gNC40LvQuNC9INCg0L7QsdC10YDRgg==
+Current syncfs(2) syscall on overlayfs just calls sync_filesystem()
+on upper_sb to synchronize whole dirty inodes in upper filesystem
+regardless of the overlay ownership of the inode. In the use case of
+container, when multiple containers using the same underlying upper
+filesystem, it has some shortcomings as below.
+
+(1) Performance
+Synchronization is probably heavy because it actually syncs unnecessary
+inodes for target overlayfs.
+
+(2) Interference
+Unplanned synchronization will probably impact IO performance of
+unrelated container processes on the other overlayfs.
+
+This series try to implement containerized syncfs for overlayfs so that
+only sync target dirty upper inodes which are belong to specific overlayfs
+instance. By doing this, it is able to reduce cost of synchronization and
+will not seriously impact IO performance of unrelated processes.
+
+Chengguang Xu (5):
+  fs: introduce notifier list for vfs inode
+  fs: export symbol of writeback_single_inode()
+  ovl: setup overlayfs' private bdi
+  ovl: monitor marking dirty activity of underlying upper inode
+  ovl: impement containerized syncfs for overlayfs
+
+ fs/fs-writeback.c         |  7 ++++-
+ fs/inode.c                |  5 ++++
+ fs/overlayfs/inode.c      | 28 +++++++++++++++++++-
+ fs/overlayfs/overlayfs.h  |  2 ++
+ fs/overlayfs/ovl_entry.h  |  2 ++
+ fs/overlayfs/super.c      | 65 +++++++++++++++++++++++++++++++++++++++++++=
++---
+ fs/overlayfs/util.c       | 33 ++++++++++++++++++++++++
+ include/linux/fs.h        |  6 +++++
+ include/linux/writeback.h |  1 +
+ 9 files changed, 143 insertions(+), 6 deletions(-)
+
+--=20
+1.8.3.1
+
+
