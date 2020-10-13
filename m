@@ -2,51 +2,51 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AD9528D0C8
-	for <lists+linux-unionfs@lfdr.de>; Tue, 13 Oct 2020 17:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDE5328D0CC
+	for <lists+linux-unionfs@lfdr.de>; Tue, 13 Oct 2020 17:01:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730746AbgJMPAy (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 13 Oct 2020 11:00:54 -0400
+        id S1730786AbgJMPBD (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 13 Oct 2020 11:01:03 -0400
 Received: from mail-vi1eur05on2090.outbound.protection.outlook.com ([40.107.21.90]:49025
         "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727112AbgJMPAx (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 13 Oct 2020 11:00:53 -0400
+        id S1726097AbgJMPBA (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Tue, 13 Oct 2020 11:01:00 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RhRx0QvYuu4KOLLUk1aT4F2FuV4CsEdaE1liTN10Rq9zL20G7Uugr17gRKIP0MEtpFpLAU+MI4z1LYDaZXUMwsGDVpTUF9E1oVJCQW9xtbCgGYAM7QO+DPoTag/Qy6uTZ7zsOs6VVQe7LdeiGURLfPWy1JydpebkG9EmeorTqtBDebzpdW2S++SLRVRCv151afJSaUY5QCmpEkpo9eSVvvGk2h7f0cmZ8IE8yE3lGxJegZtjpGF5xknPc2T3s4CTvjOPZ0fIInArQ6KAhuE7kYvtSpu/ITKRQ3mWKcOvPOcBBDNXzWBTxtUhtCKbYURjyJHNgJkDv2bkP1H09K6snQ==
+ b=QSwp79OK1lUbscAxP9VIcsqnXXi+clr2rK2Vhv6EqpbBHVIBUEa3w/osn5QUM0rmOkr2Mupu9d65V6PQbUXt62YGLY6x2WcVloAM6ZqgrV19OF36Jq5NRTzwbBRtmv/+jS0idkXUQTFaq0A0DTOMvZF/skvvLQ3diHTJ9iCEQk2RlNWbu+glTik0Wn5BifpUBBq53XVH5Ne8m8lVIjU5XSDCNVy8q8bLeufo135C33biRG9tqdZJ3YymTpH9Fwhs1rfB7fJFx8PKD17fDy16xvfaxluwT5moBCk/j7qpV/BJx6sZD2uU/cGyEBtxos2kGPdOtE1ROm6lPYvJjxbCug==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ig+477ALwSmX0NZa6Ko3S7cIZYJfd52SlKYTet52dcg=;
- b=Y7y5Y6+SRl2UgBsK9B0zMGBpQtaX0uRpl1TjPbw1EJ/FomFoGGTG74IL/f1dM2gtWaq9cwimH/mEMUVA5JKVvd45StsmWknEkCK+2f0b7vQiwxtMQdci/uAiYjgegucaKL5dsWPBZigkMvyJSRcF2iXpT9kNGzSvoickoPiYW5VR/+7NMypI5O/r+OrxOfnqXScIYqCm/KHAwzJ66+/OqILmcMTa1FmXzX8yj1Nz8PN9z0MGZaHvV3/d27pVO6x6wtRrn6zTTXeQmMYHDIGTKPquB9xLGtPup67t3zgS+Y2GUsqUA1EGHTW7smXJpYXsKdfHt8zR9iZsyz/MkqmdLQ==
+ bh=LNcUOf0Y8c4Sdi9u9cTFZBII3FsgBD/8qpbjBgshEXg=;
+ b=ILt1EYlBkG0w8FJ8sM4CAr9DWhl9d+IjVCIB0YqIz+xDcKy9xR/r/prGxYgum5GbCdemjKGHOaH8MjD1fnLQ8jOv3+kOSc6f1M9BoC7EcQv8XjHKlMNUzCE3d6tC93osXn2zymBwff+uqON+SiAFrZT4O3pDbm/tWPz/kGwuQL+Ap4pQ3Su8gWEQ5BbS21n8W/nbuw3zGlujpiyXDDp1i+m4Rokgi2qCAEAMZIU2kPxZKwD+7O/HNz3iExGSO3EaGMtR1nPxDRgRheU9Tob0K+UAmO36enHoHI/NmDWozYBm+EACWx6ZCKA+OyTzWCgdbqyB4ohWabTXYJLPjEs+gA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
  header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ig+477ALwSmX0NZa6Ko3S7cIZYJfd52SlKYTet52dcg=;
- b=bVjTexSr5u3jnRjw1kjX4ltECSJy+QnoaoB1Y5ElY017lFrDxXKsADLuKnfja8t+om2SSG7eZFjqiLcDfPw0hEHFVyOJ63CbkFymC8PP/OltAuf8d6dbnfZQT3dgIyaKm+g16Ni09UuZiVO9oidFx6JQatCAJX8zAct9d0+rFTY=
+ bh=LNcUOf0Y8c4Sdi9u9cTFZBII3FsgBD/8qpbjBgshEXg=;
+ b=t3gqTLS87hN/kl+uz3sfb3Mrzij4BwYRZZxsM9+lWNgo91wMWaHSVGmP5O4dYvuS1+gdImpuwp23JftEyFoa65CP7z4JkZYZelPMIYV1iUTgHscbExDuhCJyrGS8teV1fJ2eOkm7Yq7gSMOANuZ/8UirTAoaZeiuYwAeUI1t/Rw=
 Authentication-Results: szeredi.hu; dkim=none (message not signed)
  header.d=none;szeredi.hu; dmarc=none action=none header.from=virtuozzo.com;
 Received: from AM6PR08MB4756.eurprd08.prod.outlook.com (2603:10a6:20b:cd::17)
  by AM6PR08MB3190.eurprd08.prod.outlook.com (2603:10a6:209:46::27) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.21; Tue, 13 Oct
- 2020 15:00:48 +0000
+ 2020 15:00:49 +0000
 Received: from AM6PR08MB4756.eurprd08.prod.outlook.com
  ([fe80::dcd8:72a6:60fc:1fa4]) by AM6PR08MB4756.eurprd08.prod.outlook.com
  ([fe80::dcd8:72a6:60fc:1fa4%5]) with mapi id 15.20.3455.030; Tue, 13 Oct 2020
- 15:00:48 +0000
+ 15:00:49 +0000
 From:   Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 To:     Miklos Szeredi <miklos@szeredi.hu>
 Cc:     Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
         Amir Goldstein <amir73il@gmail.com>,
         Vivek Goyal <vgoyal@redhat.com>, linux-unionfs@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v5 1/2] ovl: propagate ovl_fs to ovl_decode_real_fh and ovl_encode_real_fh
-Date:   Tue, 13 Oct 2020 17:59:53 +0300
-Message-Id: <20201013145954.4274-2-ptikhomirov@virtuozzo.com>
+Subject: [PATCH v5 2/2] ovl: introduce new "uuid=off" option for inodes index feature
+Date:   Tue, 13 Oct 2020 17:59:54 +0300
+Message-Id: <20201013145954.4274-3-ptikhomirov@virtuozzo.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20201013145954.4274-1-ptikhomirov@virtuozzo.com>
 References: <20201013145954.4274-1-ptikhomirov@virtuozzo.com>
@@ -60,331 +60,222 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 Received: from localhost.localdomain (46.39.230.109) by AM0PR04CA0132.eurprd04.prod.outlook.com (2603:10a6:208:55::37) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.24 via Frontend Transport; Tue, 13 Oct 2020 15:00:48 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 86fe6de5-f659-460a-e2ce-08d86f88c518
+X-MS-Office365-Filtering-Correlation-Id: 86f0840a-90a3-4e17-ec6c-08d86f88c585
 X-MS-TrafficTypeDiagnostic: AM6PR08MB3190:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM6PR08MB31904D66400EA70D9E3DC19FB7040@AM6PR08MB3190.eurprd08.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:226;
+X-Microsoft-Antispam-PRVS: <AM6PR08MB3190A83DD07D7A1D8364709EB7040@AM6PR08MB3190.eurprd08.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2958;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: hsbrj1w2NVzK4JYU67CDYhqbRDLQpUh9yfFqSMMrA1XCsuY2alkUaaMCZ2HS297eXpdrtNBtCGf4uxBgIZZ/tUhu67DjLj5Cq/N9r58WDaH9GFlkyUUm5IcUlACQr8hTfHJ1UJoxElp8irrcyFLayVRyh3wantbJU+NGS4fsHzGvaifWWrrJZ/L+6HLs84EnPtOLL9SmSx2CKWTO8Wt+FA9NWDfT38Uloxa/ENEPDHPMpOKh6Lp7l2IE4VRt+9g268M4V0wMR80NuX6AHYNb4scwNNitar6BJnv9tWmrV7RMTvZlFHjdhTchRa/3DhFFluiuM3kC4ll59KIJPSqPkFe5xv/aurPT0NgwyF0W1GQ+29Wug3Xbdl7qBu3EFsUj
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR08MB4756.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(39840400004)(366004)(376002)(396003)(136003)(83380400001)(66946007)(69590400008)(86362001)(16526019)(26005)(6486002)(66476007)(66556008)(6512007)(52116002)(956004)(2616005)(186003)(6506007)(478600001)(1076003)(316002)(6666004)(8936002)(54906003)(4326008)(2906002)(6916009)(5660300002)(30864003)(36756003)(8676002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: 1j7iIFswLTFqV9nItMRnpjMfbqZNRhJjxXbCuDarf8il3LA8uU0Fbo/59bQF9cQsYf7BVF10FUHD5k9yODeYpKcuJ4MYLcFmHP2xd8YX9mo8ZaiglXdVaibpGIsnupUQRt3xIu92XK8L+uXEYkICMFGefvZExDtjiT6B/AE1KEs1u9d63ON1tPOSLQ34FMuh9kgXwMTD/KJtNshEpC47pflSW4AaorFIgAuMzEEDYGTUjUEE/oEyVtEAGDUW94qmqIB/Pti0tBdjRYbwwFKti+L+liqfP0hp09Jr+jhQ1yDB3x13eEeEz2s8t/tJeNhbtFBz4RDXV2xVDRu82h5D865Jxhxtkeb1zBzhTXRRtw2zE5c3+PxEzoTla402BhCrKTV3bGyzVBve3WEFhgHCQff3WhEKyyfbcn4YJPUtdHgOLaNM81kTFDWdnqjKDUezISITSNq99voGd4yAwZBAmEMCIojtw+Xnj7n5eMA6XNzq0UpWoi+f94mof+vIusBn8d/QoQlgIfMWRN1KcuJbijTmosolb6Jf1rZvzkCpf3nHOqN5TzZMWyIZe1xsQLx9rZ5Y43WO+f4y4tiMH+zZD5t3UP3HcObYmMBf0bxj9JMv9YW6LONEcJ0Mad989i9g8Wtad+XjDC14FFz2Ltmz2A==
+X-Microsoft-Antispam-Message-Info: hkrjaRF+tXwakjgFzP63zxelH2uKiYAXDzHEfQyZM9fUbb82gJ9Pum59nY7dzTgOTTQtycnMT2Qax+M/wujrXz4euESZa8alzNIiWvKaZalcaKWXv3CRnP2l/choRMM0E9ixuXD2DpAegw9ZJVRf+G4T8703hW+bMuMXaYpW6qaMJiCwGurVB7ELNeOu/tPobS6DVdhdry3CMV00WpmJ9AMxSUE5QZBRD6bvq7mI2uU2XvxDbFp9sgR7f4BqgZdw9jhxKvrRTQ7XkCpqcMzxbW++/pU3n+4qqguRBC67aZLLk1ve1CH6TVyABFgbAxBkciW3b+UHpawYnVoEVUaWiTwtfs5JmulD5e6uA8uNrTCcxWaBebEb2cf/WzFpxkDN
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR08MB4756.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(39840400004)(366004)(376002)(396003)(136003)(83380400001)(66946007)(69590400008)(86362001)(16526019)(26005)(6486002)(66476007)(66556008)(6512007)(52116002)(956004)(2616005)(186003)(6506007)(478600001)(1076003)(316002)(6666004)(8936002)(54906003)(4326008)(2906002)(6916009)(5660300002)(36756003)(8676002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: DSy9FCDzgpQPeHWYWH9R/L6WCuAmSQYc5cYRN998le1RC+FR2yfwWgdZLJ4qsfZNl80HZFMCYQTPJDbNJ/JcsUQip0TV865vwOvmSm4Y14/NN5WDPhe7rYiUE+lFadYcOsigK2eiRKwVurJAXqWUd0DKXfaOMkHHoJ05yrug3PxrKHtmlyX4xYtL0xFAU1lgbCBf+vD/Sqfi4Np4kguU8ljK3VVbVXN5YjkXcV+J5Ry3+LPpNvhD+Mpe3jTE9tYCzY3/aoKDGvp2v3XTOlj0w+1kwtDi00ail7WZqjvN+6/U9fu6MB1hio4jDq9CBQFyYB0zuHUqMEaBSYslBvaQaAMec8Z9OzSV/YivTC80ZjZHgd67ts2pib/2NneQhwJJ0iuwAm5Sq2Tf7WHMifLC7ymeMmv40SNqkdx4tIySyvLmevDpVmf9W1CbUPLlEGZaFmnOlWwXSzcyvmRBEQQefO6FSDN/xxPsFCIC6dZxMMOdVA59CXmdE9WV3BAYBGQkYvtrmxZEqBZftOtMAAkiGj/PJRYR3CZqnjB08yI36+U/fiuL+Q3+KyFfvXJqyDP2NmeHjy1kmQrTfekUBNsOX9215V/AFuHOvmK38DfMHGlaky/j4zumm27TjGLNZeBQa50FaHfIv2s8dRC+mO2zxQ==
 X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86fe6de5-f659-460a-e2ce-08d86f88c518
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86f0840a-90a3-4e17-ec6c-08d86f88c585
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR08MB4756.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2020 15:00:48.7642
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2020 15:00:49.6027
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UU6yH/q5LEx9zfzhYOXFxs6e8EL5UJw+lpij+O9D2x25/lH6EYaqnpwkFozJhyVuW588L1v7IuBxNopDOAwcv5GpOT6pU5Zx3HGBE0XqF84=
+X-MS-Exchange-CrossTenant-UserPrincipalName: fNUbBkt0iw6+XbJuYIXHCTXp9ah6rp7XbHnYGfi78OiWSUPKu4vmuAxGExl5GlTB1234KbkYZBH6fipnR6Ge2LVgPG1bCzrX+s8hauT7m/I=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR08MB3190
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-This will be used in next patch to be able to change uuid checks and
-add uuid nullification based on ofs->config.index for a new "uuid=off"
-mode.
+This replaces uuid with null in overlayfs file handles and thus relaxes
+uuid checks for overlay index feature. It is only possible in case there
+is only one filesystem for all the work/upper/lower directories and bare
+file handles from this backing filesystem are unique. In other case when
+we have multiple filesystems lets just fallback to "uuid=on" which is
+and equivalent of how it worked before with all uuid checks.
+
+This is needed when overlayfs is/was mounted in a container with index
+enabled (e.g.: to be able to resolve inotify watch file handles on it to
+paths in CRIU), and this container is copied and started alongside with
+the original one. This way the "copy" container can't have the same uuid
+on the superblock and mounting the overlayfs from it later would fail.
+
+That is an example of the problem on top of loop+ext4:
+
+dd if=/dev/zero of=loopbackfile.img bs=100M count=10
+losetup -fP loopbackfile.img
+losetup -a
+  #/dev/loop0: [64768]:35 (/loop-test/loopbackfile.img)
+mkfs.ext4 loopbackfile.img
+mkdir loop-mp
+mount -o loop /dev/loop0 loop-mp
+mkdir loop-mp/{lower,upper,work,merged}
+mount -t overlay overlay -oindex=on,lowerdir=loop-mp/lower,\
+upperdir=loop-mp/upper,workdir=loop-mp/work loop-mp/merged
+umount loop-mp/merged
+umount loop-mp
+e2fsck -f /dev/loop0
+tune2fs -U random /dev/loop0
+
+mount -o loop /dev/loop0 loop-mp
+mount -t overlay overlay -oindex=on,lowerdir=loop-mp/lower,\
+upperdir=loop-mp/upper,workdir=loop-mp/work loop-mp/merged
+  #mount: /loop-test/loop-mp/merged:
+  #mount(2) system call failed: Stale file handle.
+
+If you just change the uuid of the backing filesystem, overlay is not
+mounting any more. In Virtuozzo we copy container disks (ploops) when
+create the copy of container and we require fs uuid to be unique for a new
+container.
 
 CC: Amir Goldstein <amir73il@gmail.com>
 CC: Vivek Goyal <vgoyal@redhat.com>
 CC: Miklos Szeredi <miklos@szeredi.hu>
 CC: linux-unionfs@vger.kernel.org
 CC: linux-kernel@vger.kernel.org
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+
+---
+v2: in v1 I missed actual uuid check skip
+v3: rebase to overlayfs-next, replace uuid with null in file handles,
+split ovl_fs propagation to function arguments to separate patch, add
+separate bool "uuid=on/off" option, move numfs check up, add doc note.
+v4: get rid of double negatives, remove nouuid leftower comment, fix
+misprint in kernel config name
+v5: fix typos; remove config option, module param, ovl_uuid_def and the
+corresponding notes
+
 Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 ---
- fs/overlayfs/copy_up.c   | 22 ++++++++++++----------
- fs/overlayfs/export.c    | 10 ++++++----
- fs/overlayfs/namei.c     | 19 ++++++++++---------
- fs/overlayfs/overlayfs.h | 14 ++++++++------
- fs/overlayfs/util.c      |  3 ++-
- 5 files changed, 38 insertions(+), 30 deletions(-)
+ Documentation/filesystems/overlayfs.rst |  5 +++++
+ fs/overlayfs/copy_up.c                  |  3 ++-
+ fs/overlayfs/namei.c                    |  4 +++-
+ fs/overlayfs/ovl_entry.h                |  1 +
+ fs/overlayfs/super.c                    | 20 ++++++++++++++++++++
+ 5 files changed, 31 insertions(+), 2 deletions(-)
 
+diff --git a/Documentation/filesystems/overlayfs.rst b/Documentation/filesystems/overlayfs.rst
+index 580ab9a0fe31..a3e588dc8437 100644
+--- a/Documentation/filesystems/overlayfs.rst
++++ b/Documentation/filesystems/overlayfs.rst
+@@ -563,6 +563,11 @@ This verification may cause significant overhead in some cases.
+ Note: the mount options index=off,nfs_export=on are conflicting for a
+ read-write mount and will result in an error.
+ 
++Note: the mount option uuid=off can be used to replace UUID of the underlying
++filesystem in file handles with null, and effectively disable UUID checks. This
++can be useful in case the underlying disk is copied and the UUID of this copy
++is changed. This is only applicable if all lower/upper/work directories are on
++the same filesystem, otherwise it will fallback to normal behaviour.
+ 
+ Volatile mount
+ --------------
 diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index 955ecd4030f0..3380039036d6 100644
+index 3380039036d6..0b7e7a90a435 100644
 --- a/fs/overlayfs/copy_up.c
 +++ b/fs/overlayfs/copy_up.c
-@@ -275,7 +275,8 @@ int ovl_set_attr(struct dentry *upperdentry, struct kstat *stat)
- 	return err;
- }
+@@ -320,7 +320,8 @@ struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
+ 	if (is_upper)
+ 		fh->fb.flags |= OVL_FH_FLAG_PATH_UPPER;
+ 	fh->fb.len = sizeof(fh->fb) + buflen;
+-	fh->fb.uuid = *uuid;
++	if (ofs->config.uuid)
++		fh->fb.uuid = *uuid;
  
--struct ovl_fh *ovl_encode_real_fh(struct dentry *real, bool is_upper)
-+struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
-+				  bool is_upper)
- {
- 	struct ovl_fh *fh;
- 	int fh_type, dwords;
-@@ -328,8 +329,8 @@ struct ovl_fh *ovl_encode_real_fh(struct dentry *real, bool is_upper)
- 	return ERR_PTR(err);
- }
- 
--int ovl_set_origin(struct dentry *dentry, struct dentry *lower,
--		   struct dentry *upper)
-+int ovl_set_origin(struct ovl_fs *ofs, struct dentry *dentry,
-+		   struct dentry *lower, struct dentry *upper)
- {
- 	const struct ovl_fh *fh = NULL;
- 	int err;
-@@ -340,7 +341,7 @@ int ovl_set_origin(struct dentry *dentry, struct dentry *lower,
- 	 * up and a pure upper inode.
- 	 */
- 	if (ovl_can_decode_fh(lower->d_sb)) {
--		fh = ovl_encode_real_fh(lower, false);
-+		fh = ovl_encode_real_fh(ofs, lower, false);
- 		if (IS_ERR(fh))
- 			return PTR_ERR(fh);
- 	}
-@@ -362,7 +363,7 @@ static int ovl_set_upper_fh(struct ovl_fs *ofs, struct dentry *upper,
- 	const struct ovl_fh *fh;
- 	int err;
- 
--	fh = ovl_encode_real_fh(upper, true);
-+	fh = ovl_encode_real_fh(ofs, upper, true);
- 	if (IS_ERR(fh))
- 		return PTR_ERR(fh);
- 
-@@ -380,6 +381,7 @@ static int ovl_set_upper_fh(struct ovl_fs *ofs, struct dentry *upper,
- static int ovl_create_index(struct dentry *dentry, struct dentry *origin,
- 			    struct dentry *upper)
- {
-+	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
- 	struct dentry *indexdir = ovl_indexdir(dentry->d_sb);
- 	struct inode *dir = d_inode(indexdir);
- 	struct dentry *index = NULL;
-@@ -402,7 +404,7 @@ static int ovl_create_index(struct dentry *dentry, struct dentry *origin,
- 	if (WARN_ON(ovl_test_flag(OVL_INDEX, d_inode(dentry))))
- 		return -EIO;
- 
--	err = ovl_get_index_name(origin, &name);
-+	err = ovl_get_index_name(ofs, origin, &name);
- 	if (err)
- 		return err;
- 
-@@ -411,7 +413,7 @@ static int ovl_create_index(struct dentry *dentry, struct dentry *origin,
- 	if (IS_ERR(temp))
- 		goto free_name;
- 
--	err = ovl_set_upper_fh(OVL_FS(dentry->d_sb), upper, temp);
-+	err = ovl_set_upper_fh(ofs, upper, temp);
- 	if (err)
- 		goto out;
- 
-@@ -521,7 +523,7 @@ static int ovl_copy_up_inode(struct ovl_copy_up_ctx *c, struct dentry *temp)
- 	 * hard link.
- 	 */
- 	if (c->origin) {
--		err = ovl_set_origin(c->dentry, c->lowerpath.dentry, temp);
-+		err = ovl_set_origin(ofs, c->dentry, c->lowerpath.dentry, temp);
- 		if (err)
- 			return err;
- 	}
-@@ -700,7 +702,7 @@ static int ovl_copy_up_tmpfile(struct ovl_copy_up_ctx *c)
- static int ovl_do_copy_up(struct ovl_copy_up_ctx *c)
- {
- 	int err;
--	struct ovl_fs *ofs = c->dentry->d_sb->s_fs_info;
-+	struct ovl_fs *ofs = OVL_FS(c->dentry->d_sb);
- 	bool to_index = false;
- 
- 	/*
-@@ -722,7 +724,7 @@ static int ovl_do_copy_up(struct ovl_copy_up_ctx *c)
- 
- 	if (to_index) {
- 		c->destdir = ovl_indexdir(c->dentry->d_sb);
--		err = ovl_get_index_name(c->lowerpath.dentry, &c->destname);
-+		err = ovl_get_index_name(ofs, c->lowerpath.dentry, &c->destname);
- 		if (err)
- 			return err;
- 	} else if (WARN_ON(!c->parent)) {
-diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-index ed35be3fafc6..41ebf52f1bbc 100644
---- a/fs/overlayfs/export.c
-+++ b/fs/overlayfs/export.c
-@@ -211,7 +211,8 @@ static int ovl_check_encode_origin(struct dentry *dentry)
- 	return 1;
- }
- 
--static int ovl_dentry_to_fid(struct dentry *dentry, u32 *fid, int buflen)
-+static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct dentry *dentry,
-+			     u32 *fid, int buflen)
- {
- 	struct ovl_fh *fh = NULL;
- 	int err, enc_lower;
-@@ -226,7 +227,7 @@ static int ovl_dentry_to_fid(struct dentry *dentry, u32 *fid, int buflen)
- 		goto fail;
- 
- 	/* Encode an upper or lower file handle */
--	fh = ovl_encode_real_fh(enc_lower ? ovl_dentry_lower(dentry) :
-+	fh = ovl_encode_real_fh(ofs, enc_lower ? ovl_dentry_lower(dentry) :
- 				ovl_dentry_upper(dentry), !enc_lower);
- 	if (IS_ERR(fh))
- 		return PTR_ERR(fh);
-@@ -249,6 +250,7 @@ static int ovl_dentry_to_fid(struct dentry *dentry, u32 *fid, int buflen)
- static int ovl_encode_fh(struct inode *inode, u32 *fid, int *max_len,
- 			 struct inode *parent)
- {
-+	struct ovl_fs *ofs = OVL_FS(inode->i_sb);
- 	struct dentry *dentry;
- 	int bytes, buflen = *max_len << 2;
- 
-@@ -260,7 +262,7 @@ static int ovl_encode_fh(struct inode *inode, u32 *fid, int *max_len,
- 	if (WARN_ON(!dentry))
- 		return FILEID_INVALID;
- 
--	bytes = ovl_dentry_to_fid(dentry, fid, buflen);
-+	bytes = ovl_dentry_to_fid(ofs, dentry, fid, buflen);
- 	dput(dentry);
- 	if (bytes <= 0)
- 		return FILEID_INVALID;
-@@ -680,7 +682,7 @@ static struct dentry *ovl_upper_fh_to_d(struct super_block *sb,
- 	if (!ovl_upper_mnt(ofs))
- 		return ERR_PTR(-EACCES);
- 
--	upper = ovl_decode_real_fh(fh, ovl_upper_mnt(ofs), true);
-+	upper = ovl_decode_real_fh(ofs, fh, ovl_upper_mnt(ofs), true);
- 	if (IS_ERR_OR_NULL(upper))
- 		return upper;
+ 	return fh;
  
 diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
-index a6162c4076db..f058bf8e8b87 100644
+index f058bf8e8b87..f731eb4d35f9 100644
 --- a/fs/overlayfs/namei.c
 +++ b/fs/overlayfs/namei.c
-@@ -150,8 +150,8 @@ static struct ovl_fh *ovl_get_fh(struct ovl_fs *ofs, struct dentry *dentry,
- 	goto out;
- }
+@@ -159,8 +159,10 @@ struct dentry *ovl_decode_real_fh(struct ovl_fs *ofs, struct ovl_fh *fh,
+ 	/*
+ 	 * Make sure that the stored uuid matches the uuid of the lower
+ 	 * layer where file handle will be decoded.
++	 * In case of uuid=off option just make sure that stored uuid is null.
+ 	 */
+-	if (!uuid_equal(&fh->fb.uuid, &mnt->mnt_sb->s_uuid))
++	if (ofs->config.uuid ? !uuid_equal(&fh->fb.uuid, &mnt->mnt_sb->s_uuid) :
++			      !uuid_is_null(&fh->fb.uuid))
+ 		return NULL;
  
--struct dentry *ovl_decode_real_fh(struct ovl_fh *fh, struct vfsmount *mnt,
--				  bool connected)
-+struct dentry *ovl_decode_real_fh(struct ovl_fs *ofs, struct ovl_fh *fh,
-+				  struct vfsmount *mnt, bool connected)
- {
- 	struct dentry *real;
- 	int bytes;
-@@ -354,7 +354,7 @@ int ovl_check_origin_fh(struct ovl_fs *ofs, struct ovl_fh *fh, bool connected,
- 		    ofs->layers[i].fs->bad_uuid)
- 			continue;
- 
--		origin = ovl_decode_real_fh(fh, ofs->layers[i].mnt,
-+		origin = ovl_decode_real_fh(ofs, fh, ofs->layers[i].mnt,
- 					    connected);
- 		if (origin)
+ 	bytes = (fh->fb.len - offsetof(struct ovl_fb, fid));
+diff --git a/fs/overlayfs/ovl_entry.h b/fs/overlayfs/ovl_entry.h
+index 1b5a2094df8e..b7a73ea147b8 100644
+--- a/fs/overlayfs/ovl_entry.h
++++ b/fs/overlayfs/ovl_entry.h
+@@ -14,6 +14,7 @@ struct ovl_config {
+ 	bool redirect_follow;
+ 	const char *redirect_mode;
+ 	bool index;
++	bool uuid;
+ 	bool nfs_export;
+ 	int xino;
+ 	bool metacopy;
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 290983bcfbb3..4717244e7d7a 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -356,6 +356,8 @@ static int ovl_show_options(struct seq_file *m, struct dentry *dentry)
+ 		seq_printf(m, ",redirect_dir=%s", ofs->config.redirect_mode);
+ 	if (ofs->config.index != ovl_index_def)
+ 		seq_printf(m, ",index=%s", ofs->config.index ? "on" : "off");
++	if (!ofs->config.uuid)
++		seq_puts(m, ",uuid=off");
+ 	if (ofs->config.nfs_export != ovl_nfs_export_def)
+ 		seq_printf(m, ",nfs_export=%s", ofs->config.nfs_export ?
+ 						"on" : "off");
+@@ -410,6 +412,8 @@ enum {
+ 	OPT_REDIRECT_DIR,
+ 	OPT_INDEX_ON,
+ 	OPT_INDEX_OFF,
++	OPT_UUID_ON,
++	OPT_UUID_OFF,
+ 	OPT_NFS_EXPORT_ON,
+ 	OPT_NFS_EXPORT_OFF,
+ 	OPT_XINO_ON,
+@@ -429,6 +433,8 @@ static const match_table_t ovl_tokens = {
+ 	{OPT_REDIRECT_DIR,		"redirect_dir=%s"},
+ 	{OPT_INDEX_ON,			"index=on"},
+ 	{OPT_INDEX_OFF,			"index=off"},
++	{OPT_UUID_ON,			"uuid=on"},
++	{OPT_UUID_OFF,			"uuid=off"},
+ 	{OPT_NFS_EXPORT_ON,		"nfs_export=on"},
+ 	{OPT_NFS_EXPORT_OFF,		"nfs_export=off"},
+ 	{OPT_XINO_ON,			"xino=on"},
+@@ -549,6 +555,14 @@ static int ovl_parse_opt(char *opt, struct ovl_config *config)
+ 			index_opt = true;
  			break;
-@@ -450,7 +450,7 @@ int ovl_verify_set_fh(struct ovl_fs *ofs, struct dentry *dentry,
- 	struct ovl_fh *fh;
- 	int err;
  
--	fh = ovl_encode_real_fh(real, is_upper);
-+	fh = ovl_encode_real_fh(ofs, real, is_upper);
- 	err = PTR_ERR(fh);
- 	if (IS_ERR(fh)) {
- 		fh = NULL;
-@@ -488,7 +488,7 @@ struct dentry *ovl_index_upper(struct ovl_fs *ofs, struct dentry *index)
- 	if (IS_ERR_OR_NULL(fh))
- 		return ERR_CAST(fh);
++		case OPT_UUID_ON:
++			config->uuid = true;
++			break;
++
++		case OPT_UUID_OFF:
++			config->uuid = false;
++			break;
++
+ 		case OPT_NFS_EXPORT_ON:
+ 			config->nfs_export = true;
+ 			nfs_export_opt = true;
+@@ -1877,6 +1891,7 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
+ 	ofs->share_whiteout = true;
  
--	upper = ovl_decode_real_fh(fh, ovl_upper_mnt(ofs), true);
-+	upper = ovl_decode_real_fh(ofs, fh, ovl_upper_mnt(ofs), true);
- 	kfree(fh);
+ 	ofs->config.index = ovl_index_def;
++	ofs->config.uuid = true;
+ 	ofs->config.nfs_export = ovl_nfs_export_def;
+ 	ofs->config.xino = ovl_xino_def();
+ 	ofs->config.metacopy = ovl_metacopy_def;
+@@ -1956,6 +1971,11 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
+ 	if (!ovl_upper_mnt(ofs))
+ 		sb->s_flags |= SB_RDONLY;
  
- 	if (IS_ERR_OR_NULL(upper))
-@@ -640,12 +640,13 @@ static int ovl_get_index_name_fh(struct ovl_fh *fh, struct qstr *name)
-  * index dir was cleared. Either way, that index cannot be used to indentify
-  * the overlay inode.
-  */
--int ovl_get_index_name(struct dentry *origin, struct qstr *name)
-+int ovl_get_index_name(struct ovl_fs *ofs, struct dentry *origin,
-+		       struct qstr *name)
- {
- 	struct ovl_fh *fh;
- 	int err;
- 
--	fh = ovl_encode_real_fh(origin, false);
-+	fh = ovl_encode_real_fh(ofs, origin, false);
- 	if (IS_ERR(fh))
- 		return PTR_ERR(fh);
- 
-@@ -694,7 +695,7 @@ struct dentry *ovl_lookup_index(struct ovl_fs *ofs, struct dentry *upper,
- 	bool is_dir = d_is_dir(origin);
- 	int err;
- 
--	err = ovl_get_index_name(origin, &name);
-+	err = ovl_get_index_name(ofs, origin, &name);
- 	if (err)
- 		return ERR_PTR(err);
- 
-@@ -805,7 +806,7 @@ static int ovl_fix_origin(struct ovl_fs *ofs, struct dentry *dentry,
- 	if (err)
- 		return err;
- 
--	err = ovl_set_origin(dentry, lower, upper);
-+	err = ovl_set_origin(ofs, dentry, lower, upper);
- 	if (!err)
- 		err = ovl_set_impure(dentry->d_parent, upper->d_parent);
- 
-diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
-index 7bce2469fe55..b56b5f46f224 100644
---- a/fs/overlayfs/overlayfs.h
-+++ b/fs/overlayfs/overlayfs.h
-@@ -383,8 +383,8 @@ static inline int ovl_check_fh_len(struct ovl_fh *fh, int fh_len)
- 	return ovl_check_fb_len(&fh->fb, fh_len - OVL_FH_WIRE_OFFSET);
- }
- 
--struct dentry *ovl_decode_real_fh(struct ovl_fh *fh, struct vfsmount *mnt,
--				  bool connected);
-+struct dentry *ovl_decode_real_fh(struct ovl_fs *ofs, struct ovl_fh *fh,
-+				  struct vfsmount *mnt, bool connected);
- int ovl_check_origin_fh(struct ovl_fs *ofs, struct ovl_fh *fh, bool connected,
- 			struct dentry *upperdentry, struct ovl_path **stackp);
- int ovl_verify_set_fh(struct ovl_fs *ofs, struct dentry *dentry,
-@@ -392,7 +392,8 @@ int ovl_verify_set_fh(struct ovl_fs *ofs, struct dentry *dentry,
- 		      bool set);
- struct dentry *ovl_index_upper(struct ovl_fs *ofs, struct dentry *index);
- int ovl_verify_index(struct ovl_fs *ofs, struct dentry *index);
--int ovl_get_index_name(struct dentry *origin, struct qstr *name);
-+int ovl_get_index_name(struct ovl_fs *ofs, struct dentry *origin,
-+		       struct qstr *name);
- struct dentry *ovl_get_index_fh(struct ovl_fs *ofs, struct ovl_fh *fh);
- struct dentry *ovl_lookup_index(struct ovl_fs *ofs, struct dentry *upper,
- 				struct dentry *origin, bool verify);
-@@ -511,9 +512,10 @@ int ovl_maybe_copy_up(struct dentry *dentry, int flags);
- int ovl_copy_xattr(struct super_block *sb, struct dentry *old,
- 		   struct dentry *new);
- int ovl_set_attr(struct dentry *upper, struct kstat *stat);
--struct ovl_fh *ovl_encode_real_fh(struct dentry *real, bool is_upper);
--int ovl_set_origin(struct dentry *dentry, struct dentry *lower,
--		   struct dentry *upper);
-+struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
-+				  bool is_upper);
-+int ovl_set_origin(struct ovl_fs *ofs, struct dentry *dentry,
-+		   struct dentry *lower, struct dentry *upper);
- 
- /* export.c */
- extern const struct export_operations ovl_export_operations;
-diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
-index 23f475627d07..44b4b62a8ac8 100644
---- a/fs/overlayfs/util.c
-+++ b/fs/overlayfs/util.c
-@@ -716,6 +716,7 @@ bool ovl_need_index(struct dentry *dentry)
- /* Caller must hold OVL_I(inode)->lock */
- static void ovl_cleanup_index(struct dentry *dentry)
- {
-+	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
- 	struct dentry *indexdir = ovl_indexdir(dentry->d_sb);
- 	struct inode *dir = indexdir->d_inode;
- 	struct dentry *lowerdentry = ovl_dentry_lower(dentry);
-@@ -725,7 +726,7 @@ static void ovl_cleanup_index(struct dentry *dentry)
- 	struct qstr name = { };
- 	int err;
- 
--	err = ovl_get_index_name(lowerdentry, &name);
-+	err = ovl_get_index_name(ofs, lowerdentry, &name);
- 	if (err)
- 		goto fail;
- 
++	if (!ofs->config.uuid && ofs->numfs > 1) {
++		pr_warn("The uuid=off requires a single fs for lower and upper, falling back to uuid=on.\n");
++		ofs->config.uuid = true;
++	}
++
+ 	if (!ovl_force_readonly(ofs) && ofs->config.index) {
+ 		err = ovl_get_indexdir(sb, ofs, oe, &upperpath);
+ 		if (err)
 -- 
 2.26.2
 
