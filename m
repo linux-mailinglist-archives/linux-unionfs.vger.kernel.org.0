@@ -2,122 +2,93 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F4432967F2
-	for <lists+linux-unionfs@lfdr.de>; Fri, 23 Oct 2020 02:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD09C297FF2
+	for <lists+linux-unionfs@lfdr.de>; Sun, 25 Oct 2020 04:42:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S373807AbgJWAbn (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 22 Oct 2020 20:31:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41722 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S373805AbgJWAbn (ORCPT
+        id S1766968AbgJYDm3 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 24 Oct 2020 23:42:29 -0400
+Received: from sender2-op-o12.zoho.com.cn ([163.53.93.243]:17125 "EHLO
+        sender2-op-o12.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1766957AbgJYDm3 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 22 Oct 2020 20:31:43 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65635C0613CE;
-        Thu, 22 Oct 2020 17:31:43 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id s22so2083067pga.9;
-        Thu, 22 Oct 2020 17:31:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=jl/GA1h9CU0xR4BzXSMHyC4YeuYB4slWr13tjKW6DmM=;
-        b=U/ZEVNL13gYgTkT7AABf3svIH7VV/zY7Nqhjb7Egdat2uirNWAwjIbTqll7i0aRviZ
-         JmhmF1N5KHS9ZXrujQGdZpGo3sEDnNQv2ShUh1zeG1ast7T6aSPiI62DYin/sEnrafHH
-         d4nqNP1CU16kx64s2GZV+4Lcu2LPiGu+SbYhMma8xfbFjlUafaBg8wJRbjqbfEaOZ5x3
-         zbkazW7UzTttLNwnSICWXWLI7Csa1LLrP69jsGmqTK1RwJj+iT0XIQ6cjN9o3kqqwtoZ
-         60UwXQf94Mar0wX0Tc0votd0lGsTh8AoyQjrl1wqdZSrGe2cxvCuRgmvaWFgvvyNopqa
-         73yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=jl/GA1h9CU0xR4BzXSMHyC4YeuYB4slWr13tjKW6DmM=;
-        b=dm3NJERsub1THtPqbTlmGHHFjvqR85581fwHkmHj0ZbOU7cY0pvXT39rCyX7sK8pLS
-         HcdAZtUWKEX3Y/vg3WIZHIpxxO5L8eMSbqozCaK6F7baI8h96QcG6aL7pFmjxmhfoi7Y
-         58SoxEoWno6Rj1smeMPFmjud/AEcr3Gt+fubuN+FvDnTl4LB2nFJ+4Iy10qx1MQH5AVB
-         /QRDklEeiKZBFCZVNkVX0ufQ40GfAoFbzjl10Vzlg+hM7rzQ6JTBuo6QMTRF/+ZDvK0Q
-         0U8wwmszpIVZMSI3d7vhuHULWr04bStGQTdWJgk0nJSTyqqz5nudgTfCfQUI2Ed3gcBb
-         9svA==
-X-Gm-Message-State: AOAM530AYmBirRup8UUZmTkE6dQtfXsJR6KTsBOpGodY1x76Q+U8c8FY
-        wVqGo6Agy9X0ewCkDwTe9Txd8tgcHPc=
-X-Google-Smtp-Source: ABdhPJz4ZzvODjaSJ5YgC74tbiHQ5wyPIMoW6AtiRlm0cmTAHf3l1xrSKVr4j+1/cBH2M/D45LSouw==
-X-Received: by 2002:a17:90a:5d17:: with SMTP id s23mr5109463pji.170.1603413102977;
-        Thu, 22 Oct 2020 17:31:42 -0700 (PDT)
-Received: from localhost ([209.132.188.80])
-        by smtp.gmail.com with ESMTPSA id w6sm3496679pgw.28.2020.10.22.17.31.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2020 17:31:42 -0700 (PDT)
-Date:   Fri, 23 Oct 2020 08:31:35 +0800
-From:   Murphy Zhou <jencce.kernel@gmail.com>
-To:     Eryu Guan <eguan@linux.alibaba.com>
-Cc:     Murphy Zhou <jencce.kernel@gmail.com>,
-        Amir Goldstein <amir73il@gmail.com>,
-        fstests <fstests@vger.kernel.org>,
-        Chengguang Xu <cgxu519@mykernel.net>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        overlayfs <linux-unionfs@vger.kernel.org>
-Subject: Re: [PATCH v2] overlay/073: test with nfs_export being off
-Message-ID: <20201023003135.w25522gphidf7gpn@xzhoux.usersys.redhat.com>
-References: <CAOQ4uxh+ppPMOSeAZU3sdwxwb_ixMHEpHLF9ZO_MTiedNJRgsw@mail.gmail.com>
- <20200911021813.o6vtueabupevfgab@xzhoux.usersys.redhat.com>
- <20201020024538.tl7xenmmguhcj6af@xzhoux.usersys.redhat.com>
- <20201020052229.GL80581@e18g06458.et15sqa>
+        Sat, 24 Oct 2020 23:42:29 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1603597308; cv=none; 
+        d=zoho.com.cn; s=zohoarc; 
+        b=FNVGXDhxZoz6Ul9AFcfLJybNp8YiNd159aqzNaSEyoLtg6yx2ToBcUVuOHyqVHAcV5ss/QW+00msL5QYQxUrbEuZRvp1Q6EUN1KVbapVZP3Pp2Fd//s/7GaxO9sR16nbuX2A9bn8l8dQgsX7SpKgGVhEa8giw148wS5va+p/dEU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
+        t=1603597308; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=amR8D51nArECdFOuV4RT+qjPLX4OfYmT1sVy0jub5v8=; 
+        b=Bh1ik6xw6qBAY55fcomy/hqvOasQY+bvIPDizv8Xng+XfrACPbvPXQEyEvwxAyV/PPzhTn1MvWQyQuvV0BjjeXDDO4CvrpuoDjDaRsbU1VIhGy0d7a6698ODuEReWSqHthNEUiGk3Ye3KuWoKObAjNsyF55bELA3lP4EJ8Lawrg=
+ARC-Authentication-Results: i=1; mx.zoho.com.cn;
+        dkim=pass  header.i=mykernel.net;
+        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
+        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1603597308;
+        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
+        h=From:To:Cc:Message-ID:Subject:Date:MIME-Version:Content-Transfer-Encoding:Content-Type;
+        bh=amR8D51nArECdFOuV4RT+qjPLX4OfYmT1sVy0jub5v8=;
+        b=EEdRFOFINDS0E6DKeDGaErw/3HdMLSs4kK3jL47u20sUCfK2GvkdZywCn2IedjHt
+        zlEMICMHp9mtv8OwsFEAw9B/+1ndMtFrSN8v+LPVTPnVWgS26wOyKaii+9k0lq0Cm8O
+        MA8j6SKDvABKuMDqg+XtPrhNvsva4VR9mNvN7Abw=
+Received: from localhost.localdomain (113.88.132.7 [113.88.132.7]) by mx.zoho.com.cn
+        with SMTPS id 1603597305591527.8547126485264; Sun, 25 Oct 2020 11:41:45 +0800 (CST)
+From:   Chengguang Xu <cgxu519@mykernel.net>
+To:     miklos@szeredi.hu, amir73il@gmail.com, jack@suse.cz
+Cc:     linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        Chengguang Xu <cgxu519@mykernel.net>
+Message-ID: <20201025034117.4918-1-cgxu519@mykernel.net>
+Subject: [RFC PATCH v2 0/8] implement containerized syncfs for overlayfs
+Date:   Sun, 25 Oct 2020 11:41:09 +0800
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201020052229.GL80581@e18g06458.et15sqa>
+Content-Transfer-Encoding: quoted-printable
+X-ZohoCNMailClient: External
+Content-Type: text/plain; charset=utf8
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Tue, Oct 20, 2020 at 01:22:29PM +0800, Eryu Guan wrote:
-> On Tue, Oct 20, 2020 at 10:52:59AM +0800, Murphy Zhou wrote:
-> > Ping on this one.
-> 
-> Queued for next update.
-> 
-> Sorry, I thought I've applied it and pushed, but clearly I didn't.
-> Thanks for the reminder!
+Current syncfs(2) syscall on overlayfs just calls sync_filesystem()
+on upper_sb to synchronize whole dirty inodes in upper filesystem
+regardless of the overlay ownership of the inode. In the use case of
+container, when multiple containers using the same underlying upper
+filesystem, it has some shortcomings as below.
 
-No warries :)
+(1) Performance
+Synchronization is probably heavy because it actually syncs unnecessary
+inodes for target overlayfs.
 
-> 
-> Thanks,
-> Eryu
-> 
-> > 
-> > On Fri, Sep 11, 2020 at 10:18:13AM +0800, Murphy Zhou wrote:
-> > > When nfs_export is enabled, the link count of upper dir
-> > > objects are more then the expected number in this testcase.
-> > > Because extra index entries are linked to upper inodes.
-> > > 
-> > > Signed-off-by: Murphy Zhou <jencce.kernel@gmail.com>
-> > > ---
-> > >  tests/overlay/073 | 4 +++-
-> > >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/tests/overlay/073 b/tests/overlay/073
-> > > index 37860c92..c5deccc6 100755
-> > > --- a/tests/overlay/073
-> > > +++ b/tests/overlay/073
-> > > @@ -99,7 +99,9 @@ run_test_case()
-> > >  {
-> > >  	_scratch_mkfs
-> > >  	make_lower_files ${1}
-> > > -	_scratch_mount -o "index=on"
-> > > +	# There will be extra hard links with nfs_export enabled which
-> > > +	# is expected. Turn it off explicitly to avoid the false alarm.
-> > > +	_scratch_mount -o "index=on,nfs_export=off"
-> > >  	make_whiteout_files
-> > >  	check_whiteout_files ${1} ${2}
-> > >  	_scratch_unmount
-> > > -- 
-> > > 2.20.1
-> > > 
-> > 
-> > -- 
-> > Murphy
+(2) Interference
+Unplanned synchronization will probably impact IO performance of
+unrelated container processes on the other overlayfs.
 
--- 
-Murphy
+This series try to implement containerized syncfs for overlayfs so that
+only sync target dirty upper inodes which are belong to specific overlayfs
+instance. By doing this, it is able to reduce cost of synchronization and
+will not seriously impact IO performance of unrelated processes.=20
+
+v1->v2:
+- Mark overlayfs' inode dirty itself instead of adding notification
+  mechanism to vfs inode.
+
+Chengguang Xu (8):
+  ovl: setup overlayfs' private bdi
+  ovl: implement ->writepages operation
+  ovl: implement overlayfs' ->evict_inode operation
+  ovl: mark overlayfs' inode dirty on modification
+  ovl: mark overlayfs' inode dirty on shared writable mmap
+  ovl: implement overlayfs' ->write_inode operation
+  ovl: cache dirty overlayfs' inode
+  ovl: implement containerized syncfs for overlayfs
+
+ fs/overlayfs/file.c      |  4 +++
+ fs/overlayfs/inode.c     | 27 +++++++++++++++++++
+ fs/overlayfs/overlayfs.h |  4 +++
+ fs/overlayfs/super.c     | 57 +++++++++++++++++++++++++++++++++++++---
+ fs/overlayfs/util.c      | 14 ++++++++++
+ 5 files changed, 102 insertions(+), 4 deletions(-)
+
+--=20
+2.26.2
+
+
