@@ -2,257 +2,217 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C404729DDC7
-	for <lists+linux-unionfs@lfdr.de>; Thu, 29 Oct 2020 01:42:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A1AB29E3AE
+	for <lists+linux-unionfs@lfdr.de>; Thu, 29 Oct 2020 08:20:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388852AbgJ2AmP (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 28 Oct 2020 20:42:15 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:33619 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731263AbgJ2AmI (ORCPT
+        id S1725769AbgJ2HUM (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 29 Oct 2020 03:20:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54600 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725379AbgJ2HUL (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 28 Oct 2020 20:42:08 -0400
-Received: from ip5f5af0a0.dynamic.kabel-deutschland.de ([95.90.240.160] helo=wittgenstein.fritz.box)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <christian.brauner@ubuntu.com>)
-        id 1kXvvH-0008Ep-6C; Thu, 29 Oct 2020 00:36:11 +0000
-From:   Christian Brauner <christian.brauner@ubuntu.com>
-To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Thu, 29 Oct 2020 03:20:11 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3B8DC08EBB0
+        for <linux-unionfs@vger.kernel.org>; Thu, 29 Oct 2020 00:20:11 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id h21so2282815iob.10
+        for <linux-unionfs@vger.kernel.org>; Thu, 29 Oct 2020 00:20:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sargun.me; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=fYJuh784A+cg3Z8+1Zy80X4u98CkOOu8oSlOndn6LP8=;
+        b=ukkHuDX6yvhUUuB02MVOivG/WA5Ojyb5VYHv669wm4UAXDWp5nAXmbtMTBCfLFoPb9
+         sVpgKjyc2zqVxegUtGLSbRzLGexJM5lQuzckbt8qF8u/HiyA4E0h7EUabZqAmLhOGN8T
+         oEGcB9xpnrhEwAKkcmxDeaZNHBU6zCIIWxMdo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=fYJuh784A+cg3Z8+1Zy80X4u98CkOOu8oSlOndn6LP8=;
+        b=VRagU77sNlEfUBYn9h5pUH2mf6ZNMJR4Y3a0wS/OVuaq/ePdNmTDp5tbMUQZ1BJ1CQ
+         MfF5wvEBsJUD5Dgl1uhjI/cmPg3qEtVVQm//o1Qcurl0eGmVI8STUe5HiABqL6GzSGkt
+         g9MOSrWKbTXnvAuuryGsPtrAa93ity75LhLhAXvPe7u5uHdXoBKJa0s69bpq3DtziGVi
+         dYVYpkJn7i7U3KEoFoPpfaFHMIQrQPxlguPA1pXrWdWgwUDs2igKxru7H7pczJaYctxb
+         bdD+zjs5VIku+VqFnwooBvrLLuECVkoDVADeZE+oo3dA7y8l8vo1jx77pb4N4S+q9nKB
+         aS6A==
+X-Gm-Message-State: AOAM531ku6vnt3uCIChayDJwhg+cGbMAEgzysTPyOgPNfNVaVL3q/ag7
+        suVO9FyJRZW/nFMkbseOVnv4hQ==
+X-Google-Smtp-Source: ABdhPJyOF/iJB70V4z6Kj5OehxU+n1aNhIuE8pqzjl3KXVgPoawDTq88ZFqqZglnxTR3mWhjdU4O1Q==
+X-Received: by 2002:a6b:c9c9:: with SMTP id z192mr2361774iof.175.1603956010838;
+        Thu, 29 Oct 2020 00:20:10 -0700 (PDT)
+Received: from ircssh-2.c.rugged-nimbus-611.internal (80.60.198.104.bc.googleusercontent.com. [104.198.60.80])
+        by smtp.gmail.com with ESMTPSA id k6sm1247023iov.26.2020.10.29.00.20.09
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 29 Oct 2020 00:20:10 -0700 (PDT)
+Date:   Thu, 29 Oct 2020 07:20:08 +0000
+From:   Sargun Dhillon <sargun@sargun.me>
+To:     Christian Brauner <christian.brauner@ubuntu.com>
+Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
         Christoph Hellwig <hch@infradead.org>,
-        linux-fsdevel@vger.kernel.org
-Cc:     John Johansen <john.johansen@canonical.com>,
-        James Morris <jmorris@namei.org>,
+        linux-fsdevel@vger.kernel.org,
+        Lennart Poettering <lennart@poettering.net>,
         Mimi Zohar <zohar@linux.ibm.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Arnd Bergmann <arnd@arndb.de>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
         Andreas Dilger <adilger.kernel@dilger.ca>,
+        containers@lists.linux-foundation.org,
+        Tycho Andersen <tycho@tycho.ws>,
+        Miklos Szeredi <miklos@szeredi.hu>, smbarber@chromium.org,
+        linux-ext4@vger.kernel.org, Mrunal Patel <mpatel@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+        selinux@vger.kernel.org, Josh Triplett <josh@joshtriplett.org>,
+        Seth Forshee <seth.forshee@canonical.com>,
+        Andy Lutomirski <luto@kernel.org>,
         OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
         Geoffrey Thomas <geofft@ldpreload.com>,
-        Mrunal Patel <mpatel@redhat.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Theodore Tso <tytso@mit.edu>, Alban Crequy <alban@kinvolk.io>,
-        Tycho Andersen <tycho@tycho.ws>,
         David Howells <dhowells@redhat.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Jann Horn <jannh@google.com>,
-        Seth Forshee <seth.forshee@canonical.com>,
-        =?UTF-8?q?St=C3=A9phane=20Graber?= <stgraber@ubuntu.com>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Lennart Poettering <lennart@poettering.net>,
-        "Eric W. Biederman" <ebiederm@xmission.com>, smbarber@chromium.org,
-        Phil Estes <estesp@gmail.com>, Serge Hallyn <serge@hallyn.com>,
-        Kees Cook <keescook@chromium.org>,
-        Todd Kjos <tkjos@google.com>, Jonathan Corbet <corbet@lwn.net>,
-        containers@lists.linux-foundation.org,
-        linux-security-module@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-unionfs@vger.kernel.org,
-        linux-audit@redhat.com, linux-integrity@vger.kernel.org,
-        selinux@vger.kernel.org,
-        Christian Brauner <christian.brauner@ubuntu.com>
-Subject: [PATCH 34/34] fat: handle idmapped mounts
-Date:   Thu, 29 Oct 2020 01:32:52 +0100
-Message-Id: <20201029003252.2128653-35-christian.brauner@ubuntu.com>
-X-Mailer: git-send-email 2.29.0
-In-Reply-To: <20201029003252.2128653-1-christian.brauner@ubuntu.com>
+        John Johansen <john.johansen@canonical.com>,
+        Theodore Tso <tytso@mit.edu>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        linux-unionfs@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-audit@redhat.com,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        linux-api@vger.kernel.org,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Alban Crequy <alban@kinvolk.io>,
+        linux-integrity@vger.kernel.org, Todd Kjos <tkjos@google.com>
+Subject: Re: [PATCH 00/34] fs: idmapped mounts
+Message-ID: <20201029071946.GA29881@ircssh-2.c.rugged-nimbus-611.internal>
 References: <20201029003252.2128653-1-christian.brauner@ubuntu.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201029003252.2128653-1-christian.brauner@ubuntu.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Let fat handle idmapped mounts. This allows to have the same fat mount appear
-in multiple locations with different id mappings. This allows to expose a vfat
-formatted USB stick to multiple user with different ids on the host or in user
-namespaces:
+On Thu, Oct 29, 2020 at 01:32:18AM +0100, Christian Brauner wrote:
+> Hey everyone,
+> 
+> I vanished for a little while to focus on this work here so sorry for
+> not being available by mail for a while.
+> 
+> Since quite a long time we have issues with sharing mounts between
+> multiple unprivileged containers with different id mappings, sharing a
+> rootfs between multiple containers with different id mappings, and also
+> sharing regular directories and filesystems between users with different
+> uids and gids. The latter use-cases have become even more important with
+> the availability and adoption of systemd-homed (cf. [1]) to implement
+> portable home directories.
+> 
+> The solutions we have tried and proposed so far include the introduction
+> of fsid mappings, a tiny overlay based filesystem, and an approach to
+> call override creds in the vfs. None of these solutions have covered all
+> of the above use-cases.
+> 
+> The solution proposed here has it's origins in multiple discussions
+> during Linux Plumbers 2017 during and after the end of the containers
+> microconference.
+> To the best of my knowledge this involved Aleksa, Stéphane, Eric, David,
+> James, and myself. A variant of the solution proposed here has also been
+> discussed, again to the best of my knowledge, after a Linux conference
+> in St. Petersburg in Russia between Christoph, Tycho, and myself in 2017
+> after Linux Plumbers.
+> I've taken the time to finally implement a working version of this
+> solution over the last weeks to the best of my abilities. Tycho has
+> signed up for this sligthly crazy endeavour as well and he has helped
+> with the conversion of the xattr codepaths.
+> 
+> The core idea is to make idmappings a property of struct vfsmount
+> instead of tying it to a process being inside of a user namespace which
+> has been the case for all other proposed approaches.
+> It means that idmappings become a property of bind-mounts, i.e. each
+> bind-mount can have a separate idmapping. This has the obvious advantage
+> that idmapped mounts can be created inside of the initial user
+> namespace, i.e. on the host itself instead of requiring the caller to be
+> located inside of a user namespace. This enables such use-cases as e.g.
+> making a usb stick available in multiple locations with different
+> idmappings (see the vfat port that is part of this patch series).
+> 
+> The vfsmount struct gains a new struct user_namespace member. The
+> idmapping of the user namespace becomes the idmapping of the mount. A
+> caller that is either privileged with respect to the user namespace of
+> the superblock of the underlying filesystem or a caller that is
+> privileged with respect to the user namespace a mount has been idmapped
+> with can create a new bind-mount and mark it with a user namespace. The
+> user namespace the mount will be marked with can be specified by passing
+> a file descriptor refering to the user namespace as an argument to the
+> new mount_setattr() syscall together with the new MOUNT_ATTR_IDMAP flag.
+> By default vfsmounts are marked with the initial user namespace and no
+> behavioral or performance changes should be observed. All mapping
+> operations are nops for the initial user namespace.
+> 
+> When a file/inode is accessed through an idmapped mount the i_uid and
+> i_gid of the inode will be remapped according to the user namespace the
+> mount has been marked with. When a new object is created based on the
+> fsuid and fsgid of the caller they will similarly be remapped according
+> to the user namespace of the mount they care created from.
+> 
+> This means the user namespace of the mount needs to be passed down into
+> a few relevant inode_operations. This mostly includes inode operations
+> that create filesystem objects or change file attributes. Some of them
+> such as ->getattr() don't even need to change since they pass down a
+> struct path and thus the struct vfsmount is already available. Other
+> inode operations need to be adapted to pass down the user namespace the
+> vfsmount has been marked with. Al was nice enough to point out that he
+> will not tolerate struct vfsmount being passed to filesystems and that I
+> should pass down the user namespace directly; which is what I did.
+> The inode struct itself is never altered whenever the i_uid and i_gid
+> need to be mapped, i.e. i_uid and i_gid are only remapped at the time of
+> the check. An inode once initialized (during lookup or object creation)
+> is never altered when accessed through an idmapped mount.
+> 
+> To limit the amount of noise in this first iteration we have not changed
+> the existing inode operations but rather introduced a few new struct
+> inode operation methods such as ->mkdir_mapped which pass down the user
+> namespace of the mount they have been called from. Should this solution
+> be worth pursuing we have no problem adapting the existing inode
+> operations instead.
+> 
+> In order to support idmapped mounts, filesystems need to be changed and
+> mark themselves with the FS_ALLOW_IDMAP flag in fs_flags. In this first
+> iteration I tried to illustrate this by changing three different
+> filesystem with different levels of complexity. Of course with some bias
+> towards urgent use-cases and filesystems I was at least a little more
+> familiar with. However, Tycho and I (and others) have no problem
+> converting each filesystem one-by-one. This first iteration includes fat
+> (msdos and vfat), ext4, and overlayfs (both with idmapped lower and
+> upper directories and idmapped merged directories). I'm sure I haven't
+> gotten everything right for all three of them in the first version of
+> this patch.
+> 
 
-mount -o uid=1000,gid=1000 /dev/sdb /mnt
+Thanks for this patchset. It's been a long-time coming.
 
-u1001@f2-vm:/lower1$ ls -ln /mnt/
-total 4
--rwxr-xr-x 1 1000 1000 4 Oct 28 03:44 aaa
--rwxr-xr-x 1 1000 1000 0 Oct 28 01:09 bbb
--rwxr-xr-x 1 1000 1000 0 Oct 28 01:10 ccc
--rwxr-xr-x 1 1000 1000 0 Oct 28 03:46 ddd
--rwxr-xr-x 1 1000 1000 0 Oct 28 04:01 eee
+I'm curious as to for the most cases, how much the new fs mount APIs help, and 
+if focusing on those could solve the problem for everything other than bind 
+mounts? Specifically, the idea of doing fsopen (creation of fs_context) under 
+the user namespace of question, and relying on a user with CAP_SYS_ADMIN to call 
+fsmount[1]. I think this is actually especially valuable for places like 
+overlayfs that use the entire cred object, as opposed to just the uid / gid. I 
+imagine that soon, most filesystems will support the new mount APIs, and not set 
+the global flag if they don't need to.
 
-mount2 --idmap both:1000:1001:1
+How popular is the "vfsmount (bind mounts) needs different uid mappings" use 
+case?
 
-u1001@f2-vm:/lower1$ ls -ln /lower1/
-total 4
--rwxr-xr-x 1 1001 1001 4 Oct 28 03:44 aaa
--rwxr-xr-x 1 1001 1001 0 Oct 28 01:09 bbb
--rwxr-xr-x 1 1001 1001 0 Oct 28 01:10 ccc
--rwxr-xr-x 1 1001 1001 0 Oct 28 03:46 ddd
--rwxr-xr-x 1 1001 1001 0 Oct 28 04:01 eee
+The other thing I worry about is the "What UID are you really?" game that's been 
+a thing recently. For example, you can have a different user namespace UID 
+mapping for your network namespace that netfilter checks[2], and a different one 
+for your mount namespace, and a different one that the process is actually in.
+This proliferation of different mappings makes auditing, and doing things like
+writing perf toolings more difficult (since I think bpf_get_current_uid_gid
+use the initial user namespace still [3]).
 
-u1001@f2-vm:/lower1$ touch /lower1/fff
-
-u1001@f2-vm:/lower1$ ls -ln /lower1/fff
--rwxr-xr-x 1 1001 1001 0 Oct 28 04:03 /lower1/fff
-
-u1001@f2-vm:/lower1$ ls -ln /mnt/fff
--rwxr-xr-x 1 1000 1000 0 Oct 28 04:03 /mnt/fff
-
-Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
----
- fs/fat/fat.h         |  2 ++
- fs/fat/file.c        | 27 +++++++++++++++++++--------
- fs/fat/namei_msdos.c |  7 +++++++
- fs/fat/namei_vfat.c  |  7 +++++++
- 4 files changed, 35 insertions(+), 8 deletions(-)
-
-diff --git a/fs/fat/fat.h b/fs/fat/fat.h
-index 922a0c6ba46c..56d661e93d2a 100644
---- a/fs/fat/fat.h
-+++ b/fs/fat/fat.h
-@@ -398,6 +398,8 @@ extern long fat_generic_ioctl(struct file *filp, unsigned int cmd,
- extern const struct file_operations fat_file_operations;
- extern const struct inode_operations fat_file_inode_operations;
- extern int fat_setattr(struct dentry *dentry, struct iattr *attr);
-+extern int fat_setattr_mapped(struct user_namespace *user_ns,
-+			      struct dentry *dentry, struct iattr *attr);
- extern void fat_truncate_blocks(struct inode *inode, loff_t offset);
- extern int fat_getattr(const struct path *path, struct kstat *stat,
- 		       u32 request_mask, unsigned int flags);
-diff --git a/fs/fat/file.c b/fs/fat/file.c
-index f9ee27cf4d7c..f97d46711b37 100644
---- a/fs/fat/file.c
-+++ b/fs/fat/file.c
-@@ -398,7 +398,7 @@ int fat_getattr(const struct path *path, struct kstat *stat,
- 		u32 request_mask, unsigned int flags)
- {
- 	struct inode *inode = d_inode(path->dentry);
--	generic_fillattr(inode, stat);
-+	mapped_generic_fillattr(mnt_user_ns(path->mnt), inode, stat);
- 	stat->blksize = MSDOS_SB(inode->i_sb)->cluster_size;
- 
- 	if (MSDOS_SB(inode->i_sb)->options.nfs == FAT_NFS_NOSTALE_RO) {
-@@ -447,12 +447,13 @@ static int fat_sanitize_mode(const struct msdos_sb_info *sbi,
- 	return 0;
- }
- 
--static int fat_allow_set_time(struct msdos_sb_info *sbi, struct inode *inode)
-+static int fat_allow_set_time(struct user_namespace *user_ns,
-+			      struct msdos_sb_info *sbi, struct inode *inode)
- {
- 	umode_t allow_utime = sbi->options.allow_utime;
- 
--	if (!uid_eq(current_fsuid(), inode->i_uid)) {
--		if (in_group_p(inode->i_gid))
-+	if (!uid_eq(current_fsuid(), i_uid_into_mnt(user_ns, inode))) {
-+		if (in_group_p(i_gid_into_mnt(user_ns, inode)))
- 			allow_utime >>= 3;
- 		if (allow_utime & MAY_WRITE)
- 			return 1;
-@@ -466,7 +467,8 @@ static int fat_allow_set_time(struct msdos_sb_info *sbi, struct inode *inode)
- /* valid file mode bits */
- #define FAT_VALID_MODE	(S_IFREG | S_IFDIR | S_IRWXUGO)
- 
--int fat_setattr(struct dentry *dentry, struct iattr *attr)
-+int fat_setattr_mapped(struct user_namespace *user_ns, struct dentry *dentry,
-+		       struct iattr *attr)
- {
- 	struct msdos_sb_info *sbi = MSDOS_SB(dentry->d_sb);
- 	struct inode *inode = d_inode(dentry);
-@@ -476,11 +478,11 @@ int fat_setattr(struct dentry *dentry, struct iattr *attr)
- 	/* Check for setting the inode time. */
- 	ia_valid = attr->ia_valid;
- 	if (ia_valid & TIMES_SET_FLAGS) {
--		if (fat_allow_set_time(sbi, inode))
-+		if (fat_allow_set_time(user_ns, sbi, inode))
- 			attr->ia_valid &= ~TIMES_SET_FLAGS;
- 	}
- 
--	error = setattr_prepare(dentry, attr);
-+	error = setattr_mapped_prepare(user_ns, dentry, attr);
- 	attr->ia_valid = ia_valid;
- 	if (error) {
- 		if (sbi->options.quiet)
-@@ -550,15 +552,24 @@ int fat_setattr(struct dentry *dentry, struct iattr *attr)
- 		fat_truncate_time(inode, &attr->ia_mtime, S_MTIME);
- 	attr->ia_valid &= ~(ATTR_ATIME|ATTR_CTIME|ATTR_MTIME);
- 
--	setattr_copy(inode, attr);
-+	setattr_mapped_copy(user_ns, inode, attr);
- 	mark_inode_dirty(inode);
- out:
- 	return error;
- }
-+EXPORT_SYMBOL_GPL(fat_setattr_mapped);
-+
-+int fat_setattr(struct dentry *dentry, struct iattr *attr)
-+{
-+	return fat_setattr_mapped(&init_user_ns, dentry, attr);
-+}
- EXPORT_SYMBOL_GPL(fat_setattr);
- 
- const struct inode_operations fat_file_inode_operations = {
- 	.setattr	= fat_setattr,
- 	.getattr	= fat_getattr,
- 	.update_time	= fat_update_time,
-+#ifdef CONFIG_IDMAP_MOUNTS
-+	.setattr_mapped	= fat_setattr_mapped,
-+#endif
- };
-diff --git a/fs/fat/namei_msdos.c b/fs/fat/namei_msdos.c
-index 9d062886fbc1..4b89d27d128d 100644
---- a/fs/fat/namei_msdos.c
-+++ b/fs/fat/namei_msdos.c
-@@ -639,6 +639,9 @@ static const struct inode_operations msdos_dir_inode_operations = {
- 	.setattr	= fat_setattr,
- 	.getattr	= fat_getattr,
- 	.update_time	= fat_update_time,
-+#ifdef CONFIG_IDMAP_MOUNTS
-+	.setattr_mapped	= fat_setattr_mapped,
-+#endif
- };
- 
- static void setup(struct super_block *sb)
-@@ -665,7 +668,11 @@ static struct file_system_type msdos_fs_type = {
- 	.name		= "msdos",
- 	.mount		= msdos_mount,
- 	.kill_sb	= kill_block_super,
-+#ifdef CONFIG_IDMAP_MOUNTS
-+	.fs_flags	= FS_REQUIRES_DEV | FS_ALLOW_IDMAP,
-+#else
- 	.fs_flags	= FS_REQUIRES_DEV,
-+#endif
- };
- MODULE_ALIAS_FS("msdos");
- 
-diff --git a/fs/fat/namei_vfat.c b/fs/fat/namei_vfat.c
-index 0cdd0fb9f742..11fea59e1b77 100644
---- a/fs/fat/namei_vfat.c
-+++ b/fs/fat/namei_vfat.c
-@@ -1034,6 +1034,9 @@ static const struct inode_operations vfat_dir_inode_operations = {
- 	.setattr	= fat_setattr,
- 	.getattr	= fat_getattr,
- 	.update_time	= fat_update_time,
-+#ifdef CONFIG_IDMAP_MOUNTS
-+	.setattr_mapped	= fat_setattr_mapped,
-+#endif
- };
- 
- static void setup(struct super_block *sb)
-@@ -1062,7 +1065,11 @@ static struct file_system_type vfat_fs_type = {
- 	.name		= "vfat",
- 	.mount		= vfat_mount,
- 	.kill_sb	= kill_block_super,
-+#ifdef CONFIG_IDMAP_MOUNTS
-+	.fs_flags	= FS_REQUIRES_DEV | FS_ALLOW_IDMAP,
-+#else
- 	.fs_flags	= FS_REQUIRES_DEV,
-+#endif
- };
- MODULE_ALIAS_FS("vfat");
- 
--- 
-2.29.0
+[1]: https://lore.kernel.org/linux-nfs/20201016123745.9510-4-sargun@sargun.me/T/#u
+[2]: https://elixir.bootlin.com/linux/v5.9.1/source/net/netfilter/xt_owner.c#L37
+[3]: https://elixir.bootlin.com/linux/v5.9.1/source/kernel/bpf/helpers.c#L196
 
