@@ -2,71 +2,100 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE2362AA4E4
-	for <lists+linux-unionfs@lfdr.de>; Sat,  7 Nov 2020 13:10:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7C482AAB49
+	for <lists+linux-unionfs@lfdr.de>; Sun,  8 Nov 2020 15:04:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727320AbgKGMKH (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 7 Nov 2020 07:10:07 -0500
-Received: from mail-il1-f197.google.com ([209.85.166.197]:40673 "EHLO
-        mail-il1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727298AbgKGMKH (ORCPT
+        id S1728521AbgKHOEN (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 8 Nov 2020 09:04:13 -0500
+Received: from sender2-op-o12.zoho.com.cn ([163.53.93.243]:17140 "EHLO
+        sender2-op-o12.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728346AbgKHOEI (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 7 Nov 2020 07:10:07 -0500
-Received: by mail-il1-f197.google.com with SMTP id g14so2963397ilr.7
-        for <linux-unionfs@vger.kernel.org>; Sat, 07 Nov 2020 04:10:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=bEPCOFw5S5rBelNwysXtchmzidY5p8w+fdQ9rPQh+s4=;
-        b=prvH2YLljH/TRY/QMzj4aS2aPuM2qFFFx06L8KSrOVBn438iu5ISIT4CBt48PAhJhO
-         /zbtqT0Oi+E1snLjxN5M1THk0BNMwAlYpguGqTxf5eYKDnT4vskNMl0NHqSKltBpSL+Y
-         EXP+XuzdFXn7suLOPakeTsH+4wUVDEJJERmpT2Hdk04VIqzfWscHMY67jnlaTsIo4mgI
-         XHXSOblcnouAYdW6fJkCJh6AOHQo0X3h5AcZ9lu08W+Tz236JFbx/3ljS5KZk0ez6lzl
-         G7Tz/J82xv2Q5O7Dth27uEkxVSOsSO19KTGw1DPIF8cYw5FLNtybWMoWCATfNY5Gh3YH
-         wD1g==
-X-Gm-Message-State: AOAM531INpp3kYBailc/4yGtRYYzsgB5jIK/yFrPo12WozugTgbSt1JQ
-        bUnR58ruhWzg509ecwigoK40iYyH19KPgQoXWWS/b1ciK5DH
-X-Google-Smtp-Source: ABdhPJy/fr/95Krh7za4yiITJhgfJeU+W90NQEYDsQN2T1cH8wGjrelyVfzoWNnPmSrQoa+mWN3xe4S+Mr6tLRiC6Ft6svXkCXrw
+        Sun, 8 Nov 2020 09:04:08 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1604844202; cv=none; 
+        d=zoho.com.cn; s=zohoarc; 
+        b=OY/YQ4ncezO8yTI0WBbqoKwCStdzVa+lkK9SADbjc8mmFIBHjShPJkKbZsy4mvxqaGmMILzlB1dLcLxFls3O73Si4pkuI3i1d15Ljr0FTC7sby/dEewpxMfy5h8yVN4w9+/D1cZNoTcs/zjrNN1ZfflWMQdSzqowhCJK3wzOlg0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
+        t=1604844202; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=fH3HIuDNajiZe/artUoBVrSDA5bDaJNcUJlijZpON/I=; 
+        b=j01H4/Pe1tY43agljPA5ZzYJbC4lcYZnWHaIefMUEhY0kPH6yqwMiKyvQW5rznqPC63bSfXR4P0wLiX/FnWYBsiF16WSGgCdbAXY0BSibJEQ0iEwlZJpIwBIqA24ZFLWvdRXK/KYQvvBnATT4H/hHvnnDlfOXFX47ZDxv8GHyV0=
+ARC-Authentication-Results: i=1; mx.zoho.com.cn;
+        dkim=pass  header.i=mykernel.net;
+        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
+        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1604844202;
+        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
+        h=From:To:Cc:Message-ID:Subject:Date:MIME-Version:Content-Transfer-Encoding:Content-Type;
+        bh=fH3HIuDNajiZe/artUoBVrSDA5bDaJNcUJlijZpON/I=;
+        b=cx/6V2/tAXWeXJHcZDmctUNWWrv4VbUU3Zl7Emj9Yz50zOtaZx/Y/Vji8rL8NT3z
+        OKLTSECrwqe+XmC1dPkFmhI1rNbt8mF/159TYkfThlOQJ9kDeWF7I79ni3POgZfiqeE
+        LPKWBAvOtf1bMpznDqpZyDSuOaNlFoMTiOvLbJlE=
+Received: from localhost.localdomain (113.116.49.189 [113.116.49.189]) by mx.zoho.com.cn
+        with SMTPS id 1604844200825124.94649116380526; Sun, 8 Nov 2020 22:03:20 +0800 (CST)
+From:   Chengguang Xu <cgxu519@mykernel.net>
+To:     miklos@szeredi.hu, jack@suse.cz, amir73il@gmail.com
+Cc:     linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        Chengguang Xu <cgxu519@mykernel.net>
+Message-ID: <20201108140307.1385745-1-cgxu519@mykernel.net>
+Subject: [RFC PATCH v3 00/10] implement containerized syncfs for overlayfs
+Date:   Sun,  8 Nov 2020 22:02:57 +0800
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:11a4:: with SMTP id 4mr359864ilj.141.1604751006170;
- Sat, 07 Nov 2020 04:10:06 -0800 (PST)
-Date:   Sat, 07 Nov 2020 04:10:06 -0800
-In-Reply-To: <000000000000d03eea0571adfe83@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000ad052105b383350a@google.com>
-Subject: Re: possible deadlock in mnt_want_write
-From:   syzbot <syzbot+ae82084b07d0297e566b@syzkaller.appspotmail.com>
-To:     amir73il@gmail.com, ast@kernel.org, dvyukov@google.com,
-        linux-fsdevel@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org,
-        miklos@szeredi.hu, mszeredi@redhat.com, rgoldwyn@suse.de,
-        syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk,
-        zohar@linux.ibm.com, zohar@linux.vnet.ibm.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ZohoCNMailClient: External
+Content-Type: text/plain; charset=utf8
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-syzbot suspects this issue was fixed by commit:
+Current syncfs(2) syscall on overlayfs just calls sync_filesystem()
+on upper_sb to synchronize whole dirty inodes in upper filesystem
+regardless of the overlay ownership of the inode. In the use case of
+container, when multiple containers using the same underlying upper
+filesystem, it has some shortcomings as below.
 
-commit 146d62e5a5867fbf84490d82455718bfb10fe824
-Author: Amir Goldstein <amir73il@gmail.com>
-Date:   Thu Apr 18 14:42:08 2019 +0000
+(1) Performance
+Synchronization is probably heavy because it actually syncs unnecessary
+inodes for target overlayfs.
 
-    ovl: detect overlapping layers
+(2) Interference
+Unplanned synchronization will probably impact IO performance of
+unrelated container processes on the other overlayfs.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=11e40184500000
-start commit:   6d906f99 Merge tag 'arm64-fixes' of git://git.kernel.org/p..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=856fc6d0fbbeede9
-dashboard link: https://syzkaller.appspot.com/bug?extid=ae82084b07d0297e566b
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=111767b7200000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1611ab2d200000
+This series try to implement containerized syncfs for overlayfs so that
+only sync target dirty upper inodes which are belong to specific overlayfs
+instance. By doing this, it is able to reduce cost of synchronization and
+will not seriously impact IO performance of unrelated processes.
 
-If the result looks correct, please mark the issue as fixed by replying with:
+v1->v2:
+- Mark overlayfs' inode dirty itself instead of adding notification
+mechanism to vfs inode.
 
-#syz fix: ovl: detect overlapping layers
+v2->v3:
+- Introduce overlayfs' extra syncfs wait list to wait target upper inodes
+in ->sync_fs.
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Chengguang Xu (10):
+  ovl: setup overlayfs' private bdi
+  ovl: introduce waiting list for syncfs
+  ovl: implement ->writepages operation
+  ovl: implement overlayfs' ->evict_inode operation
+  ovl: mark overlayfs' inode dirty on modification
+  ovl: mark overlayfs' inode dirty on shared mmap
+  ovl: implement overlayfs' ->write_inode operation
+  ovl: cache dirty overlayfs' inode
+  ovl: introduce helper of syncfs writeback inode waiting
+  ovl: implement containerized syncfs for overlayfs
+
+ fs/overlayfs/file.c      |   2 +
+ fs/overlayfs/inode.c     |  25 ++++++++++
+ fs/overlayfs/overlayfs.h |   4 ++
+ fs/overlayfs/ovl_entry.h |   5 ++
+ fs/overlayfs/super.c     | 104 +++++++++++++++++++++++++++++++++++++--
+ fs/overlayfs/util.c      |  14 ++++++
+ 6 files changed, 150 insertions(+), 4 deletions(-)
+
+--=20
+2.26.2
+
+
