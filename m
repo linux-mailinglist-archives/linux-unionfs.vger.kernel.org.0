@@ -2,102 +2,116 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02B872B160C
-	for <lists+linux-unionfs@lfdr.de>; Fri, 13 Nov 2020 07:57:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A0272B34EF
+	for <lists+linux-unionfs@lfdr.de>; Sun, 15 Nov 2020 13:32:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726327AbgKMG5a (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 13 Nov 2020 01:57:30 -0500
-Received: from sender2-op-o12.zoho.com.cn ([163.53.93.243]:17195 "EHLO
-        sender2-op-o12.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726112AbgKMG5a (ORCPT
+        id S1726727AbgKOMb7 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 15 Nov 2020 07:31:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60022 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726301AbgKOMb6 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 13 Nov 2020 01:57:30 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1605250631; cv=none; 
-        d=zoho.com.cn; s=zohoarc; 
-        b=e0lAb8RDCCYzvONL1U3KDdGUiJoJLjNVjdMAyEunVuOrC8Ir/PlGokIld4+1+ru1cQu8rI+bS2Q5NR3z1i5Ucpq8nAwF4vtytlX07RiDHgfypLIggxVue0bFJzr2bzNFRKoAwhhfiUfJWEcEla+W1IMi/UFgZg8FAyrtuPYSBmk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
-        t=1605250631; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=AGdcIpu2sjIuvnF+45DCM+5mBHj7CFq40gjiUkSTIhw=; 
-        b=G7Zgwv0Sl3vvAEYvKTKXb88qK+3TK9OEqViepl6a65KBx+uq0rxzHrSR+ek8enKVNzryo4lsHsyarHt7FXbrAlojWM3b1B8BUXQRVyBfkCoERwXFj3x1+moLYwLxXK05kol1c/hk8eZ4lQ0ABdzVr9/feY463SMFxiuKXNN2XgM=
-ARC-Authentication-Results: i=1; mx.zoho.com.cn;
-        dkim=pass  header.i=mykernel.net;
-        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
-        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1605250631;
-        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
-        h=From:To:Cc:Message-ID:Subject:Date:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type;
-        bh=AGdcIpu2sjIuvnF+45DCM+5mBHj7CFq40gjiUkSTIhw=;
-        b=SYlKePJojahSJGEMispwAbs2OVJ9NswyY7Kes/GIzy+MQlAG2NDm92eAneY2gEBh
-        MxrDt1C5MeLSTxbpagahLo6Y3cDT1ODW5MxU+GxobnS9AzkKbsl7QA4AgCl3N9mKvfa
-        FdprgUZlXihBua4MSCpdmcgphelTKNdQ3zxxHMQo=
-Received: from localhost.localdomain (116.30.195.173 [116.30.195.173]) by mx.zoho.com.cn
-        with SMTPS id 1605250628939771.7262224747083; Fri, 13 Nov 2020 14:57:08 +0800 (CST)
-From:   Chengguang Xu <cgxu519@mykernel.net>
-To:     miklos@szeredi.hu, jack@suse.cz, amir73il@gmail.com
-Cc:     linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        Chengguang Xu <cgxu519@mykernel.net>
-Message-ID: <20201113065555.147276-10-cgxu519@mykernel.net>
-Subject: [RFC PATCH v4 9/9] ovl: implement containerized syncfs for overlayfs
-Date:   Fri, 13 Nov 2020 14:55:55 +0800
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201113065555.147276-1-cgxu519@mykernel.net>
-References: <20201113065555.147276-1-cgxu519@mykernel.net>
+        Sun, 15 Nov 2020 07:31:58 -0500
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72005C0613D1;
+        Sun, 15 Nov 2020 04:31:58 -0800 (PST)
+Received: by mail-io1-xd42.google.com with SMTP id n12so14465617ioc.2;
+        Sun, 15 Nov 2020 04:31:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1qDI0bmxiNxNkq7U7tJeRtk0Ri4L2mKhFoKA+8ciLW8=;
+        b=bS3fUxrph1gqu5Tqe7uPZH4nAtVVS9v6TuWySbS2DpYpmV92jIUlSFZtNBqXHHqCjJ
+         Ev/kYwQuQNxkj2XdNbxHmyDy9Mp7K+XpJ7j8aJVyOFEyGgsjSYT4FYxxAZbMLYgDpOJh
+         A+NKSOjdNrWs2RzshGXgB4onRQg9J9KUrHWe7Fm90GdRHYydRzBmPuZiLiwajTB/Lgr9
+         myvNDwPaB5nvitc5L3X7bniz5fhE/QTMvT6VxCGpDob5Kw/wct7k00voEsxinnN8oVMH
+         V81AaxqR/GECMF5Tnzr42ET8GYWb6MVHgegRWCAXi9+SlXu5XHVUHfq8syWzXjRMBUKy
+         k7Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1qDI0bmxiNxNkq7U7tJeRtk0Ri4L2mKhFoKA+8ciLW8=;
+        b=LqPQ8W0ZOjfZILP6ia3I2dKlDy/ajDGJia8o4We60yheXxBWF5wey7bgnHeQR/CqmK
+         nhCcC25zHr8OkRZBPaz5kWkLiSNOcUMzvZlHPhIVQLx1veOVPwWWXm/2Q2jK8D9B9rzN
+         dnezDNIXgnCjuSJu8tT+PJ2r/XjYz1CYUYEwOgA55xFHMKMLEqS9vqYA7cUqBYpmUnWG
+         QgUrfPjvYh+7K3mvldicXilRHCjFGs5B4tJGgNx6156vPR9COPGvsbENQ/aM/K4pMTOM
+         evue2PGy6otefQt9DJrx7RoAzSACO4KA3sjDFFarBAZpRgGfRy829NgmCZWCE8yL4LLR
+         p9bQ==
+X-Gm-Message-State: AOAM530uk0rBkgntPHtUevB+xwJEcf4L1ftPYVtf7+RdvWVOdbth/TLs
+        H5i8BwmkJyx+DJd7TF31PwhFu7fdvLmRgH2SnnTY9R40UQg=
+X-Google-Smtp-Source: ABdhPJwMtXpbBB+JrEnxxXogyFA26Fv5J9jLbWiDifyt5sXxMDS0gbVeHV8fz9VFCXEVJzq2b/qFXKjujkmZPbB7nYg=
+X-Received: by 2002:a5d:964a:: with SMTP id d10mr890846ios.5.1605443517686;
+ Sun, 15 Nov 2020 04:31:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-ZohoCNMailClient: External
-Content-Type: text/plain; charset=utf8
+References: <20201115103718.298186-1-christian.brauner@ubuntu.com> <20201115103718.298186-37-christian.brauner@ubuntu.com>
+In-Reply-To: <20201115103718.298186-37-christian.brauner@ubuntu.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Sun, 15 Nov 2020 14:31:46 +0200
+Message-ID: <CAOQ4uxi3OpvT5P7jQyPqGGK9tnhk_fni10G6+a3KC=-60udkTQ@mail.gmail.com>
+Subject: Re: [PATCH v2 36/39] overlayfs: do not mount on top of idmapped mounts
+To:     Christian Brauner <christian.brauner@ubuntu.com>
+Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christoph Hellwig <hch@infradead.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        overlayfs <linux-unionfs@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Now overlayfs can only sync dirty inode during syncfs,
-so remove unnecessary sync_filesystem() on upper file
-system.
+On Sun, Nov 15, 2020 at 12:42 PM Christian Brauner
+<christian.brauner@ubuntu.com> wrote:
+>
+> Prevent overlayfs from being mounted on top of idmapped mounts until we
+> have ported it to handle this case and added proper testing for it.
+>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: Al Viro <viro@zeniv.linux.org.uk>
+> Cc: linux-fsdevel@vger.kernel.org
+> Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
+> ---
+> /* v2 */
+> patch introduced
+> ---
+>  fs/overlayfs/super.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+> index 0d4f2baf6836..3cacc3d3fb65 100644
+> --- a/fs/overlayfs/super.c
+> +++ b/fs/overlayfs/super.c
+> @@ -1708,6 +1708,12 @@ static struct ovl_entry *ovl_get_lowerstack(struct super_block *sb,
+>                 if (err)
+>                         goto out_err;
+>
+> +               if (mnt_idmapped(stack[i].mnt)) {
+> +                       err = -EINVAL;
+> +                       pr_err("idmapped lower layers are currently unsupported\n");
+> +                       goto out_err;
+> +               }
+> +
+>                 lower = strchr(lower, '\0') + 1;
+>         }
+>
+> @@ -1939,6 +1945,12 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
+>                 if (err)
+>                         goto out_err;
+>
+> +               if (mnt_idmapped(upperpath.mnt)) {
+> +                       err = -EINVAL;
+> +                       pr_err("idmapped lower layers are currently unsupported\n");
+> +                       goto out_err;
+> +               }
+> +
 
-Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
----
- fs/overlayfs/super.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+Both checks should be replaced with one check in ovl_mount_dir_noesc()
+right next to ovl_dentry_weird() check and FWIW the error above about
+"lower layers" when referring to upperpath.mnt is confusing.
+"idmapped layers..." should be fine.
 
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index 982b3954b47c..58507f1cd583 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -15,6 +15,8 @@
- #include <linux/seq_file.h>
- #include <linux/posix_acl_xattr.h>
- #include <linux/exportfs.h>
-+#include <linux/blkdev.h>
-+#include <linux/writeback.h>
- #include "overlayfs.h"
-=20
- MODULE_AUTHOR("Miklos Szeredi <miklos@szeredi.hu>");
-@@ -270,8 +272,7 @@ static int ovl_sync_fs(struct super_block *sb, int wait=
-)
- =09 * Not called for sync(2) call or an emergency sync (SB_I_SKIP_SYNC).
- =09 * All the super blocks will be iterated, including upper_sb.
- =09 *
--=09 * If this is a syncfs(2) call, then we do need to call
--=09 * sync_filesystem() on upper_sb, but enough if we do it when being
-+=09 * if this is a syncfs(2) call, it will be enough we do it when being
- =09 * called with wait =3D=3D 1.
- =09 */
- =09if (!wait)
-@@ -280,7 +281,11 @@ static int ovl_sync_fs(struct super_block *sb, int wai=
-t)
- =09upper_sb =3D ovl_upper_mnt(ofs)->mnt_sb;
-=20
- =09down_read(&upper_sb->s_umount);
--=09ret =3D sync_filesystem(upper_sb);
-+=09wait_sb_inodes(upper_sb);
-+=09if (upper_sb->s_op->sync_fs)
-+=09=09ret =3D upper_sb->s_op->sync_fs(upper_sb, wait);
-+=09if (!ret)
-+=09=09ret =3D sync_blockdev(upper_sb->s_bdev);
- =09up_read(&upper_sb->s_umount);
-=20
- =09return ret;
---=20
-2.26.2
-
-
+Thanks,
+Amir.
