@@ -2,14 +2,14 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C90122D165C
-	for <lists+linux-unionfs@lfdr.de>; Mon,  7 Dec 2020 17:37:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 762F02D1635
+	for <lists+linux-unionfs@lfdr.de>; Mon,  7 Dec 2020 17:37:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727754AbgLGQfO (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 7 Dec 2020 11:35:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:22167 "EHLO
+        id S1727770AbgLGQei (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 7 Dec 2020 11:34:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:44689 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727700AbgLGQeg (ORCPT
+        by vger.kernel.org with ESMTP id S1727096AbgLGQeg (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
         Mon, 7 Dec 2020 11:34:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
@@ -18,46 +18,47 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YovU3sr3PaW3+O202/CGPLg5GcG7AOB5YNKN3Gg/9CM=;
-        b=SELKqZWPL8dt0qmh7W9WAxh9+kvz3QVKabxzou6+nceanUenhQieJdvIV5BsbBJQ1PBGR2
-        EdEnayfAk0X4NcUq5Gx+VKSchRJD3AeeOeZEIYAPs8/6WK159ivWdHCiKhOhbuVIVJSGqj
-        MaycnwkR6WzgjUytxSl5HrT+iBBpnog=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-106-QDc9Nrq6PK-CP8L11r5kKw-1; Mon, 07 Dec 2020 11:33:04 -0500
-X-MC-Unique: QDc9Nrq6PK-CP8L11r5kKw-1
-Received: by mail-ed1-f72.google.com with SMTP id g25so3715949edu.4
-        for <linux-unionfs@vger.kernel.org>; Mon, 07 Dec 2020 08:33:04 -0800 (PST)
+        bh=Z9GFPfP4QUc9Eox0SoIdqm6RVWFYT3GmDgPPKwCvoZY=;
+        b=BtehgoyXnmOIRhbF3FzG92Up0VW4JGlEbEwItKs+U+2tIVJOY91xQ643IPaG7pv/O2btre
+        u8bwVYt1lXO9DQEpGKzZqNV/JK7PvJYyJ42r1Upk3IiXFQ/ugC49DdPsS45uaScODIw5hc
+        Ae3KdLkQQtgJGNMv8X4OQnQKcHYoqQ0=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-495-HnluZVOsNb2zHmJcjRx4Ww-1; Mon, 07 Dec 2020 11:33:07 -0500
+X-MC-Unique: HnluZVOsNb2zHmJcjRx4Ww-1
+Received: by mail-ed1-f70.google.com with SMTP id u17so1241708edi.18
+        for <linux-unionfs@vger.kernel.org>; Mon, 07 Dec 2020 08:33:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=YovU3sr3PaW3+O202/CGPLg5GcG7AOB5YNKN3Gg/9CM=;
-        b=nJctsvfK1dYd9+gfwEWVx82vSd8dk7z4gIN7s667z+BatGkrvEVR1JiiKBlMoDfxfE
-         9PiWLByqWyJx503GM6DLs+UfCfExeTMs01wgKq9nNdLKmsEZ23FsoqHho/DCprEAgos/
-         lJK9ci2r93ceKbjEDhfRWMzXlTKbTEqXH59SQBF0qh6fxrh0DmLBW3XXII5UK7CEMcW+
-         6tVYBsaquXa5QTU0Armwb3ztLh6X76PbVB3+GLwy6GXGoO22+cXC4V0GY/9nGjozVuUY
-         jFYMyDlg8bTIKxsp8RN+WRkeoRbsx0LOn7NWWN1KMSqUFwdf8wIZU7FQfWpWh8Id8k54
-         ZJ6w==
-X-Gm-Message-State: AOAM531MeOT5EMPP0kbnzyJJKppNpEbyIcUsTQAlRgHe/RsPpivir20n
-        BfveTQMKqIzkBTi/+wUrMsDDFbgmQLG/4XrNENY5ek5nf5VERVElEqjKweNv4+A7K8ID7c2YWH5
-        9q562lPwociAzJ9IIDjDeg46byA==
-X-Received: by 2002:a17:906:fa12:: with SMTP id lo18mr20047773ejb.354.1607358783581;
-        Mon, 07 Dec 2020 08:33:03 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxRh6Xa+5iZaFkMzkShNmnm8HMI1mEJZ43C03cBXKlr6CObJxEgF3paS8CuYV44ij1yPUSsGQ==
-X-Received: by 2002:a17:906:fa12:: with SMTP id lo18mr20047758ejb.354.1607358783452;
-        Mon, 07 Dec 2020 08:33:03 -0800 (PST)
+        bh=Z9GFPfP4QUc9Eox0SoIdqm6RVWFYT3GmDgPPKwCvoZY=;
+        b=bH3glPHtmUEgXM5Xois9i4b9virGqPEzFmDZxPv/WN+vV7aLttp7nWlVZSUTRSOyCi
+         11b+UiboNmOBOYWuzinEQelGfKclYCi4PBWCUXjKiGjMAlJBbzztZV88cC3NfwxwXaxB
+         qKXh36+G46epvOscOwIPWSqq1uPGk5G6c+7uH/NSExIZkTm72JxgPP0h55Urn4+2xF9u
+         +N+nGdSyTp/wsv3Tn18pjm189A5vz5eIxJ50IJtA/UkWypxRBtFoQjIgrNyxgQj3BdbZ
+         7rULWljozWAYQO/2qOfljM5tmawzg3wORbu6TvTyv8+nmPwmn9FMUJ0U9umx2WUU5h1T
+         CQdA==
+X-Gm-Message-State: AOAM530CzISV5+dCDF7CSpTNoFtPyu5FKv3xMpYXM9bn3XXatTKBaO2q
+        qtFq9HgaY1C4KCxyQoOb7uCuGTdGyYbD2rux3B5BydSOLmbnwlOjFh0fN8ZuNu3UZRBdiVlx+Lt
+        B23zLo/UOeCRsrcOmimn1foYLGw==
+X-Received: by 2002:a50:b243:: with SMTP id o61mr21246723edd.57.1607358785657;
+        Mon, 07 Dec 2020 08:33:05 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxdoaGF6V93HN0G1oEmt6WxNgh14Oc+j5HptlRhKBAGk7XVmmffsr/juqgIckKEWhSdANFcew==
+X-Received: by 2002:a50:b243:: with SMTP id o61mr21246662edd.57.1607358785086;
+        Mon, 07 Dec 2020 08:33:05 -0800 (PST)
 Received: from miu.piliscsaba.redhat.com (catv-86-101-169-67.catv.broadband.hu. [86.101.169.67])
-        by smtp.gmail.com with ESMTPSA id op5sm12801964ejb.43.2020.12.07.08.33.02
+        by smtp.gmail.com with ESMTPSA id op5sm12801964ejb.43.2020.12.07.08.33.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Dec 2020 08:33:02 -0800 (PST)
+        Mon, 07 Dec 2020 08:33:03 -0800 (PST)
 From:   Miklos Szeredi <mszeredi@redhat.com>
 To:     "Eric W . Biederman" <ebiederm@xmission.com>
 Cc:     linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 03/10] ovl: check privs before decoding file handle
-Date:   Mon,  7 Dec 2020 17:32:48 +0100
-Message-Id: <20201207163255.564116-4-mszeredi@redhat.com>
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>
+Subject: [PATCH v2 04/10] ovl: make ioctl() safe
+Date:   Mon,  7 Dec 2020 17:32:49 +0100
+Message-Id: <20201207163255.564116-5-mszeredi@redhat.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20201207163255.564116-1-mszeredi@redhat.com>
 References: <20201207163255.564116-1-mszeredi@redhat.com>
@@ -67,29 +68,154 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-CAP_DAC_READ_SEARCH is required by open_by_handle_at(2) so check it in
-ovl_decode_real_fh() as well to prevent privilege escalation for
-unprivileged overlay mounts.
+ovl_ioctl_set_flags() does a capability check using flags, but then the
+real ioctl double-fetches flags and uses potentially different value.
 
+The "Check the capability before cred override" comment misleading: user
+can skip this check by presenting benign flags first and then overwriting
+them to non-benign flags.
+
+Just remove the cred override for now, hoping this doesn't cause a
+regression.
+
+The proper solution is to create a new setxflags i_op (patches are in the
+works).
+
+Xfstests don't show a regression.
+
+Reported-by: Dmitry Vyukov <dvyukov@google.com>
 Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 ---
- fs/overlayfs/namei.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/overlayfs/file.c | 75 ++-------------------------------------------
+ 1 file changed, 3 insertions(+), 72 deletions(-)
 
-diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
-index a6162c4076db..82a55fdb1e7a 100644
---- a/fs/overlayfs/namei.c
-+++ b/fs/overlayfs/namei.c
-@@ -156,6 +156,9 @@ struct dentry *ovl_decode_real_fh(struct ovl_fh *fh, struct vfsmount *mnt,
- 	struct dentry *real;
- 	int bytes;
+diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+index efccb7c1f9bc..3cd1590f2030 100644
+--- a/fs/overlayfs/file.c
++++ b/fs/overlayfs/file.c
+@@ -541,46 +541,26 @@ static long ovl_real_ioctl(struct file *file, unsigned int cmd,
+ 			   unsigned long arg)
+ {
+ 	struct fd real;
+-	const struct cred *old_cred;
+ 	long ret;
  
-+	if (!capable(CAP_DAC_READ_SEARCH))
-+		return NULL;
-+
- 	/*
- 	 * Make sure that the stored uuid matches the uuid of the lower
- 	 * layer where file handle will be decoded.
+ 	ret = ovl_real_fdget(file, &real);
+ 	if (ret)
+ 		return ret;
+ 
+-	old_cred = ovl_override_creds(file_inode(file)->i_sb);
+ 	ret = security_file_ioctl(real.file, cmd, arg);
+ 	if (!ret)
+ 		ret = vfs_ioctl(real.file, cmd, arg);
+-	revert_creds(old_cred);
+ 
+ 	fdput(real);
+ 
+ 	return ret;
+ }
+ 
+-static unsigned int ovl_iflags_to_fsflags(unsigned int iflags)
+-{
+-	unsigned int flags = 0;
+-
+-	if (iflags & S_SYNC)
+-		flags |= FS_SYNC_FL;
+-	if (iflags & S_APPEND)
+-		flags |= FS_APPEND_FL;
+-	if (iflags & S_IMMUTABLE)
+-		flags |= FS_IMMUTABLE_FL;
+-	if (iflags & S_NOATIME)
+-		flags |= FS_NOATIME_FL;
+-
+-	return flags;
+-}
+-
+ static long ovl_ioctl_set_flags(struct file *file, unsigned int cmd,
+-				unsigned long arg, unsigned int flags)
++				unsigned long arg)
+ {
+ 	long ret;
+ 	struct inode *inode = file_inode(file);
+-	unsigned int oldflags;
+ 
+ 	if (!inode_owner_or_capable(inode))
+ 		return -EACCES;
+@@ -591,12 +571,6 @@ static long ovl_ioctl_set_flags(struct file *file, unsigned int cmd,
+ 
+ 	inode_lock(inode);
+ 
+-	/* Check the capability before cred override */
+-	oldflags = ovl_iflags_to_fsflags(READ_ONCE(inode->i_flags));
+-	ret = vfs_ioc_setflags_prepare(inode, oldflags, flags);
+-	if (ret)
+-		goto unlock;
+-
+ 	ret = ovl_maybe_copy_up(file_dentry(file), O_WRONLY);
+ 	if (ret)
+ 		goto unlock;
+@@ -613,46 +587,6 @@ static long ovl_ioctl_set_flags(struct file *file, unsigned int cmd,
+ 
+ }
+ 
+-static long ovl_ioctl_set_fsflags(struct file *file, unsigned int cmd,
+-				  unsigned long arg)
+-{
+-	unsigned int flags;
+-
+-	if (get_user(flags, (int __user *) arg))
+-		return -EFAULT;
+-
+-	return ovl_ioctl_set_flags(file, cmd, arg, flags);
+-}
+-
+-static unsigned int ovl_fsxflags_to_fsflags(unsigned int xflags)
+-{
+-	unsigned int flags = 0;
+-
+-	if (xflags & FS_XFLAG_SYNC)
+-		flags |= FS_SYNC_FL;
+-	if (xflags & FS_XFLAG_APPEND)
+-		flags |= FS_APPEND_FL;
+-	if (xflags & FS_XFLAG_IMMUTABLE)
+-		flags |= FS_IMMUTABLE_FL;
+-	if (xflags & FS_XFLAG_NOATIME)
+-		flags |= FS_NOATIME_FL;
+-
+-	return flags;
+-}
+-
+-static long ovl_ioctl_set_fsxflags(struct file *file, unsigned int cmd,
+-				   unsigned long arg)
+-{
+-	struct fsxattr fa;
+-
+-	memset(&fa, 0, sizeof(fa));
+-	if (copy_from_user(&fa, (void __user *) arg, sizeof(fa)))
+-		return -EFAULT;
+-
+-	return ovl_ioctl_set_flags(file, cmd, arg,
+-				   ovl_fsxflags_to_fsflags(fa.fsx_xflags));
+-}
+-
+ long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	long ret;
+@@ -663,12 +597,9 @@ long ovl_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 		ret = ovl_real_ioctl(file, cmd, arg);
+ 		break;
+ 
+-	case FS_IOC_SETFLAGS:
+-		ret = ovl_ioctl_set_fsflags(file, cmd, arg);
+-		break;
+-
+ 	case FS_IOC_FSSETXATTR:
+-		ret = ovl_ioctl_set_fsxflags(file, cmd, arg);
++	case FS_IOC_SETFLAGS:
++		ret = ovl_ioctl_set_flags(file, cmd, arg);
+ 		break;
+ 
+ 	default:
 -- 
 2.26.2
 
