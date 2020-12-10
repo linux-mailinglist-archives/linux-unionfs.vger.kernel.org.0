@@ -2,119 +2,139 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57A122D5760
-	for <lists+linux-unionfs@lfdr.de>; Thu, 10 Dec 2020 10:41:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DAC72D5F7A
+	for <lists+linux-unionfs@lfdr.de>; Thu, 10 Dec 2020 16:22:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732663AbgLJJki (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 10 Dec 2020 04:40:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44262 "EHLO
+        id S2389830AbgLJPUh (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 10 Dec 2020 10:20:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730952AbgLJJkg (ORCPT
+        with ESMTP id S2391680AbgLJPTX (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 10 Dec 2020 04:40:36 -0500
-Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF82C061793
-        for <linux-unionfs@vger.kernel.org>; Thu, 10 Dec 2020 01:39:55 -0800 (PST)
-Received: by mail-vs1-xe43.google.com with SMTP id b23so2501108vsp.9
-        for <linux-unionfs@vger.kernel.org>; Thu, 10 Dec 2020 01:39:55 -0800 (PST)
+        Thu, 10 Dec 2020 10:19:23 -0500
+Received: from mail-ua1-x942.google.com (mail-ua1-x942.google.com [IPv6:2607:f8b0:4864:20::942])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA777C061794
+        for <linux-unionfs@vger.kernel.org>; Thu, 10 Dec 2020 07:18:42 -0800 (PST)
+Received: by mail-ua1-x942.google.com with SMTP id s23so1795364uaq.10
+        for <linux-unionfs@vger.kernel.org>; Thu, 10 Dec 2020 07:18:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=szeredi.hu; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=lv1NfgTb7QIF3AXa/c4X8+rTmIE6V/EqKtuPGFR6zg8=;
-        b=S7Pkm4cCLEf4W4nwx8c7uks4lJK8p3/l3GOZ1ira+Vv19bt2HnmTD4QjI4tfkEzNIj
-         rAcSOaVsaZUwp3dwaYi12HGVGQIo/DJKFgNGpYZpWmlf7Z3oT7XRlTBL3jNn61FgQgQP
-         A1SW+/t+IAi+hS2p1U4fvyLHgRh05nhpeoxv4=
+        bh=a3HoxVeTcWA5htpeSp9SI0dpd34NYlZHs8NPHZQ2aqk=;
+        b=T7Om6Dz30zjXwo1e3DzgDWXQhnNLsemk4NEGSyXJmQ5kiU3HRAbTfsV26RQ1UYys6W
+         y/tqwGLAgNEebP63abkpvwOu2RYxIOPjqyyxuP2icvCDKprQz8lzYHv4pEegw4T/pSGk
+         pv8LxMq6idiz77wBNzyo2zONXJtoQwzG+Hpxo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=lv1NfgTb7QIF3AXa/c4X8+rTmIE6V/EqKtuPGFR6zg8=;
-        b=AwH/oZkbIDb7UCI662iEyHY2m6wRZNo9Dz/y3QTiOxkhaz7V0JzqBiPnS64OEnX8vg
-         s7w4yrqpf5+5PaxeA9Gu0o/D2rTs31iSkFTj/gEaM/vW8v8n6lgxsJ6pTtXPZUZatxd7
-         mnC08Do6xKwTU/8DGsGJm7tZ7CSnYJp23hHgal8r3pqJf1dLj8cDi8des0Vu7wz18D9u
-         Xr/qXzgw8P7lgY0NFHvKrrtSaF+kfDCdJrgdGGcMvtvGXcQmYMf3h2Lsd1LEbnA3slL8
-         gd7HkC/3dzLTag1jjmJ8awrbvVO9O21E9KtuAbphE54bURN2kouJrJxG/2mAwJTqxENh
-         yNNg==
-X-Gm-Message-State: AOAM533NBQNXKYVLCeyB3mVSrU54xyQADW+pDQj+FstRPnV+/5MbgxBp
-        CApXiG2L04ZTwQwYsT7s/sBo9v60vb+6EMDm0tRXNg==
-X-Google-Smtp-Source: ABdhPJxC25gs9iKjXNoeKLvSyprubfFJKB9elMWP9JJu4yk22W5JJYzGK+qDK5LYzdi+9eQj0J0q5TCPHorI5NHeZYk=
-X-Received: by 2002:a05:6102:2:: with SMTP id j2mr6462091vsp.47.1607593195047;
- Thu, 10 Dec 2020 01:39:55 -0800 (PST)
+        bh=a3HoxVeTcWA5htpeSp9SI0dpd34NYlZHs8NPHZQ2aqk=;
+        b=uoInIFrsajtTinJZviTjoKVJZY9/AaO7RyZScPJ9sBAw6Ekqa7h51sHIfRNYqThILc
+         jfdLRhncxw4Ukqm64qIxOYcaBjMLPx2Y0O+TvKewLPHQ0GAs9aSbJVA2ByUGph6DmBc7
+         MXAqUzUKI0SjEHyu3HpyCHfBVl+KBuT4Nb2ZKxDhKEoMfxNvN0yeJoxLatjR4jy0ndjG
+         1U1oCUb2xaJbBF0i2EZh6ZwdhUSgmi/iqCzlJd9K1N3mCGKhwu5F0JLh7x6uG4KdWtFV
+         jCXfcAIO0BebxTKDGi/6j4qqpv4eLIOEapuSrduj4OEMy5VZXdLmFXiNl3D5F+++ArkO
+         ah7Q==
+X-Gm-Message-State: AOAM531oH2CilxnY++TxESarLmO+mFBwtT5fFaIl+dcYefU2gTDabboj
+        otWiHm2tn8vbZWWrnZlgGp+LktH8g35Je/Emmcfk+w==
+X-Google-Smtp-Source: ABdhPJwnd+Q5OcwZ6kj3dLXkISS+sHMAcbDer9WLC1AifyTnZn7dV2SHai20UFYdvGjl9MbsKgdCtxhsvjEvdP+K1wY=
+X-Received: by 2002:a9f:3012:: with SMTP id h18mr8283428uab.11.1607613521839;
+ Thu, 10 Dec 2020 07:18:41 -0800 (PST)
 MIME-Version: 1.0
-References: <20201207163255.564116-1-mszeredi@redhat.com> <1725e01a-4d4d-aecb-bad6-54aa220b4cd2@i-love.sakura.ne.jp>
- <7a64acab-dd05-765f-df2c-4896eb6a29df@canonical.com>
-In-Reply-To: <7a64acab-dd05-765f-df2c-4896eb6a29df@canonical.com>
+References: <20201207163255.564116-1-mszeredi@redhat.com> <20201207163255.564116-5-mszeredi@redhat.com>
+ <CAOQ4uxhv+33nVxNQmZtf-uzZN0gMXBaDoiJYm88cWwa1fRQTTg@mail.gmail.com>
+In-Reply-To: <CAOQ4uxhv+33nVxNQmZtf-uzZN0gMXBaDoiJYm88cWwa1fRQTTg@mail.gmail.com>
 From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Thu, 10 Dec 2020 10:39:44 +0100
-Message-ID: <CAJfpegsiuf8ib5cvVrr=zHZ+Xu7BMMTT2eYapsEUdmPcRBUiwQ@mail.gmail.com>
-Subject: Re: [PATCH v2 00/10] allow unprivileged overlay mounts
-To:     John Johansen <john.johansen@canonical.com>
-Cc:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Miklos Szeredi <mszeredi@redhat.com>,
+Date:   Thu, 10 Dec 2020 16:18:30 +0100
+Message-ID: <CAJfpegsxku5D+08F6SUixQUfF6eDVm+o2pu6feLooq==ye0GDg@mail.gmail.com>
+Subject: Re: [PATCH v2 04/10] ovl: make ioctl() safe
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Miklos Szeredi <mszeredi@redhat.com>,
         "Eric W . Biederman" <ebiederm@xmission.com>,
-        linux-fsdevel@vger.kernel.org,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
         overlayfs <linux-unionfs@vger.kernel.org>,
-        LSM <linux-security-module@vger.kernel.org>,
-        linux-kernel@vger.kernel.org
+        LSM List <linux-security-module@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Dmitry Vyukov <dvyukov@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Thu, Dec 10, 2020 at 10:00 AM John Johansen
-<john.johansen@canonical.com> wrote:
+On Tue, Dec 8, 2020 at 12:15 PM Amir Goldstein <amir73il@gmail.com> wrote:
 >
-> On 12/8/20 2:27 AM, Tetsuo Handa wrote:
-> > On 2020/12/08 1:32, Miklos Szeredi wrote:
-> >> A general observation is that overlayfs does not call security_path_*()
-> >> hooks on the underlying fs.  I don't see this as a problem, because a
-> >> simple bind mount done inside a private mount namespace also defeats the
-> >> path based security checks.  Maybe I'm missing something here, so I'm
-> >> interested in comments from AppArmor and Tomoyo developers.
+> On Mon, Dec 7, 2020 at 6:36 PM Miklos Szeredi <mszeredi@redhat.com> wrote:
 > >
-> > Regarding TOMOYO, I don't want overlayfs to call security_path_*() hooks on the
-> > underlying fs, but the reason is different. It is not because a simple bind mount
-> > done inside a private mount namespace defeats the path based security checks.
-> > TOMOYO does want to check what device/filesystem is mounted on which location. But
-> > currently TOMOYO is failing to check it due to fsopen()/fsmount()/move_mount() API.
+> > ovl_ioctl_set_flags() does a capability check using flags, but then the
+> > real ioctl double-fetches flags and uses potentially different value.
+> >
+> > The "Check the capability before cred override" comment misleading: user
+> > can skip this check by presenting benign flags first and then overwriting
+> > them to non-benign flags.
+> >
+> > Just remove the cred override for now, hoping this doesn't cause a
+> > regression.
+> >
+> > The proper solution is to create a new setxflags i_op (patches are in the
+> > works).
+> >
+> > Xfstests don't show a regression.
+> >
+> > Reported-by: Dmitry Vyukov <dvyukov@google.com>
+> > Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+>
+> Looks reasonable
+>
+> Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+>
+> > ---
+> >  fs/overlayfs/file.c | 75 ++-------------------------------------------
+> >  1 file changed, 3 insertions(+), 72 deletions(-)
+> >
+> > diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+> > index efccb7c1f9bc..3cd1590f2030 100644
+> > --- a/fs/overlayfs/file.c
+> > +++ b/fs/overlayfs/file.c
+> > @@ -541,46 +541,26 @@ static long ovl_real_ioctl(struct file *file, unsigned int cmd,
+> >                            unsigned long arg)
+> >  {
+> >         struct fd real;
+> > -       const struct cred *old_cred;
+> >         long ret;
+> >
+> >         ret = ovl_real_fdget(file, &real);
+> >         if (ret)
+> >                 return ret;
+> >
+> > -       old_cred = ovl_override_creds(file_inode(file)->i_sb);
+> >         ret = security_file_ioctl(real.file, cmd, arg);
+> >         if (!ret)
+> >                 ret = vfs_ioctl(real.file, cmd, arg);
+> > -       revert_creds(old_cred);
+> >
+> >         fdput(real);
+> >
+> >         return ret;
+> >  }
 > >
 >
-> Regardless of TOMOYO's approach I would say that overlays should call the
-> security_path_*() hooks, making it possible for an LSM to do something based off of
-> them when needed.
 >
-> The current state of private mounts with regard to path based mediation is broken.
-> I just haven't had time to try and come up with an acceptable fix for it. overlayfs
-> is actually broken under apparmor mediation, and accesses to the lower layer end up
-> getting denied but there is no way to properly allow them. So policy that hits this
-> needs a flag set that allows for it in a very hacky way (its on the list of things
-> to fix).
->
-> Path based mediation has to carefully control mounts otherwise policy can be
-> circumvented as Miklos rightly points out. Ideally path based LSM wouldn't allow
-> you to do the simple bind mount inside a private mount namespace (at least not
-> unless policy allowed for it). AppArmor does mediate the mount hooks and bind
-> mounts in a private mount namespace (if they go through the LSM mount hooks) will
-> be denied. Again the problem is how to allow them, and this is broken.
+> I wonder if we shouldn't leave a comment behind to explain
+> that no override is intentional.
 
-Okay, so what does that mean for overlayfs?
+Comment added.
 
-AA can deny the overlay mount just as well as the bind mount, and it
-can allow it just as well as the bind mount.  Policy could be the
-same.
+> I also wonder if "Permission model" sections shouldn't be saying
+> something about ioctl() (current task checks only)? or we just treat
+> this is a breakage of the permission model that needs to be fixed?
 
-Also all the security_path_ hooks will still get called for each
-access on overlayfs itself.  They won't be called for the accesses
-which overlayfs does on underlying layers, but is that needed?
+This is a breakage of the permission model.  But I don't think this is
+a serious breakage, or one that actually matters.
 
-Overlay could call those hooks itself (since the vfs_ helpers don't)
-but the big question is whether that makes any sense.  AFAICS it might
-make sense, but only if AA would correctly handle bind mounts, and
-especially detached bind mounts (which is what overlayfs technically
-uses).
+Not sure which is better: adding exceptions to the model or applying
+the model in situations where it's unnecessary.  I'd rather go with
+the latter, but clearly in this case that was the wrong decision.
 
 Thanks,
 Miklos
-
-Tja
