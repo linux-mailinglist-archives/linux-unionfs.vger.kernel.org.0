@@ -2,45 +2,48 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01BBA2E6A72
-	for <lists+linux-unionfs@lfdr.de>; Mon, 28 Dec 2020 20:26:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15CEA2E6C14
+	for <lists+linux-unionfs@lfdr.de>; Tue, 29 Dec 2020 00:17:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728440AbgL1T0g (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 28 Dec 2020 14:26:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52100 "EHLO
+        id S1730333AbgL1Wzp (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 28 Dec 2020 17:55:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728210AbgL1T0f (ORCPT
+        with ESMTP id S1729305AbgL1Ti3 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 28 Dec 2020 14:26:35 -0500
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BEADC061793
-        for <linux-unionfs@vger.kernel.org>; Mon, 28 Dec 2020 11:25:55 -0800 (PST)
-Received: by mail-io1-xd31.google.com with SMTP id o6so10231500iob.10
-        for <linux-unionfs@vger.kernel.org>; Mon, 28 Dec 2020 11:25:55 -0800 (PST)
+        Mon, 28 Dec 2020 14:38:29 -0500
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38003C061793;
+        Mon, 28 Dec 2020 11:37:49 -0800 (PST)
+Received: by mail-io1-xd35.google.com with SMTP id m23so10331895ioy.2;
+        Mon, 28 Dec 2020 11:37:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sargun.me; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=/nOHULSFy60FT+2em7J7OYQMxQyHIY7jUtPb874hlfY=;
-        b=X44sptDyBjDo7Fmfh69zd2cXOO3bKdRIJm8eh0l8IIcytCkAv80h2Gz0xw56kaQVbG
-         3qB4LlWGBBDdk2vj+xhlj/qjSLyNi6ZZsWrh9bp1+qXoh5vYWZYmtrSYe01KB9X64N6g
-         VM63QPWOHcxIfrnutXwU4sUo1dNjYZYjlCuI4=
+        bh=dCBCEsht9qkuf5Ona8kNwyBV6hGMdb7gZ2iBC9FCRP4=;
+        b=Q9TFyFiU7kqB2e88OvbB+lyrxcqI/TwitqgP1IRr2q0KyCnDwRUvNMmbcq/LEBjqsW
+         /Y5dx1Q06XyUqXGZjLbFw2iHPeeK93uA0ylkM67TpDI/HIAWTNTqNG96uzh3CGn1me3X
+         8zzi6Q0LFo7dkNPzNvt6pYi5Qx/LnklEoUg2xKmSZZNriamx9QpU3wdtxg1j8Cxs4NW4
+         BCuMNLC0Rxwu1nF6lfYzNDzXViws/ObGDaJxXzSu5REzpnhHnHWqYHLqXRKBqfJOr5vp
+         b8n63vg6pkw+JKr7g8q6DfJSo56I61rHrZsimKFOIj3SK+4VwRE7gz57NoLAFiAFPl1z
+         XlAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=/nOHULSFy60FT+2em7J7OYQMxQyHIY7jUtPb874hlfY=;
-        b=igwHo3upKoxL4vHNLmpYxDlnwKDsr48na0wSTI7Vgc1IWtSLaTmncdeMwUpklhfoeQ
-         EZKohb/6RcZCXglbSVrbWAHvm+dHfew9qELG90jsf1idFlGcO5IraqUrgq71CfylVyRJ
-         M0FmSI1lBQTmCTKiXCvPaFhmCRtPexC1Nz8ezws6iCi0brN9ENSm2EhOaVJCd+a9pVN1
-         /sKO5HOdKUPwTDCus/Y77Vgrv++WWkuuIqw4OuShTPe8l+5NDnwSvv6oi1qcDnCVQbd5
-         t87XiZBz1SfTfzaM3LiIGvZ+2qAV+i/icmmRGukaJTy1d3pbZuKxmEkk3KXy/mGylfTh
-         /rJg==
-X-Gm-Message-State: AOAM532cazXoZ1NIX3XXf5yMl/Sgf+ZwqdrKxlxBdX5DcTSmwTB1zJSw
-        wnAnGymVh+k2HmwSH/J2HtnLaAqzpvYitYrUlhrC7Q==
-X-Google-Smtp-Source: ABdhPJxSDFz9qtx2zDzz0V4rwDXS3Bqf+8r+uF6knARBRLYg2CSyYUclaw5Kvp2mKllpYfrz4WigvFxj3FEwByAFghE=
-X-Received: by 2002:a6b:e704:: with SMTP id b4mr14476477ioh.114.1609183554526;
- Mon, 28 Dec 2020 11:25:54 -0800 (PST)
+        bh=dCBCEsht9qkuf5Ona8kNwyBV6hGMdb7gZ2iBC9FCRP4=;
+        b=Zl5CjcWqttiletmGIAXFJRwHyUG4CSun7387arNXuxgL6mPb8Jq0kQ89ZZKm/tS4rl
+         KWMA8+4u3kPL7YMxj2TZh36R0f0YwXq2gGfMKA7he1hYKLUgGUy5dIAc98CR8L4nXiAd
+         nmXBP9ONp8yBpJa3BLINPMlzR4Z8ebgh66bMxlAsaEcjcHEHGjPk2m8EnYwDYKrRzsOM
+         9lFWF5pOpyru858eyRQBA7lw50eilnuDYORRK/04QbPIpPWQkOalxD9GGc9KWxvz4OPB
+         7D4YF+KczH+Ekcgar1ufNMDqHUd3wjk96njekm/HkEliep7mFVbxSUNDtG053tfI7qxh
+         Lr8A==
+X-Gm-Message-State: AOAM530dnL/SkEXkMrr4wPdvjr3awNy2vEE/mbX1iMMypKBNSKTi+HWb
+        NybL2QSIqEmRhIizDYXiLh88QYvW/u3Wy9httTc=
+X-Google-Smtp-Source: ABdhPJw7C7qxRijlGNpz54cxtrCtrh8jFk9tDMaZzuvDrGOoZYY3dhbizc2BsSDNyomhfLcDoRpzH8Ul4lCQrIfgFfo=
+X-Received: by 2002:a5e:de08:: with SMTP id e8mr37384460iok.203.1609184268515;
+ Mon, 28 Dec 2020 11:37:48 -0800 (PST)
 MIME-Version: 1.0
 References: <20201223182026.GA9935@ircssh-2.c.rugged-nimbus-611.internal>
  <20201223185044.GQ874@casper.infradead.org> <20201223192940.GA11012@ircssh-2.c.rugged-nimbus-611.internal>
@@ -50,13 +53,12 @@ References: <20201223182026.GA9935@ircssh-2.c.rugged-nimbus-611.internal>
  <1334bba9cefa81f80005f8416680afb29044379c.camel@kernel.org>
  <20201228155618.GA6211@casper.infradead.org> <5bc11eb2e02893e7976f89a888221c902c11a2b4.camel@kernel.org>
 In-Reply-To: <5bc11eb2e02893e7976f89a888221c902c11a2b4.camel@kernel.org>
-From:   Sargun Dhillon <sargun@sargun.me>
-Date:   Mon, 28 Dec 2020 11:25:18 -0800
-Message-ID: <CAMp4zn92-WLFkDPVCUX=e+oyHb--7thDDwFEqyvBTGm64biyDw@mail.gmail.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Mon, 28 Dec 2020 21:37:37 +0200
+Message-ID: <CAOQ4uxhFz=Uervz6sMuz=RcFUWAxyLEhBrWnjQ+U0Jj_AaU59w@mail.gmail.com>
 Subject: Re: [PATCH 3/3] overlayfs: Report writeback errors on upper
-To:     Jeff Layton <jlayton@kernel.org>
+To:     Jeff Layton <jlayton@kernel.org>, Sargun Dhillon <sargun@sargun.me>
 Cc:     Matthew Wilcox <willy@infradead.org>,
-        Amir Goldstein <amir73il@gmail.com>,
         Vivek Goyal <vgoyal@redhat.com>,
         linux-fsdevel <linux-fsdevel@vger.kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
@@ -70,7 +72,7 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Mon, Dec 28, 2020 at 9:26 AM Jeff Layton <jlayton@kernel.org> wrote:
+On Mon, Dec 28, 2020 at 7:26 PM Jeff Layton <jlayton@kernel.org> wrote:
 >
 > On Mon, 2020-12-28 at 15:56 +0000, Matthew Wilcox wrote:
 > > On Mon, Dec 28, 2020 at 08:25:50AM -0500, Jeff Layton wrote:
@@ -120,9 +122,34 @@ On Mon, Dec 28, 2020 at 9:26 AM Jeff Layton <jlayton@kernel.org> wrote:
 > aren't observable from within it. That effectively makes the results
 > non-deterministic, which is usually a bad thing in computing...
 >
-> --
-> Jeff Layton <jlayton@kernel.org>
->
 
-I agree that predictable behaviour outweighs any benefit of complexity
-cutting we might do here.
+I understand that user experience inside containers will deviate from
+non containerized use cases. I can't say that I fully understand the
+situations that deviate.
+
+Having said that, I never objected to the SEEN flag split.
+To me, the split looks architecturally correct. If not for anything else,
+then for not observing past errors inside the overlay mount.
+I think you still need to convince Matthew though.
+
+The question remains what, if anything, should be nominated for
+stable. I was trying to propose the minimal patch that fixes the
+most basic syncfs overlayfs issues. In that context, it seemed
+that the issues that SEEN flag split solves are not on the
+MUST HAVE list, but maybe I am wrong.
+
+Sargun,
+
+How about sending another version of your patch, with or without the
+SEEN flag split (up to you) but not only for both the volatile and non-
+volatile cases, following my proposal.
+
+At least we can continue debating on a concrete patch instead of
+an envisioned combination of pieces posted to the list.
+
+If you can give some examples of use cases that the patch fixes
+with and without the SEEN flag split that could be useful for the
+discussion.
+
+Thanks,
+Amir.
