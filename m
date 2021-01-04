@@ -2,249 +2,162 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D92FA2E9213
-	for <lists+linux-unionfs@lfdr.de>; Mon,  4 Jan 2021 09:43:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D34E72E9248
+	for <lists+linux-unionfs@lfdr.de>; Mon,  4 Jan 2021 10:02:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726019AbhADInK (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 4 Jan 2021 03:43:10 -0500
-Received: from relay3.mymailcheap.com ([217.182.119.157]:50201 "EHLO
-        relay3.mymailcheap.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725468AbhADInK (ORCPT
+        id S1726616AbhADJB4 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 4 Jan 2021 04:01:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36902 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726605AbhADJB4 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 4 Jan 2021 03:43:10 -0500
-X-Greylist: delayed 4360 seconds by postgrey-1.27 at vger.kernel.org; Mon, 04 Jan 2021 03:43:08 EST
-Received: from filter1.mymailcheap.com (filter1.mymailcheap.com [149.56.130.247])
-        by relay3.mymailcheap.com (Postfix) with ESMTPS id 0B2803F15F;
-        Mon,  4 Jan 2021 09:41:37 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by filter1.mymailcheap.com (Postfix) with ESMTP id 507FE2A17C;
-        Mon,  4 Jan 2021 03:41:36 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mymailcheap.com;
-        s=default; t=1609749696;
-        bh=xskrCESNWKJ1jYUXcJKelIh+ei8uMfdBFU8ovbU4Dzg=;
-        h=Date:In-Reply-To:References:Subject:To:CC:From:From;
-        b=vTkCWNfQEUuSrFkTmqNneQvBRRy+9mdyMFZeTsl0to7/qRLaBt9qAenrfqEmfEIfh
-         fs7lrcNxYUL/a5SUgVzkD6em5eB3Gw1SYrkT5jZXhJu3WpwHhiUGkpvHABCx+9dV+v
-         DrxcHj9qyWCw+82OgPgp/+KlL1+CqU4qJG9tfatg=
-X-Virus-Scanned: Debian amavisd-new at filter1.mymailcheap.com
-Received: from filter1.mymailcheap.com ([127.0.0.1])
-        by localhost (filter1.mymailcheap.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id nz7HS8e78ozM; Mon,  4 Jan 2021 03:41:35 -0500 (EST)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-        (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by filter1.mymailcheap.com (Postfix) with ESMTPS;
-        Mon,  4 Jan 2021 03:41:35 -0500 (EST)
-Received: from [213.133.102.83] (ml.mymailcheap.com [213.133.102.83])
-        by mail20.mymailcheap.com (Postfix) with ESMTP id F3EF842283;
-        Mon,  4 Jan 2021 08:41:33 +0000 (UTC)
-Authentication-Results: mail20.mymailcheap.com;
-        dkim=pass (1024-bit key; unprotected) header.d=aosc.io header.i=@aosc.io header.b="UIAQMGtL";
-        dkim-atps=neutral
-AI-Spam-Status: Not processed
-Received: from [10.172.12.132] (unknown [112.96.173.123])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail20.mymailcheap.com (Postfix) with ESMTPSA id B1F9A41F21;
-        Mon,  4 Jan 2021 08:41:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-        t=1609749685; bh=xskrCESNWKJ1jYUXcJKelIh+ei8uMfdBFU8ovbU4Dzg=;
-        h=Date:In-Reply-To:References:Subject:To:CC:From:From;
-        b=UIAQMGtL/5KbI6Joi+cCzDh7wPUCkq0BjJQNAJuaqi2o2skLIVzBHT41FERJbfwsa
-         4UzJaIyOHBOOjRuGDzJQI4F61ZN04a4wMg+yltNad92KLvBnRCEYtrVf4uM4OuZkZV
-         im/fGOLT0oPWyAaLy588vubuw+Hh9YsdRhMKgZ4I=
-Date:   Mon, 04 Jan 2021 16:36:24 +0800
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAOQ4uxifcZTeZ15jz0PqTs-tQnDDuijV_3QjQ28EayBX-=rtdA@mail.gmail.com>
-References: <20210101201230.768653-1-icenowy@aosc.io> <CAOQ4uxgNWkzVphdB7cAkwdUXagM_NsCUYDRT1f-=X1rn1-KpUQ@mail.gmail.com> <a77b2beb832d64f9f019c4505e91c7ffcbbfb61b.camel@aosc.io> <CAOQ4uxifcZTeZ15jz0PqTs-tQnDDuijV_3QjQ28EayBX-=rtdA@mail.gmail.com>
+        Mon, 4 Jan 2021 04:01:56 -0500
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E52FC061574
+        for <linux-unionfs@vger.kernel.org>; Mon,  4 Jan 2021 01:01:16 -0800 (PST)
+Received: by mail-io1-xd31.google.com with SMTP id z5so24348443iob.11
+        for <linux-unionfs@vger.kernel.org>; Mon, 04 Jan 2021 01:01:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=Uvq88wtPwG6uKik5pCRJAlJzcqo0Xjc4ACJxkzN3HcY=;
+        b=pYTDYjtZLbwaap28DDFw7G8VNCuyM4J3d7TpInq7U5PDxFa26Z4MM+gnzKcrPLaWEL
+         JGp6TwSvFUbxI2uqV11XOmy5aUBnwD7rq4aer5U3eqVtNvpDkFaJLdbwPDM2wFiyF3H8
+         O/VlBmuJEmWkBAIkoBCeomgYrOTLBjBlxjW4AnA14Q8QSsfoWrKIjmcjTZVZale1Kv2v
+         yXSYgSKU7qBDe4XGG8iNChouqzYlbjNFcKcMwO0Iqjo4ZBQChH5qBhotOsxsUtI8O0kr
+         EOQ8cToC/VSQPvniPRAzFpHdVYCAOq/W4k9sQ4N9fNB05AY2nEN933upp4RX5I36Nq+P
+         rJhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Uvq88wtPwG6uKik5pCRJAlJzcqo0Xjc4ACJxkzN3HcY=;
+        b=Z/jvliJvDQ+nSOKJ7ipClSu4X4Ll6NEbM7rDoV3VU1PMvxkxHSAeurCvGSEcucuiCm
+         WQr1XtZoFcWr1w+MSHxrRy3oG0M8pg+XAgNK/gf+jN7Z7RCHAh0XQdmU2EmtmcUrvz/9
+         0aViwMZjrhIj2AVu9KbfDGDaykZWXe3w/wBgRE0MJ6rm5mN8u2cC91uHxtxMooBdCaB4
+         HR/7xAw1ZJxwB64108rKJR6ZpoFEQI3ZVm+3a7R2O6zCCBwyLUBycczxOxGC1Qb6klNk
+         BRZxwSouGq14Czn7fCGftksCjV3krwgYacHZVnVCQoviuldH8eH1MZ5wWAcIwAwetVVy
+         lyoQ==
+X-Gm-Message-State: AOAM531j+sodR9BuTmYwVOInp/vrblvhvDnE0GE7mTJjbqwQzZyMswEl
+        YipgA9KWaac8fRcK1im5Z7ZrgvS+BwE4EcOaAkfDHijBSPM=
+X-Google-Smtp-Source: ABdhPJwGCrtw3obVhE50ueZP9fblAxKMqdJZ1k4Ih9q7Ofnt6E4jfU37R97FWrVTn+Ew6jk3Bg8MqEMHadiGla6A3LE=
+X-Received: by 2002:a02:a60a:: with SMTP id c10mr60296996jam.123.1609750875712;
+ Mon, 04 Jan 2021 01:01:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] ovl: use a dedicated semaphore for dir upperfile caching
-To:     Amir Goldstein <amir73il@gmail.com>
-CC:     Miklos Szeredi <miklos@szeredi.hu>,
-        Xiao Yang <yangx.jy@cn.fujitsu.com>,
+References: <20201226104618.239739-1-cgxu519@mykernel.net> <CAOQ4uxhn1q4ZcW+GgNxLwcSwhQxrQJibPhX8xO2YsbS1et6YiQ@mail.gmail.com>
+ <176cc2dcd40.107ad48cf41153.6757897875754439646@mykernel.net>
+In-Reply-To: <176cc2dcd40.107ad48cf41153.6757897875754439646@mykernel.net>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Mon, 4 Jan 2021 11:01:04 +0200
+Message-ID: <CAOQ4uxh8DbdpDD6KUuEHaxHc3fGWgeSGdb8hXF45KKibyOf0Vw@mail.gmail.com>
+Subject: Re: [RFC PATCH] ovl: keep some file attrubutions after copy-up
+To:     Chengguang Xu <cgxu519@mykernel.net>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
         overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-From:   Icenowy Zheng <icenowy@aosc.io>
-Message-ID: <FEFABAF4-367B-4F18-B088-E2C0F673FFFB@aosc.io>
-X-Spamd-Result: default: False [-0.10 / 10.00];
-         RCVD_VIA_SMTP_AUTH(0.00)[];
-         ARC_NA(0.00)[];
-         R_DKIM_ALLOW(0.00)[aosc.io:s=default];
-         RECEIVED_SPAMHAUS_PBL(0.00)[112.96.173.123:received];
-         FROM_HAS_DN(0.00)[];
-         FREEMAIL_ENVRCPT(0.00)[gmail.com];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         DMARC_NA(0.00)[aosc.io];
-         R_SPF_SOFTFAIL(0.00)[~all];
-         RCPT_COUNT_FIVE(0.00)[6];
-         ML_SERVERS(-3.10)[213.133.102.83];
-         TO_DN_ALL(0.00)[];
-         DKIM_TRACE(0.00)[aosc.io:+];
-         FREEMAIL_TO(0.00)[gmail.com];
-         RCVD_NO_TLS_LAST(0.10)[];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         ASN(0.00)[asn:24940, ipnet:213.133.96.0/19, country:DE];
-         RCVD_COUNT_TWO(0.00)[2];
-         MID_RHS_MATCH_FROM(0.00)[];
-         HFILTER_HELO_BAREIP(3.00)[213.133.102.83,1]
-X-Rspamd-Queue-Id: F3EF842283
-X-Rspamd-Server: mail20.mymailcheap.com
+        Vivek Goyal <vgoyal@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-
-
-=E4=BA=8E 2021=E5=B9=B41=E6=9C=884=E6=97=A5 GMT+08:00 =E4=B8=8B=E5=8D=884:=
-35:20, Amir Goldstein <amir73il@gmail=2Ecom> =E5=86=99=E5=88=B0:
->On Mon, Jan 4, 2021 at 9:28 AM Icenowy Zheng <icenowy@aosc=2Eio> wrote:
->>
->> =E5=9C=A8 2021-01-03=E6=98=9F=E6=9C=9F=E6=97=A5=E7=9A=84 16:10 +0200=EF=
-=BC=8CAmir Goldstein=E5=86=99=E9=81=93=EF=BC=9A
->> > On Fri, Jan 1, 2021 at 10:12 PM Icenowy Zheng <icenowy@aosc=2Eio>
->> > wrote:
->> > >
->> > > The function ovl_dir_real_file() currently uses the semaphore of
->> > > the
->> > > inode to synchronize write to the upperfile cache field=2E
->> > >
->> > > However, this function will get called by ovl_ioctl_set_flags(),
->> > > which
->> > > utilizes the inode semaphore too=2E In this case
->ovl_dir_real_file()
->> > > will
->> > > try to claim a lock that is owned by a function in its call
->stack,
->> > > which
->> > > won't get released before ovl_dir_real_file() returns=2E
->> >
->> > oops=2E I wondered why I didn't see any warnings on this from
->lockdep=2E
->> > Ah! because the xfstest that exercises ovl_ioctl_set_flags() on
->> > directory,
->> > generic/079, starts with an already upper dir=2E
->> >
->> > And the xfstest that checks chattr+i on lower/upper files,
->> > overlay/040,
->> > does not check chattr on dirs (ioctl on overlay dirs wasn't
->supported
->> > at
->> > the time the test was written)=2E
->> >
->> > Would you be able to create a variant of test overlay/040 that also
->> > tests
->> > chattr +i on lower/upper dirs to test your patch and confirm that
->the
->> > test
->> > fails on master with the appropriate Kconfig debug options=2E
->>
->> https://gist=2Egithub=2Ecom/Icenowy/c7d8decb6812d6e5064d143c57281ad3
->>
->> Here's a test that would break on master (I used linux-next/master
->for
->> test)=2E
+On Mon, Jan 4, 2021 at 8:55 AM Chengguang Xu <cgxu519@mykernel.net> wrote:
 >
->Thanks=2E
->I am working on another test to improve overlay/030 that may also
->cover this bug, so maybe no need for both tests=2E I'll let you know when
->I'm done=2E
->If you like, I can post your test for you with your Signed-of-by if I
->think
->it is also needed=2E
+>  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=B8=80, 2021-01-04 13:04:56 Amir Gol=
+dstein <amir73il@gmail.com> =E6=92=B0=E5=86=99 ----
+>  > On Sat, Dec 26, 2020 at 12:48 PM Chengguang Xu <cgxu519@mykernel.net> =
+wrote:
+>  > >
+>  > > Currently after copy-up, upper file will lose most of file
+>  > > attributions except copy-up triggered by setting fsflags.
+>  > > Because ioctl operation of underlying file systems does not
+>  > > expect calling from kernel component, it seems hard to
+>  > > copy fsflags during copy-up.
+>  > >
+>  > > Overlayfs keeps limited attributions(append-only, etc) in it's
+>  > > inode flags after successfully updating attributions. so ater
+>  > > copy-up, lsattr(1) does not show correct result but overlayfs
+>  > > can still prohibit ramdom write for those files which originally
+>  > > have append-only attribution. However, recently I found this
+>  > > protection can be easily broken in below operations.
+>  > >
+>  > > 1, Set append attribution to lower file.
+>  > > 2, Mount overlayfs.
+>  > > 3, Trigger copy-up by data append.
+>  > > 4, Set noatime attributtion to the file.
+>  > > 5, The file is random writable.
+>  > >
+>  > > This patch tries to keep some file attributions after copy-up
+>  > > so that overlayfs keeps compatible behavior with local filesystem
+>  > > as much as possible.
+>  > >
+>  >
+>  > This approach seems quite wrong.
+>  > For one thing, mount cycle overlay or drop caches will result in loss
+>  > of append only flag after copy-up, so this is not a security fix.
+>  >
 >
->>
->> [  246=2E521880] INFO: task chattr:715 blocked for more than 122
->seconds=2E
->> [  246=2E525659]       Not tainted 5=2E11=2E0-rc1-next-20210104+ #20
->> [  246=2E528498] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
->> disables this message=2E
->> [  246=2E535076] task:chattr          state:D stack:13736 pid:  715
->ppid:
->> 529 flags:0x00000000
->> [  246=2E538923] Call Trace:
->> [  246=2E540241]  __schedule+0x2a9/0x820
->> [  246=2E541986]  schedule+0x56/0xc0
->> [  246=2E543616]  rwsem_down_write_slowpath+0x375/0x630
->> [  246=2E545565]  ovl_dir_real_file+0xc1/0x120
->> [  246=2E547512]  ovl_real_fdget+0x35/0x80
->> [  246=2E549303]  ovl_real_ioctl+0x26/0x90
->> [  246=2E551050]  ? mnt_drop_write+0x2c/0x70
->> [  246=2E553068]  ovl_ioctl_set_flags+0x93/0x110
->> [  246=2E555407]  __x64_sys_ioctl+0x7e/0xb0
->> [  246=2E557175]  do_syscall_64+0x33/0x40
->> [  246=2E558869]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
->> [  246=2E561057] RIP: 0033:0x7fe4a3830b67
->> [  246=2E565799] RSP: 002b:00007ffe7ad504f8 EFLAGS: 00000246 ORIG_RAX:
->> 0000000000000010
->> [  246=2E569438] RAX: ffffffffffffffda RBX: 0000000000000001 RCX:
->> 00007fe4a3830b67
->> [  246=2E572061] RDX: 00007ffe7ad5050c RSI: 0000000040086602 RDI:
->> 0000000000000003
->> [  246=2E575509] RBP: 0000000000000003 R08: 0000000000000001 R09:
->> 0000000000000000
->> [  246=2E578932] R10: 0000000000000000 R11: 0000000000000246 R12:
->> 0000000000000010
->> [  246=2E581014] R13: 00007ffe7ad50810 R14: 0000000000000002 R15:
->> 0000000000000001
->> [  246=2E582818]
->> [  246=2E582818] Showing all locks held in the system:
->> [  246=2E584741] 1 lock held by khungtaskd/18:
->> [  246=2E586085]  #0: ffffffff9e951540 (rcu_read_lock){=2E=2E=2E=2E}-{1=
-:2}, at:
->> debug_show_all_locks+0x15/0x100
->> [  246=2E589775] 3 locks held by chattr/715:
->> [  246=2E591364]  #0: ffff96a74b92c450 (sb_writers#11){=2E=2E=2E=2E}-{0=
-:0}, at:
->> ovl_ioctl_set_flags+0x2f/0x110
->> [  246=2E597182]  #1: ffff96a7489c3500
->> (&ovl_i_mutex_dir_key[depth]){=2E=2E=2E=2E}-{3:3}, at:
->> ovl_ioctl_set_flags+0x54/0x110
->> [  246=2E601325]  #2: ffff96a7489c3500
->> (&ovl_i_mutex_dir_key[depth]){=2E=2E=2E=2E}-{3:3}, at:
->> ovl_dir_real_file+0xc1/0x120
->>
->> >
->> > >
->> > > Define a dedicated semaphore for the upperfile cache, so that the
->> > > deadlock won't happen=2E
->> > >
->> > > Fixes: 61536bed2149 ("ovl: support [S|G]ETFLAGS and
->FS[S|G]ETXATTR
->> > > ioctls for directories")
->> > > Cc: stable@vger=2Ekernel=2Eorg # v5=2E10
->> > > Signed-off-by: Icenowy Zheng <icenowy@aosc=2Eio>
->> > > ---
->> > >  fs/overlayfs/readdir=2Ec | 6 ++++--
->> > >  1 file changed, 4 insertions(+), 2 deletions(-)
->> > >
->> > > diff --git a/fs/overlayfs/readdir=2Ec b/fs/overlayfs/readdir=2Ec
->> > > index 01620ebae1bd=2E=2Ef10701aabb71 100644
->> > > --- a/fs/overlayfs/readdir=2Ec
->> > > +++ b/fs/overlayfs/readdir=2Ec
->> > > @@ -56,6 +56,7 @@ struct ovl_dir_file {
->> > >         struct list_head *cursor;
->> > >         struct file *realfile;
->> > >         struct file *upperfile;
->> > > +       struct semaphore upperfile_sem;
->> >
->> > mutex please
->> >
+> You are right, I overlooked the case of dropping cache.
 >
->You missed this comment=2E
->semaphore is discouraged as a locking primitive=2E
->Please use struct mutex=2E
+>  > Second, Miklos has already proposed a much more profound change
+>  > to address this and similar issues [1] and he has already made some
+>  > changes to ioctl handler to master doesn't have ovl_iflags_to_fsflags(=
+).
+>  >
+>  > [1] https://lore.kernel.org/linux-fsdevel/20201123141207.GC327006@miu.=
+piliscsaba.redhat.com/
+>  >
+>  > One more thing.
+>  > It seems like ovl_copyflags() in ovl_inode_init() would have been bett=
+er
+>  > to copy from ovl_inode_realdata() inode instead of ovl_inode_real().
+>  > This way, copy up still loses the append-only flag, but metacopy up
+>  > does not. So at least for the common use case of containers that
+>  > chown -R won't cause losing all the file flags.
+>
+> IIUC, the flags will still keep in overlayfs' inode after copy up until
+> the inode cleaned by dropping cache. So I think your suggestion will be
+> helpful for the case of meta-copyup & dropping cache.
 
-Okay, sorry=2E
-
-I will check it out=2E
+Yes, for the use case of chowning all files sure cannot rely on caches
+and I believe those containers are also used as persistent containers
+that can be mounted again later after initial ownership fix.
 
 >
->Thanks,
->Amir=2E
+> Hi Miklos
+>
+> Is it worth to change like above?
+>
+
+I guess that depends what are the use cases that benefit.
+After all it is not a security fix it just increases the amount of
+use cases that preserve the append-only flag.
+
+I *think* it could fix a lot of cases like:
+chmod foo; drop_caches; touch foo # should fail
+mv foo bar; drop_caches; touch bar # should fail
+
+and in order to lose the append-only flag, users will need to
+first open with O_APPEND, set noatime flag or some unusual
+operations that do not happen by mistake as often as chmod,chown,rename.
+
+>
+>  >
+>  > ovl_ioctl_set_flags() triggers data copy up, so that will break the li=
+nk
+>  > to lower flags anyway.
+>
+> I think though ovl_ioctl_set_flags() triggers data copy up but the flags
+> will be set correctly to upper file, because chattr(1) will get the flags
+> first and set the whole flags(include original flags) to upper file.
+>
+
+Sure, unless the user is not privileged to set flags, but copy up will stil=
+l
+happen. But what I meant is if user changes the flags, data copy up
+happens and ovl_copyflags() after drop caches will no longer copy the
+lower flags.
+
+Thanks,
+Amir.
