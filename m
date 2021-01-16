@@ -2,127 +2,122 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D78CC2F3937
-	for <lists+linux-unionfs@lfdr.de>; Tue, 12 Jan 2021 19:53:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC47D2F8DE3
+	for <lists+linux-unionfs@lfdr.de>; Sat, 16 Jan 2021 18:12:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726636AbhALSu6 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 12 Jan 2021 13:50:58 -0500
-Received: from out03.mta.xmission.com ([166.70.13.233]:45652 "EHLO
-        out03.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726352AbhALSu6 (ORCPT
+        id S1728589AbhAPRLh (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 16 Jan 2021 12:11:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39198 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728563AbhAPRLE (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 12 Jan 2021 13:50:58 -0500
-Received: from in02.mta.xmission.com ([166.70.13.52])
-        by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1kzOkC-009ArJ-Ab; Tue, 12 Jan 2021 11:50:16 -0700
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
-        by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1kzOkB-005FSx-Em; Tue, 12 Jan 2021 11:50:15 -0700
-From:   ebiederm@xmission.com (Eric W. Biederman)
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Miklos Szeredi <mszeredi@redhat.com>,
-        linux-fsdevel@vger.kernel.org,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        LSM <linux-security-module@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, "Serge E. Hallyn" <serge@hallyn.com>,
-        <linux-api@vger.kernel.org>
-References: <20201207163255.564116-1-mszeredi@redhat.com>
-        <20201207163255.564116-2-mszeredi@redhat.com>
-        <87czyoimqz.fsf@x220.int.ebiederm.org>
-        <20210111134916.GC1236412@miu.piliscsaba.redhat.com>
-        <874kjnm2p2.fsf@x220.int.ebiederm.org>
-        <CAJfpegtKMwTZwENX7hrVGUVRWgNTf4Tr_bRxYrPpPAH_D2fH-Q@mail.gmail.com>
-        <87bldugfxx.fsf@x220.int.ebiederm.org>
-Date:   Tue, 12 Jan 2021 12:49:12 -0600
-In-Reply-To: <87bldugfxx.fsf@x220.int.ebiederm.org> (Eric W. Biederman's
-        message of "Tue, 12 Jan 2021 12:36:58 -0600")
-Message-ID: <87blduf0t3.fsf@x220.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Sat, 16 Jan 2021 12:11:04 -0500
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AD7BC061381;
+        Sat, 16 Jan 2021 06:51:53 -0800 (PST)
+Received: by mail-io1-xd2b.google.com with SMTP id q2so22337687iow.13;
+        Sat, 16 Jan 2021 06:51:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=AOtIW1TpMWQT7D+7SJG3WQ68jlg029fmkeplzOb6Z1U=;
+        b=TMqHvgUKSFWM3EeQmw5WtzEPnvmJzzEs7K1ZaVClkUWLaE4dMlChMuQ5/REpQlYKDn
+         WkoVJ0LjYTxDYZnlf7n9pUMa3A96+OD3g12vWNkjQ/QaD566PIY5PuHvSt1rk/LPwNEf
+         U2AF7FoRzYrctcPt/0cVhBvx6Dzu/k1yyt88cmEPIhQ0VPi1JyCdB7wHAjdKNkxaK4cL
+         N/O+M4fv1z7Ec+sz7R1BHIxiJgkPJfkD44RHHArkhJJX59L2DHwAcuBRoogcoAsWn3sy
+         KpIhAL3mcj5iojqcghkD1srd+cL++4neKkPA44a3SSk7fNvzFxzWtrTJKG8aC8UDpObF
+         cpsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=AOtIW1TpMWQT7D+7SJG3WQ68jlg029fmkeplzOb6Z1U=;
+        b=ob6n299ujOlJBxXYTnzNuD6SOa9wVTZuj54NdOwUAe9Mnfu3CJuINEBvHvMTurp1+1
+         8siMb6MHbABrwGMaFdVZq/jylxlWxfypr9KqN3NKVUDSC9uWS0E9y69aC2YfYsoUtA7C
+         AgZcZHOa5qrpZq3t53+6uHOmy0u6Wu4Zsp4mup2DB6XC9l5GRxc8Vv9GGMozKuQAFqqS
+         vIr3dM+gWkseLQdZvCojAEf6hhFD6wFaPHb6JpP2g12xfFumaF3pfF6kqD4Z31INE+7P
+         cQe25eWIAiskEz/cQPTvJ/LNpDWdugQEKKq4bL7yqrNiz7GQOS3DBFxHEFlBEG5tODW7
+         WNYw==
+X-Gm-Message-State: AOAM530IRYiuT/ETM2buk+NZxuPuIwPVvH3vdrjGtCOLDBqljTHla5e3
+        IbqCxG6TVE7KYoyWYMm9maEqqw9KX+u2TQgwKYiA6jAqpSI=
+X-Google-Smtp-Source: ABdhPJzaUirliDZgIg617gZaMgZM5ngpgtwnL2XN8HR32Fqw5IG/UKujZXF3T1Mvsfj3IAGWmDyJBwghcoho4J7aBhU=
+X-Received: by 2002:a05:6e02:14ce:: with SMTP id o14mr15305599ilk.9.1610808712749;
+ Sat, 16 Jan 2021 06:51:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1kzOkB-005FSx-Em;;;mid=<87blduf0t3.fsf@x220.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
-X-XM-AID: U2FsdGVkX19ju0OPFy9uih7pH63u6KWksVfbPTCfYQ0=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa02.xmission.com
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=8.0 tests=ALL_TRUSTED,BAYES_50,
-        DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
-        T_TooManySym_02,T_TooManySym_03,XMSubLong autolearn=disabled
-        version=3.4.2
-X-Spam-Virus: No
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.7 XMSubLong Long Subject
-        *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
-        * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
-        *      [sa02 1397; Body=1 Fuz1=1 Fuz2=1]
-        *  0.0 T_TooManySym_01 4+ unique symbols in subject
-        *  0.0 T_TooManySym_03 6+ unique symbols in subject
-        *  0.0 T_TooManySym_02 5+ unique symbols in subject
-X-Spam-DCC: XMission; sa02 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ;Miklos Szeredi <miklos@szeredi.hu>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 317 ms - load_scoreonly_sql: 0.03 (0.0%),
-        signal_user_changed: 3.9 (1.2%), b_tie_ro: 2.8 (0.9%), parse: 0.64
-        (0.2%), extract_message_metadata: 8 (2.4%), get_uri_detail_list: 0.86
-        (0.3%), tests_pri_-1000: 11 (3.3%), tests_pri_-950: 1.05 (0.3%),
-        tests_pri_-900: 0.86 (0.3%), tests_pri_-90: 101 (31.9%), check_bayes:
-        100 (31.5%), b_tokenize: 4.3 (1.4%), b_tok_get_all: 5 (1.7%),
-        b_comp_prob: 1.31 (0.4%), b_tok_touch_all: 86 (27.2%), b_finish: 0.60
-        (0.2%), tests_pri_0: 181 (57.1%), check_dkim_signature: 0.38 (0.1%),
-        check_dkim_adsp: 2.1 (0.7%), poll_dns_idle: 0.77 (0.2%), tests_pri_10:
-        1.70 (0.5%), tests_pri_500: 6 (2.0%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH v2 01/10] vfs: move cap_convert_nscap() call into vfs_setxattr()
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
+References: <20210105003611.194511-1-icenowy@aosc.io> <CAOQ4uxiFoQhrMbs91ZUNXqbJUXb5XRBgRrcq1rmChLKQGKg5xg@mail.gmail.com>
+In-Reply-To: <CAOQ4uxiFoQhrMbs91ZUNXqbJUXb5XRBgRrcq1rmChLKQGKg5xg@mail.gmail.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Sat, 16 Jan 2021 16:51:41 +0200
+Message-ID: <CAOQ4uxj7CkB=0X3qnEKFipZyy4v7BypRZBvTKM12XFBF=ARKiw@mail.gmail.com>
+Subject: Re: [PATCH v3] ovl: use a dedicated semaphore for dir upperfile caching
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     Xiao Yang <yangx.jy@cn.fujitsu.com>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Icenowy Zheng <icenowy@aosc.io>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-ebiederm@xmission.com (Eric W. Biederman) writes:
-
-> So there is the basic question do we want to read the raw bytes on disk
-> or do we want to return something meaningful to the reader.  As the
-> existing tools use the xattr interface to set/clear fscaps returning
-> data to user space rather than raw bytes seems the perfered interface.
+On Tue, Jan 5, 2021 at 8:47 AM Amir Goldstein <amir73il@gmail.com> wrote:
 >
-> My ideal semantics would be:
+> On Tue, Jan 5, 2021 at 2:36 AM Icenowy Zheng <icenowy@aosc.io> wrote:
+> >
+> > The function ovl_dir_real_file() currently uses the semaphore of the
+> > inode to synchronize write to the upperfile cache field.
 >
-> - If current_user_ns() == sb->s_user_ns return the raw data.
+> Although the inode lock is a rw_sem it is referred to as the "inode lock"
+> and you also left semaphore in the commit subject.
+> No need to re-post. This can be fixed on commit.
 >
->   I don't know how to implement this first scenario while permitting
->   stacked filesystems.
-
-    After a little more thought I do.
-
-    In getxattr if the get_cap method is not implemented by the
-    filesystem if current_user_ns() == sb->s_user_ns simply treat it as
-    an ordinary xattr read/write.
-
-    Otherwise call vfs_get_cap and translate the result as described
-    below.
-    
-    The key point of this is it allows for seeing what is actually on
-    disk (when it is not confusing).
-
-> - Calculate the cpu_vfs_cap_data as get_vfs_caps_from_disk does.
->   That gives the meaning of the xattr.
+> >
+> > However, this function will get called by ovl_ioctl_set_flags(), which
+> > utilizes the inode semaphore too. In this case ovl_dir_real_file() will
+> > try to claim a lock that is owned by a function in its call stack, which
+> > won't get released before ovl_dir_real_file() returns.
+> >
+> > Define a dedicated semaphore for the upperfile cache, so that the
+> > deadlock won't happen.
+> >
+> > Fixes: 61536bed2149 ("ovl: support [S|G]ETFLAGS and FS[S|G]ETXATTR ioctls for directories")
+> > Cc: stable@vger.kernel.org # v5.10
+> > Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+> > ---
+> > Changes in v2:
+> > - Fixed missing replacement in error handling path.
+> > Changes in v3:
+> > - Use mutex instead of semaphore.
+> >
+> >  fs/overlayfs/readdir.c | 10 +++++-----
+> >  1 file changed, 5 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
+> > index 01620ebae1bd..3980f9982f34 100644
+> > --- a/fs/overlayfs/readdir.c
+> > +++ b/fs/overlayfs/readdir.c
+> > @@ -56,6 +56,7 @@ struct ovl_dir_file {
+> >         struct list_head *cursor;
+> >         struct file *realfile;
+> >         struct file *upperfile;
+> > +       struct mutex upperfile_mutex;
 >
-> - If "from_kuid(current_userns(), krootid) == 0" return a v2 cap.
+> That's a very specific name.
+> This mutex protects members of struct ovl_dir_file, which could evolve
+> into struct ovl_file one day (because no reason to cache only dir upper file),
+> so I would go with a more generic name, but let's leave it to Miklos to decide.
 >
-> - If "rootid_owns_currentns()" return a v2 cap.
+> He could have a different idea altogether for fixing this bug.
 >
-> - Else return an error.  Probably a permission error.
->
->   The fscap simply can not make sense to the user if the rootid does not
->   map.  Return a v2 cap would imply that the caps are present on the
->   executable (in the current context) which they are not.
 
+Miklos,
 
-Eric
+Please fast track this or an alternative fix.
+It fixes an easy to reproduce deadlock introduced in 5.10.
+Icenowy Zheng has written a simple xfstest reproducer, but it wasn't
+posted - best to avoid hanging tester's machines until a fix is merged...
+
+Thanks,
+Amir.
