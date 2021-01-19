@@ -2,54 +2,55 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B27052FBC69
-	for <lists+linux-unionfs@lfdr.de>; Tue, 19 Jan 2021 17:28:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E8A2FBC53
+	for <lists+linux-unionfs@lfdr.de>; Tue, 19 Jan 2021 17:26:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729407AbhASQ2T (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 19 Jan 2021 11:28:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:21044 "EHLO
+        id S1729955AbhASQX4 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 19 Jan 2021 11:23:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:46222 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731449AbhASQXl (ORCPT
+        by vger.kernel.org with ESMTP id S1731473AbhASQXl (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
         Tue, 19 Jan 2021 11:23:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611073331;
+        s=mimecast20190719; t=1611073332;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=u9Q4y96bo6R543WF3WIb9gh7PSMWrwFibDeVZ11baSM=;
-        b=aWpRDpq8kcP1M+uEdcO83pq2NqoMr96CRhRFPK7K8eXL5ETz3R2ZhBm7GqrL4kZPx8pFxi
-        uFMO8DKSqws74Yj1Yuq38JLxm10PsXYtFU7giFU000JMV+jlG8py2X7lP/3a7Jm9bmWuST
-        86+GLfbMaUdAYtxeyvdMl9F60tcsE3M=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-599-VpBjt93kP_-uFHknjfjVzA-1; Tue, 19 Jan 2021 11:22:09 -0500
-X-MC-Unique: VpBjt93kP_-uFHknjfjVzA-1
-Received: by mail-ed1-f71.google.com with SMTP id l33so9630476ede.1
-        for <linux-unionfs@vger.kernel.org>; Tue, 19 Jan 2021 08:22:09 -0800 (PST)
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=e0d34g0cQgU3pUUMcwk4mh+TGyc8uh3BJ8u4e70DhUc=;
+        b=hCjeZ8FtjvbHI8rOMKH/SyRPqv4u9E+F4P8VpZsaLSb+Ial9VkQsyZTVpF6ZppDeDsWz/4
+        Kb9o1naBZtCTA+lSZzdy2JD8eDyNS49YXWo+p0A1mhfqP6qfFweYWSJLhlvPT81JR1/LWX
+        e+yE2BV2YaAu9Q/FMY8HyUTikFU2kEU=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-554-nBC7beW7PV6_NFdGymZWIg-1; Tue, 19 Jan 2021 11:22:11 -0500
+X-MC-Unique: nBC7beW7PV6_NFdGymZWIg-1
+Received: by mail-ej1-f72.google.com with SMTP id gt18so2063094ejb.18
+        for <linux-unionfs@vger.kernel.org>; Tue, 19 Jan 2021 08:22:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=u9Q4y96bo6R543WF3WIb9gh7PSMWrwFibDeVZ11baSM=;
-        b=m7tOR/NA+qSofuAazKCyxuONLK645YNTT9sl6PWtbTXzkCPjNrPspc0Mb0HHqZ7udS
-         4lgAeXyizaVMyUKdO0OYzK1nccXnsEvOCK8NMuaAMiAtLEzdyw7SZvTEuczQ2mYHyVG2
-         yjP+1XYe73qkGKDnmknQWhuORGgswjDXtKEZJ2xL55LD9Mt1Z2FOF/s+OfEOs0FkwqcF
-         s0TCYIbvWDnSBdWZfjqTHZtmk96aUNo4OT9CS/HJy+vy6ufyiSC7mH3+yU4gwi5avKrl
-         1P9kJ39YRy19SFckxUFru22iKHmj0UDS/Q9yca3PE+yiCcjVzmVbmLVzeMSiAwOpe04r
-         iFoQ==
-X-Gm-Message-State: AOAM532ZI1un/DibP6jI0VhtfA5lRKdocUl3s/ZYpJA5kOCynhCQPNEj
-        si2IJU/CXCn2mnFWAHiHUiUldwp4VqSCo6ve7qoYVNW+KMwSEscw7r84V6i8DZQjChgxPO57DVg
-        zbGgi7YAfACpGRxmFwh/iGaGuoA==
-X-Received: by 2002:a17:906:b055:: with SMTP id bj21mr3576260ejb.355.1611073328353;
-        Tue, 19 Jan 2021 08:22:08 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzcHzUnJ7YyoKIR+WDesoLPvRjoftwu+C8P2YCi0ehF8psSXAN/K0sAcoG8KXYJcSh2tch14w==
-X-Received: by 2002:a17:906:b055:: with SMTP id bj21mr3576247ejb.355.1611073328141;
-        Tue, 19 Jan 2021 08:22:08 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=e0d34g0cQgU3pUUMcwk4mh+TGyc8uh3BJ8u4e70DhUc=;
+        b=m1t3EgDCm6B3l/KNagyY18LwXbEEtlugSVALZYipy74IfsLIufmdaLdERSGiinzXFc
+         /0sR5IMQgPW6fxvVZOBX8HEWfeLkRu+xSlNuJHtPGgXEb8f5mbkDLF9eUFL6MQrMbS9p
+         PkCRUxAOq+57+ykezJj4BD+XOiskZUv3OeJ0zB7rgmcm8XuVfFexs/CHK4R9eYIBtp/w
+         7/V90MzD22aadg8UrcycAhXfhEcJLWTuMMRV41RbvekRgm2d5TcoHEhSY3G8V4iaHyDo
+         9NJ6I/OMmrL4NC+195MXG5T3nXeUKJ3Z0iT8xyWpsUnNVibiUbdv3Cms6F5Gl1RNOZKG
+         Lmfw==
+X-Gm-Message-State: AOAM533sXRr8MRietmfmYqWhsEQR975DqioI07rDEIz/W54DKfjbz5Wc
+        Hj6rNNa/cxpufA80iPhsVtSCFE8jRVl5sexe8qcJAbF5RIFrjo44PWcvSuXhQTQ6iZQhROV/itf
+        xhJU5bMgWnbAykT6w2dNEDM6fsA==
+X-Received: by 2002:a17:906:f18c:: with SMTP id gs12mr3548356ejb.422.1611073329718;
+        Tue, 19 Jan 2021 08:22:09 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJywCQ8WKQ39LO/s3JpVfU0aRZ0r35Z4MSS7hLGLYpfP7iPEPDe7nnjVqIqyXKcESLiLAw5Qaw==
+X-Received: by 2002:a17:906:f18c:: with SMTP id gs12mr3548339ejb.422.1611073329537;
+        Tue, 19 Jan 2021 08:22:09 -0800 (PST)
 Received: from miu.piliscsaba.redhat.com (catv-86-101-169-67.catv.broadband.hu. [86.101.169.67])
-        by smtp.gmail.com with ESMTPSA id f22sm2168066eje.34.2021.01.19.08.22.06
+        by smtp.gmail.com with ESMTPSA id f22sm2168066eje.34.2021.01.19.08.22.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Jan 2021 08:22:07 -0800 (PST)
+        Tue, 19 Jan 2021 08:22:09 -0800 (PST)
 From:   Miklos Szeredi <mszeredi@redhat.com>
 To:     "Eric W . Biederman" <ebiederm@xmission.com>
 Cc:     linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org,
@@ -57,48 +58,63 @@ Cc:     linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Serge E . Hallyn" <serge@hallyn.com>,
         Tyler Hicks <code@tyhicks.com>
-Subject: [PATCH 0/2] capability conversion fixes
-Date:   Tue, 19 Jan 2021 17:22:02 +0100
-Message-Id: <20210119162204.2081137-1-mszeredi@redhat.com>
+Subject: [PATCH 1/2] ecryptfs: fix uid translation for setxattr on security.capability
+Date:   Tue, 19 Jan 2021 17:22:03 +0100
+Message-Id: <20210119162204.2081137-2-mszeredi@redhat.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20210119162204.2081137-1-mszeredi@redhat.com>
+References: <20210119162204.2081137-1-mszeredi@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-It turns out overlayfs is actually okay wrt. mutliple conversions, because
-it uses the right context for lower operations.  I.e. before calling
-vfs_{set,get}xattr() on underlying fs, it overrides creds with that of the
-mounter, so the current user ns will now match that of
-overlay_sb->s_user_ns, meaning that the caps will be converted to just the
-right format for the next layer
+Prior to commit 7c03e2cda4a5 ("vfs: move cap_convert_nscap() call into
+vfs_setxattr()") the translation of nscap->rootid did not take stacked
+filesystems (overlayfs and ecryptfs) into account.
 
-OTOH ecryptfs, which is the only other one affected by commit 7c03e2cda4a5
-("vfs: move cap_convert_nscap() call into vfs_setxattr()") needs to be
-fixed up, since it doesn't do the cap override thing that overlayfs does.
+That patch fixed the overlay case, but made the ecryptfs case worse.
 
-I don't have an ecryptfs setup, so untested, but it's a fairly trivial
-change.
+Restore old the behavior for ecryptfs that existed before the overlayfs
+fix.  This does not fix ecryptfs's handling of complex user namespace
+setups, but it does make sure existing setups don't regress.
 
-My other observation was that cap_inode_getsecurity() messes up conversion
-of caps in more than one case.  This is independent of the overlayfs user
-ns enablement but affects it as well.
+Reported-by: Eric W. Biederman <ebiederm@xmission.com>
+Cc: Tyler Hicks <code@tyhicks.com>
+Fixes: 7c03e2cda4a5 ("vfs: move cap_convert_nscap() call into vfs_setxattr()")
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+---
+ fs/ecryptfs/inode.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-Maybe we can revisit the infrastructure improvements we discussed, but I
-think these fixes are more appropriate for the current cycle.
-
-Thanks,
-Miklos
-
-Miklos Szeredi (2):
-  ecryptfs: fix uid translation for setxattr on security.capability
-  security.capability: fix conversions on getxattr
-
- fs/ecryptfs/inode.c  | 10 +++++--
- security/commoncap.c | 67 ++++++++++++++++++++++++++++----------------
- 2 files changed, 50 insertions(+), 27 deletions(-)
-
+diff --git a/fs/ecryptfs/inode.c b/fs/ecryptfs/inode.c
+index e23752d9a79f..58d0f7187997 100644
+--- a/fs/ecryptfs/inode.c
++++ b/fs/ecryptfs/inode.c
+@@ -1016,15 +1016,19 @@ ecryptfs_setxattr(struct dentry *dentry, struct inode *inode,
+ {
+ 	int rc;
+ 	struct dentry *lower_dentry;
++	struct inode *lower_inode;
+ 
+ 	lower_dentry = ecryptfs_dentry_to_lower(dentry);
+-	if (!(d_inode(lower_dentry)->i_opflags & IOP_XATTR)) {
++	lower_inode = d_inode(lower_dentry);
++	if (!(lower_inode->i_opflags & IOP_XATTR)) {
+ 		rc = -EOPNOTSUPP;
+ 		goto out;
+ 	}
+-	rc = vfs_setxattr(lower_dentry, name, value, size, flags);
++	inode_lock(lower_inode);
++	rc = __vfs_setxattr_locked(lower_dentry, name, value, size, flags, NULL);
++	inode_unlock(lower_inode);
+ 	if (!rc && inode)
+-		fsstack_copy_attr_all(inode, d_inode(lower_dentry));
++		fsstack_copy_attr_all(inode, lower_inode);
+ out:
+ 	return rc;
+ }
 -- 
 2.26.2
 
