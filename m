@@ -2,246 +2,118 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2F9B30481D
-	for <lists+linux-unionfs@lfdr.de>; Tue, 26 Jan 2021 20:20:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D91A30481F
+	for <lists+linux-unionfs@lfdr.de>; Tue, 26 Jan 2021 20:22:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727902AbhAZFuj (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 26 Jan 2021 00:50:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59154 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728816AbhAYNZF (ORCPT
+        id S1732280AbhAZFus (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 26 Jan 2021 00:50:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:54783 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728792AbhAYN17 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 25 Jan 2021 08:25:05 -0500
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 649BEC06174A;
-        Mon, 25 Jan 2021 05:24:19 -0800 (PST)
-Received: by mail-io1-xd33.google.com with SMTP id d13so26415254ioy.4;
-        Mon, 25 Jan 2021 05:24:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=IF2DD1ZxWyHOIZtsZXXfUNNTSD9rCA0LLoYW+nSXou8=;
-        b=GRFOyzZqBwr6lGCZFb5qN71Wgu8SV7v1JoeF3t13VLl7rsRjurRSv48EY7imASATsy
-         nFuNQcgnei1G4DeUwHi2PFPJHI2zIaV/M9XO6+sEYHgrDbcMeYELD5BCt5u9BcybFhjN
-         9o9WAWW7P8o/qVShxOhcc/ZKjTpj7j4QDmY5DuRB8JPO9tgKMhOhsQ213kq6KXrmg1lq
-         hytK4yAJX84bRft+SaInwmsZasGORbY3KlUBjQcGOWEDWAe7sVqymIt6oD7+uSEi3vbz
-         1opGMv1lpDVpxxC0/jGq2vcAV6hYDvnjGMTuQ9HP45czKud86gpO/OsXVJFpQoBm+m4M
-         Y1ow==
+        Mon, 25 Jan 2021 08:27:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1611581151;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=mKBAIHjLBv1uPqHgRWoGEuszBqIj+l3P9UDHtFckEn4=;
+        b=gRh4vqK8VT4cNi+Vo2ia2O3cSsC3fKG77m1gwUl+NsjBfen6wT+i4pTxHlOKtzbAeijuJI
+        1AHkIN/3JcpZrL5SXIz8w7JgQM8JhA3WaTbTY3xPuakD/XTanQnp5pm1hH9cqoQQzjWgaR
+        16kWVk3B72H8TeV7HVQUMWHXD1isg1U=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-190-4AXPf52aOvu8kK1O45DJKw-1; Mon, 25 Jan 2021 08:25:49 -0500
+X-MC-Unique: 4AXPf52aOvu8kK1O45DJKw-1
+Received: by mail-qv1-f71.google.com with SMTP id h13so9147541qvo.18
+        for <linux-unionfs@vger.kernel.org>; Mon, 25 Jan 2021 05:25:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=IF2DD1ZxWyHOIZtsZXXfUNNTSD9rCA0LLoYW+nSXou8=;
-        b=WzVBeYehCbEbQ08onDrnk82fHVuWMpMPk75xHz1B/1dEXiswQ0BxkSTEUQz4YjQUxV
-         NYokLCFhVMr6x7WwvYqMSJJWEt82vzLO1MVwTcTp0lqIyNYOAGZpnZWdDj1ZHKoQyIV8
-         owT9yc5xFfWu2aFSw3p3m60NHeLaac2gBqv+Yt6s/gtwb0H4NTaJOuysMka2D9xLRlej
-         7nZ0cmNN/Jmjgc4ssyL3q9TU7bkI16VhY/J5Z5zEpn6pTZ3/CHhLds9EOLT/paEOa1eA
-         za/mf8RR/tIHaASMB4V/37yvSzzyApDwkvuWkVo2PCZCsiq6GFakCPuubjxmjbcsA2X9
-         2ptQ==
-X-Gm-Message-State: AOAM532HWOPs9wkWndVI0BEO8VFWfho2kMd5QKNuZ6wNLTabaJz4Ok7j
-        qbmn4C+D/rUm+ldPio6KBAC5IkpWTtvjL0ToErwYtVI1PJY=
-X-Google-Smtp-Source: ABdhPJwOfMyl1Q8n+N6ixGy4kiID8nwHepdiYAHsKiCMM+8kl8B33E2epbpvhDoDDTMSG/s1ih0QW8y90be7RjT+AtA=
-X-Received: by 2002:a5e:dc04:: with SMTP id b4mr339135iok.203.1611581058686;
- Mon, 25 Jan 2021 05:24:18 -0800 (PST)
+        bh=mKBAIHjLBv1uPqHgRWoGEuszBqIj+l3P9UDHtFckEn4=;
+        b=Q9gGBagzRmfyX1zosgHXe+uWL867D+VzCwuMvrV6xuVrfMjgp+fnOsgzgWhsMyvwSz
+         dWqU+/HLWgW+TTREpB4T287FtRnDTvhJ1q2ldzeDFG4ljwIIXBByfL8z0j4azN768Xdg
+         P2ctbKWCzBOpdkknNw8OsFphNOvGpfIVtqlSekTD4UnqlJgZ+V97mcVzhZwo5OCEuoqN
+         1LmU1TUdLRTBld+ofkT529HTpCfdHEwHYkM5VYbPPsDQ6kvDWnRU0nN6I2WYXwEepVID
+         ZV0TSMP2n1tIyXB+i1eE4TZ5FFkLHsffHHMhbmakZ/XYuJRNncK7D5keyCCgxRwnf0AG
+         gHPA==
+X-Gm-Message-State: AOAM533BLCDg191GnpGsMODXGq4Fq0yQzTxwiwtCbAcPvo6ZMTIhcNld
+        z0XQpwN1ABsm8ULafqTanr09e+w2XXWqYWMRkXmLA+OLzWK2FIwzvjdPmDE/T993HsZfi77//xX
+        Mq2HZJMwG2R0X97Ux+IWbYFsoipIa1roRHmBaZA67OA==
+X-Received: by 2002:a37:788:: with SMTP id 130mr656850qkh.390.1611581149427;
+        Mon, 25 Jan 2021 05:25:49 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJy9uwqNss2gL2K4WjIoL7LYE/brUIbRAkeSgNTSwbgH4tU/Oz6Gn7u/P9cD2BigrYSceF14qFL5icT3pOjziLA=
+X-Received: by 2002:a37:788:: with SMTP id 130mr656827qkh.390.1611581149237;
+ Mon, 25 Jan 2021 05:25:49 -0800 (PST)
 MIME-Version: 1.0
-References: <20210116165619.494265-1-amir73il@gmail.com> <20210116165619.494265-5-amir73il@gmail.com>
-In-Reply-To: <20210116165619.494265-5-amir73il@gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Mon, 25 Jan 2021 15:24:07 +0200
-Message-ID: <CAOQ4uxiXUN7LkzNLZto6iK2YuDdxp7PGoQMGCm89p1kNWUf=YA@mail.gmail.com>
-Subject: Re: [PATCH 4/4] overlay: Test lost immutable/append-only flags on copy-up
-To:     Eryu Guan <guaneryu@gmail.com>
-Cc:     Icenowy Zheng <icenowy@aosc.io>,
-        Chengguang Xu <cgxu519@mykernel.net>,
-        Xiao Yang <yangx.jy@cn.fujitsu.com>,
-        Miklos Szeredi <miklos@szeredi.hu>,
+References: <20210119162204.2081137-1-mszeredi@redhat.com> <20210119162204.2081137-2-mszeredi@redhat.com>
+ <20210122183141.GB81247@sequoia>
+In-Reply-To: <20210122183141.GB81247@sequoia>
+From:   Miklos Szeredi <mszeredi@redhat.com>
+Date:   Mon, 25 Jan 2021 14:25:38 +0100
+Message-ID: <CAOssrKd-P=4n-nzhjnvnChbCkcrAaLC=NjmCTDRHtzRtzJaU-g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ecryptfs: fix uid translation for setxattr on security.capability
+To:     Tyler Hicks <code@tyhicks.com>
+Cc:     "Eric W . Biederman" <ebiederm@xmission.com>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
         overlayfs <linux-unionfs@vger.kernel.org>,
-        fstests <fstests@vger.kernel.org>
+        linux-security-module@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>,
+        "Serge E . Hallyn" <serge@hallyn.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Sat, Jan 16, 2021 at 6:56 PM Amir Goldstein <amir73il@gmail.com> wrote:
+On Fri, Jan 22, 2021 at 7:31 PM Tyler Hicks <code@tyhicks.com> wrote:
 >
-> Chengguang Xu reported [1] that append-only flag is lost on copy-up.
-> I had noticed that for directories, immutable flag can also be lost on
-> copy up (when parent is copied up). That's an old overlayfs bug.
+> On 2021-01-19 17:22:03, Miklos Szeredi wrote:
+> > Prior to commit 7c03e2cda4a5 ("vfs: move cap_convert_nscap() call into
+> > vfs_setxattr()") the translation of nscap->rootid did not take stacked
+> > filesystems (overlayfs and ecryptfs) into account.
+> >
+> > That patch fixed the overlay case, but made the ecryptfs case worse.
 >
-> Overlayfs added the ability to set inode flags (e.g. chattr +i) in
-> kernel 5.10 by commit 61536bed2149 ("ovl: support [S|G]ETFLAGS and
-> FS[S|G]ETXATTR ioctls for directories").
-> Icenowy Zheng reported [2] a regression in that commit that causes
-> a deadlock when setting inode flags on lower dir.
+> Thanks for sending a fix!
 >
-> There is a commented line in the test that triggers this deadlock,
-> but it has been left commented out until a fix is merged upstream.
->
+> I know that you don't have an eCryptfs setup to test with but I'm at a
+> loss about how to test this from the userns/fscaps side of things. Do
+> you have a sequence of unshare/setcap/getcap commands that I can run on
+> a file inside of an eCryptfs mount to verify that the bug exists after
+> 7c03e2cda4a5 and then again to verify that this patch fixes the bug?
 
-Re-iterate in correct thread:
+You need two terminals:
+$ = <USER>
+# = root
 
-The fix for above is in overlayfs-next:
+$ unshare -Um
+$ echo $$
+<PID>
+# echo "0 1000 1" > uid_map
+# cp uid_map gid_map
+# echo 1000 2000 1 >> uid_map
+# echo 2000 3000 1 >> uid_map
+# cat uid_map > /proc/<PID>/uid_map
+# cat gid_map > /proc/<PID>/gid_map
+$ mkdir ~/tmp ~/mnt
+$ mount -t tmpfs tmpfs ~/tmp
+$ pwd
+/home/<USER>
+# nsenter -t <PID> -m
+# [setup ecryptfs on /home/<USER>/mnt using /home/<USER>/tmp]
+$ cd ~/mnt
+$ touch test
+$ /sbin/setcap -n 1000 cap_dac_override+eip test
+$ /sbin/getcap -n test
+test = cap_dac_override+eip [rootid=1000]
 
-* 147ec02b8705 - ovl: avoid deadlock on directory ioctl
+Without the patch, I'm thinking that it will do a double translate and
+end up with rootid=2000 in the user namespace, but I might well have
+messed it up...
 
-But I wouldn't uncomment that line in the test just yet.
-
-To be clear, this test does not pass in master and there is no clear
-estimation on when the reported issues will be fixed.
-
-Miklos,
-
-Do you plan to followup on your VFS implementation for the
-{s,g}etxflags methods?
+Let me know how this goes.
 
 Thanks,
-Amir.
+Miklos
 
-> [1] https://lore.kernel.org/linux-unionfs/20201226104618.239739-1-cgxu519@mykernel.net/
-> [2] https://lore.kernel.org/linux-unionfs/20210101201230.768653-1-icenowy@aosc.io/
->
-> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> ---
->  tests/overlay/075     | 97 +++++++++++++++++++++++++++++++++++++++++++
->  tests/overlay/075.out | 11 +++++
->  tests/overlay/group   |  1 +
->  3 files changed, 109 insertions(+)
->  create mode 100755 tests/overlay/075
->  create mode 100644 tests/overlay/075.out
->
-> diff --git a/tests/overlay/075 b/tests/overlay/075
-> new file mode 100755
-> index 00000000..bcdc8d4e
-> --- /dev/null
-> +++ b/tests/overlay/075
-> @@ -0,0 +1,97 @@
-> +#! /bin/bash
-> +# SPDX-License-Identifier: GPL-2.0
-> +# Copyright (C) 2021 CTERA Networks. All Rights Reserved.
-> +#
-> +# FS QA Test No. 075
-> +#
-> +# Run the t_immutable test program for immutable/append-only files
-> +# and directories that exist in overlayfs lower layer.
-> +#
-> +# This test is similar and was derived from generic/079, but instead
-> +# of creating new files which are created in upper layer, prepare
-> +# the test area in lower layer before running the t_immutable test on
-> +# the overlayfs mount.
-> +#
-> +seq=`basename $0`
-> +seqres=$RESULT_DIR/$seq
-> +echo "QA output created by $seq"
-> +
-> +here=`pwd`
-> +timmutable=$here/src/t_immutable
-> +lowerdir=$OVL_BASE_SCRATCH_MNT/$OVL_LOWER
-> +upperdir=$OVL_BASE_SCRATCH_MNT/$OVL_UPPER
-> +tmp=/tmp/$$
-> +status=1       # failure is the default!
-> +trap "_cleanup; exit \$status" 0 1 2 3 15
-> +
-> +_cleanup()
-> +{
-> +       # -r will fail to remove test dirs, because we added subdirs
-> +       # we just need to remove the flags so use -R
-> +       $timmutable -R $upperdir/testdir &> /dev/null
-> +       $timmutable -R $lowerdir/testdir &> /dev/null
-> +       rm -f $tmp.*
-> +}
-> +
-> +# get standard environment, filters and checks
-> +. ./common/rc
-> +. ./common/filter
-> +
-> +_supported_fs overlay
-> +
-> +_require_chattr iaA
-> +_require_test_program "t_immutable"
-> +_require_scratch
-> +
-> +_scratch_mkfs
-> +
-> +# Preparing test area files in lower dir and check chattr support of base fs
-> +mkdir -p $lowerdir
-> +mkdir -p $upperdir
-> +$timmutable -C $lowerdir/testdir >$tmp.out 2>&1
-> +if grep -q -e 'Operation not supported' -e "Inappropriate ioctl" $tmp.out; then
-> +       _notrun "Setting immutable/append flag not supported"
-> +fi
-> +# Remove the immutable/append-only flags and create subdirs
-> +$timmutable -R $lowerdir/testdir >$tmp.out 2>&1
-> +for dir in $lowerdir/testdir/*.d; do
-> +       mkdir $dir/subdir
-> +done
-> +# Restore the immutable/append-only flags
-> +$timmutable -C $lowerdir/testdir >$tmp.out 2>&1
-> +
-> +_scratch_mount
-> +
-> +# Test immutability of files in overlay
-> +echo "Before directories copy up"
-> +$timmutable $SCRATCH_MNT/testdir 2>&1
-> +
-> +# Trigger copy-up of immutable/append-only dirs by touching their subdirs
-> +# inode flags are not copied-up, so immutable/append-only flags are lost
-> +for dir in $SCRATCH_MNT/testdir/*.d; do
-> +       # chattr on dir fails (not supported) on kernel < 5.10.
-> +       # chattr on lower dir will deadlock on kernel 5.10 with commit 61536bed2149
-> +       # ("ovl: support [S|G]ETFLAGS and FS[S|G]ETXATTR ioctls for directories"),
-> +       # so this line is commented out until a fix is merged
-> +       # $CHATTR_PROG +A $dir/subdir > /dev/null 2>&1
-> +       touch $dir/subdir
-> +done
-> +
-> +# Trigger copy-up of append-only files by touching them
-> +# inode flags are not copied-up, so append-only flags are lost
-> +# touch on the immutable files is expected to fail, so immutable
-> +# flags will not be lost
-> +for file in $SCRATCH_MNT/testdir/*.f; do
-> +       touch $file > /dev/null 2>&1
-> +done
-> +
-> +# immutable/append-only flags still exist on the overlay in-core inode
-> +# After mount cycle, flags are forever lost
-> +_scratch_cycle_mount
-> +
-> +# Test immutability of files in overlay after directories copy-up
-> +echo "After directories copy up"
-> +$timmutable $SCRATCH_MNT/testdir 2>&1
-> +
-> +status=$?
-> +exit
-> diff --git a/tests/overlay/075.out b/tests/overlay/075.out
-> new file mode 100644
-> index 00000000..ab39c6b8
-> --- /dev/null
-> +++ b/tests/overlay/075.out
-> @@ -0,0 +1,11 @@
-> +QA output created by 075
-> +Before directories copy up
-> +testing immutable...PASS.
-> +testing append-only...PASS.
-> +testing immutable as non-root...PASS.
-> +testing append-only as non-root...PASS.
-> +After directories copy up
-> +testing immutable...PASS.
-> +testing append-only...PASS.
-> +testing immutable as non-root...PASS.
-> +testing append-only as non-root...PASS.
-> diff --git a/tests/overlay/group b/tests/overlay/group
-> index 047ea046..cfc75bb1 100644
-> --- a/tests/overlay/group
-> +++ b/tests/overlay/group
-> @@ -77,6 +77,7 @@
->  072 auto quick copyup hardlink
->  073 auto quick whiteout
->  074 auto quick exportfs dangerous
-> +075 auto quick perms
->  100 auto quick union samefs
->  101 auto quick union nonsamefs
->  102 auto quick union nonsamefs xino
-> --
-> 2.25.1
->
