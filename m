@@ -2,118 +2,161 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D91A30481F
-	for <lists+linux-unionfs@lfdr.de>; Tue, 26 Jan 2021 20:22:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D091B305184
+	for <lists+linux-unionfs@lfdr.de>; Wed, 27 Jan 2021 05:57:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732280AbhAZFus (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 26 Jan 2021 00:50:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:54783 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728792AbhAYN17 (ORCPT
+        id S238654AbhA0E41 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 26 Jan 2021 23:56:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38918 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731765AbhAZFTB (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 25 Jan 2021 08:27:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611581151;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=mKBAIHjLBv1uPqHgRWoGEuszBqIj+l3P9UDHtFckEn4=;
-        b=gRh4vqK8VT4cNi+Vo2ia2O3cSsC3fKG77m1gwUl+NsjBfen6wT+i4pTxHlOKtzbAeijuJI
-        1AHkIN/3JcpZrL5SXIz8w7JgQM8JhA3WaTbTY3xPuakD/XTanQnp5pm1hH9cqoQQzjWgaR
-        16kWVk3B72H8TeV7HVQUMWHXD1isg1U=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-190-4AXPf52aOvu8kK1O45DJKw-1; Mon, 25 Jan 2021 08:25:49 -0500
-X-MC-Unique: 4AXPf52aOvu8kK1O45DJKw-1
-Received: by mail-qv1-f71.google.com with SMTP id h13so9147541qvo.18
-        for <linux-unionfs@vger.kernel.org>; Mon, 25 Jan 2021 05:25:49 -0800 (PST)
+        Tue, 26 Jan 2021 00:19:01 -0500
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAA3CC061788
+        for <linux-unionfs@vger.kernel.org>; Mon, 25 Jan 2021 21:18:41 -0800 (PST)
+Received: by mail-io1-xd29.google.com with SMTP id u17so31447028iow.1
+        for <linux-unionfs@vger.kernel.org>; Mon, 25 Jan 2021 21:18:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ohYv/1DCriRoslae5qul3GB6tTLFOCExUM5bB7qowgA=;
+        b=Jl/eD5UKnZIZvJPZPQdrlHC2tjgcf/Lu3a50o2OOjd/5kF+Jt+STVN3u9f4Ml59H3Y
+         YNbcGW5x2sfQTNHNvw/E7+8W1mo7qh5FwlX3czuCf3K6Q1YTIQtw5TAMp75Ku1nA939D
+         8tnMvoqlREAGQVGETnI06Zr6wPMweEOvg8YZUdc2DYs27TBNwkYMArdKjWBJOU7zXuuO
+         SbTzVWakB0isvzlZ6K9zVqSTCSka62PhV7jH+o9774p3kvMiC8P8d/Vr2bHuUX4e/drQ
+         TkH1LkogEmOXYHDAqiUSPYXJKAMjIZJCYQ98H/IQ0hMQRJLIPtjiZ0QqjozafPg4EYPh
+         SfTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=mKBAIHjLBv1uPqHgRWoGEuszBqIj+l3P9UDHtFckEn4=;
-        b=Q9gGBagzRmfyX1zosgHXe+uWL867D+VzCwuMvrV6xuVrfMjgp+fnOsgzgWhsMyvwSz
-         dWqU+/HLWgW+TTREpB4T287FtRnDTvhJ1q2ldzeDFG4ljwIIXBByfL8z0j4azN768Xdg
-         P2ctbKWCzBOpdkknNw8OsFphNOvGpfIVtqlSekTD4UnqlJgZ+V97mcVzhZwo5OCEuoqN
-         1LmU1TUdLRTBld+ofkT529HTpCfdHEwHYkM5VYbPPsDQ6kvDWnRU0nN6I2WYXwEepVID
-         ZV0TSMP2n1tIyXB+i1eE4TZ5FFkLHsffHHMhbmakZ/XYuJRNncK7D5keyCCgxRwnf0AG
-         gHPA==
-X-Gm-Message-State: AOAM533BLCDg191GnpGsMODXGq4Fq0yQzTxwiwtCbAcPvo6ZMTIhcNld
-        z0XQpwN1ABsm8ULafqTanr09e+w2XXWqYWMRkXmLA+OLzWK2FIwzvjdPmDE/T993HsZfi77//xX
-        Mq2HZJMwG2R0X97Ux+IWbYFsoipIa1roRHmBaZA67OA==
-X-Received: by 2002:a37:788:: with SMTP id 130mr656850qkh.390.1611581149427;
-        Mon, 25 Jan 2021 05:25:49 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJy9uwqNss2gL2K4WjIoL7LYE/brUIbRAkeSgNTSwbgH4tU/Oz6Gn7u/P9cD2BigrYSceF14qFL5icT3pOjziLA=
-X-Received: by 2002:a37:788:: with SMTP id 130mr656827qkh.390.1611581149237;
- Mon, 25 Jan 2021 05:25:49 -0800 (PST)
+        bh=ohYv/1DCriRoslae5qul3GB6tTLFOCExUM5bB7qowgA=;
+        b=GwZTvNDVxHie5N1qv7iAlytcLM4oJ7jHsmykh1y3dbHUBveJdLFUyecl5g91j9+smy
+         RxqDv5hT6pkFZMXxCYo/9ptIYkByasrGypnzBTbEoIr/0NDKkFCZrHznkPtEXilxQWJj
+         lnIVkzwmy7j+JRoD+lUHkVR63fhUzpsyxDRmwfPh10MAndQfJNwmk99JHTO13yD53OYX
+         S/H0yPvEY82ewGEE4ovxNTH4/j+OAe2VyPifsnGjmH08puypoawZbzi8ZUIzt1lZTqvq
+         /K8AsMtD52waRw5LOPcL3AoHjxm4C7LPNA2MqHq/xHflpo/CEQcQVVyHNHkz1Y6h2byf
+         /S0Q==
+X-Gm-Message-State: AOAM531U2jGPa5Fv/rNs3RD6/p0MI8IpgHOI9gvdVP4xFGAa1ZyFbCuj
+        6+T1qX1W9yT5jZ+qqrCFFA5pcZt4dWjGSjBahThDZjlVsjU=
+X-Google-Smtp-Source: ABdhPJy7a2wUna5sskK068WnAetU6iM+Rwx4WNHPMapqfHVjW6ehkKHfQnavtrHjtpXNGSGYbXRUErYk7VGXPzfMDQw=
+X-Received: by 2002:a92:d3c7:: with SMTP id c7mr3245764ilh.137.1611638321125;
+ Mon, 25 Jan 2021 21:18:41 -0800 (PST)
 MIME-Version: 1.0
-References: <20210119162204.2081137-1-mszeredi@redhat.com> <20210119162204.2081137-2-mszeredi@redhat.com>
- <20210122183141.GB81247@sequoia>
-In-Reply-To: <20210122183141.GB81247@sequoia>
-From:   Miklos Szeredi <mszeredi@redhat.com>
-Date:   Mon, 25 Jan 2021 14:25:38 +0100
-Message-ID: <CAOssrKd-P=4n-nzhjnvnChbCkcrAaLC=NjmCTDRHtzRtzJaU-g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ecryptfs: fix uid translation for setxattr on security.capability
-To:     Tyler Hicks <code@tyhicks.com>
-Cc:     "Eric W . Biederman" <ebiederm@xmission.com>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-security-module@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>
+References: <20210125194848.GA12389@ircssh-2.c.rugged-nimbus-611.internal>
+In-Reply-To: <20210125194848.GA12389@ircssh-2.c.rugged-nimbus-611.internal>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Tue, 26 Jan 2021 07:18:29 +0200
+Message-ID: <CAOQ4uxiX4Q=i1ig_P9gvBgryazLEGfdpULbwGR+C2hjKi74Jog@mail.gmail.com>
+Subject: Re: Lazy Loading Layers (Userfaultfd for filesystems?)
+To:     Sargun Dhillon <sargun@sargun.me>
+Cc:     overlayfs <linux-unionfs@vger.kernel.org>,
+        Alessio Balsini <balsini@android.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Fri, Jan 22, 2021 at 7:31 PM Tyler Hicks <code@tyhicks.com> wrote:
+On Mon, Jan 25, 2021 at 9:54 PM Sargun Dhillon <sargun@sargun.me> wrote:
 >
-> On 2021-01-19 17:22:03, Miklos Szeredi wrote:
-> > Prior to commit 7c03e2cda4a5 ("vfs: move cap_convert_nscap() call into
-> > vfs_setxattr()") the translation of nscap->rootid did not take stacked
-> > filesystems (overlayfs and ecryptfs) into account.
-> >
-> > That patch fixed the overlay case, but made the ecryptfs case worse.
+> One of the projects I'm playing with for containers is lazy-loading of layers.
+> We've found that less than 10% of the files on a layer actually get used, which
+> is an unfortunate waste. It also means in some cases downloading ~100s of MB, or
+> ~1s of GB of files before starting a container workload. This is unfortunate.
 >
-> Thanks for sending a fix!
+> It would be nice if there was a way to start a container workload, and have
+> it so that if it tries to access and unpopulated (not yet downloaded) part
+> of the filesystem block while trying to be accessed. This is trivial to do
+> if the "lowest" layer is FUSE, where one can just stall in userspace on
+> loads. Unfortunately, AFAIK, there's not a good way to swap out the FUSE
+> filesystem with the "real" filesystem once it's done fully populating,
+> and you have to pay for the full FUSE cost on each read / write.
+
+Unless you used FUSE_PASSTHROUGH:
+
+https://lore.kernel.org/linux-fsdevel/20210125153057.3623715-1-balsini@android.com/
+
+Only in current v12 patchset, a passthrough capable FUSE is declared
+non-stackable by setting s_max_depth = FILESYSTEM_MAX_STACK_DEPTH.
+This wasn't done deliberately in order to deny stacking of overlay of top
+of passthrough capable fuse, but in order to deny stacking passthrough fuse on
+top of each other.
+
+I mentioned in one of the reviews that this limitation could become
+a problem if someone where to do exactly what you are trying to do.
+It should not be a problem to relax this limitation, it just did not feel fair
+to demand that for initial version of passthrough fuse, before there was an
+actual use case. I am sure you will be able to lift that limitation if it stands
+in your way.
+
+
 >
-> I know that you don't have an eCryptfs setup to test with but I'm at a
-> loss about how to test this from the userns/fscaps side of things. Do
-> you have a sequence of unshare/setcap/getcap commands that I can run on
-> a file inside of an eCryptfs mount to verify that the bug exists after
-> 7c03e2cda4a5 and then again to verify that this patch fixes the bug?
+> I've tossed around:
+> 1. Mutable lowerdirs and having something like this:
+>
+> layer0 --> Writeable space
+> layer1 --> Real XFS filesystem
+> layer2 --> FUSE FS
+>
+> and if there is a "miss" on layer 1, it will then look it up on
+> layer 2 while layer 1 is being populated. Then the FUSE FS can block.
 
-You need two terminals:
-$ = <USER>
-# = root
+Interesting.
+How would you verify that mutating the lowerdir doesn't result in
+"undefined behavior"?
+It would be nice if for some images, you could fetch a "metacopy" image from
+some "meta" image repository, to use as layer1. It that a possibility
+for your use case?
+At least if the only mutation allowed on layer1 was a data copy up, it would
+be pretty easy to show that overlayfs behavior will be well defined.
+When FUSE knows that data in Real fs file has been populated, it can remove the
+metacopy xattr and invalidate the fuse dentry, causing ovl dentry
+invalidate and then
+re-lookup will constructs the ovl dentry without the FUSE layer.
 
-$ unshare -Um
-$ echo $$
-<PID>
-# echo "0 1000 1" > uid_map
-# cp uid_map gid_map
-# echo 1000 2000 1 >> uid_map
-# echo 2000 3000 1 >> uid_map
-# cat uid_map > /proc/<PID>/uid_map
-# cat gid_map > /proc/<PID>/gid_map
-$ mkdir ~/tmp ~/mnt
-$ mount -t tmpfs tmpfs ~/tmp
-$ pwd
-/home/<USER>
-# nsenter -t <PID> -m
-# [setup ecryptfs on /home/<USER>/mnt using /home/<USER>/tmp]
-$ cd ~/mnt
-$ touch test
-$ /sbin/setcap -n 1000 cap_dac_override+eip test
-$ /sbin/getcap -n test
-test = cap_dac_override+eip [rootid=1000]
+> This is neat, but it requires the FUSE FS to always be up, and incurs
+> a userspace bounce on every miss.
+>
 
-Without the patch, I'm thinking that it will do a double translate and
-end up with rootid=2000 in the user namespace, but I might well have
-messed it up...
+You may be able to shutdown the FUSE fs eventually. At the end of the
+population process, issue a "layer shutdown" ioctl to overlayfs, that will
+mark the layer as shutdown. ovl_revalidate() will invalidate any ovl dentry
+with a shut down layer in its lower stack and ovl_lookup()/ovl_path_next()
+will skip lower stack dentries in shut down layers.
 
-Let me know how this goes.
+When there are no more open files from fuse and no more ovl dentries
+with fuse layer in their lower stack, the fuse layer mnt refcount should
+drop to 2(?) and it should be possible to carefully release the root ovl
+dentry lower stack entry and finally the layer itself.
+A refcount on the layer will probably be to correct pattern to use.
+
+> It also means things like metadata only copies don't work.
+>
+
+Why?
+I can see there are some feature limitation due to FUSE having no UUID,
+but this should be solvable too.
+
+> Does anyone have a suggestion of a mechanism to handle this? I've looked into
+> swapping out layers on the fly, and what it would take to add a mechanism like
+> userfaultfd to overlayfs, but I was wondering if anything like this was already
+> built, or if someone has thought it through more than me.
+>
+
+I've seen many projects that try to do similar things but not using overlayfs:
+Android Incremental FS, ExtFUSE, libprojfs.
+
+If I were to tackle this task, I would choose to enhance FUSE_PASSTHROUGH
+to be able to passthrough for more than just read/write, to the point
+that it could
+eventually satisfy the requirements of all those projects above,
+something that I
+have discussed with Alessio in the past.
+
+When that happens, you might as well call passthrough FUSE "Userfaultfd for
+filesystems" if you wish ;-)
 
 Thanks,
-Miklos
-
+Amir.
