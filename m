@@ -2,171 +2,64 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA079310F79
-	for <lists+linux-unionfs@lfdr.de>; Fri,  5 Feb 2021 19:07:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF9603111BF
+	for <lists+linux-unionfs@lfdr.de>; Fri,  5 Feb 2021 21:01:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233632AbhBEQXt (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 5 Feb 2021 11:23:49 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:60652 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233608AbhBEQUP (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 5 Feb 2021 11:20:15 -0500
-Received: from sequoia (162-237-133-238.lightspeed.rcsntx.sbcglobal.net [162.237.133.238])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 1578A205CF84;
-        Fri,  5 Feb 2021 10:01:54 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1578A205CF84
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1612548115;
-        bh=sG8c3V5j/GNMfkgLTSc6ef1pV212YYCAuyDQ9vNbitQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aTJv5WEdDWXiv8DSub2T2iKWOi+ew0aC6UN8s5QsIqPWkvmYtKxOXfQuQE8G3CiOr
-         OlGlTYH021e0UCSihAbUPmTHLnp15ETkiJnV3SnPAldNne5OXhCZcX6lCvBdEhddAJ
-         q16xUifV5+fGOvx3S9QkRJLhHakg0iVshK0Q5rmc=
-Date:   Fri, 5 Feb 2021 12:01:47 -0600
-From:   Tyler Hicks <tyhicks@linux.microsoft.com>
-To:     Mark Salyzyn <salyzyn@android.com>,
-        Miklos Szeredi <miklos@szeredi.hu>
-Cc:     linux-kernel@vger.kernel.org,
-        kernel-team <kernel-team@android.com>,
-        linux-fsdevel@vger.kernel.org,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        LSM <linux-security-module@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Vivek Goyal <vgoyal@redhat.com>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Amir Goldstein <amir73il@gmail.com>, linux-doc@vger.kernel.org,
-        SElinux list <selinux@vger.kernel.org>
-Subject: Re: [RESEND PATCH v18 2/4] overlayfs: handle XATTR_NOSECURITY flag
- for get xattr method
-Message-ID: <20210205180131.GA648953@sequoia>
-References: <20201021151903.652827-1-salyzyn@android.com>
- <20201021151903.652827-3-salyzyn@android.com>
- <CAJfpegtMoD85j5namV592sJD23QeUMD=+tq4SvFDqjVxsAszYQ@mail.gmail.com>
- <2fd64e4f-c573-c841-abb6-ec0908f78cdd@android.com>
+        id S233630AbhBESRz (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 5 Feb 2021 13:17:55 -0500
+Received: from [20.39.40.203] ([20.39.40.203]:55697 "EHLO optinix.in"
+        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S233183AbhBEPTk (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Fri, 5 Feb 2021 10:19:40 -0500
+dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
+        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
+        b=JFt3cjfr2gf0oZFNAIkKMxcz4dJD/YGkc0fGvOoSd3DydZ6om7JzTU837vBFVq1NIPU0D2QA5BLHZXE1+7cBmkJlbZjYCUFmJkkaBVbP88e4KHnDVRcctmBLIZ1pL5VerRqjcciKkL4DSuyXFJlGk3Z0CRoskvUoLBM7ZhpxLeqIU2BKsbHQXJZ1h2qHQhaHiD+VrGx+bGKjZzbhmRvwLDQIByq6jRcjht5MzYCcxpzOzp/k+Dev9dQj7B
+        WId68CyP4XonlI4wIMRo1xiGfUtKZ+P3cZo2ejPWBjr+ynq3dK3OxibTTEKfmOc5W1zmJFMAPQ+ZKxsa3M4d1PiYxHmg==
+Received: from User (Unknown [52.231.31.5])
+        by optinix.in with ESMTP
+        ; Mon, 1 Feb 2021 08:50:14 +0000
+Message-ID: <D474448D-A325-42CC-A881-8334C6C84BA7@optinix.in>
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <support@digitalsol.in>
+Subject: Re:read
+Date:   Mon, 1 Feb 2021 08:50:13 -0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2fd64e4f-c573-c841-abb6-ec0908f78cdd@android.com>
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On 2020-10-30 09:00:35, Mark Salyzyn wrote:
-> On 10/30/20 8:07 AM, Miklos Szeredi wrote:
-> > On Wed, Oct 21, 2020 at 5:19 PM Mark Salyzyn <salyzyn@android.com> wrote:
-> > > Because of the overlayfs getxattr recursion, the incoming inode fails
-> > > to update the selinux sid resulting in avc denials being reported
-> > > against a target context of u:object_r:unlabeled:s0.
-> > > 
-> > > Solution is to respond to the XATTR_NOSECURITY flag in get xattr
-> > > method that calls the __vfs_getxattr handler instead so that the
-> > > context can be read in, rather than being denied with an -EACCES
-> > > when vfs_getxattr handler is called.
-> > > 
-> > > For the use case where access is to be blocked by the security layer.
-> > > 
-> > > The path then would be security(dentry) ->
-> > > __vfs_getxattr({dentry...XATTR_NOSECURITY}) ->
-> > > handler->get({dentry...XATTR_NOSECURITY}) ->
-> > > __vfs_getxattr({realdentry...XATTR_NOSECURITY}) ->
-> > > lower_handler->get({realdentry...XATTR_NOSECURITY}) which
-> > > would report back through the chain data and success as expected,
-> > > the logging security layer at the top would have the data to
-> > > determine the access permissions and report back to the logs and
-> > > the caller that the target context was blocked.
-> > > 
-> > > For selinux this would solve the cosmetic issue of the selinux log
-> > > and allow audit2allow to correctly report the rule needed to address
-> > > the access problem.
-> > > 
-> > > Check impure, opaque, origin & meta xattr with no sepolicy audit
-> > > (using __vfs_getxattr) since these operations are internal to
-> > > overlayfs operations and do not disclose any data.  This became
-> > > an issue for credential override off since sys_admin would have
-> > > been required by the caller; whereas would have been inherently
-> > > present for the creator since it performed the mount.
-> > > 
-> > > This is a change in operations since we do not check in the new
-> > > ovl_do_getxattr function if the credential override is off or not.
-> > > Reasoning is that the sepolicy check is unnecessary overhead,
-> > > especially since the check can be expensive.
-> > > 
-> > > Because for override credentials off, this affects _everyone_ that
-> > > underneath performs private xattr calls without the appropriate
-> > > sepolicy permissions and sys_admin capability.  Providing blanket
-> > > support for sys_admin would be bad for all possible callers.
-> > > 
-> > > For the override credentials on, this will affect only the mounter,
-> > > should it lack sepolicy permissions. Not considered a security
-> > > problem since mounting by definition has sys_admin capabilities,
-> > > but sepolicy contexts would still need to be crafted.
-> > This would be a problem when unprivileged mounting of overlay is
-> > introduced.  I'd really like to avoid weakening the current security
-> > model.
-> 
-> The current security model does not deal with non-overlapping security
-> contexts between init (which on android has MAC permissions only when
-> necessary, only enough permissions to perform the mount and other mundane
-> operations, missing exec and read permissions in key spots) and user calls.
-> 
-> We are only weakening (that is actually an incorrect statement, security is
-> there, just not double security of both mounter and caller) the security
-> around calls that retrieve the xattr for administrative and internal
-> purposes. No data is exposed to the caller that it would not otherwise have
-> permissions for.
+Hello,
 
-We've ran into the same issues that Mark is trying to solve with this
-series. I came across Mark's series while searching around before I
-wrote up a similar patch to Mark's patch #3.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-We have a confined process that sets up Overlayfs mounts, then that process
-starts a service confined by another security context, then that service
-may execute binaries that run under a third security context. In this
-case, I'm talking about SELinux security contexts but it could be
-AppArmor or anything else that you use to separate out
-privileges/permissions at fine-grained detail.
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-We don't want to grant all the privileges/permissions required by the
-service (and its helper utilities) to the process that sets up the
-Overlayfs mounts because we've been very careful in separating them
-apart with security policy. However, we want to make use of Overlayfs
-and adding a mount option to bypass the check on the mounter's cred
-seems like a safe way of using Overlayfs without violating our principle
-of least privilege.
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
-Tyler
+Regards,
+Ms. Reem.
 
-> 
-> This patch becomes necessary when matched with the PATCH v18 3/4 of the
-> series which fixes the user space break introduced in ~4.6 that formerly
-> used the callers credentials for all accesses in all places. Security is
-> weakened already as-is in overlayfs with all the overriding of the
-> credentials for internal accesses to overlayfs mechanics based on the
-> mounter credentials. Using the mounter credentials as a wider security hole
-> is the problem, at least with PATCH v18 3/4 of the series we go back
-> optionally to only using the caller's credentials to perform the operations.
-> Admittedly some of the internal operations like mknod are privileged, but at
-> least in Android's use case we are not using them with callers without the
-> necessary credentials.
-> 
-> Android does not give the mounter more credentials than the callers, there
-> is very little overlap in the MAC security.
-> 
-> > The big API churn in the 1/4 patch also seems excessive considering
-> > that this seems to be mostly a cosmetic issue for android.  Am I
-> > missing something?
-> 
-> Breaks sepolicy, it no longer has access to the context data at the
-> overlayfs security boundary.
-> 
-> unknown is a symptom of being denied based on the denial to xattr data from
-> the underlying filesystem layer. Being denied the security context of the
-> target is not a good thing within the sepolicy security layer.
-> 
-> > 
-> > Thanks,
-> > Miklos
-> 
-> 
