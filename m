@@ -2,69 +2,104 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42A7030DE55
-	for <lists+linux-unionfs@lfdr.de>; Wed,  3 Feb 2021 16:37:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E9730EF80
+	for <lists+linux-unionfs@lfdr.de>; Thu,  4 Feb 2021 10:21:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234586AbhBCPhl (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 3 Feb 2021 10:37:41 -0500
-Received: from 198-20-226-115.unifiedlayer.com ([198.20.226.115]:56722 "EHLO
-        198-20-226-115.unifiedlayer.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S234512AbhBCPgR (ORCPT
+        id S234874AbhBDJUf (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 4 Feb 2021 04:20:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44392 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234755AbhBDJUd (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 3 Feb 2021 10:36:17 -0500
-X-Greylist: delayed 29383 seconds by postgrey-1.27 at vger.kernel.org; Wed, 03 Feb 2021 10:35:24 EST
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=carnivalassure.com.bd; s=default; h=Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=miRpAdBSO5eDo01VDX+EK9bqGCmqMjXHS3kO16T6iWw=; b=BeRp52iTZNZnIj6Yk4q4qmVg1o
-        TGW3OyQQDqdIygbFzrOvnb1VFlTwDZeYzPg7x0gcAhNqpY+RPOU8XZPJCHVzHp7N6NMkd40+DlrAZ
-        BxMd0S46HbScvjeaenOH3+S94exP2AbS+FzziGjhE87mUv7G1Yf3DGvnuFRQOMF8rB7m0VxjRMPDd
-        55/dxUiSnVbBa0JImuQYYXUpRt83SOvMPmEy3tm7HhC6eVNF+f6Wxow3WBSbpKE+vZC1jXRKKl9C1
-        bK6OQxLWFq7P4uMl6BygkP9QC4QklVZQU7qWYFjfzBfV8UP2ROnwJjNJGJIyClrEEjRpgcDNFfVIx
-        4EKHpC7g==;
-Received: from [127.0.0.1] (port=46990 helo=dot.dotlines.com.sg)
-        by dot.dotlines.com.sg with esmtpa (Exim 4.93)
-        (envelope-from <noreply@carnivalassure.com.bd>)
-        id 1l7CVy-0005dS-7D; Wed, 03 Feb 2021 01:23:50 -0600
+        Thu, 4 Feb 2021 04:20:33 -0500
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A558BC061573
+        for <linux-unionfs@vger.kernel.org>; Thu,  4 Feb 2021 01:19:52 -0800 (PST)
+Received: by mail-ej1-x62a.google.com with SMTP id p20so4102224ejb.6
+        for <linux-unionfs@vger.kernel.org>; Thu, 04 Feb 2021 01:19:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=8lxogqlMZgpD9J7gbgqwGDjE7NKX9NOMGrM6eS5WeBQ=;
+        b=QdCtg961nF58oQwzzj/FzDEuBgWW7M25dZnVjXoEgymQXTCxy0678cMv6XetCZpUaZ
+         qGUlVnZB3LpsWGlT71eX2hazbFGUU2pF0XcdLR33Ivk89k8hrz5XdRrgSaJhJCaZhyfT
+         OdwMZ5PMaqR3dd5Kq5eizc2wWsP0JYooM+DK4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=8lxogqlMZgpD9J7gbgqwGDjE7NKX9NOMGrM6eS5WeBQ=;
+        b=LZg7xCQNpnAzpETISX7Airnr1W/umbMYEO+t0VScOrVsw6ou5CypUsHMSYSI1j7Kb9
+         snz1Idihg7NQEEiqz4J7qb394bjf/Ij+wJ+SNP86w4UGC5Y8l9Is3XvStfBRB9FV4Gl/
+         5AkS9cdkOCf6y78aRO2doDioywperJNlPNWpj6aqH3vtDdNK08NhIXR9n8SbmkTo8jqO
+         sm+4iZqTYBe0HzNxWRqnKrqGqovQhAlSpkn/P+RvG2+pnSrnKSx3/AybHE8ob7lQroWC
+         1QxNzK4QlkLZD7ayR3fbxckzV1vRlYoOyhQalDfGKHWQ2xbYNED2SyTKI6PgDvuLa7C3
+         dXcQ==
+X-Gm-Message-State: AOAM532MuXbBEXiVaJ5xB+UpcfrToLu7oBclpgEdQQszx9JRwsu68i6z
+        Ym5IYwLLDw/m1lkbYP7DTa2vaA==
+X-Google-Smtp-Source: ABdhPJzueTAe+j4RnxD8AuLmdsIejqrJgdfclHJVHYp18QuH68ItotqE3diVPpuh2mkrAQoj3CScEw==
+X-Received: by 2002:a17:906:2d0:: with SMTP id 16mr7353415ejk.373.1612430391385;
+        Thu, 04 Feb 2021 01:19:51 -0800 (PST)
+Received: from miu.piliscsaba.redhat.com (catv-86-101-169-67.catv.broadband.hu. [86.101.169.67])
+        by smtp.gmail.com with ESMTPSA id k26sm2255486eds.41.2021.02.04.01.19.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Feb 2021 01:19:50 -0800 (PST)
+Date:   Thu, 4 Feb 2021 10:19:43 +0100
+From:   Miklos Szeredi <miklos@szeredi.hu>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-unionfs@vger.kernel.org
+Subject: [GIT PULL] overlayfs fixes for 5.11-rc7
+Message-ID: <20210204091943.GA1208880@miu.piliscsaba.redhat.com>
 MIME-Version: 1.0
-Date:   Wed, 03 Feb 2021 01:23:49 -0600
-From:   Francois Pinault <noreply@carnivalassure.com.bd>
-To:     undisclosed-recipients:;
-Subject: Hello/Hallo
-Organization: Donation
-Reply-To: francoispinault1936@outlook.com
-Mail-Reply-To: francoispinault1936@outlook.com
-Message-ID: <6b70d71c493b5c027dd3ef878f38d028@carnivalassure.com.bd>
-X-Sender: noreply@carnivalassure.com.bd
-User-Agent: Roundcube Webmail/1.3.15
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - dot.dotlines.com.sg
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - carnivalassure.com.bd
-X-Get-Message-Sender-Via: dot.dotlines.com.sg: authenticated_id: noreply@carnivalassure.com.bd
-X-Authenticated-Sender: dot.dotlines.com.sg: noreply@carnivalassure.com.bd
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
+Hi Linus,
 
+Please pull from:
 
--- 
-Hallo, ich bin Herr Francois Pinault, ich habe Ihnen gespendet. Sie 
-können mein Profil auf Wikipedia, Google oder Forbes überprüfen.
+  git://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/vfs.git tags/ovl-fixes-5.11-rc7
 
-Für Ihren Spendenanspruch und weitere Informationen kontaktieren Sie 
-mich umgehend unter francoispinault1936@outlook.com
+- Fix capability conversion and minor overlayfs bugs that are related to
+  the unprivileged overlay mounts introduced in this cycle.
 
-Mit freundlichen Grüßen,
-Herr Francois Pinault
+- Fix two recent (v5.10) and one old (v4.10) bug.
+
+- Clean up security xattr copy-up (related to a SELinux regression).
+
+Thanks,
+Miklos
+
+---
+Amir Goldstein (1):
+      ovl: skip getxattr of security labels
+
+Liangyan (1):
+      ovl: fix dentry leak in ovl_get_redirect
+
+Miklos Szeredi (4):
+      ovl: add warning on user_ns mismatch
+      ovl: perform vfs_getxattr() with mounter creds
+      cap: fix conversions on getxattr
+      ovl: avoid deadlock on directory ioctl
+
+Sargun Dhillon (1):
+      ovl: implement volatile-specific fsync error behaviour
+
+---
+ Documentation/filesystems/overlayfs.rst |  8 ++++
+ fs/overlayfs/copy_up.c                  | 15 ++++----
+ fs/overlayfs/dir.c                      |  2 +-
+ fs/overlayfs/file.c                     |  5 ++-
+ fs/overlayfs/inode.c                    |  2 +
+ fs/overlayfs/overlayfs.h                |  1 +
+ fs/overlayfs/ovl_entry.h                |  2 +
+ fs/overlayfs/readdir.c                  | 28 +++++---------
+ fs/overlayfs/super.c                    | 38 +++++++++++++++----
+ fs/overlayfs/util.c                     | 27 +++++++++++++
+ security/commoncap.c                    | 67 +++++++++++++++++++++------------
+ 11 files changed, 136 insertions(+), 59 deletions(-)
