@@ -2,95 +2,115 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E3973158AC
-	for <lists+linux-unionfs@lfdr.de>; Tue,  9 Feb 2021 22:34:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDC19316F85
+	for <lists+linux-unionfs@lfdr.de>; Wed, 10 Feb 2021 20:06:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230520AbhBIVbF (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 9 Feb 2021 16:31:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:54217 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234050AbhBIUtk (ORCPT
+        id S234290AbhBJTEl (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 10 Feb 2021 14:04:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44220 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233940AbhBJTES (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 9 Feb 2021 15:49:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1612903693;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-        bh=a2Cs/ud03Am1UhxSURpaDmre44vy57aZG9d+6gX+pVw=;
-        b=P1nYAElhvW/wR2uWysotCnVMMC99B3bUrxhS8C6WCjsIafkllNnW05aIQUOTIeswvsyWNs
-        UzhwIA6hnR4BGbWpmkkWH12IPYDypZzP80HnSAQkKveWWh9ktzrWOXAyBIveqWBGEe3ZNl
-        fpH74mqPKQaeOyOuzNWgMbSn9hkMkHM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-364-7UyUNDLQPWCeJ1vePQeD7w-1; Tue, 09 Feb 2021 15:02:36 -0500
-X-MC-Unique: 7UyUNDLQPWCeJ1vePQeD7w-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7BB71BBEE2;
-        Tue,  9 Feb 2021 20:02:34 +0000 (UTC)
-Received: from horse.redhat.com (ovpn-116-3.rdu2.redhat.com [10.10.116.3])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1B7696091B;
-        Tue,  9 Feb 2021 20:02:34 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-        id A1761220BCF; Tue,  9 Feb 2021 15:02:33 -0500 (EST)
-Date:   Tue, 9 Feb 2021 15:02:33 -0500
-From:   Vivek Goyal <vgoyal@redhat.com>
-To:     selinux@vger.kernel.org, linux-unionfs@vger.kernel.org
-Cc:     Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Daniel J Walsh <dwalsh@redhat.com>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Giuseppe Scrivano <gscrivan@redhat.com>
-Subject: [PATCH] selinux: Allow context mounts for unpriviliged overlayfs
-Message-ID: <20210209200233.GF3171@redhat.com>
+        Wed, 10 Feb 2021 14:04:18 -0500
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E8B6C061574;
+        Wed, 10 Feb 2021 11:03:38 -0800 (PST)
+Received: by mail-ej1-x634.google.com with SMTP id hs11so6126568ejc.1;
+        Wed, 10 Feb 2021 11:03:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KFfbKaC/1iBgwD3dVuP410DXgW00Uvj9flLaJMQKNDA=;
+        b=R3lfkRs4WmjYM68wc6sg2KI/6n6kS7pulTgwV4Ytm5HrpQw+loCu/11jyNpvR/ILhi
+         9wbyAG3smdcYBveg+PAzCl/HFCcLSLI7CxuWNt2aSOTw6zeWQvS5GAsFmU4YWYzQIbQe
+         rCyg8q4MohXEBU1vGc4iDI/NFQHn3xZhvqxNw1LOsHuU2U4WUDCNEcrFjOBoNDwcIjYh
+         TpX7KwWIs7MVwgflWrandDg8d62+vT6W3sU68cM9bG8SgIVIR0tZ3npV0cjvo5ofgMZc
+         JBh/ysO8o5S9medhZygopBwMerSEyoNbIYPsrOEj0YihrfdpOwO38kHCSj/TWNLjpb5F
+         44kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KFfbKaC/1iBgwD3dVuP410DXgW00Uvj9flLaJMQKNDA=;
+        b=cSfK0pwjavzunXPGmujDAdfWmOdFrnv42E+sNV1SW6MD5NWD5s7wpGGHoBb8dO32Ls
+         msG7n867KQF+AHorapXGazfrWC7sgdcH+lm7DIA0uVFjDtKKpE5xygKBdLXvuDZx60mE
+         AlUKGgss9BuiZwWmZL/DRWrbwKUhHTLwe2bTWqCws2SwCklHuJK5KCqZQkpp8XCLWGGv
+         0y7/ngPEOKZNWhLib2iWdmSZk7JW2nKGNee5OCjMC9c+0+nX/dMgCHodLHBH3H7w6g5v
+         06HZCLxyCXTgF9rLLC1t5iioC12Mvp3QWUF7anj4mNnCpuoqbXTYcfuX52ZtVIavQnty
+         VTvw==
+X-Gm-Message-State: AOAM5324zbAdggMpk3WtqId3tUaiBSQFAMdPizOFU1FVIe/im8P/s1rY
+        KOHjLAe9bLyPe0Rxm9Gk0RY=
+X-Google-Smtp-Source: ABdhPJwdv0SCOgZ7ooBnyb2NOKuGkahSJbiE6I2eS3RNPbJDqUNd9Y+I8su/o4EM6Qt+xxgB8FxHkA==
+X-Received: by 2002:a17:906:a246:: with SMTP id bi6mr4440479ejb.267.1612983817244;
+        Wed, 10 Feb 2021 11:03:37 -0800 (PST)
+Received: from localhost.localdomain ([141.226.162.179])
+        by smtp.gmail.com with ESMTPSA id m19sm1743617edq.81.2021.02.10.11.03.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Feb 2021 11:03:36 -0800 (PST)
+From:   Amir Goldstein <amir73il@gmail.com>
+To:     Eryu Guan <guaneryu@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
+        Icenowy Zheng <icenowy@aosc.io>,
+        Chengguang Xu <cgxu519@mykernel.net>,
+        linux-unionfs@vger.kernel.org, fstests@vger.kernel.org
+Subject: [PATCH v2 0/5] Tests for overlayfs immutable/append-only files
+Date:   Wed, 10 Feb 2021 21:03:29 +0200
+Message-Id: <20210210190334.1212210-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Now overlayfs allow unpriviliged mounts. That is root inside a non-init
-user namespace can mount overlayfs. This was added in 5.10 kernel.
+Eryu,
 
-Giuseppe tried to mount overlayfs with option "context" and it failed
-with error -EACCESS.
+Overlayfs never had full support for immutable/append-only files.
+Whatever works is covered by generic/079 and overlay/030 tests.
+Both tests cover only upper files and directories.
+generic/079 is notrun on kernel < 5.10 and passes on >= 5.10.
 
-$ su test
-$ unshare -rm
-$ mkdir -p lower upper work merged
-$ mount -t overlay -o lowerdir=lower,workdir=work,upperdir=upper,userxattr,context='system_u:object_r:container_file_t:s0' none merged
+This series improves the t_immutable test program and adds two new
+tests.
 
-This fails with -EACCESS. It works if option "-o context" is not specified.
+overlay/075 tests immutable/append-only lower files and directories -
+the test fails on upstream kernel.  Fixing this requires some VFS API
+changes that Miklos has proposed [1].
 
-Little debugging showed that selinux_set_mnt_opts() returns -EACCESS.
+overlay/076 is a "dangerous" test that triggers a deadlock.
+The deadlock was fixed in master and in stable kernel v5.10.15.
 
-So this patch adds "overlay" to the list, where it is fine to specific
-context from non init_user_ns.
+Thanks,
+Amir. 
 
-Reported-by: Giuseppe Scrivano <gscrivan@redhat.com>
-Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
----
- security/selinux/hooks.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Changes since v1:
+- Split the dangerous test
+- Document fix commit
+- Fix Eryu's minor review comments on t_immutable
 
-Index: redhat-linux/security/selinux/hooks.c
-===================================================================
---- redhat-linux.orig/security/selinux/hooks.c	2021-02-09 10:56:12.954988476 -0500
-+++ redhat-linux/security/selinux/hooks.c	2021-02-09 14:36:33.136205330 -0500
-@@ -733,7 +733,8 @@ static int selinux_set_mnt_opts(struct s
- 	if (sb->s_user_ns != &init_user_ns &&
- 	    strcmp(sb->s_type->name, "tmpfs") &&
- 	    strcmp(sb->s_type->name, "ramfs") &&
--	    strcmp(sb->s_type->name, "devpts")) {
-+	    strcmp(sb->s_type->name, "devpts") &&
-+	    strcmp(sb->s_type->name, "overlay")) {
- 		if (context_sid || fscontext_sid || rootcontext_sid ||
- 		    defcontext_sid) {
- 			rc = -EACCES;
+[1] https://lore.kernel.org/linux-fsdevel/20210203124112.1182614-1-mszeredi@redhat.com/
+
+Amir Goldstein (5):
+  overlay/030: Update comment w.r.t upstream kernel
+  src/t_immutable: factor out some helpers
+  src/t_immutable: Allow setting flags on existing files
+  overlay: Test lost immutable/append-only flags on copy-up
+  overlay: Regression test for deadlock on directory ioctl
+
+ src/t_immutable.c     | 241 +++++++++++++++++++++---------------------
+ tests/overlay/030     |   7 +-
+ tests/overlay/075     |  92 ++++++++++++++++
+ tests/overlay/075.out |  11 ++
+ tests/overlay/076     |  66 ++++++++++++
+ tests/overlay/076.out |   2 +
+ tests/overlay/group   |   2 +
+ 7 files changed, 301 insertions(+), 120 deletions(-)
+ create mode 100755 tests/overlay/075
+ create mode 100644 tests/overlay/075.out
+ create mode 100644 tests/overlay/076
+ create mode 100644 tests/overlay/076.out
+
+-- 
+2.25.1
 
