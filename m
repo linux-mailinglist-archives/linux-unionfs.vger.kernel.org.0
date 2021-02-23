@@ -2,69 +2,60 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70676322016
-	for <lists+linux-unionfs@lfdr.de>; Mon, 22 Feb 2021 20:28:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06BA3322A12
+	for <lists+linux-unionfs@lfdr.de>; Tue, 23 Feb 2021 13:01:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233201AbhBVT0o (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 22 Feb 2021 14:26:44 -0500
-Received: from 85-234-135-248.static.as29550.net ([85.234.135.248]:46262 "EHLO
-        host.flippiebekerwealth.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233054AbhBVTYX (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 22 Feb 2021 14:24:23 -0500
-Received: from flippiebekerwealth.com (ec2-3-101-41-44.us-west-1.compute.amazonaws.com [3.101.41.44])
-        by host.flippiebekerwealth.com (Postfix) with ESMTPA id 7AE8B183114
-        for <linux-unionfs@vger.kernel.org>; Mon, 22 Feb 2021 11:40:29 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippiebekerwealth.com 7AE8B183114
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippiebekerwealth.com; s=default; t=1613994030;
-        bh=bx6DI0FN7gnGOLqxCBrAT5uR7A3FnXfRv6l+o8DO0RI=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=loW6JRf/vTdaWXLQu1OLeOLhsYNAqnYoDpOHeJHOdtD51ZpLFP1bc10JMAW9hrUtB
-         UpxdpTD//ttglorNMo0wbJzMDhCRGNWgMeCOKtbtc3zqsPxiekZcGHKN6vDK8AC65+
-         gTH1m2KsfUNjyV8KOPy3WW2fh5n4qYrqLCd+tjaU=
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippiebekerwealth.com 7AE8B183114
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippiebekerwealth.com; s=default; t=1613994029;
-        bh=bx6DI0FN7gnGOLqxCBrAT5uR7A3FnXfRv6l+o8DO0RI=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=Z6+MsrbMsJyiBxKklYNvwJgHAF4aV3lGaJaKrpbiG/E2V5n90QAiY/9xe+AhbG/JR
-         6qeyRMW1DIezQqrNAfgn+rs4Ju/HHf6FdqvJYs/SPbj+lpQv2Y5AZnhUXgATLo/Ypf
-         dn69BcblzMvX1op7wJd6IhBz056POh0KWvNojUUM=
-Reply-To: deanjohns201@flippiebeckerwealth.com
-From:   Dean <deanjohns201@flippiebekerwealth.com>
-To:     linux-unionfs@vger.kernel.org
-Subject: New Projects
-Date:   22 Feb 2021 19:40:27 +0800
-Message-ID: <20210222194027.33ED85036AE1254D@flippiebekerwealth.com>
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+        id S232558AbhBWL5o (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 23 Feb 2021 06:57:44 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:54491 "EHLO mail.JVPinto.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232501AbhBWLyb (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Tue, 23 Feb 2021 06:54:31 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 03:52:35 -0800
+Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Tue, 23 Feb 2021
+ 03:52:20 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Hello okay
+Date:   Tue, 23 Feb 2021 11:52:34 +0000
+MIME-Version: 1.0
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <933f089f49b04946b97b7d0f2a305064@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Hello there,
+Hello,
 
-I hope this message finds you in good spirits especially during=20
-this challenging time of coronavirus pandemic. I hope you and=20
-your family are well and keeping safe. Anyway, I am Dean=20
-Johnston, a broker working with Flippiebecker Wealth. I got your=20
-contact (along with few other contacts) through an online=20
-business directory and I thought I should contact you to see if=20
-you are interested in this opportunity. I am contacting you=20
-because one of my high profile clients is interested in investing=20
-abroad and has asked me to look for individuals and companies=20
-with interesting business ideas and projects that he can invest=20
-in. He wants to invest a substantial amount of asset abroad.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-Please kindly respond back to this email if you are interested in=20
-this opportunity. Once I receive your response, I will give you=20
-more details and we can plan a strategy that will be beneficial=20
-to all parties.
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-Best regards
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
-D Johnston
-Flippiebecker Wealth
+Regards,
+Ms. Reem.
