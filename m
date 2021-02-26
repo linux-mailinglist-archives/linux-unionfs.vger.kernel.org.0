@@ -2,60 +2,77 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06BA3322A12
-	for <lists+linux-unionfs@lfdr.de>; Tue, 23 Feb 2021 13:01:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8844132605C
+	for <lists+linux-unionfs@lfdr.de>; Fri, 26 Feb 2021 10:44:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232558AbhBWL5o (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 23 Feb 2021 06:57:44 -0500
-Received: from mail.jvpinto.com ([65.49.11.60]:54491 "EHLO mail.JVPinto.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232501AbhBWLyb (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 23 Feb 2021 06:54:31 -0500
-Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
- RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 03:52:35 -0800
-Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
- Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Tue, 23 Feb 2021
- 03:52:20 -0800
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <johnpinto@jvpinto.com>
-Subject: Hello okay
-Date:   Tue, 23 Feb 2021 11:52:34 +0000
+        id S230209AbhBZJnZ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 26 Feb 2021 04:43:25 -0500
+Received: from sender2-op-o12.zoho.com.cn ([163.53.93.243]:17177 "EHLO
+        sender2-op-o12.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230299AbhBZJmN (ORCPT
+        <rfc822;linux-unionfs@vger.kernel.org>);
+        Fri, 26 Feb 2021 04:42:13 -0500
+X-Greylist: delayed 989 seconds by postgrey-1.27 at vger.kernel.org; Fri, 26 Feb 2021 04:42:11 EST
+ARC-Seal: i=1; a=rsa-sha256; t=1614331488; cv=none; 
+        d=zoho.com.cn; s=zohoarc; 
+        b=G4Hba9YRz71lrZcwpZ6SLpwT+VJI6MfiDmDDhvRqu0zY6SQ9XJpuFOfgKPFCdp+hOywdcJotw21dlARJMhhi30Vzwbx1Brg41vLIn31BBQA+U8UjGVuViXYm8sijpnNNfMF0j1FnciE3Ub/94f7n+BODRXm/vc7tpuKtKxqfIfQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
+        t=1614331488; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=CTztSl9UKkvRbao4QSE6TZe/Ttt/tA+rDUDI/ZzmUnc=; 
+        b=BcZuJDfmcEN/Ig+8UPhP3HehjdCHmziR7rSdZs65Sj1u3IthGqfaQ/bIyESDNsQDzcXE4yV7VWwuOyDSMpbdPZg37R34dsVQMBRIPDK2hnEQSh5RXQFK0UOsr0B+WQuAQ8/oAhljQZAQAEl14vZla0EP8LPbJJzLFWFhGvT5U1w=
+ARC-Authentication-Results: i=1; mx.zoho.com.cn;
+        dkim=pass  header.i=mykernel.net;
+        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
+        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1614331488;
+        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
+        h=From:To:Cc:Message-ID:Subject:Date:MIME-Version:Content-Transfer-Encoding:Content-Type;
+        bh=CTztSl9UKkvRbao4QSE6TZe/Ttt/tA+rDUDI/ZzmUnc=;
+        b=DrsUeY4ZHz6d3VfBSd1shX+lPh1vn3JLT9l3x0lEt5ma1OS2wzgNXIriGF5MPRNj
+        GOcJFBRtcDvdY/Bi5yNOWYSKOHO357hWTRp4w+XBsvTqglK1iWQIQoWCvksW3gZ1QAK
+        CqR8ZJZuD9ZtrF+pqToprpVjPU13OM29OcnYIPDE=
+Received: from localhost.localdomain (159.75.42.226 [159.75.42.226]) by mx.zoho.com.cn
+        with SMTPS id 1614331485304836.4058185585586; Fri, 26 Feb 2021 17:24:45 +0800 (CST)
+From:   Chengguang Xu <cgxu519@mykernel.net>
+To:     miklos@szeredi.hu
+Cc:     linux-unionfs@vger.kernel.org, Chengguang Xu <cgxu519@mykernel.net>
+Message-ID: <20210226092417.2621682-1-cgxu519@mykernel.net>
+Subject: [RFC PATCH] ovl: do not copy attr several times
+Date:   Fri, 26 Feb 2021 17:24:17 +0800
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <933f089f49b04946b97b7d0f2a305064@RW-EXC1.JVPinto.com>
-To:     Undisclosed recipients:;
+Content-Transfer-Encoding: quoted-printable
+X-ZohoCNMailClient: External
+Content-Type: text/plain; charset=utf8
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Hello,
+In ovl_xattr_set() we have already copied attr of real inode
+so no need to copy it again in ovl_posix_acl_xattr_set().
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
+---
+ fs/overlayfs/super.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index d58b8f2bf9d0..c61f42c901d1 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1035,9 +1035,6 @@ ovl_posix_acl_xattr_set(const struct xattr_handler *h=
+andler,
+ =09}
+=20
+ =09err =3D ovl_xattr_set(dentry, inode, handler->name, value, size, flags)=
+;
+-=09if (!err)
+-=09=09ovl_copyattr(ovl_inode_real(inode), inode);
+-
+ =09return err;
+=20
+ out_acl_release:
+--=20
+2.27.0
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
 
-Regards,
-Ms. Reem.
