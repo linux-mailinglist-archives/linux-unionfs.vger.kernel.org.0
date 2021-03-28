@@ -2,109 +2,63 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDDCD347D65
-	for <lists+linux-unionfs@lfdr.de>; Wed, 24 Mar 2021 17:13:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21D6034BE1D
+	for <lists+linux-unionfs@lfdr.de>; Sun, 28 Mar 2021 20:08:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231425AbhCXQM6 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 24 Mar 2021 12:12:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44258 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230174AbhCXQMz (ORCPT
+        id S231560AbhC1SID (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 28 Mar 2021 14:08:03 -0400
+Received: from mail.hanoi.gov.vn ([113.160.32.33]:32049 "EHLO
+        mx01.hanoi.gov.vn" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231492AbhC1SHi (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 24 Mar 2021 12:12:55 -0400
-Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com [IPv6:2607:f8b0:4864:20::e2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC3A4C061763
-        for <linux-unionfs@vger.kernel.org>; Wed, 24 Mar 2021 09:12:53 -0700 (PDT)
-Received: by mail-vs1-xe2a.google.com with SMTP id l22so11627252vsr.13
-        for <linux-unionfs@vger.kernel.org>; Wed, 24 Mar 2021 09:12:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=i1aqrOBqQdftCwIOTcEzH4XHyHId1YuWwZA7VcY1Uhk=;
-        b=fuTCMmKG11Y9w7r2to23Mefn7avFRqwK17IxAEFlu1rfOuy7sKRHjDO6lTkuhTGaJS
-         H0jjwUnae/LAcNXgOrzvwSdRTQMJ4HNXX93WbOA+yUOnSVaPc9FMC58un5bPuDPfYhNn
-         zVN6Yk2BEg+zGvm819sSR64pWuWfB0O1RWXnc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=i1aqrOBqQdftCwIOTcEzH4XHyHId1YuWwZA7VcY1Uhk=;
-        b=j21aRZ6agF/Qar1V1XsltZU/28iqANusc1bMIOXYayu1USl0Y4i2Su++lfnqw5Sl2Z
-         wpdJk94zUJC/kmU3AXWa53qmKUuipsLTmZSR5/6cUZywoviStRYIP1pxDSe8OYgHm2tF
-         wwSb+zHEMwQUOjfvXOudm2znok66UEXC+31J0ihr2ZKrnD99lmF1qDI4+CY3dh4BQ08o
-         2nQGmRiKMnTRE4xxtYWPlnODk0nk/oRl0qRl4bGd0qdr9JnFDz/qDwFWGz4dAWl3GNdk
-         +jGeHBSmMr+AvcIXnlbTciApnYiB6wB7QB8lm0B9/zEI0I0Xr5W8Q7aVjTzBFfsviWtq
-         MgFQ==
-X-Gm-Message-State: AOAM532Jwzn0Ha+VOeXBi01qnf5deAAWHgskeRIfcyWo2e69iokl+yAw
-        6ck+wP3p2meSShUQmCOFhQmAeuV7M35+HSb3oxNBFg==
-X-Google-Smtp-Source: ABdhPJxNL+KlUlMVin6wb0kpRRBsWBot5z2ZI5p9oTvVZnebt/VTIka2OZH8JyD0svn2xV44QsGVDDPsRivdsCAPZzY=
-X-Received: by 2002:a67:8793:: with SMTP id j141mr2499459vsd.7.1616602372838;
- Wed, 24 Mar 2021 09:12:52 -0700 (PDT)
+        Sun, 28 Mar 2021 14:07:38 -0400
+X-Greylist: delayed 483 seconds by postgrey-1.27 at vger.kernel.org; Sun, 28 Mar 2021 14:07:32 EDT
+Received: from mx01.hanoi.gov.vn (localhost [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4B597EC3DB;
+        Mon, 29 Mar 2021 00:58:07 +0700 (+07)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hanoi.gov.vn;
+        s=default; t=1616954288;
+        bh=FuW10Z6fSdeNlf/0u/BQ1jcwkjYBw0uHUPQgn0LGo7I=; h=Date:From:To;
+        b=MnJpubbCOoNzrGbdl4opA9pGiqD1qL1TzNpy60QO4II5VnNpsotVl818lYgRa6I3d
+         Omzy1cLH1+oH7hvhrvWFGEjWO4Du7emM//yWycfTmkwXhJBSFfgFLpRpJNgbPUcm37
+         IfeanaeGGyboioiPWx6i9EzzU+DQGarsjKQF0WLA=
+X-IMSS-DKIM-Authentication-Result: mx01.hanoi.gov.vn; sigcount=0
+Received: from mx01.hanoi.gov.vn (localhost [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 713EBEC3DD;
+        Mon, 29 Mar 2021 00:58:05 +0700 (+07)
+Received: from mail.hanoi.gov.vn (mail.hanoi.gov.vn [10.1.1.25])
+        by mx01.hanoi.gov.vn (Postfix) with ESMTPS;
+        Mon, 29 Mar 2021 00:58:05 +0700 (+07)
+Received: from mail.hanoi.gov.vn (localhost [127.0.0.1])
+        by mail.hanoi.gov.vn (Postfix) with ESMTPS id 7EB1F7F41B5D;
+        Mon, 29 Mar 2021 00:57:59 +0700 (+07)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.hanoi.gov.vn (Postfix) with ESMTP id 9F9587F41B42;
+        Mon, 29 Mar 2021 00:57:56 +0700 (+07)
+Received: from mail.hanoi.gov.vn ([127.0.0.1])
+        by localhost (mail.hanoi.gov.vn [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 5aziPsZZzTJX; Mon, 29 Mar 2021 00:57:52 +0700 (+07)
+Received: from mail.hanoi.gov.vn (mail.hanoi.gov.vn [10.1.1.25])
+        by mail.hanoi.gov.vn (Postfix) with ESMTP id 923357F41B59;
+        Mon, 29 Mar 2021 00:57:49 +0700 (+07)
+Date:   Mon, 29 Mar 2021 00:57:49 +0700 (ICT)
+From:   Mackenzie Scott <ttptqd_thanhoai@hanoi.gov.vn>
+Reply-To: Mackenzie Scott <propack@propck.net>
+Message-ID: <338153864.25920933.1616954269522.JavaMail.zimbra@hanoi.gov.vn>
+Subject: Congratulations ($ 100,800,000.00)
 MIME-Version: 1.0
-References: <20210301061930.3459022-1-cgxu519@mykernel.net> <CAOQ4uxhijbRwH8BxzZ6CMqZiJB_cK6k_QWFB-sg4zH=H-n3+0w@mail.gmail.com>
-In-Reply-To: <CAOQ4uxhijbRwH8BxzZ6CMqZiJB_cK6k_QWFB-sg4zH=H-n3+0w@mail.gmail.com>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Wed, 24 Mar 2021 17:12:41 +0100
-Message-ID: <CAJfpegsWoWA6BUaJGDEiysCcQKemA6FWurdxy_enXsSNvX=YiQ@mail.gmail.com>
-Subject: Re: [PATCH] ovl: fix error for ovl_fill_super()
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Chengguang Xu <cgxu519@mykernel.net>,
-        overlayfs <linux-unionfs@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [185.107.80.217]
+X-Mailer: Zimbra 8.8.15_GA_3894 (zclient/8.8.15_GA_3894)
+Thread-Index: /8qcKB84H/IsUnGyWvfkptZHVH6P1Q==
+Thread-Topic: Congratulations ($ 100,800,000.00)
+To:     undisclosed-recipients:;
+X-TM-AS-GCONF: 00
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Mon, Mar 1, 2021 at 8:57 AM Amir Goldstein <amir73il@gmail.com> wrote:
->
-> On Mon, Mar 1, 2021 at 8:28 AM Chengguang Xu <cgxu519@mykernel.net> wrote:
-> >
-> > There are some places should return -EINVAL instead of
-> > -ENOMEM in ovl_fill_super(), so just fix it.
-> >
-> > Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
-> > ---
-> >  fs/overlayfs/super.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-> > index fdd72f1a9c5e..3dda1d530a43 100644
-> > --- a/fs/overlayfs/super.c
-> > +++ b/fs/overlayfs/super.c
-> > @@ -1984,6 +1984,7 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
-> >         if (numlower > OVL_MAX_STACK) {
-> >                 pr_err("too many lower directories, limit is %d\n",
-> >                        OVL_MAX_STACK);
-> > +               err = -EINVAL;
-> >                 goto out_err;
-> >         }
-> >
-> > @@ -2010,6 +2011,7 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
-> >         /* alloc/destroy_inode needed for setting up traps in inode cache */
-> >         sb->s_op = &ovl_super_operations;
-> >
-> > +       err = -EINVAL;
-> >         if (ofs->config.upperdir) {
-> >                 struct super_block *upper_sb;
-> >
->
-> OK. But we are not really being consistent in the ways we set err in this
-> function, which means we will have more of these bugs in the future
-> (and we have had them in the past as well...)
->
-> So either set err = -EINVAL after every pr_err() in this function:
-> - "missing lowerdir"
-> - "too many lower dirs"
-> - "missing workdir"
->
-> Or always set err before the tests including err = -ENOMEM
-> before allocating layers.
->
-> Mixing seems worse than either choice IMO.
->
-> Maybe Miklos has a better idea for tyding this up?
 
-Thanks, applied with consistency fixup.
 
-Miklos
+Hello,i&#39;m Mackenzie Scott,Ex-wife of Amazon founder i&#39;m donating $4 billion to charities,individuals,universities across the Globe from my divorce funds,i&#39;m donating part of it to provide immediate support to people suffering economically during the COVID-19 pandemic,i have a donation worth $100,800,000.00 Dollars for you,you can contact me for more information if you&#39;re interested.
