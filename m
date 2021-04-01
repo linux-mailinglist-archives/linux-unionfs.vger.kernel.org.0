@@ -2,145 +2,78 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDC043519BA
-	for <lists+linux-unionfs@lfdr.de>; Thu,  1 Apr 2021 20:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0201D351F59
+	for <lists+linux-unionfs@lfdr.de>; Thu,  1 Apr 2021 21:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236482AbhDAR4F (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 1 Apr 2021 13:56:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:55887 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237200AbhDARvB (ORCPT
+        id S235115AbhDATIG (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 1 Apr 2021 15:08:06 -0400
+Received: from sender2-op-o12.zoho.com.cn ([163.53.93.243]:17184 "EHLO
+        sender2-op-o12.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237029AbhDATGK (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 1 Apr 2021 13:51:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1617299461;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=GXWPtffsDMR9QZWl6Ce2ebcQcVpDYm8f+5vNo4wn+Z8=;
-        b=caVGPMXDmYWuYM5hSrjUji+pXrwlKnH4igvZkHl+5eIrK9ssMsj+vKzljhC57Rw98JwsFQ
-        d28XfwRcJUs7Cxyvnl2ijoFJp3Q7r/5Ul0T0gUUY3Y9MCOXILSHwN9j3lsEaQaoSl2EM4P
-        unug7Ssq+iN4p9eqODI5jExC+FwJhzA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-184-QwU6G8GQPR-20xv5hW3C5w-1; Thu, 01 Apr 2021 12:50:28 -0400
-X-MC-Unique: QwU6G8GQPR-20xv5hW3C5w-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7070187A826;
-        Thu,  1 Apr 2021 16:50:27 +0000 (UTC)
-Received: from horse.redhat.com (ovpn-113-97.rdu2.redhat.com [10.10.113.97])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C30F85D6D1;
-        Thu,  1 Apr 2021 16:50:25 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-        id 683EA22054F; Thu,  1 Apr 2021 12:50:24 -0400 (EDT)
-Date:   Thu, 1 Apr 2021 12:50:24 -0400
-From:   Vivek Goyal <vgoyal@redhat.com>
-To:     =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org,
-        Amir Goldstein <amir73il@gmail.com>, stable@vger.kernel.org,
-        syzbot <syzkaller@googlegroups.com>,
-        =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@linux.microsoft.com>
-Subject: Re: [PATCH v1] ovl: Fix leaked dentry
-Message-ID: <20210401165024.GB801967@redhat.com>
-References: <20210329164907.2133175-1-mic@digikod.net>
+        Thu, 1 Apr 2021 15:06:10 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1617275744; cv=none; 
+        d=zoho.com.cn; s=zohoarc; 
+        b=GscmV52/HOGHSOmpqdPDh1Nc18wJKyiXyOboUs0L8D95B319B72EC9+R6qSRkmM3bKK7WgKv2M/P+ryZ2YhPC3iPwvgOf37pnakuQ1vSq0OLS3co6o6eW6dvX3HGZACFFpEDS3xJppQpxYINTnCIDwf7bOQqNg7e4wAdn+GIU7w=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
+        t=1617275744; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:Reply-To:References:Subject:To; 
+        bh=TmcRNZvXx9uSUs2zbqJSWsAE2VIxg2LSl2evwr2bzys=; 
+        b=ZAMOAIFeGfZhu/Qn6++XmG1N8btUkQEir9n5YGL08I+rzh9zUNnrVfur0zb5kURbpVBrkzRI5/OM/H7Ebz5bP1XKrHaG/LAir7gIiQDiJ0aBeV2vbYlSBYEnmZImZRJxjTxIEqLvBfUyO2sEthgcwKvVlo8lw1PEzJML0xsL5EE=
+ARC-Authentication-Results: i=1; mx.zoho.com.cn;
+        dkim=pass  header.i=mykernel.net;
+        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
+        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1617275744;
+        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
+        h=Date:From:Reply-To:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=TmcRNZvXx9uSUs2zbqJSWsAE2VIxg2LSl2evwr2bzys=;
+        b=G0wPyoCAd5rwI1OxGbVkx4EbaJ/AWWpUQR1/DhH9EB/LlUqiff+ghJmLva5jlzJp
+        lRJDXEy43aXKtA/4IbeNriJ/b8LKEVTL5KwBqRDHEkcXjwEwqZKbFMgT0XidlXGiemU
+        PJJV1FqAnhAQBrB7jci5/H/JTxLlUGXdVzLyv9ao=
+Received: from mail.baihui.com by mx.zoho.com.cn
+        with SMTP id 1617275742068810.4826500911768; Thu, 1 Apr 2021 19:15:42 +0800 (CST)
+Date:   Thu, 01 Apr 2021 19:15:42 +0800
+From:   Chengguang Xu <cgxu519@mykernel.net>
+Reply-To: cgxu519@mykernel.net
+To:     "Miklos Szeredi" <miklos@szeredi.hu>
+Cc:     "overlayfs" <linux-unionfs@vger.kernel.org>
+Message-ID: <1788d256770.ff2961df3248.3624659711262801588@mykernel.net>
+In-Reply-To: <CAJfpeguFdafs65aOgDrJnAh6Tg8bnwP3gP5sUhfsRka5Azctbg@mail.gmail.com>
+References: <20210308111717.2027030-1-cgxu519@mykernel.net> <CAJfpeguFdafs65aOgDrJnAh6Tg8bnwP3gP5sUhfsRka5Azctbg@mail.gmail.com>
+Subject: Re: [PATCH] ovl: copy-up optimization for truncate
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210329164907.2133175-1-mic@digikod.net>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Importance: Medium
+User-Agent: ZohoCN Mail
+X-Mailer: ZohoCN Mail
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Mon, Mar 29, 2021 at 06:49:07PM +0200, Mickaël Salaün wrote:
-> From: Mickaël Salaün <mic@linux.microsoft.com>
-> 
-> Since commit 6815f479ca90 ("ovl: use only uppermetacopy state in
-> ovl_lookup()"), overlayfs doesn't put temporary dentry when there is a
-> metacopy error, which leads to dentry leaks when shutting down the
-> related superblock:
-> 
->   overlayfs: refusing to follow metacopy origin for (/file0)
->   ...
->   BUG: Dentry (____ptrval____){i=3f33,n=file3}  still in use (1) [unmount of overlay overlay]
->   ...
->   WARNING: CPU: 1 PID: 432 at umount_check.cold+0x107/0x14d
->   CPU: 1 PID: 432 Comm: unmount-overlay Not tainted 5.12.0-rc5 #1
->   ...
->   RIP: 0010:umount_check.cold+0x107/0x14d
->   ...
->   Call Trace:
->    d_walk+0x28c/0x950
->    ? dentry_lru_isolate+0x2b0/0x2b0
->    ? __kasan_slab_free+0x12/0x20
->    do_one_tree+0x33/0x60
->    shrink_dcache_for_umount+0x78/0x1d0
->    generic_shutdown_super+0x70/0x440
->    kill_anon_super+0x3e/0x70
->    deactivate_locked_super+0xc4/0x160
->    deactivate_super+0xfa/0x140
->    cleanup_mnt+0x22e/0x370
->    __cleanup_mnt+0x1a/0x30
->    task_work_run+0x139/0x210
->    do_exit+0xb0c/0x2820
->    ? __kasan_check_read+0x1d/0x30
->    ? find_held_lock+0x35/0x160
->    ? lock_release+0x1b6/0x660
->    ? mm_update_next_owner+0xa20/0xa20
->    ? reacquire_held_locks+0x3f0/0x3f0
->    ? __sanitizer_cov_trace_const_cmp4+0x22/0x30
->    do_group_exit+0x135/0x380
->    __do_sys_exit_group.isra.0+0x20/0x20
->    __x64_sys_exit_group+0x3c/0x50
->    do_syscall_64+0x45/0x70
->    entry_SYSCALL_64_after_hwframe+0x44/0xae
->   ...
->   VFS: Busy inodes after unmount of overlay. Self-destruct in 5 seconds.  Have a nice day...
-> 
-> This fix has been tested with a syzkaller reproducer.
-> 
+ ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=B8=80, 2021-03-29 23:13:52 Miklos Sze=
+redi <miklos@szeredi.hu> =E6=92=B0=E5=86=99 ----
+ > On Mon, Mar 8, 2021 at 12:17 PM Chengguang Xu <cgxu519@mykernel.net> wro=
+te:
+ > >
+ > > Currently copy-up will copy whole lower file to upper
+ > > regardless of the data range which is needed for further
+ > > operation. This patch avoids unnecessary copy when truncate
+ > > size is smaller than the file size.
+ >=20
+ > This doesn't look right.   If copy up succeeds, resulting in a
+ > truncated file, then we should return success there and then.   Doing
+ > the truncate again and failing (unlikely, but I wouldn't think it
+ > impossible) wouldn't be nice.
 
-Looks good to me. I realized that dentry leak will happen on underlying
-filesystem so unmount of underlying filesystem will give this warning. I
-created nested overlayfs configuration and could reproduce this error
-and tested that this patch fixes it.
+Hi Miklos
 
-Reviewed-by: Vivek Goyal <vgoyal@redhat.com>
+I noticed a problem here, if we just return success after copy-up then mtim=
+e
+keeps the same as lower file. I think doing the truncate again would be bet=
+ter
+than manually updating the upper file's mtime. What do you think for this?
 
-Vivek
-
-> Cc: Amir Goldstein <amir73il@gmail.com>
-> Cc: Miklos Szeredi <miklos@szeredi.hu>
-> Cc: Vivek Goyal <vgoyal@redhat.com>
-> Cc: <stable@vger.kernel.org> # v5.7+
-> Reported-by: syzbot <syzkaller@googlegroups.com>
-> Fixes: 6815f479ca90 ("ovl: use only uppermetacopy state in ovl_lookup()")
-> Signed-off-by: Mickaël Salaün <mic@linux.microsoft.com>
-> Link: https://lore.kernel.org/r/20210329164907.2133175-1-mic@digikod.net
-> ---
->  fs/overlayfs/namei.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
-> index 3fe05fb5d145..424c594afd79 100644
-> --- a/fs/overlayfs/namei.c
-> +++ b/fs/overlayfs/namei.c
-> @@ -921,6 +921,7 @@ struct dentry *ovl_lookup(struct inode *dir, struct dentry *dentry,
->  		if ((uppermetacopy || d.metacopy) && !ofs->config.metacopy) {
->  			err = -EPERM;
->  			pr_warn_ratelimited("refusing to follow metacopy origin for (%pd2)\n", dentry);
-> +			dput(this);
->  			goto out_put;
->  		}
->  
-> 
-> base-commit: a5e13c6df0e41702d2b2c77c8ad41677ebb065b3
-> -- 
-> 2.30.2
-> 
+Thanks,
+Chengguang
 
