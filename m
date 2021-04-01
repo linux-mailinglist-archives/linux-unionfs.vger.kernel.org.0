@@ -2,48 +2,90 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90D1334FA3C
-	for <lists+linux-unionfs@lfdr.de>; Wed, 31 Mar 2021 09:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D211351900
+	for <lists+linux-unionfs@lfdr.de>; Thu,  1 Apr 2021 19:51:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234157AbhCaHbR convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 31 Mar 2021 03:31:17 -0400
-Received: from bizcloud-power.sawafuji.co.jp ([128.199.220.203]:46712 "EHLO
-        mta0.sawafuji.co.jp" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S234169AbhCaHar (ORCPT
+        id S234410AbhDARsy (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 1 Apr 2021 13:48:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58328 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236699AbhDARqZ (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 31 Mar 2021 03:30:47 -0400
-X-Greylist: delayed 669 seconds by postgrey-1.27 at vger.kernel.org; Wed, 31 Mar 2021 03:30:47 EDT
-From:   Albert Bourla <info@universalautomation.com.pk>
-To:     linux-unionfs@vger.kernel.org
-Subject: Bidding invitation
-Date:   31 Mar 2021 09:15:15 +0200
-Message-ID: <20210331091515.5EC74A8C2607ECA9@universalautomation.com.pk>
+        Thu, 1 Apr 2021 13:46:25 -0400
+Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F6C4C0613A6
+        for <linux-unionfs@vger.kernel.org>; Thu,  1 Apr 2021 04:31:24 -0700 (PDT)
+Received: by mail-vs1-xe2e.google.com with SMTP id h23so1035330vsj.8
+        for <linux-unionfs@vger.kernel.org>; Thu, 01 Apr 2021 04:31:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=AtjoJrW+K528tDQVsKqZvdREH3wz5eHW195nbhXbRuQ=;
+        b=m1CSR9BZcP1iyCY6n/TyvutJEXKV4je/TS75cw4qC0CtATdPNxSxR6c4KGH6zd5GNp
+         dxVPV5pqUfVCK/s2zXM/j2F64MvMQB0Gw1r/JeRXpcgsMQufPHugIzjFYDT4Ag9mrWcx
+         v+A7RBRXEOguyQjiha+WZtLrxJf2Ub/MZ5fM4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=AtjoJrW+K528tDQVsKqZvdREH3wz5eHW195nbhXbRuQ=;
+        b=TBz60lAx8n5o7KjzzG8e3SmV6o5YmdycRQM5R3leeBfNlCCOf9yr0KSTlFYl14Sa9n
+         DorkM6fRk3HDGkxV2fl6GHla7ies6cTs58imIMLHMlP4MY6tFRfOzAbPdU7m4SLNwpER
+         26C4DNw1SEUZAhzIDJKHmbX/4bKTDVMV75uwbC7ld9hnbbnXmUxMOOrH0b8d79xlxZa0
+         vsI1N5plv+y+bMYmjO0QVUHGdvbZASiC4mzTBdUfp7bnFlhDv57gH4YemygeefUnUvSO
+         IvXuV6GZ++xsqz4LNk2oDZF4kSBFGRGJKp6hxGXw5p2zYhBC+iWXab0T5TtW+r9UfP6v
+         sTBQ==
+X-Gm-Message-State: AOAM532CWvWR0/ooNuso/yGP9zTTSSmlZS/ltkaSZDMoa0Q2XztjKWxI
+        5I26tnwvweqIa+AHQu6hRjigibnnyDKKkLjG59bTe9b5m3Kdcw==
+X-Google-Smtp-Source: ABdhPJzsRt3alzuqK+GQRVILu6BnaAre/SCIJFh+w71rBtEOhsrS+I4xQaCeRkUh+VphlayRaVox0Xj5GeD8q/iis/A=
+X-Received: by 2002:a67:8793:: with SMTP id j141mr4773525vsd.7.1617276683391;
+ Thu, 01 Apr 2021 04:31:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+References: <20210308111717.2027030-1-cgxu519@mykernel.net>
+ <CAJfpeguFdafs65aOgDrJnAh6Tg8bnwP3gP5sUhfsRka5Azctbg@mail.gmail.com> <1788d256770.ff2961df3248.3624659711262801588@mykernel.net>
+In-Reply-To: <1788d256770.ff2961df3248.3624659711262801588@mykernel.net>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Thu, 1 Apr 2021 13:31:12 +0200
+Message-ID: <CAJfpegt_r6rWFMjpLxmQK8saQ=G01RKSd=5+GUCnz_By_27EGg@mail.gmail.com>
+Subject: Re: [PATCH] ovl: copy-up optimization for truncate
+To:     Chengguang Xu <cgxu519@mykernel.net>
+Cc:     overlayfs <linux-unionfs@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Good Day Sir/Ms,
+On Thu, Apr 1, 2021 at 1:15 PM Chengguang Xu <cgxu519@mykernel.net> wrote:
+>
+>  ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E4=B8=80, 2021-03-29 23:13:52 Miklos S=
+zeredi <miklos@szeredi.hu> =E6=92=B0=E5=86=99 ----
+>  > On Mon, Mar 8, 2021 at 12:17 PM Chengguang Xu <cgxu519@mykernel.net> w=
+rote:
+>  > >
+>  > > Currently copy-up will copy whole lower file to upper
+>  > > regardless of the data range which is needed for further
+>  > > operation. This patch avoids unnecessary copy when truncate
+>  > > size is smaller than the file size.
+>  >
+>  > This doesn't look right.   If copy up succeeds, resulting in a
+>  > truncated file, then we should return success there and then.   Doing
+>  > the truncate again and failing (unlikely, but I wouldn't think it
+>  > impossible) wouldn't be nice.
+>
+> Hi Miklos
+>
+> I noticed a problem here, if we just return success after copy-up then mt=
+ime
+> keeps the same as lower file. I think doing the truncate again would be b=
+etter
+> than manually updating the upper file's mtime. What do you think for this=
+?
 
-We are please to invite you or your company to quote the 
-following item listed below:
- 
-Product/Model No: A702TH FYNE PRESSURE REGULATOR
-Model Number: A702TH
-Qty. 30 units
+Let's simplify instead:  skip the mtime restore on copy-up.   Not sure
+how that's handled on O_TRUNC opens, maybe it's relevant to that case
+too.
 
-
-Compulsory,Kindly send your quotation to: 
-quotation@pfizerbvsupply.com 
-for immediate approval.
-
-Kind Regards,
-Albert Bourla
-PFIZER B.V Supply Chain Manager
-Tel: +31(0)208080 880
-ADDRESS: Rivium Westlaan 142, 2909 LD
-Capelle aan den IJssel, Netherlands
+Thanks,
+Miklos
