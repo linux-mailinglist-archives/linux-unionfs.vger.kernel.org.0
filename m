@@ -2,183 +2,114 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9E63355314
-	for <lists+linux-unionfs@lfdr.de>; Tue,  6 Apr 2021 14:03:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF3F4356491
+	for <lists+linux-unionfs@lfdr.de>; Wed,  7 Apr 2021 08:55:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343672AbhDFMDr (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 6 Apr 2021 08:03:47 -0400
-Received: from sender2-op-o12.zoho.com.cn ([163.53.93.243]:17141 "EHLO
-        sender2-op-o12.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235453AbhDFMDr (ORCPT
+        id S1345959AbhDGGzn (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 7 Apr 2021 02:55:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60546 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229778AbhDGGzm (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 6 Apr 2021 08:03:47 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1617710603; cv=none; 
-        d=zoho.com.cn; s=zohoarc; 
-        b=TS2Y+OYy3lCivSQTjlbQrhj48AygeDH89eboyvHCj88gY6ULkx+vl+N/kyIFRbEAIn64wCzSRNXD0UflLXZW4XTx90B+mTbCMCuyX7x1VYAAOKqdTUzNS9PXzMHL2lINbl90irlVsYfw1Hq+iDW8kAxvyDTWKCDPMnb2uyahsXg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
-        t=1617710603; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=iDtagNA3S6I3YE2xGu227rYajAbdZ7/ucmopzPUrfZ8=; 
-        b=CWsE1Lg8ut6SEPEyahDzCNLvRTsuZcxeWzEoK9o94J6xkUNNl/CtwvOHHnJ3Fi7u+Y044rU/VhoVwLF5V1PsJcQTajJ26Xx8BdGkbdewUUwsiq8yCE2RiBrOmPbFPglynQffQ8g3OAx9dwq6qvsdMBdn4f0mr+1l72EaCTljCvM=
-ARC-Authentication-Results: i=1; mx.zoho.com.cn;
-        dkim=pass  header.i=mykernel.net;
-        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
-        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1617710603;
-        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
-        h=From:To:Cc:Message-ID:Subject:Date:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type;
-        bh=iDtagNA3S6I3YE2xGu227rYajAbdZ7/ucmopzPUrfZ8=;
-        b=MZxXY7kCcJoa+DBewLBBnqyONXievAClQBbzW1wSAy5yjoOW4bzQGk0U4mdi5Qhr
-        wSLe3vC9oXEwZZinUc04aKAGn7bA25Ys513CzxlkbRFqGl/JlS2vX8IJLXUmrZItnGW
-        OJ2MiWedQMOranfb3vIBwbvhRGL61Zvf53449pGo=
-Received: from localhost.localdomain (159.75.42.226 [159.75.42.226]) by mx.zoho.com.cn
-        with SMTPS id 1617710600905645.997536736019; Tue, 6 Apr 2021 20:03:20 +0800 (CST)
-From:   Chengguang Xu <cgxu519@mykernel.net>
-To:     miklos@szeredi.hu
-Cc:     linux-unionfs@vger.kernel.org, Chengguang Xu <cgxu519@mykernel.net>
-Message-ID: <20210406120245.1338326-3-cgxu519@mykernel.net>
-Subject: [PATCH v2 3/3] ovl: copy-up optimization for truncate
-Date:   Tue,  6 Apr 2021 20:02:45 +0800
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210406120245.1338326-1-cgxu519@mykernel.net>
-References: <20210406120245.1338326-1-cgxu519@mykernel.net>
+        Wed, 7 Apr 2021 02:55:42 -0400
+Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB3CBC06174A
+        for <linux-unionfs@vger.kernel.org>; Tue,  6 Apr 2021 23:55:33 -0700 (PDT)
+Received: by mail-il1-x132.google.com with SMTP id d10so15336664ils.5
+        for <linux-unionfs@vger.kernel.org>; Tue, 06 Apr 2021 23:55:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KIGPiJHMm4gJcY9JaOeAJpc73KtHDrPslGi4YGocAEk=;
+        b=EcmCzGHmMDdubd22YmFLLe4G+4LzTx+jFBWydJ0ZbdsbNAaGu1UlkvfcZ58ZMjkGEh
+         pkzQUi9TCfF6xo1kx5iQV5lcFlc1OeNLMLWv+hPDqbqioWv8c9RtuO1/x2Pv3SwVwA2G
+         PHmrs6Q7/PCvLZCLvC7a5jQeNF+mDz+AGt/RfwbgP0GSJ+ttcEtruhSMcYP3EKYqQOcP
+         e+cwJOckSB74CtBuPFzDNfvaTmPQdMlz10uDzTwIAtiYdbU1pQmdZxKsEYDOk232k8iU
+         6msfVZ6Y2ikrpHNVGIJgPhsNm8t586UunLfGv29KIFyMVjTJFg7eQwZaYqThQx1LV581
+         CPjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KIGPiJHMm4gJcY9JaOeAJpc73KtHDrPslGi4YGocAEk=;
+        b=mzecZiYCPXuUm6zI3i4oMAR84lJ66d2FlDMEbtqMUpLXPLpD30S2hszQtAJKLcJbxp
+         k/LM0JhQ07RnyGEAZ+cD0SwZQaGzRmdJQngmDfJOPH6fHOjToGITtDrRr9l8UrTYk9wb
+         ELitcL9zQ3lcaZ4vCXp5V0GKM08/lP9s+DVyagHtlnU9GE+zOyfsITHxp36zluQRrEnk
+         62UEL5wkpiuWCTKym2h4GR/mFysW+A95NXwE6eCPsZCoFfDDh37gvXLjj1QJyUKMcUw8
+         ay/dDwXb6a1qriMiGwcOxI/cZxv9fN7jnagxBWviDcI2ShfmahPmjKLBnRLwOIZ3spuG
+         SweQ==
+X-Gm-Message-State: AOAM533ba28BQg1Zx/toGsHWtq7RWzyyT4aUxno9UV2kfAl/wBYGTEM7
+        nEXVWvusexixF8MI+E2HByYY/GtNHoReA9Jf6KUF1QoYsh8=
+X-Google-Smtp-Source: ABdhPJxwbZIRIyxk5sOTKwNye2bdimI42B7Q4Tfzwh32ipI7aoMOUMYZbSus7faclcF258C/57aLCMU305qm6Jt8b8o=
+X-Received: by 2002:a92:d4c5:: with SMTP id o5mr1668655ilm.9.1617778533349;
+ Tue, 06 Apr 2021 23:55:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-ZohoCNMailClient: External
-Content-Type: text/plain; charset=utf8
+References: <20210406120245.1338326-1-cgxu519@mykernel.net>
+In-Reply-To: <20210406120245.1338326-1-cgxu519@mykernel.net>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Wed, 7 Apr 2021 09:55:22 +0300
+Message-ID: <CAOQ4uxjVUt1a91bn7=QCdcXiuC+obyHAHxfChM6CcuaBUBtt_A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] ovl: do not restore mtime on copy-up for regular file
+To:     Chengguang Xu <cgxu519@mykernel.net>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
+        overlayfs <linux-unionfs@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Currently truncate operation on the file which only has
-lower will copy-up whole lower file and calling truncate(2)
-on upper file. It is not efficient for the case which
-truncates to much smaller size than lower file. This patch
-tries to avoid unnecessary data copy and truncate operation
-after copy-up.
+On Wed, Apr 7, 2021 at 12:04 AM Chengguang Xu <cgxu519@mykernel.net> wrote:
+>
+> In order to simplify truncate operation on the file which
+> only has lower, we skip restoring mtime on copy-up for
+> regular file.
+>
+> Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
+> ---
+>  fs/overlayfs/copy_up.c | 17 +++++++++++------
+>  1 file changed, 11 insertions(+), 6 deletions(-)
+>
+> diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+> index 0fed532efa68..8b92b3ba3c46 100644
+> --- a/fs/overlayfs/copy_up.c
+> +++ b/fs/overlayfs/copy_up.c
+> @@ -241,12 +241,17 @@ static int ovl_set_size(struct dentry *upperdentry, struct kstat *stat)
+>
+>  static int ovl_set_timestamps(struct dentry *upperdentry, struct kstat *stat)
+>  {
+> -       struct iattr attr = {
+> -               .ia_valid =
+> -                    ATTR_ATIME | ATTR_MTIME | ATTR_ATIME_SET | ATTR_MTIME_SET,
+> -               .ia_atime = stat->atime,
+> -               .ia_mtime = stat->mtime,
+> -       };
+> +       struct iattr attr;
+> +
+> +       if (S_ISREG(upperdentry->d_inode->i_mode)) {
+> +               attr.ia_valid = ATTR_ATIME | ATTR_ATIME_SET;
+> +               attr.ia_atime = stat->atime;
+> +       } else {
+> +               attr.ia_valid = ATTR_ATIME | ATTR_MTIME |
+> +                               ATTR_ATIME_SET | ATTR_MTIME_SET;
+> +               attr.ia_atime = stat->atime;
+> +               attr.ia_mtime = stat->mtime;
+> +       }
 
-Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
----
- fs/overlayfs/copy_up.c   | 18 +++++++++++-------
- fs/overlayfs/inode.c     |  9 ++++++++-
- fs/overlayfs/overlayfs.h |  2 +-
- 3 files changed, 20 insertions(+), 9 deletions(-)
+Nit: IMO it would look nicer with:
+if (!S_ISREG(stat->mode)) {
+               attr.ia_valid |= ATTR_MTIME | ATTR_MTIME_SET;
+               attr.ia_mtime = stat->mtime;
+}
 
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index a1a9a150405a..331cc32eac95 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -874,7 +874,7 @@ static int ovl_copy_up_meta_inode_data(struct ovl_copy_=
-up_ctx *c)
- }
-=20
- static int ovl_copy_up_one(struct dentry *parent, struct dentry *dentry,
--=09=09=09   int flags)
-+=09=09=09   int flags, loff_t size)
- {
- =09int err;
- =09DEFINE_DELAYED_CALL(done);
-@@ -911,6 +911,8 @@ static int ovl_copy_up_one(struct dentry *parent, struc=
-t dentry *dentry,
- =09/* maybe truncate regular file. this has no effect on dirs */
- =09if (flags & O_TRUNC)
- =09=09ctx.stat.size =3D 0;
-+=09if (size)
-+=09=09ctx.stat.size =3D size;
-=20
- =09if (S_ISLNK(ctx.stat.mode)) {
- =09=09ctx.link =3D vfs_get_link(ctx.lowerpath.dentry, &done);
-@@ -937,7 +939,7 @@ static int ovl_copy_up_one(struct dentry *parent, struc=
-t dentry *dentry,
- =09return err;
- }
-=20
--static int ovl_copy_up_flags(struct dentry *dentry, int flags)
-+static int ovl_copy_up_flags(struct dentry *dentry, int flags, loff_t size=
-)
- {
- =09int err =3D 0;
- =09const struct cred *old_cred =3D ovl_override_creds(dentry->d_sb);
-@@ -970,7 +972,7 @@ static int ovl_copy_up_flags(struct dentry *dentry, int=
- flags)
- =09=09=09next =3D parent;
- =09=09}
-=20
--=09=09err =3D ovl_copy_up_one(parent, next, flags);
-+=09=09err =3D ovl_copy_up_one(parent, next, flags, size);
-=20
- =09=09dput(parent);
- =09=09dput(next);
-@@ -1002,7 +1004,7 @@ int ovl_maybe_copy_up(struct dentry *dentry, int flag=
-s)
- =09if (ovl_open_need_copy_up(dentry, flags)) {
- =09=09err =3D ovl_want_write(dentry);
- =09=09if (!err) {
--=09=09=09err =3D ovl_copy_up_flags(dentry, flags);
-+=09=09=09err =3D ovl_copy_up_flags(dentry, flags, 0);
- =09=09=09ovl_drop_write(dentry);
- =09=09}
- =09}
-@@ -1010,12 +1012,14 @@ int ovl_maybe_copy_up(struct dentry *dentry, int fl=
-ags)
- =09return err;
- }
-=20
--int ovl_copy_up_with_data(struct dentry *dentry)
-+int ovl_copy_up_with_data(struct dentry *dentry, loff_t size)
- {
--=09return ovl_copy_up_flags(dentry, O_WRONLY);
-+=09if (size)
-+=09=09return ovl_copy_up_flags(dentry, O_WRONLY, size);
-+=09return  ovl_copy_up_flags(dentry, O_TRUNC | O_WRONLY, 0);
- }
-=20
- int ovl_copy_up(struct dentry *dentry)
- {
--=09return ovl_copy_up_flags(dentry, 0);
-+=09return ovl_copy_up_flags(dentry, 0, 0);
- }
-diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index cf41bcb664bc..92f274844947 100644
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -43,13 +43,20 @@ int ovl_setattr(struct dentry *dentry, struct iattr *at=
-tr)
- =09if (!full_copy_up)
- =09=09err =3D ovl_copy_up(dentry);
- =09else
--=09=09err =3D ovl_copy_up_with_data(dentry);
-+=09=09err =3D ovl_copy_up_with_data(dentry, attr->ia_size);
- =09if (!err) {
- =09=09struct inode *winode =3D NULL;
-=20
- =09=09upperdentry =3D ovl_dentry_upper(dentry);
-=20
- =09=09if (attr->ia_valid & ATTR_SIZE) {
-+=09=09=09if (full_copy_up && !(attr->ia_valid & ~ATTR_SIZE)) {
-+=09=09=09=09inode_lock(upperdentry->d_inode);
-+=09=09=09=09ovl_copyattr(upperdentry->d_inode, dentry->d_inode);
-+=09=09=09=09inode_unlock(upperdentry->d_inode);
-+=09=09=09=09goto out_drop_write;
-+=09=09=09}
-+
- =09=09=09winode =3D d_inode(upperdentry);
- =09=09=09err =3D get_write_access(winode);
- =09=09=09if (err)
-diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
-index cb4e2d60ecf9..efd0ec9bd3b7 100644
---- a/fs/overlayfs/overlayfs.h
-+++ b/fs/overlayfs/overlayfs.h
-@@ -513,7 +513,7 @@ long ovl_compat_ioctl(struct file *file, unsigned int c=
-md, unsigned long arg);
-=20
- /* copy_up.c */
- int ovl_copy_up(struct dentry *dentry);
--int ovl_copy_up_with_data(struct dentry *dentry);
-+int ovl_copy_up_with_data(struct dentry *dentry, loff_t size);
- int ovl_maybe_copy_up(struct dentry *dentry, int flags);
- int ovl_copy_xattr(struct super_block *sb, struct dentry *old,
- =09=09   struct dentry *new);
---=20
-2.27.0
+But generally, this logic looks a bit weird in a function named
+ovl_set_timestamps().
 
+When you look at the 3 callers of ovl_set_timestamps(), two of
+them do it for a directory and one is in ovl_set_attr() where there
+are several other open coded calls to notify_change(), so I
+wonder if this logic shouldn't be open coded in ovl_set_attr()
+as well?
 
+Thanks,
+Amir.
