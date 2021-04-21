@@ -2,211 +2,132 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBC813667DC
-	for <lists+linux-unionfs@lfdr.de>; Wed, 21 Apr 2021 11:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF0EC366812
+	for <lists+linux-unionfs@lfdr.de>; Wed, 21 Apr 2021 11:33:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235236AbhDUJYI (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 21 Apr 2021 05:24:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45972 "EHLO
+        id S238277AbhDUJe0 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 21 Apr 2021 05:34:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238118AbhDUJYA (ORCPT
+        with ESMTP id S238079AbhDUJe0 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 21 Apr 2021 05:24:00 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65A9CC06138C;
-        Wed, 21 Apr 2021 02:23:24 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id f195-20020a1c1fcc0000b029012eb88126d7so835631wmf.3;
-        Wed, 21 Apr 2021 02:23:24 -0700 (PDT)
+        Wed, 21 Apr 2021 05:34:26 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FFDDC06174A;
+        Wed, 21 Apr 2021 02:33:53 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id h141so33034935iof.2;
+        Wed, 21 Apr 2021 02:33:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=RvZRrbekUx6Qvs6DuFQOsZkAqzPTl7cFvojkGqmAjp4=;
-        b=SBmAmil2htMH0ItJeT0xWEDP7A13YQC0GazOuqYVKp61zIHwPTiMSK/jhS7sw6v9W8
-         u2vULy07LdkdDQY3ozakM6115obMH1lmzyEwCZc/uf90LwzENwhMysEWE1S9US7JyfQ3
-         yNSGpKKim/SdMLy/glol9XJzraN/z5QzU8/wwPyzi82CxAON+Ap/CHstS0DKos6vljG6
-         k2gWdYHGNpmnfPzngVFxEJ54kObj1UX12qksL8iPR2EBFzJVuVdQU2sE7J7N13AOm8ci
-         gHXE6MfBYi8PQfVk4abVQSg8P71b7D3a9cd1G0l720l8fumRLhCBUpHYSZN3PHs7saWb
-         VYpw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/RY5d9E7SDYx339Y6sbe3sOQtAM3leSPsyHyjMz/clo=;
+        b=Qw1D2HUH77mxRogJRTWxGN8KDcflut4/EMSW5rn+PBMm1et/2v2vjaspT1Qc0/KjSg
+         OTXSNoKHhJ71e84FTS5UHC1zsba27wHxTmLdjkyCOHbPkzx9I4fjq4mHxt7pw4qeHgKQ
+         pAR65jZqEiRyfc9JlIYzWwIUeslv9mvaH66/xNrQJN/XSqfb1RszDzyACIwGBK4scemr
+         KWf2fO175mOVYaE8B7ehsXEAjmsLsaWwfVFLKd2m6FT3GcHBq/TshTUhHQcBWTVheQ6M
+         6PMD/13TfRLl3KQUmsqvp47Y/D5hGEmJJwyOfLZCLUh23vlaccoeFs8fgr+L7tFg8o+P
+         SRJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=RvZRrbekUx6Qvs6DuFQOsZkAqzPTl7cFvojkGqmAjp4=;
-        b=unXIh518lsF1/d+Pcsf4EFKA/SWBBt2JUblqmoxpXNwPsVoz502sXRckX5NVO91/Me
-         uMIuaUELrmk6utblGZrWjtuNqPcjUj6wq6hDcz0PizCswMHsJ6NcXsnYVq2IjV+1wSLW
-         TmWTO18zQXSlUSnpGzOaE/4yab9ZeLbyznOe9am/p9/PkM7m1f3Sd14Uu+gYcRrQxsft
-         08oiJr4/1xlWG7n82t1k78+jqPSo1HiEV+nWVNEfUvsIE3kRRy5iU0eWSLeGmYghiNuL
-         J4hoiF2x/2K/ycJKMUmKJwyZkyuiCV9m+XmyYDrwOdIVkSXsLXpaTt2Z9XBB8Rz7L7gH
-         3/qA==
-X-Gm-Message-State: AOAM531apLt7wNO73f5UEasdhwlEySN85ygLt3yIB3dfrr3hRkbNobxB
-        NSFFXefgAn/9fKf9aJAl7aw=
-X-Google-Smtp-Source: ABdhPJydPLAvnDp5nsZbm2FEKK6VutcFDcRKtlaFBhzx8lTu7vsdzK/vzWf5tzkb/OGpCApoxlqJHw==
-X-Received: by 2002:a1c:4102:: with SMTP id o2mr8822815wma.177.1618997003163;
-        Wed, 21 Apr 2021 02:23:23 -0700 (PDT)
-Received: from localhost.localdomain ([82.114.44.37])
-        by smtp.gmail.com with ESMTPSA id p3sm1551754wmq.31.2021.04.21.02.23.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Apr 2021 02:23:22 -0700 (PDT)
-From:   Amir Goldstein <amir73il@gmail.com>
-To:     Eryu Guan <guaneryu@gmail.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org,
-        fstests@vger.kernel.org
-Subject: [PATCH 2/2] overlay: Test invalidate of readdir cache
-Date:   Wed, 21 Apr 2021 12:23:17 +0300
-Message-Id: <20210421092317.68716-3-amir73il@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210421092317.68716-1-amir73il@gmail.com>
-References: <20210421092317.68716-1-amir73il@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/RY5d9E7SDYx339Y6sbe3sOQtAM3leSPsyHyjMz/clo=;
+        b=CkFE74B/kK5Yl2D4uIoTS11N3sfD+9Ua4jgeMZf69fp37X8ueKWTm2gVdfYbtVwAq2
+         Vzyo+hD8QOACh+Dwb825ar5AEOlPDirMl44dBw9whW36eu9vXd1aIrkcl+aD8TL5OaU2
+         2t8sbOXaAwA6tlu8NaplAOoG94S3dgWbGd8NWeeVlMmdgsf3T4f1QO6+ROEL0X/pbFBl
+         Oh3fxuRvKFC8c4/Y4ez5WfqnWYD+X5cIJ1HOB8q71e2B+XRmTZuOrX+gLOw3rXMwKCgO
+         i/MMoOodQAcBY5b2RkFruURgSNts5URp8Fnk0U6HH3uE2cp1Tqft1wHTkVvj4jOoNhxZ
+         pBKA==
+X-Gm-Message-State: AOAM530LANP5HHmeq/Tgs28X1zkseoggEPzycoUV55uEEfKpQ/0ny2Wr
+        pq1jjfB4fLr6XDkwzXgA44woX/geYKYAsExWbxc=
+X-Google-Smtp-Source: ABdhPJxlrVMViBS5W4Flo1xUu4VzGad5gTUjlIjWwN8zZe3lHerlu/y7rTnQ/yJ+rif/QCO7xlgsl+oK7Sj9t9HIZ5I=
+X-Received: by 2002:a02:9109:: with SMTP id a9mr22645371jag.93.1618997632864;
+ Wed, 21 Apr 2021 02:33:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210421092317.68716-1-amir73il@gmail.com> <20210421092317.68716-3-amir73il@gmail.com>
+In-Reply-To: <20210421092317.68716-3-amir73il@gmail.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Wed, 21 Apr 2021 12:33:42 +0300
+Message-ID: <CAOQ4uxgX+mV+_AbF8Mc1fSPed37ezL_xONbx+BdqoQDKPsG7pw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] overlay: Test invalidate of readdir cache
+To:     Eryu Guan <guaneryu@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        fstests <fstests@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-This is a regression test for kernel commit 65cd913ec9d9
-("ovl: invalidate readdir cache on changes to dir with origin")
+On Wed, Apr 21, 2021 at 12:23 PM Amir Goldstein <amir73il@gmail.com> wrote:
+>
+> This is a regression test for kernel commit 65cd913ec9d9
+> ("ovl: invalidate readdir cache on changes to dir with origin")
+>
+> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> ---
+>  tests/overlay/077     | 105 ++++++++++++++++++++++++++++++++++++++++++
+>  tests/overlay/077.out |   2 +
+>  tests/overlay/group   |   1 +
+>  3 files changed, 108 insertions(+)
+>  create mode 100755 tests/overlay/077
+>  create mode 100644 tests/overlay/077.out
+>
+> diff --git a/tests/overlay/077 b/tests/overlay/077
+> new file mode 100755
+> index 00000000..e254aec1
+> --- /dev/null
+> +++ b/tests/overlay/077
+> @@ -0,0 +1,105 @@
+> +#! /bin/bash
+> +# SPDX-License-Identifier: GPL-2.0
+> +# Copyright (C) 2021 CTERA Networks. All Rights Reserved.
+> +#
+> +# FS QA Test 077
+> +#
+> +# Test invalidate of readdir cache
+> +#
+> +# This is a regression test for kernel commit 65cd913ec9d9
+> +# ("ovl: invalidate readdir cache on changes to dir with origin")
+> +#
+> +seq=`basename $0`
+> +seqres=$RESULT_DIR/$seq
+> +echo "QA output created by $seq"
+> +
+> +here=`pwd`
+> +tmp=/tmp/$$
+> +status=1       # failure is the default!
+> +trap "_cleanup; exit \$status" 0 1 2 3 15
+> +
+> +_cleanup()
+> +{
+> +       cd /
+> +       rm -f $tmp.*
+> +}
+> +
+> +# create test directory and test file, mount overlayfs and remove
+> +# testfile to create a whiteout in upper dir.
+> +create_whiteout()
+> +{
+> +       local lower=$1
+> +       local upper=$2
+> +       local work=$3
+> +       local file=$4
+> +
+> +       mkdir -p $lower/testdir
+> +       touch $lower/testdir/$file
+> +
+> +       _overlay_scratch_mount_dirs $lower $upper $work
+> +
+> +       rm -f $SCRATCH_MNT/testdir/$file
+> +
+> +       $UMOUNT_PROG $SCRATCH_MNT
+> +}
+> +
 
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
----
- tests/overlay/077     | 105 ++++++++++++++++++++++++++++++++++++++++++
- tests/overlay/077.out |   2 +
- tests/overlay/group   |   1 +
- 3 files changed, 108 insertions(+)
- create mode 100755 tests/overlay/077
- create mode 100644 tests/overlay/077.out
+Oops. Unused leftover.
+A former merge dir does not need to actually have whiteouts for this test...
 
-diff --git a/tests/overlay/077 b/tests/overlay/077
-new file mode 100755
-index 00000000..e254aec1
---- /dev/null
-+++ b/tests/overlay/077
-@@ -0,0 +1,105 @@
-+#! /bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (C) 2021 CTERA Networks. All Rights Reserved.
-+#
-+# FS QA Test 077
-+#
-+# Test invalidate of readdir cache
-+#
-+# This is a regression test for kernel commit 65cd913ec9d9
-+# ("ovl: invalidate readdir cache on changes to dir with origin")
-+#
-+seq=`basename $0`
-+seqres=$RESULT_DIR/$seq
-+echo "QA output created by $seq"
-+
-+here=`pwd`
-+tmp=/tmp/$$
-+status=1	# failure is the default!
-+trap "_cleanup; exit \$status" 0 1 2 3 15
-+
-+_cleanup()
-+{
-+	cd /
-+	rm -f $tmp.*
-+}
-+
-+# create test directory and test file, mount overlayfs and remove
-+# testfile to create a whiteout in upper dir.
-+create_whiteout()
-+{
-+	local lower=$1
-+	local upper=$2
-+	local work=$3
-+	local file=$4
-+
-+	mkdir -p $lower/testdir
-+	touch $lower/testdir/$file
-+
-+	_overlay_scratch_mount_dirs $lower $upper $work
-+
-+	rm -f $SCRATCH_MNT/testdir/$file
-+
-+	$UMOUNT_PROG $SCRATCH_MNT
-+}
-+
-+# get standard environment, filters and checks
-+. ./common/rc
-+. ./common/filter
-+
-+rm -f $seqres.full
-+
-+# real QA test starts here
-+_supported_fs overlay
-+_require_scratch_nocheck
-+
-+# remove all files from previous runs
-+_scratch_mkfs
-+
-+# Create test area with a merge dir, a "former" merge dir and
-+# a pure upper dir
-+lowerdir=$OVL_BASE_SCRATCH_MNT/$OVL_LOWER
-+upperdir=$OVL_BASE_SCRATCH_MNT/$OVL_UPPER
-+
-+mkdir -p $lowerdir/merge $lowerdir/former $upperdir/pure
-+touch $lowerdir/merge/{a,b,c}
-+
-+_scratch_mount
-+
-+touch $SCRATCH_MNT/pure/{a,b,c}
-+touch $SCRATCH_MNT/former/{a,b,c}
-+
-+# Remove the lower directory and mount overlay again to create
-+# a "former merge dir"
-+$UMOUNT_PROG $SCRATCH_MNT
-+rm -rf $lowerdir/former
-+_scratch_mount
-+
-+# Check readdir cache invalidate on pure upper dir
-+echo "Create file in pure upper dir:" >> $seqres.full
-+$here/src/t_dir_offset2 $SCRATCH_MNT/pure A 2>&1 >> $seqres.full || \
-+	echo "Missing created file in pure upper dir (see $seqres.full for details)"
-+echo "Remove files in pure upper dir:" >> $seqres.full
-+$here/src/t_dir_offset2 $SCRATCH_MNT/pure -u 2>&1 >> $seqres.full || \
-+	echo "Found unlinked files in pure upper dir (see $seqres.full for details)"
-+
-+# Check readdir cache invalidate on merge dir
-+echo "Create file in merge dir:" >> $seqres.full
-+$here/src/t_dir_offset2 $SCRATCH_MNT/merge A 2>&1 >> $seqres.full || \
-+	echo "Missing created file in merge dir (see $seqres.full for details)"
-+echo "Remove files in merge dir:" >> $seqres.full
-+$here/src/t_dir_offset2 $SCRATCH_MNT/merge -u 2>&1 >> $seqres.full || \
-+	echo "Found unlinked files in merge dir (see $seqres.full for details)"
-+
-+# Check readdir cache invalidate on former merge dir
-+echo "Create file in former merge dir:" >> $seqres.full
-+$here/src/t_dir_offset2 $SCRATCH_MNT/former A 2>&1 >> $seqres.full || \
-+	echo "Missing created file in former merge dir (see $seqres.full for details)"
-+echo "Remove files in former merge dir:" >> $seqres.full
-+$here/src/t_dir_offset2 $SCRATCH_MNT/former -u 2>&1 >> $seqres.full || \
-+	echo "Found unlinked files in former merge dir (see $seqres.full for details)"
-+
-+# success, all done
-+echo "Silence is golden"
-+status=0
-+exit
-diff --git a/tests/overlay/077.out b/tests/overlay/077.out
-new file mode 100644
-index 00000000..11538276
---- /dev/null
-+++ b/tests/overlay/077.out
-@@ -0,0 +1,2 @@
-+QA output created by 077
-+Silence is golden
-diff --git a/tests/overlay/group b/tests/overlay/group
-index ddc355e5..a8f98789 100644
---- a/tests/overlay/group
-+++ b/tests/overlay/group
-@@ -79,6 +79,7 @@
- 074 auto quick exportfs dangerous
- 075 auto quick perms
- 076 auto quick perms dangerous
-+077 auto quick whiteout dir
- 100 auto quick union samefs
- 101 auto quick union nonsamefs
- 102 auto quick union nonsamefs xino
--- 
-2.25.1
-
+Thanks,
+Amir.
