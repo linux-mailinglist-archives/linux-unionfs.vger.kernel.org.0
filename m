@@ -2,59 +2,59 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D5C236A56F
-	for <lists+linux-unionfs@lfdr.de>; Sun, 25 Apr 2021 09:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF15136A571
+	for <lists+linux-unionfs@lfdr.de>; Sun, 25 Apr 2021 09:14:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229911AbhDYHPa (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 25 Apr 2021 03:15:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33038 "EHLO
+        id S230194AbhDYHPd (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 25 Apr 2021 03:15:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230179AbhDYHPa (ORCPT
+        with ESMTP id S229825AbhDYHPd (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 25 Apr 2021 03:15:30 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26B0AC061574;
-        Sun, 25 Apr 2021 00:14:51 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id y204so26842987wmg.2;
-        Sun, 25 Apr 2021 00:14:51 -0700 (PDT)
+        Sun, 25 Apr 2021 03:15:33 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58E23C061574;
+        Sun, 25 Apr 2021 00:14:52 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id f195-20020a1c1fcc0000b029012eb88126d7so3374927wmf.3;
+        Sun, 25 Apr 2021 00:14:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=wwvJ0SUYHs2mHq+f1YwLTGzVZoArfQUCHwJFLhi7+IA=;
-        b=jfSbPtrYWhQmEMRiu5CHowhSGE2vwnv0EAafpYdJ+s4Jvc+/zhgfRpUwebqQl1vlvI
-         LbP2Ykl6ZwpAzXgqdigyBE7EzxvWflY9p035lwk9HEOH5QBF01DEFMhArC3wvqVBg3Tp
-         dy9EpODOSZrDIpewl2FII9JPsdDl0pVpm7bYa2TAVglJ1R2syqIU/LoEiRg4gApW/AB1
-         lo361a6JF47EuC/Hz5h4jZdS7Y72a4AgWjCCwOvDO/KpxEeRup9SKwWP6BsG2GVlIQIM
-         kL4Vb98FloguB9a4RW8c2+DKdhXJBRS372BB053V2Qxj3u9L/bRijjp5E2cLys48hYWU
-         lyDw==
+        bh=FIlIiRJSjRiunFMuHCtAG6p9TvlZTNyPYb6XoxHnjlA=;
+        b=R+plW7xFxDzBBuf8BB7sPlx17x6/EKFMCoc5EtmZHwTIqLl7t4cx3tm9IC8keTMFI1
+         Tf1znqfnVwmS14Ta6UkeI1fc8ZaCIdzAIxXM/uAQIWleCJp9ZArGS9UmOrzMmrppxpvm
+         gEdaVmMvlEMzlNzZqhqkP4PHQtQEy6rH9fBoQEel+6BEn+lHSVdVjsrWSdE8hJZWu+Qf
+         rutm4lUW7Mg0tPp/yccJCYR2C3Pp2z28NHCaj8J6IwvRFEZ4TAeJnVlNLJMETpJYkpUg
+         rUKhQ9oVgVUAaIM/9VICzR8E5Vxy55ZQLdrMaz8CWOHK4GtjLg45J6DynJ5V9bse/Bgv
+         j/tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=wwvJ0SUYHs2mHq+f1YwLTGzVZoArfQUCHwJFLhi7+IA=;
-        b=lQJGnTY+On/5+alclF0vEAw0g4iy1f0F6jYiKgtUWJnIHJJCTOPNBVtiF5LndJWE10
-         be3GgdOFGt5fkSTkeVQFHkB4YGnCgEN2Ou4JPGpuk79a4aq+MI84ppmBaAyuOTcUCU3v
-         XDm1kz+7mrZ5QQAbcavVsGlAwFXsMj4asKn+ErYCSo+egfmcoxsdPpmar7huWcCUYPNC
-         wAbFYAxB9uvl7Y1hFqhFzC//apgdzTivLrVT1tRBZOwq3jneH6M81OWvoyvNFrsA+i71
-         JF5uY30pD6W++SfkUt8crWl/p6zUEBZOI8R9I6KbnaEal/px0ksyv69IcB7N2DqeGqZ2
-         rz9w==
-X-Gm-Message-State: AOAM531Rt155yuLFBz6tjwQSZxcoP5lEb2dIp1AZtpYmAPVD3MOzBHEm
-        OgxjV3a5TvoFZnvnPE8NHRzEFZp2jlQ=
-X-Google-Smtp-Source: ABdhPJxxAQb4nATQOnofXWHfmEoMTfNjZhxmT/Y8kU5v6dxRbP99joNpd+VGmC9kY3w8zb/RgS1oQQ==
-X-Received: by 2002:a7b:c206:: with SMTP id x6mr2463386wmi.72.1619334889939;
-        Sun, 25 Apr 2021 00:14:49 -0700 (PDT)
+        bh=FIlIiRJSjRiunFMuHCtAG6p9TvlZTNyPYb6XoxHnjlA=;
+        b=DMoeqh+5c/mbxj+84XHX7S/q4ijErCjLi/Hb9IPm6tfyqt5A6cTnQM3ny2xRkM6qiN
+         FVi6u+3HLMZtAlPrE0Z/x0CdFpYwPsFNveRSAABoz0EHF+7qN/LV6CLpAmKtE8aHjQTw
+         qhJtzRdYFxN3JXewBNXOn1is9ws2fsnCainNfgl0m/lTOrBhXTgwzy2w4/A7tbmi0Zhk
+         ZbcynxlKlB8x3bgdgF6kGHiFNnSCniQkb3K3arwnXafrPFoixLkzJqWfmFiHFtwqJk1i
+         rFjaY/YE8M20L5m+xU/RKgbFwSUa0gVD7u2YY6ExXL+zVayeJyHVxjHHBVY/wUUFwObl
+         z2+w==
+X-Gm-Message-State: AOAM533RrzVoormp6yIB/kSw3LYm3Pgc/Ges0PXSYTZPfotpkP07wJB0
+        EW/9HyJmbNowZfFS3P6pd8Q=
+X-Google-Smtp-Source: ABdhPJzgeu0uyEZ4/Gv8piZpW/A9Sn7zHDyGIGGXcDVXUCkQYLP8Tzw9vtEUJ2/K1EyxcLhcm1vkxw==
+X-Received: by 2002:a1c:64c4:: with SMTP id y187mr14203210wmb.162.1619334891092;
+        Sun, 25 Apr 2021 00:14:51 -0700 (PDT)
 Received: from localhost.localdomain ([82.114.44.37])
-        by smtp.gmail.com with ESMTPSA id x189sm15885626wmg.17.2021.04.25.00.14.48
+        by smtp.gmail.com with ESMTPSA id x189sm15885626wmg.17.2021.04.25.00.14.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Apr 2021 00:14:49 -0700 (PDT)
+        Sun, 25 Apr 2021 00:14:50 -0700 (PDT)
 From:   Amir Goldstein <amir73il@gmail.com>
 To:     Eryu Guan <guaneryu@gmail.com>
 Cc:     Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org,
         fstests@vger.kernel.org
-Subject: [PATCH v2 2/5] src/t_dir_offset2: Add an option to find file by name
-Date:   Sun, 25 Apr 2021 10:14:42 +0300
-Message-Id: <20210425071445.29547-3-amir73il@gmail.com>
+Subject: [PATCH v2 3/5] src/t_dir_offset2: Add option to create or unlink file
+Date:   Sun, 25 Apr 2021 10:14:43 +0300
+Message-Id: <20210425071445.29547-4-amir73il@gmail.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210425071445.29547-1-amir73il@gmail.com>
 References: <20210425071445.29547-1-amir73il@gmail.com>
@@ -64,107 +64,107 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Will be used to check for missing/stale entries.
+Will be used to test missing/stale entries after modifications to
+an open dirfd.
 
 Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 ---
- src/t_dir_offset2.c | 39 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ src/t_dir_offset2.c | 56 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 53 insertions(+), 3 deletions(-)
 
 diff --git a/src/t_dir_offset2.c b/src/t_dir_offset2.c
-index 7aeb990e..7af24519 100644
+index 7af24519..75b41c1a 100644
 --- a/src/t_dir_offset2.c
 +++ b/src/t_dir_offset2.c
-@@ -8,11 +8,13 @@
-  * that these offsets are seekable to entry with the right inode.
-  */
- 
-+#include <errno.h>
- #include <fcntl.h>
- #include <stdio.h>
- #include <unistd.h>
- #include <stdint.h>
- #include <stdlib.h>
-+#include <string.h>
- #include <sys/stat.h>
- #include <sys/syscall.h>
- 
-@@ -32,7 +34,7 @@ static uint64_t d_ino_history[HISTORY_LEN];
+@@ -34,13 +34,13 @@ static uint64_t d_ino_history[HISTORY_LEN];
  
  void usage()
  {
--	fprintf(stderr, "usage: t_dir_offset2: <dir> [bufsize]\n");
-+	fprintf(stderr, "usage: t_dir_offset2: <dir> [[bufsize] <filename> [-v]]\n");
+-	fprintf(stderr, "usage: t_dir_offset2: <dir> [[bufsize] <filename> [-v]]\n");
++	fprintf(stderr, "usage: t_dir_offset2: <dir> [[bufsize] [-|+]<filename> [-v]]\n");
  	exit(EXIT_FAILURE);
  }
  
-@@ -45,6 +47,9 @@ int main(int argc, char *argv[])
- 	int bpos, total, i;
- 	off_t lret;
+ int main(int argc, char *argv[])
+ {
+-	int fd;
++	int fd, fd2 = -1;
+ 	char buf[BUF_SIZE];
+ 	int nread, bufsize = BUF_SIZE;
+ 	struct linux_dirent64 *d;
+@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
  	int retval = EXIT_SUCCESS;
-+	const char *filename = NULL;
-+	int exists = 0, found = 0;
-+	int verbose = 0;
+ 	const char *filename = NULL;
+ 	int exists = 0, found = 0;
+-	int verbose = 0;
++	int modify = 0, verbose = 0;
  
  	if (argc > 2) {
  		bufsize = atoi(argv[2]);
-@@ -52,6 +57,12 @@ int main(int argc, char *argv[])
- 			usage();
- 		if (bufsize > BUF_SIZE)
- 			bufsize = BUF_SIZE;
-+
-+		if (argc > 3) {
-+			filename = argv[3];
-+			if (argc > 4 && !strcmp(argv[4], "-v"))
-+				verbose = 1;
-+		}
- 	} else if (argc < 2) {
- 		usage();
- 	}
-@@ -62,6 +73,14 @@ int main(int argc, char *argv[])
- 		exit(EXIT_FAILURE);
- 	}
+@@ -60,6 +60,13 @@ int main(int argc, char *argv[])
  
-+	if (filename) {
-+		exists = !faccessat(fd, filename, F_OK, AT_SYMLINK_NOFOLLOW);
-+		if (!exists && errno != ENOENT) {
-+			perror("faccessat");
-+			exit(EXIT_FAILURE);
-+		}
-+	}
-+
- 	total = 0;
- 	for ( ; ; ) {
- 		nread = syscall(SYS_getdents64, fd, buf, bufsize);
-@@ -91,10 +110,28 @@ int main(int argc, char *argv[])
- 			}
- 			d_off_history[total] = d->d_off;
- 			d_ino_history[total] = d->d_ino;
-+			if (filename) {
-+				if (verbose)
-+					printf("entry #%d: %s (d_ino=%lld, d_off=%lld)\n",
-+					       i, d->d_name, (long long int)d->d_ino,
-+					       (long long int)d->d_off);
-+				if (!strcmp(filename, d->d_name))
-+					found = 1;
-+			}
- 			bpos += d->d_reclen;
+ 		if (argc > 3) {
+ 			filename = argv[3];
++			/* +<filename> creates, -<filename> removes */
++			if (filename[0] == '+')
++				modify = 1;
++			else if (filename[0] == '-')
++				modify = -1;
++			if (modify)
++				filename++;
+ 			if (argc > 4 && !strcmp(argv[4], "-v"))
+ 				verbose = 1;
  		}
- 	}
+@@ -89,6 +96,49 @@ int main(int argc, char *argv[])
+ 			exit(EXIT_FAILURE);
+ 		}
  
-+	if (filename) {
-+		if (exists == found) {
-+			printf("entry %s %sfound as expected\n", filename, found ? "" : "not ");
-+		} else {
-+			fprintf(stderr, "%s entry %s\n",
-+				exists ? "missing" : "stale", filename);
-+			exit(EXIT_FAILURE);
-+		}
-+	}
++		if (modify && fd2 < 0 && total == 0) {
++			printf("getdents at offset 0 returned %d bytes\n", nread);
 +
- 	/* check if seek works correctly */
- 	d = (struct linux_dirent64 *)buf;
- 	for (i = total - 1; i >= 0; i--)
++			/* create/unlink entry after first getdents */
++			if (modify > 0) {
++				if (openat(fd, filename, O_CREAT, 0600) < 0) {
++					perror("openat");
++					exit(EXIT_FAILURE);
++				}
++				exists = 1;
++				printf("created entry %s\n", filename);
++			} else if (modify < 0) {
++				if (unlinkat(fd, filename, 0) < 0) {
++					perror("unlinkat");
++					exit(EXIT_FAILURE);
++				}
++				exists = 0;
++				printf("unlinked entry %s\n", filename);
++			}
++
++			/*
++			 * Old fd may not return new entry and may return stale
++			 * entries which is allowed.  Keep old fd open and open
++			 * a new fd to check for stale or missing entries later.
++			 */
++			fd2 = open(argv[1], O_RDONLY | O_DIRECTORY);
++			if (fd2 < 0) {
++				perror("open fd2");
++				exit(EXIT_FAILURE);
++			}
++		}
++
++		if (nread == 0) {
++			if (fd2 < 0 || fd == fd2)
++				break;
++
++			/* Re-iterate with new fd leaving old fd open */
++			fd = fd2;
++			total = 0;
++			found = 0;
++			continue;
++		}
++
+ 		if (nread == 0)
+ 			break;
+ 
 -- 
 2.31.1
 
