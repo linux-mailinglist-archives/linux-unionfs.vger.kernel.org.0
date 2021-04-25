@@ -2,89 +2,143 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3035D36A185
-	for <lists+linux-unionfs@lfdr.de>; Sat, 24 Apr 2021 16:06:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EDE236A56E
+	for <lists+linux-unionfs@lfdr.de>; Sun, 25 Apr 2021 09:14:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234144AbhDXOHF (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 24 Apr 2021 10:07:05 -0400
-Received: from sender2-op-o12.zoho.com.cn ([163.53.93.243]:17109 "EHLO
-        sender2-op-o12.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238056AbhDXOEp (ORCPT
+        id S230196AbhDYHP3 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 25 Apr 2021 03:15:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33034 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230194AbhDYHP2 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 24 Apr 2021 10:04:45 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1619273037; cv=none; 
-        d=zoho.com.cn; s=zohoarc; 
-        b=aw1uNQKm+lclRfDoFl9A92VvG1sjtjoFi5F2KkO4Kb2VvCw2x8tpk5GxDbef7GhjYG3tCqQweFA+NM9Uk7UHCyv/izzBCCOgad82x5HTNRrFNKEOvrSaECoJJCOCosS1PXFxOjGKyJInvaZ5rjuUKaElQvYZogUjw8zX8S9dQ+0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
-        t=1619273037; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=DLyFUVZEVGrNMvopQICBA0uayw7m1MLk32GJMNo9GC0=; 
-        b=okRCVcnXk2OMD4rFB+amUqV0ZDeKawPR+MW7mIRZiTUK6AjER49Jp0qm09qliFAQSMenLbPlw/mLOJj2glTsAVQuYynJ2qK3KyrsaX3jtkTCENudvl8z2Ba/936x0BAi53GM9cmkzvDlFbFP1nvX5NXvCQ7w6/gm5nhqxChL+D4=
-ARC-Authentication-Results: i=1; mx.zoho.com.cn;
-        dkim=pass  header.i=mykernel.net;
-        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
-        dmarc=pass header.from=<cgxu519@mykernel.net> header.from=<cgxu519@mykernel.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1619273037;
-        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
-        h=From:To:Cc:Message-ID:Subject:Date:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type;
-        bh=DLyFUVZEVGrNMvopQICBA0uayw7m1MLk32GJMNo9GC0=;
-        b=MYaRK6zkqfFiwKlDZBQfGpmwnK5WY37GO9NT/4x2EMu8kzZ8W5knGQ4At2n5Vpnv
-        ID6jXSwB53d5WAp5zhMyjQAYelzkjR+v1wME00zF0VctVFPcaK9AymDE1IdwQNxXVqF
-        wGrq4FzporL8c1zBer1NE+xtTHBDxjx/EW7xsjd0=
-Received: from localhost.localdomain (159.75.42.226 [159.75.42.226]) by mx.zoho.com.cn
-        with SMTPS id 1619273035620313.50233205996597; Sat, 24 Apr 2021 22:03:55 +0800 (CST)
-From:   Chengguang Xu <cgxu519@mykernel.net>
-To:     miklos@szeredi.hu
-Cc:     linux-unionfs@vger.kernel.org, Chengguang Xu <cgxu519@mykernel.net>
-Message-ID: <20210424140316.485444-2-cgxu519@mykernel.net>
-Subject: [RFC PATCH 2/2] ovl: enhance write permission check for writable open
-Date:   Sat, 24 Apr 2021 22:03:16 +0800
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210424140316.485444-1-cgxu519@mykernel.net>
-References: <20210424140316.485444-1-cgxu519@mykernel.net>
+        Sun, 25 Apr 2021 03:15:28 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DA0AC061574;
+        Sun, 25 Apr 2021 00:14:49 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id j5so51590655wrn.4;
+        Sun, 25 Apr 2021 00:14:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=j9ebeZLhPtpy/4ObvG3aF+B5zxZTmEi/bwnNXqNswBs=;
+        b=OzLExM2KO05Ojsf49Usa0i3pRS4UnGAQdG49SbJdxq7+H6igZA1leWB1MAGWjwA0h9
+         5Dk4Sy0tsD3yPawIyZZIhDkhoBNwcQZR/FgQLAOPFDUv6IHlOFy4bazLkYXwBFD1JOry
+         L1tpZSydONz4LjLMqhK4RMCPJRTnS8urlXClNevwMHvXyO1nijBLD2U9LCoeMrYOn2vu
+         QQ8fzE47SJ6wnmhjNgwSF5gq4+XSmOEPJHcbYM9pUGk8eWh9EXSpNstNozHfp/IYx2WU
+         F0G1fjDRATn5EUL0pXx1yZ0hVs/2+cAKPizICN40Gs83A0vaL5JdrHbz5EEYbmnFzKF+
+         Bdag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=j9ebeZLhPtpy/4ObvG3aF+B5zxZTmEi/bwnNXqNswBs=;
+        b=fLYWv1GdZt9zTCsaMFdzgj66YCHofUnDW6hJJvr2knaHvAbNA9ihsBBO+jTLFlwKuV
+         9lckf0+jQ4wEonq5Mf73FTkVQ2v3o5pLMzBdAyuudF/sGi43Anms1npmGD2PJ2p8Zl8e
+         NN0OCcC1PgqvPzUVli1FLF/E1wi8BR73wvgimXagYJGKjo6vd7iAOpPEPYS4ZW1Wzeme
+         FWi4E6BbovDeKPubuMIbM2UcVyMZ4TktMYuFhE/8ln1yhgqCatKpwzz8GmGlGonvyyis
+         VUWvXGMkA78JJ62b5XTa1awC7HyTI57FInEMJMFlZ81JvP+LLtb0snZIXE50nhM9oJe1
+         I0dg==
+X-Gm-Message-State: AOAM533nxiEt2rzoCSdzV4LiaM3cRZQ6Rk+bKlKbrzB5/Zg+Jnq0n8W7
+        B/3zdxcfKrym/5kMfN2NZPZ9NHIsSQM=
+X-Google-Smtp-Source: ABdhPJweEi6dsTNN0eCdg88Z4JSEukgpSoo/NPTkWLAQrlNaSurTWcBov4ZUnTOr+YrwFGlyrvp9+w==
+X-Received: by 2002:adf:e60e:: with SMTP id p14mr14831513wrm.427.1619334887486;
+        Sun, 25 Apr 2021 00:14:47 -0700 (PDT)
+Received: from localhost.localdomain ([82.114.44.37])
+        by smtp.gmail.com with ESMTPSA id x189sm15885626wmg.17.2021.04.25.00.14.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Apr 2021 00:14:47 -0700 (PDT)
+From:   Amir Goldstein <amir73il@gmail.com>
+To:     Eryu Guan <guaneryu@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org,
+        fstests@vger.kernel.org
+Subject: [PATCH v2 0/5] Test overlayfs readdir cache
+Date:   Sun, 25 Apr 2021 10:14:40 +0300
+Message-Id: <20210425071445.29547-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-ZohoCNMailClient: External
-Content-Type: text/plain; charset=utf8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Check upper file's write permission when open on writable mode.
+Eryu,
 
-NOTE: lower files may be shared between differnt overlayfs instances,
-so we skip the check of lower file to avoid introducing interferes.
+This extends the generic t_dir_offset2 helper program to verify
+some cases of missing/stale entries and adds a new generic test which
+passes on overlayfs (and other fs) on upstream kernel.
 
-Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
----
- fs/overlayfs/file.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+The overlayfs specific test fails on upstream kernel and the fix commit
+is currently in linux-next.  As usual, you may want to wait with merging
+until the fix commit hits upstream.
 
-diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
-index 6e454a294046..1c3c24d07d01 100644
---- a/fs/overlayfs/file.c
-+++ b/fs/overlayfs/file.c
-@@ -144,12 +144,18 @@ static int ovl_real_fdget(const struct file *file, st=
-ruct fd *real)
- static int ovl_open(struct inode *inode, struct file *file)
- {
- =09struct file *realfile;
-+=09struct inode *upperinode;
- =09int err;
-=20
- =09err =3D ovl_maybe_copy_up(file_dentry(file), file->f_flags);
- =09if (err)
- =09=09return err;
-=20
-+=09upperinode =3D ovl_inode_upper(inode);
-+=09if (((file->f_mode & FMODE_WRITE) || file->f_flags & O_TRUNC) &&
-+=09    (upperinode && atomic_read(&upperinode->i_writecount) < 0))
-+=09=09return -ETXTBSY;
-+
- =09/* No longer need these flags, so don't pass them on to underlying fs *=
-/
- =09file->f_flags &=3D ~(O_CREAT | O_EXCL | O_NOCTTY | O_TRUNC);
-=20
---=20
-2.27.0
+Based on feedback from Miklos, I changed the test to check for the
+missing/stale entries on a new fd, while old fd is kept open, because
+POSIX allows for stale/missing entries in the old fd.
 
+I was looking into another speculated bug in overlayfs which involves
+multiple calls to getdents.  Although it turned out that overlayfs does
+not have the speculated bug, I left both generic and overlay test with
+multiple calls to getdents in order to excersize the relevant code.
+
+The attached patch was used to verify that the overlayfs test excercises
+the call to ovl_cache_update_ino() with stale entries.
+Overlayfs populates the merge dir readdir cache with a list of files in
+the first getdents call, but updates d_ino of files on the list in
+subsequent getdents calls.  By that time, the last entry is stale and the
+following warning is printed (on linux-next with patch below applied):
+[   ] overlayfs: failed to look up (m100) for ino (0)
+[   ] overlayfs: failed to look up (f100) for ino (0)
+
+Miklos,
+
+Do you think it is worth the trouble to set p->is_whiteout and skip
+dir_emit() in this case? and do we need to worry about lookup_one_len()
+returning -ENOENT in this case?
+
+Thanks,
+Amir.
+
+Changes since v1:
+- Use small getdents buffer to force multiple calls
+- Tidy up new command line options for t_dir_offset2
+- Check missing/stale entries on new fd
+- Add impure dir use case to overlay test
+
+Amir Goldstein (5):
+  src/t_dir_offset2: Add an option to limit of buffer size
+  src/t_dir_offset2: Add an option to find file by name
+  src/t_dir_offset2: Add option to create or unlink file
+  generic: Test readdir of modified directrory
+  overlay: Test invalidate of readdir cache
+
+ src/t_dir_offset2.c   | 113 ++++++++++++++++++++++++++++++++++++++--
+ tests/generic/700     |  62 ++++++++++++++++++++++
+ tests/generic/700.out |   2 +
+ tests/generic/group   |   1 +
+ tests/overlay/077     | 117 ++++++++++++++++++++++++++++++++++++++++++
+ tests/overlay/077.out |   2 +
+ tests/overlay/group   |   1 +
+ 7 files changed, 293 insertions(+), 5 deletions(-)
+ create mode 100755 tests/generic/700
+ create mode 100644 tests/generic/700.out
+ create mode 100755 tests/overlay/077
+ create mode 100644 tests/overlay/077.out
+
+--
+diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
+index cc1e80257064..cadcbfafa179 100644
+--- a/fs/overlayfs/readdir.c
++++ b/fs/overlayfs/readdir.c
+@@ -486,7 +486,7 @@ static int ovl_cache_update_ino(struct path *path, struct ovl_cache_entry *p)
+                        this = NULL;
+                        goto fail;
+                }
+-               goto out;
++               goto fail;
+        }
+ 
+ get:
+-- 
+2.31.1
 
