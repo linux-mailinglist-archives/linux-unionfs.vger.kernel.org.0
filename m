@@ -2,82 +2,147 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 438FA376CCE
-	for <lists+linux-unionfs@lfdr.de>; Sat,  8 May 2021 00:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1A0B3793DE
+	for <lists+linux-unionfs@lfdr.de>; Mon, 10 May 2021 18:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230185AbhEGW1p (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 7 May 2021 18:27:45 -0400
-Received: from bosmailout01.eigbox.net ([66.96.190.1]:36027 "EHLO
-        bosmailout01.eigbox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbhEGW1h (ORCPT
+        id S231590AbhEJQdS (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 10 May 2021 12:33:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34974 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231200AbhEJQdM (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 7 May 2021 18:27:37 -0400
-X-Greylist: delayed 1929 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 May 2021 18:27:30 EDT
-Received: from bosmailscan09.eigbox.net ([10.20.15.9])
-        by bosmailout01.eigbox.net with esmtp (Exim)
-        id 1lf8QO-00068o-JJ; Fri, 07 May 2021 17:54:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=godsofu4.com; s=dkim; h=Sender:Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=aM9bUFGSTpfnep8zAVAJMnojqhcwpuHDFPgQnPqW4M4=; b=bjgKomV6NO5Eg5D3qsCBps1llx
-        tj4k2teSfIdfo/duBtOSoC/FW1+C1nXiYJbrvf2JDobx8fDCsgnxHFoPWOCb5eI+OJOIgvnnfKlpl
-        ZqidIuDnjEPTMao1vFwrg6M9FUKU/cz6TT5/KN4ccsk+aQli3Wgs3G1cQz5vdbC1Y2SXULFY8Mu2t
-        1PShwmiDRn71EPzgUHUVu0GG39z6uSTEuRgOXhiNl9ekuZ5QXUAEykoocvC5/DkORRmERAA91o1HY
-        Sl76pPWw9UBVGbuFbfdVPfVcFxJM5xZDrmgt6uCf9J+dn/n7LFOSOxBaL9svxxYdhOkJwdz4uh075
-        2gI+xJSw==;
-Received: from [10.115.3.32] (helo=bosimpout12)
-        by bosmailscan09.eigbox.net with esmtp (Exim)
-        id 1lf8QO-0003aD-AI; Fri, 07 May 2021 17:54:20 -0400
-Received: from boswebmail06.eigbox.net ([10.20.16.6])
-        by bosimpout12 with 
-        id 1xuH2500407qujN01xuLVi; Fri, 07 May 2021 17:54:20 -0400
-X-EN-SP-DIR: OUT
-X-EN-SP-SQ: 1
-Received: from [127.0.0.1] (helo=homestead)
-        by boswebmail06.eigbox.net with esmtp (Exim)
-        id 1lf8QL-0006fx-UG; Fri, 07 May 2021 17:54:17 -0400
-Received: from [197.239.81.229]
- by emailmg.homestead.com
- with HTTP (HTTP/1.1 POST); Fri, 07 May 2021 17:54:17 -0400
+        Mon, 10 May 2021 12:33:12 -0400
+Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85C74C061574;
+        Mon, 10 May 2021 09:32:07 -0700 (PDT)
+Received: by mail-il1-x12d.google.com with SMTP id w13so2449744ilv.11;
+        Mon, 10 May 2021 09:32:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=HEWf3005QuvEqIfbbuarR+iJs1GsrPXMl+pWUUy1SvE=;
+        b=rI1VgEBhj8d5qIOOPcPBaCz8+aKS4WNeAjwiCt0Z3E+M9KQodPdp23aoc9VVZqnnY7
+         eHXU7cv/rBqrrpZkCXg2wg+9JQyHUVhky/GbOHXrVRxbnfMN1K79s/2gIqwBmfDzXUw0
+         Z2GvCbzirVgRvWjL0E+KGzeBV2mK7ZmnqhzALH20fmEUSJy31+YQxLJ2pYljO/ATt9ZZ
+         2GcuTBvPh3k1d7cfHFP0TsVfU3CvskFN7PzjAtiPMKkj3K/usEgg9A9b/GTNPaiUQIiS
+         tW+IG4WF5U70V3wgskR+b57JbcLf/wt61gen0508A8qbaF2oQef/lXNaTXyWSsAQh32X
+         4Sxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=HEWf3005QuvEqIfbbuarR+iJs1GsrPXMl+pWUUy1SvE=;
+        b=Q9lpNUk4C8TJJoa0OVX2qYH0tsSuXELXWRQiDp+SF0aK7cEXwAqDPwMu2SWbeby8DB
+         F5UBA7Fi4R7YQZZAA2EPBMCdYWPNBtScT9Y7CZX3EGiTV+zH6yLCFQ8srHSAFpuPOLCW
+         Z63MxvLIH/2MNG6txXTea3U3Sy3YEa9hzCD55pVVNo8DRoXdp8cNXISuEpwc/vekx4J9
+         ug88aQ6Q78bUaJjDC8mJjXjgMBa9YcHqg53VF9TTZgU67rYF78bfiDQRsosEopY2TwxW
+         KtAz0TkOuOrcZQumDl3kXYNSLTS/b0THOMK9mmwF99+a4YQvBYJaGhjy9k93kdQcBEmI
+         UXOg==
+X-Gm-Message-State: AOAM5323VWanF6mq8o50yN5pB71EbtnwO3gJARt5HUtWrN/A2aJmjBlM
+        m0nvpCm//hqtNZz8OmiXGULq4ZzhGmugUoBfLj/Uvzon2EM=
+X-Google-Smtp-Source: ABdhPJzNdf3/kf5koq92R7x+ivtev4/Nw03uVjURYL3B16Qfb377h/KGDB2mjxdumGkBjFUyTGDDj6BWSPrIWrdOw9g=
+X-Received: by 2002:a05:6e02:1142:: with SMTP id o2mr9564450ill.9.1620664327034;
+ Mon, 10 May 2021 09:32:07 -0700 (PDT)
 MIME-Version: 1.0
-Date:   Fri, 07 May 2021 21:54:17 +0000
-From:   Mrs Suzara Maling Wan <fast65@godsofu4.com>
-To:     undisclosed-recipients:;
-Subject: URGENT REPLY NEEDED
-Reply-To: suzara2017malingwan@gmail.com
-Mail-Reply-To: suzara2017malingwan@gmail.com
-Message-ID: <36acfe805efde59f3f399df1324ce6b9@godsofu4.com>
-X-Sender: fast65@godsofu4.com
-User-Agent: Roundcube Webmail/1.3.14
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-EN-AuthUser: fast65@godsofu4.com
-Sender:  Mrs Suzara Maling Wan <fast65@godsofu4.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Mon, 10 May 2021 19:31:56 +0300
+Message-ID: <CAOQ4uxguanxEis-82vLr7OKbxsLvk86M0Ehz2nN1dAq8brOxtw@mail.gmail.com>
+Subject: Re: fsnotify events for overlayfs real file
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     Jan Kara <jack@suse.cz>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        overlayfs <linux-unionfs@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
+> > > > FYI, a privileged user can already mount an overlayfs in order to indirectly
+> > > > open and write to a file.
+> > > >
+> > > > Because overlayfs opens the underlying file FMODE_NONOTIFY this will
+> > > > hide OPEN/ACCESS/MODIFY/CLOSE events also for inode/sb marks.
+> > > > Since 459c7c565ac3 ("ovl: unprivieged mounts"), so can unprivileged users.
+> > > >
+> > > > I wonder if that is a problem that we need to fix...
+> > >
+> > > I assume you are speaking of the filesystem that is absorbing the changes?
+> > > AFAIU usually you are not supposed to access that filesystem alone but
+> > > always access it only through overlayfs and in that case you won't see the
+> > > problem?
+> > >
+> >
+> > Yes I am talking about the "backend" store for overlayfs.
+> > Normally, that would be a subtree where changes are not expected
+> > except through overlayfs and indeed it is documented that:
+> > "If the underlying filesystem is changed, the behavior of the overlay
+> >  is undefined, though it will not result in a crash or deadlock."
+> > Not reporting events falls well under "undefined".
+> >
+> > But that is not the problem.
+> > The problem is that if user A is watching a directory D for changes, then
+> > an adversary user B which has read/write access to D can:
+> > - Clone a userns wherein user B id is 0
+> > - Mount a private overlayfs instance using D as upperdir
+> > - Open file in D indirectly via private overlayfs and edit it
+> >
+> > So it does not require any special privileges to circumvent generating
+> > events. Unless I am missing something.
+>
+> I see, right. I agree that is unfortunate especially for stuff like audit
+> or fanotify permission events so we should fix that.
+>
+
+Miklos,
+
+Do you recall what is the reason for using FMODE_NONOTIFY
+for realfile?
+
+I can see that events won't be generated anyway for watchers of
+underlying file, because fsnotify_file() looks at the "fake" path
+(i.e. the overlay file path).
+
+I recently looked at a similar issue w.r.t file_remove_privs() when
+I was looking at passing mnt context to notify_change() [1].
+
+My thinking was that we can change d_real() to provide the real path:
+
+static inline struct path d_real_path(struct path *path,
+                                    const struct inode *inode)
+{
+        struct realpath = {};
+        if (!unlikely(dentry->d_flags & DCACHE_OP_REAL))
+               return *path;
+        dentry->d_op->d_real(path->dentry, inode, &realpath);
+        return realpath;
+}
+
+static inline struct dentry *d_real(struct dentry *dentry,
+                                    const struct inode *inode)
+{
+        struct realpath = {};
+        if (!unlikely(dentry->d_flags & DCACHE_OP_REAL))
+               return dentry;
+        dentry->d_op->d_real(path->dentry, inode, &realpath);
+        return realpath.dentry;
+}
 
 
-My names are Mrs Suzara Maling Wan, I am a Nationality of the Republic
-of the Philippine presently base in West Africa B/F, dealing with
-exportation of Gold, I was diagnose of blood Causal decease, and my
-doctor have announce to me that I have few days to leave due to the
-condition of my sickness.
+Another option, instead of getting the realpath, just detect the
+mismatch of file_inode(file) != d_inode(path->dentry) in
+fanotify_file() and pass FSNOTIFY_EVENT_DENTRY data type
+with d_real() dentry to backend instead of FSNOTIFY_EVENT_PATH.
 
-I have a desire to build an orphanage home in your country of which i
-cannot execute the project myself due to my present health condition,
-I am willing to hand over the project under your care for you to help
-me fulfill my dreams and desire of building an orphanage home in your
-country.
+For inotify it should be enough and for fanotify it is enough for
+FAN_REPORT_FID and legacy fanotify can report FAN_NOFD,
+so at least permission events listeners can identify the situation and
+be able to block access to unknown paths.
 
-Reply in you are will to help so that I can direct you to my bank for
-the urgent transfer of the fund/money require for the project to your
-account as I have already made the fund/money available.
+Am I overcomplicating this?
 
-With kind regards
-Mrs Suzara Maling Wan
+Any magic solution that I am missing?
+
+Thanks,
+Amir.
+
+[1] https://lore.kernel.org/linux-fsdevel/CAOQ4uxiWb5Auyrbrj44hvdMcvMhx1YPRrR90RkicntmyfF+Ugw@mail.gmail.com/
