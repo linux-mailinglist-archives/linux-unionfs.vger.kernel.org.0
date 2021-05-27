@@ -2,101 +2,92 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E598393503
-	for <lists+linux-unionfs@lfdr.de>; Thu, 27 May 2021 19:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D919B393516
+	for <lists+linux-unionfs@lfdr.de>; Thu, 27 May 2021 19:46:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235437AbhE0RlM (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 27 May 2021 13:41:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35992 "EHLO
+        id S229740AbhE0Rrk (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 27 May 2021 13:47:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235365AbhE0RlM (ORCPT
+        with ESMTP id S229739AbhE0Rrj (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 27 May 2021 13:41:12 -0400
-Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01642C061574
-        for <linux-unionfs@vger.kernel.org>; Thu, 27 May 2021 10:39:38 -0700 (PDT)
-Received: by mail-il1-x12f.google.com with SMTP id k4so999011ili.4
-        for <linux-unionfs@vger.kernel.org>; Thu, 27 May 2021 10:39:37 -0700 (PDT)
+        Thu, 27 May 2021 13:47:39 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0441C061574
+        for <linux-unionfs@vger.kernel.org>; Thu, 27 May 2021 10:46:05 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id j14so714188wrq.5
+        for <linux-unionfs@vger.kernel.org>; Thu, 27 May 2021 10:46:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ERu6crb1WAMuZFdM9UToXcT+dNcp+MHPdIVj6vlim7k=;
-        b=O5URr4fAbWaaxPYa4p3d1sPWq20XEOOWRicPVZ6zRqIp0CoTzUMbtzjPE4UNXe0WFk
-         HDQG9avL83WefV5Ftqi0rTmePv7sxg5fsd/pBQQWlb7WiMOfJzRO8QIjRjYiQChf368S
-         o0TB2D9CUBXKiLlVvKFusKrRChd0XPjix1ugLPPy6wuc51hkK9VB5eBBMcY0I8gzh767
-         jQ/5y9ldpgVc9sm9TdrUZbFB6rT7McpdkXOqAFWJLuHLDYWDzT/U+uz3gYDFW88jmQWF
-         YSNNQ/yvlMtYwMy8Prehnp2m2CtNSLzjtjxr0u8RB3RHnIiPy+Fx0/3DKMY1CEnX/Ak+
-         nqiA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MqJKmbvMu5CZAUap6srgF/VVQp9CGlbwF7EYmpey22w=;
+        b=TUQ/bYqSa6XSTpzmMUzVr6YjmFuNbcAO/getScIw5Ro0SzSZafZHZYkD3zDI1zsEyH
+         Gc29sgjQL24ZeNvX1xqv+ChFi+pgbyrl1+5IwbdCO/VpEsslrzO+M0TC4uvWmBbuSNvm
+         IV0eO1apCNJUNtSDlMZ6OYwi83RWz/REugwcHqBUOc+5iYCZdIkFbguZtVED/+UZdJgu
+         nEAikTS9tZRw1H3btKZA4NlzjkSYZGAsjfAKnX3AS3MRD8ERjOG4xAx8smbOfQVG//gN
+         0y9sVrlzZ83lh4oq2vA9BxETFxIQfOB3gbyOUY3Te/WzATNeXMUYrz/KnUFUbt5DHH/e
+         QxrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ERu6crb1WAMuZFdM9UToXcT+dNcp+MHPdIVj6vlim7k=;
-        b=m4D1tmSrsmLaCCXYk7uY2ip0bpDlDqfzVP3jfr9al1sNzkhhfZNqJTf//zJZxLW1Fw
-         V+7/kHeKRURjzT2GtUeuQkBJDHrPP4fvh4GX1oCeaFIUWx4jvgGkIkOwrnwHze01+Y9K
-         YusGujSfcTXk4uAWowZO5pP8KfQ8Fk3f6SPl8S4aEpqFNbu+TTscTbp1AUGZ//jhDMq6
-         6gPLU4qv+6tuSW9YFfBKUlaEnO7AQwqfDkXpPOSez+TIIC9j7jaPVscpdP0Pih3uaXx4
-         i4T2Lfn8b7Sz+azX2/4IhoonyCWJXS/xZEpyA1IxyNSZCTsjBCjLKp4GkV2Mn7Bmo+xI
-         xYXQ==
-X-Gm-Message-State: AOAM5327Td4ZkzBE0RJmrHfSzKcvNTBPvwmchv9b5gkNqzprW6lfPToi
-        Pmh6wOvLLZYtsZ0KLqjQBPlMU3K/l0r8sh9OdeE=
-X-Google-Smtp-Source: ABdhPJz/ToMwI5dwHBQzz0ep5scQNExsuUpQkFXl5Hu6zmeENWnvGHGOVP+ukVBjWuZpqN44WRSadwYBoV429qZ5BEc=
-X-Received: by 2002:a92:cdac:: with SMTP id g12mr3828480ild.72.1622137177389;
- Thu, 27 May 2021 10:39:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210527140534.107607-1-uvv.mail@gmail.com>
-In-Reply-To: <20210527140534.107607-1-uvv.mail@gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 27 May 2021 20:39:26 +0300
-Message-ID: <CAOQ4uxiYe-=JY-QN-tu4bMswcYc4ROdOrtR=QdB7yK5eZSvtvg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] ovl: disable uuid when redirect_dir is used
-To:     Vyacheslav Yurkov <uvv.mail@gmail.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MqJKmbvMu5CZAUap6srgF/VVQp9CGlbwF7EYmpey22w=;
+        b=JrQdrjRXAlvfx8LRQmFFqLlB0pAg+ldus0oQsLGCsOvSCH0EZOAd9GgwbNs4YLKXyo
+         9PmLhilCzp4R5H7mNSh5dxM/bUzG3oVKhCUZP5Bt5DJRr3qBY4g6w4If+5R+WyUQepPG
+         rWMiqekzjOGPrFdJwn/kfuvqvZlGN2Ybw9cN8BAqNBe8xDFkGdFbT5KnKzbCZ/bPW1U6
+         VWFi0evLtfw+qkJhAe8zQTw11FYFWOsUQiwe0FLOHBbMKCJ5gy9oDBnYayF6haYGUA+S
+         x/AV0LVksHxKvirfAtxPDQv1iTHQ1+tK4XCFw6QMOYy5zQvwJLyO1sE3LsP6J29UF6zg
+         aTWA==
+X-Gm-Message-State: AOAM532O/KjOeS3M6DChzEq7mNFLXJ8/Dz2gVDx4F2l4izHAaYS+K+ZZ
+        j2hiRdMoRGuxiy5fZXmkr1k=
+X-Google-Smtp-Source: ABdhPJxVV7UJJp/f72Y/3sJl3hICtrKrvlK+KLKareaf50yFjNu89+INprit+VZznPpYgM2IaKkOZw==
+X-Received: by 2002:a5d:59ae:: with SMTP id p14mr4656710wrr.214.1622137563671;
+        Thu, 27 May 2021 10:46:03 -0700 (PDT)
+Received: from uvv-2004-vm.localdomain (dslb-002-205-242-053.002.205.pools.vodafone-ip.de. [2.205.242.53])
+        by smtp.gmail.com with ESMTPSA id f7sm4999837wrg.34.2021.05.27.10.46.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 May 2021 10:46:03 -0700 (PDT)
+From:   Vyacheslav Yurkov <uvv.mail@gmail.com>
+To:     Miklos Szeredi <miklos@szeredi.hu>,
+        Amir Goldstein <amir73il@gmail.com>
+Cc:     linux-unionfs@vger.kernel.org,
         Vyacheslav Yurkov <Vyacheslav.Yurkov@bruker.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: [PATCH v3 1/3] ovl: disable decoding null uuid with redirect dir
+Date:   Thu, 27 May 2021 19:45:45 +0200
+Message-Id: <20210527174547.109269-1-uvv.mail@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Thu, May 27, 2021 at 5:06 PM Vyacheslav Yurkov <uvv.mail@gmail.com> wrote:
->
-> From: Vyacheslav Yurkov <Vyacheslav.Yurkov@bruker.com>
->
-> Currently decoding origin with lower null uuid is not allowed when user
-> opted-in to one of the new features that require following the lower inode
+From: Vyacheslav Yurkov <Vyacheslav.Yurkov@bruker.com>
 
-Confusing. It is not allowed *unless* user opted-in...
-I admit the comment could have been more clear.
+Currently decoding origin with lower null uuid is not allowed unless user
+opted-in to one of the new features that require following the lower inode
+of non-dir upper (index, xino, metacopy). Now we add redirect_dir too to
+that feature list.
 
-The commit subject is also not accurate, maybe:
- "ovl: disable decoding null uuid with redirect dir"
+Signed-off-by: Vyacheslav Yurkov <Vyacheslav.Yurkov@bruker.com>
+---
+ fs/overlayfs/super.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-Amir.
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index b01d4147520d..97ea35fdd933 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1600,7 +1600,7 @@ static bool ovl_lower_uuid_ok(struct ovl_fs *ofs, const uuid_t *uuid)
+ 	 * lower inode of non-dir upper.
+ 	 */
+ 	if (!ofs->config.index && !ofs->config.metacopy &&
+-	    ofs->config.xino != OVL_XINO_ON &&
++	    !ofs->config.redirect_dir && ofs->config.xino != OVL_XINO_ON &&
+ 	    uuid_is_null(uuid))
+ 		return false;
+ 
+-- 
+2.25.1
 
-> of non-dir upper (index, xino, metacopy). Now we add redirect_dir too to
-> that feature list.
->
-> Signed-off-by: Vyacheslav Yurkov <Vyacheslav.Yurkov@bruker.com>
-> ---
->  fs/overlayfs/super.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-> index b01d4147520d..97ea35fdd933 100644
-> --- a/fs/overlayfs/super.c
-> +++ b/fs/overlayfs/super.c
-> @@ -1600,7 +1600,7 @@ static bool ovl_lower_uuid_ok(struct ovl_fs *ofs, const uuid_t *uuid)
->          * lower inode of non-dir upper.
->          */
->         if (!ofs->config.index && !ofs->config.metacopy &&
-> -           ofs->config.xino != OVL_XINO_ON &&
-> +           !ofs->config.redirect_dir && ofs->config.xino != OVL_XINO_ON &&
->             uuid_is_null(uuid))
->                 return false;
->
-> --
-> 2.25.1
->
