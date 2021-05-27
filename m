@@ -2,60 +2,60 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 912C1393515
-	for <lists+linux-unionfs@lfdr.de>; Thu, 27 May 2021 19:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 443D2393517
+	for <lists+linux-unionfs@lfdr.de>; Thu, 27 May 2021 19:46:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229764AbhE0Rrj (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 27 May 2021 13:47:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37378 "EHLO
+        id S229739AbhE0Rrl (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 27 May 2021 13:47:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229740AbhE0Rrj (ORCPT
+        with ESMTP id S229609AbhE0Rrk (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 27 May 2021 13:47:39 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E772EC061760
-        for <linux-unionfs@vger.kernel.org>; Thu, 27 May 2021 10:46:05 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id n4so722593wrw.3
-        for <linux-unionfs@vger.kernel.org>; Thu, 27 May 2021 10:46:05 -0700 (PDT)
+        Thu, 27 May 2021 13:47:40 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FDB0C061761
+        for <linux-unionfs@vger.kernel.org>; Thu, 27 May 2021 10:46:06 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id j14so714271wrq.5
+        for <linux-unionfs@vger.kernel.org>; Thu, 27 May 2021 10:46:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=fWNc0/4lXnBigvtF9/tcTyql3KW7unSFtJ4JH3X7KAc=;
-        b=qYp8L/8qTNM1xIBdDywYhLemKIFhKzQmst342Sk2wktJFQ9sso6uAW+UKTTrMOWYHh
-         h9QBD1yiKos/JfJ3riaBJACFEh0PZAhAEhJUSo7ZBGKa2Sr6dfyx0dr0/cRmwL+BhZvJ
-         BRdnLiL9WHuUMucTN3OZtmnuwU38flGsb6S1fhnHcVnnJasNOFIbh52s8/XT7ivoTqBB
-         y/+NzcEZ84+EXpDOHZwiKhVhMIhEQgos2xT66kA1gbMRjwtZm7ESlg6JBHWexIXkI9dh
-         ne/NybLo3Jp+NQNxR/jXQg2fw+Mvyp8a2ed6fdwUgTSiJPlDbeCcHyTSHM8YuuusFJ+1
-         hz8Q==
+        bh=P4yWGhwwrTXCVH2tcnBa2DjJ8I2U2QUuDgwrQ0w53Mw=;
+        b=SAkebh0fypOt9B+bnT6pGdzGqGnWg4TiVgs7Sco8JgiJR0xRatuEQdhX5oGX3/hhY4
+         q0F6oMwUQGXBlX2H0OxUJLJWJN+g0B4ir7uCHhhDFESqmaQ0c/v8nckag1JObv0TmY7X
+         nL8WgBAH8V7xsqWvf8/brZiKyDCB0jEk+IUwJwZiNVWU+HKZyldmyPTb0csEpDngP0sn
+         gAwLsR+ijRsJKXhXuRKiPJoq+gy+LFAfYh6aIn4xxWl7/Fzsh0/djSUFDjM6FeJuEw+6
+         zsOWuILR1ZkboA17QpDcKQeJYxbHiV4MIG8ia8nwRZ8oqE84nv2iqeu1YmwMlWdshQDO
+         3HPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=fWNc0/4lXnBigvtF9/tcTyql3KW7unSFtJ4JH3X7KAc=;
-        b=KNzmeyaGRqI3oOHAZ5QX8vJ3NB4X9Pk24/+QlGFOPjexA4K4NpvQLl24G7BfGnKifw
-         EsYRli283zjdl3Yag3s+lQM6PjLZleHwA3amtm/S5tKb2eQ/lt99ej6QX+4U59JKIlzB
-         RVByFfOQ4rbOraYnh1Ue7i0vjy2avk1Vbrrnif5W6EbFWy/rUdzBd0vwBoqv427JH9yJ
-         6Vj3maAwa3HXw8tcZ8weFfkuLHwf/xJzt2E6xWwbIEUAUK/bTYK7lKpFCLsDQsD90Pte
-         ZRb6uE+Ojm2udBh8ebnqzWxqthMNyinwE71N4WZRQSO+6rhRx2NPZsw4AerbOrS2Q4hW
-         nRBA==
-X-Gm-Message-State: AOAM531H8uiOspf2bVeRBb/2zSArd7m5Ti7SwSJVYMd3BNZB3nDnsVeG
-        jX407cQrcekkb15X0fv9k98=
-X-Google-Smtp-Source: ABdhPJzj7trf+XdCJqBoG1ObI0OlDSj/G8M1qJP9+HtjjZuyFa+LN55RvggvVpJcWkNPSZ+13RbiCg==
-X-Received: by 2002:adf:ef47:: with SMTP id c7mr4823200wrp.97.1622137564354;
-        Thu, 27 May 2021 10:46:04 -0700 (PDT)
+        bh=P4yWGhwwrTXCVH2tcnBa2DjJ8I2U2QUuDgwrQ0w53Mw=;
+        b=UifoFmQRlvAhSneVQ8nLLDGuYzKr7DBjHJSjJLim+b5zn0vW4XkLRA87pGrIjPwgS1
+         WFkRdB/MeYlokIUknJ+0cT2uiyCZ7u7zJTJS3ljOEUolokKL0MBnwlTPJ3rOq416MkLx
+         6Ll17IZbCmlFg+1UfHbPNhZu+Ddp0p1rYEyXZ/3xR2hinL307HXgZ+GaGKbDgU2cl3Te
+         C54dEwjatwn47CJa2wEGgOuRi4WmzvShoq75cnrtXpXwrlDC+94UoXNVuccQ3DwO/rbo
+         owYEiWAaNvOnuX/ce6zqPj65w28XEXSJGgIn9BAF+vK5g/ba67vadtPUhlVkcU+adQwn
+         YKaA==
+X-Gm-Message-State: AOAM532fSx2XLwEZ4ZoLPOZgcIcPpC842M368o6rRmsrNM49qOlRaKmw
+        HfZmbpQBJWkYt+vKwK2ZMCdW5uRQL2V2hc7yLE0=
+X-Google-Smtp-Source: ABdhPJzAeHp+nkGhO49pkPAiXEQcbzCjtk3VEaC7gAVVgCFBtTS5NI+5evT8GQaMSvG317S9Dpeuww==
+X-Received: by 2002:a5d:6803:: with SMTP id w3mr4636717wru.285.1622137565077;
+        Thu, 27 May 2021 10:46:05 -0700 (PDT)
 Received: from uvv-2004-vm.localdomain (dslb-002-205-242-053.002.205.pools.vodafone-ip.de. [2.205.242.53])
-        by smtp.gmail.com with ESMTPSA id f7sm4999837wrg.34.2021.05.27.10.46.03
+        by smtp.gmail.com with ESMTPSA id f7sm4999837wrg.34.2021.05.27.10.46.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 May 2021 10:46:03 -0700 (PDT)
+        Thu, 27 May 2021 10:46:04 -0700 (PDT)
 From:   Vyacheslav Yurkov <uvv.mail@gmail.com>
 To:     Miklos Szeredi <miklos@szeredi.hu>,
         Amir Goldstein <amir73il@gmail.com>
 Cc:     linux-unionfs@vger.kernel.org,
         Vyacheslav Yurkov <Vyacheslav.Yurkov@bruker.com>
-Subject: [PATCH v3 2/3] ovl: add ovl_allow_offline_changes() helper
-Date:   Thu, 27 May 2021 19:45:46 +0200
-Message-Id: <20210527174547.109269-2-uvv.mail@gmail.com>
+Subject: [PATCH v3 3/3] ovl: do not set overlay.opaque for new directories
+Date:   Thu, 27 May 2021 19:45:47 +0200
+Message-Id: <20210527174547.109269-3-uvv.mail@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210527174547.109269-1-uvv.mail@gmail.com>
 References: <20210527174547.109269-1-uvv.mail@gmail.com>
@@ -67,52 +67,48 @@ X-Mailing-List: linux-unionfs@vger.kernel.org
 
 From: Vyacheslav Yurkov <Vyacheslav.Yurkov@bruker.com>
 
-Allows to check whether any of extended features are enabled
+Enable optimizations only if user opted-in for any of extended features.
+If optimization is enabled, it breaks existing use case when a lower layer
+directory appears after directory was created on a merged layer. If
+overlay.opaque is applied, new files on lower layer are not visible.
+
+Consider the following scenario:
+- /lower and /upper are mounted to /merged
+- directory /merged/new-dir is created with a file test1
+- overlay is unmounted
+- directory /lower/new-dir is created with a file test2
+- overlay is mounted again
+
+If opaque is applied by default, file test2 is not going to be visible
+without explicitly clearing the overlay.opaque attribute
 
 Signed-off-by: Vyacheslav Yurkov <Vyacheslav.Yurkov@bruker.com>
 ---
- fs/overlayfs/overlayfs.h | 12 ++++++++++++
- fs/overlayfs/super.c     |  4 +---
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ fs/overlayfs/dir.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
-index 6ec73db4bf9e..29d71f253db4 100644
---- a/fs/overlayfs/overlayfs.h
-+++ b/fs/overlayfs/overlayfs.h
-@@ -262,6 +262,18 @@ static inline bool ovl_open_flags_need_copy_up(int flags)
- 	return ((OPEN_FMODE(flags) & FMODE_WRITE) || (flags & O_TRUNC));
- }
+diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
+index 93efe7048a77..03a22954fe61 100644
+--- a/fs/overlayfs/dir.c
++++ b/fs/overlayfs/dir.c
+@@ -320,6 +320,7 @@ static bool ovl_type_origin(struct dentry *dentry)
+ static int ovl_create_upper(struct dentry *dentry, struct inode *inode,
+ 			    struct ovl_cattr *attr)
+ {
++	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
+ 	struct dentry *upperdir = ovl_dentry_upper(dentry->d_parent);
+ 	struct inode *udir = upperdir->d_inode;
+ 	struct dentry *newdentry;
+@@ -338,7 +339,8 @@ static int ovl_create_upper(struct dentry *dentry, struct inode *inode,
+ 	if (IS_ERR(newdentry))
+ 		goto out_unlock;
  
-+static inline bool ovl_allow_offline_changes(struct ovl_fs *ofs)
-+{
-+	/*
-+	 * To avoid regressions in existing setups with overlay lower offline
-+	 * changes, we allow lower changes only if none of the new features
-+	 * are used.
-+	 */
-+	return (!ofs->config.index && !ofs->config.metacopy &&
-+		!ofs->config.redirect_dir && ofs->config.xino != OVL_XINO_ON);
-+}
-+
-+
- /* util.c */
- int ovl_want_write(struct dentry *dentry);
- void ovl_drop_write(struct dentry *dentry);
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index 97ea35fdd933..178daa5e82c9 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -1599,9 +1599,7 @@ static bool ovl_lower_uuid_ok(struct ovl_fs *ofs, const uuid_t *uuid)
- 	 * user opted-in to one of the new features that require following the
- 	 * lower inode of non-dir upper.
- 	 */
--	if (!ofs->config.index && !ofs->config.metacopy &&
--	    !ofs->config.redirect_dir && ofs->config.xino != OVL_XINO_ON &&
--	    uuid_is_null(uuid))
-+	if (ovl_allow_offline_changes(ofs) && uuid_is_null(uuid))
- 		return false;
- 
- 	for (i = 0; i < ofs->numfs; i++) {
+-	if (ovl_type_merge(dentry->d_parent) && d_is_dir(newdentry)) {
++	if (ovl_type_merge(dentry->d_parent) && d_is_dir(newdentry) &&
++	    !ovl_allow_offline_changes(ofs)) {
+ 		/* Setting opaque here is just an optimization, allow to fail */
+ 		ovl_set_opaque(dentry, newdentry);
+ 	}
 -- 
 2.25.1
 
