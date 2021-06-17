@@ -2,137 +2,55 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85C273A5969
-	for <lists+linux-unionfs@lfdr.de>; Sun, 13 Jun 2021 17:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AF523AAE28
+	for <lists+linux-unionfs@lfdr.de>; Thu, 17 Jun 2021 09:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231952AbhFMPmw (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 13 Jun 2021 11:42:52 -0400
-Received: from out20-15.mail.aliyun.com ([115.124.20.15]:37518 "EHLO
-        out20-15.mail.aliyun.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231782AbhFMPmv (ORCPT
+        id S230392AbhFQH6l (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 17 Jun 2021 03:58:41 -0400
+Received: from [122.15.141.162] ([122.15.141.162]:42940 "EHLO
+        UPCDCDAMX02.upcl.org" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229666AbhFQH6g (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 13 Jun 2021 11:42:51 -0400
-X-Alimail-AntiSpam: AC=CONTINUE;BC=0.0946574|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.741023-0.000891746-0.258085;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047213;MF=guan@eryu.me;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.KRnd8Pf_1623598847;
-Received: from localhost(mailfrom:guan@eryu.me fp:SMTPD_---.KRnd8Pf_1623598847)
-          by smtp.aliyun-inc.com(10.147.40.7);
-          Sun, 13 Jun 2021 23:40:47 +0800
-Date:   Sun, 13 Jun 2021 23:40:46 +0800
-From:   Eryu Guan <guan@eryu.me>
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Eryu Guan <guaneryu@gmail.com>, Miklos Szeredi <miklos@szeredi.hu>,
-        Chao Yu <yuchao0@huawei.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        fstests <fstests@vger.kernel.org>
-Subject: Re: [PATCH] generic/507: support more filesystems
-Message-ID: <YMYm/tEuFr7LE8Kh@desktop>
-References: <20210611131029.679307-1-amir73il@gmail.com>
- <CAOQ4uxgdZqBv6ju+6HLXSPh1N5X+pzBXTB+0uhZw2dFhTs1ESA@mail.gmail.com>
+        Thu, 17 Jun 2021 03:58:36 -0400
+Received: from UPCDCDAMX02.upcl.org (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id EF84AC3EEC;
+        Thu, 17 Jun 2021 12:51:17 +0530 (IST)
+Received: from UPCDCDAMX02.upcl.org (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9D8C1C318F;
+        Thu, 17 Jun 2021 12:50:14 +0530 (IST)
+Received: from User (unknown [210.212.82.37])
+        by UPCDCDAMX02.upcl.org (Postfix) with SMTP;
+        Thu, 17 Jun 2021 12:50:14 +0530 (IST)
+Reply-To: <marielthiago102@gmail.com>
+From:   "Mariel Thiago" <info@infotools.in>
+Subject: Re:: Please contact me it's very urgent.
+Date:   Thu, 17 Jun 2021 07:20:41 -0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOQ4uxgdZqBv6ju+6HLXSPh1N5X+pzBXTB+0uhZw2dFhTs1ESA@mail.gmail.com>
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20210617072014.9D8C1C318F@UPCDCDAMX02.upcl.org>
+To:     undisclosed-recipients:;
+X-TM-AS-GCONF: 00
+X-TM-AS-Product-Ver: IMSVA-9.1.0.1960-8.6.0.1013-26224.006
+X-TM-AS-Result: No-2.497-5.0-31-10
+X-imss-scan-details: No-2.497-5.0-31-10
+X-TMASE-Version: IMSVA-9.1.0.1960-8.6.1013-26224.006
+X-TMASE-Result: 10-2.496900-10.000000
+X-TMASE-MatchedRID: PEpoWB/n4wPoJ7ZHxnJI6/6CJzEkJBKDVOXpHWpii+ddyparHcc9UIhu
+        TvsiBEc/JfjcKHKDDk8K4MBRf7I7puawzjZNF/+9gM4D72plZiep43A0ENmZJqRrhpwKFLjUkZO
+        l7WKIImpu9tOD27u7FNTHX+rg7MGt505jRA97RdWRSAi45KhHyaxczqyf2GA9LHdIgRft8S1QSp
+        LfxZGQcl8vMu11r33KXPP583vQDYF3yrRBFBiPVS2s/H4x5wHg3QfwsVk0UbuGrPnef/I+ej6N5
+        5/6MNSnpdDo0PaPyGFHwD2XNKdI8sVZh7bvPcyg0m3qDro1rgcxP1evyC/00KVBBtW+D6/IR7CD
+        JBvMFOms6dZMAot5Yg==
+X-IMSS-DKIM-White-List: No
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-12:0,22:0,33:0,34:0-0
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Sun, Jun 13, 2021 at 09:34:11AM +0300, Amir Goldstein wrote:
-> On Fri, Jun 11, 2021 at 4:10 PM Amir Goldstein <amir73il@gmail.com> wrote:
-> >
-> > The commit message introducing the test says:
-> > "We only check below attribute modification which most filesystem
-> >  supports:
-> >     - no atime updates (A)
-> >     - secure deletion (s)
-> >     - synchronous updates (S)
-> >     - undeletable (u)
-> > "
-> > But in fact, very few filesystems support the (s) and (u) flags.
-> > xfs and btrfs do not support them for example.
-> >
-> > The test doesn't need to check those specific flags, so replace those
-> > flags with immutable (i) and append-only (a), which most filesystems
-> > really do support.
-> >
-> > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> > ---
-> >
-> > Eryu,
-> >
-> > This would be a good test to cover the recent fileattr vfs changes
-> > by Miklos that changed the implementation of SETFLAGS ioctl in all the
-> > filesystem, only the test does not run on most of the filesystems...
-> >
-> > Thanks,
-> > Amir.
-> >
-> >  tests/generic/507 | 11 ++++++-----
-> >  1 file changed, 6 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/tests/generic/507 b/tests/generic/507
-> > index b654883a..cc61b3cb 100755
-> > --- a/tests/generic/507
-> > +++ b/tests/generic/507
-> > @@ -9,7 +9,7 @@
-> >  # i_flags can be recovered after sudden power-cuts.
-> >  # 1. touch testfile;
-> >  # 1.1 sync (optional)
-> > -# 2. chattr +[AsSu] testfile
-> > +# 2. chattr +[ASai] testfile
-> 
-> I missed the same fix that's needed in line 8. below...
-
-Fixed on commit, thanks for the heads-up!
-
-Eryu
-
-> 
-> >  # 3. xfs_io -f testfile -c "fsync";
-> >  # 4. godown;
-> >  # 5. umount;
-> > @@ -34,6 +34,7 @@ trap "_cleanup; exit \$status" 0 1 2 3 15
-> >  _cleanup()
-> >  {
-> >         cd /
-> > +       $CHATTR_PROG -ai $testfile &> /dev/null
-> >         rm -f $tmp.*
-> >  }
-> >
-> > @@ -49,7 +50,7 @@ _supported_fs generic
-> >
-> >  _require_command "$LSATTR_PROG" lasttr
-> >  _require_command "$CHATTR_PROG" chattr
-> > -_require_chattr AsSu
-> > +_require_chattr ASai
-> >
-> >  _require_scratch
-> >  _require_scratch_shutdown
-> > @@ -79,7 +80,7 @@ do_check()
-> >
-> >         before=`$LSATTR_PROG $testfile`
-> >
-> > -       $XFS_IO_PROG -f $testfile -c "fsync" | _filter_xfs_io
-> > +       $XFS_IO_PROG -r -f $testfile -c "fsync" | _filter_xfs_io
-> >
-> >         _scratch_shutdown | tee -a $seqres.full
-> >         _scratch_cycle_mount
-> > @@ -101,7 +102,7 @@ do_check()
-> >
-> >         before=`$LSATTR_PROG $testfile`
-> >
-> > -       $XFS_IO_PROG -f $testfile -c "fsync" | _filter_xfs_io
-> > +       $XFS_IO_PROG -r -f $testfile -c "fsync" | _filter_xfs_io
-> >
-> >         _scratch_shutdown | tee -a $seqres.full
-> >         _scratch_cycle_mount
-> > @@ -122,7 +123,7 @@ do_check()
-> >
-> >  echo "Silence is golden"
-> >
-> > -opts="A s S u"
-> > +opts="A S a i"
-> >  for i in $opts; do
-> >         do_check $i
-> >         do_check $i sync
-> > --
-> > 2.31.1
-> >
+ I think I have something huge you might be interested in.
