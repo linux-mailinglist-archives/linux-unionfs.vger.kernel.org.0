@@ -2,55 +2,94 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AF523AAE28
-	for <lists+linux-unionfs@lfdr.de>; Thu, 17 Jun 2021 09:56:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E85C83AB765
+	for <lists+linux-unionfs@lfdr.de>; Thu, 17 Jun 2021 17:22:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230392AbhFQH6l (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 17 Jun 2021 03:58:41 -0400
-Received: from [122.15.141.162] ([122.15.141.162]:42940 "EHLO
-        UPCDCDAMX02.upcl.org" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S229666AbhFQH6g (ORCPT
+        id S233245AbhFQPZA (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 17 Jun 2021 11:25:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48474 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233274AbhFQPY5 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 17 Jun 2021 03:58:36 -0400
-Received: from UPCDCDAMX02.upcl.org (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EF84AC3EEC;
-        Thu, 17 Jun 2021 12:51:17 +0530 (IST)
-Received: from UPCDCDAMX02.upcl.org (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9D8C1C318F;
-        Thu, 17 Jun 2021 12:50:14 +0530 (IST)
-Received: from User (unknown [210.212.82.37])
-        by UPCDCDAMX02.upcl.org (Postfix) with SMTP;
-        Thu, 17 Jun 2021 12:50:14 +0530 (IST)
-Reply-To: <marielthiago102@gmail.com>
-From:   "Mariel Thiago" <info@infotools.in>
-Subject: Re:: Please contact me it's very urgent.
-Date:   Thu, 17 Jun 2021 07:20:41 -0000
+        Thu, 17 Jun 2021 11:24:57 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51922C061574
+        for <linux-unionfs@vger.kernel.org>; Thu, 17 Jun 2021 08:22:48 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id e22so3646608wrc.1
+        for <linux-unionfs@vger.kernel.org>; Thu, 17 Jun 2021 08:22:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gblo0/IH+IqIQfbMRn2E8Xi67qPNXrPlYs800suVfu8=;
+        b=UOAlRM18+6D496c73u+6zlLzOFYNcJT6dN6m/hNL9CcAmOhqFTm+LOibIyaHWbspCL
+         UAHzUevadVqyOIfjjXxQNmZGBFkCoUwQO2W63RW1BBABzPld1SJt+Ak9+ffIi5pDO10A
+         p3BICCPpQ8vG4Jfc4vGUml0VmflLFoxqg9k+WZ184ae4c0XrZL/J5WFnvG0faTsbLiKs
+         PG3dD14Ac7GYsaAzYpnMdEE/pVXXN7zdS4GN56XnJfAkmwycK8QjmWSTZViYYmS/Wz36
+         KOnvbATiBxFFAFyCQ9s+KhH4Rp5J836vxfhYGsd32dXBuEChukOwPQN6fnT3yDEi8Z5L
+         YJpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gblo0/IH+IqIQfbMRn2E8Xi67qPNXrPlYs800suVfu8=;
+        b=AyW+e8cS/HJmRNavQ2nkXx9/yhZwXdRykf8saxNJ+HDVUnwAr3Ym04tyBpRRLzteyw
+         yaECYKw63RzqdpXIPDwF5mOnH+1XbE97fcWlpXdAF8/xtr1Wd0KcxHPwYLaIOgG7xy9x
+         lzBMV9pX32RavAHsBngRlEjM25GlnCQeulL9xbzMFPAoGobSWZhtXsknXSGDTh6kIana
+         lDcj4h8cVKxSMdOtEaKGAXjOn3+sVoyCXAcc5PBt/mPuIcevNt9Ad6v5bSGDoVn3mGD7
+         1/L8BSNUvXGqvVoyVhqCUWzI3e+8W7P7xA/FF19b1vu+tLVuioWCw7msADelBw7ERxG2
+         1Irg==
+X-Gm-Message-State: AOAM533bmzZYaExExb9sS5HVdRCluFzhT8hL2ikoXw+lYbhLSnLDPGhU
+        WtzKRoKqDaC2oHv4fa7xg1c=
+X-Google-Smtp-Source: ABdhPJwHxgwHWYKblYHWdH0VFrTqolpWF4hazE6ydEAIUsMW/O5Z5//nPE/9dCADGszc+3IkbsvOcg==
+X-Received: by 2002:a5d:5388:: with SMTP id d8mr6212077wrv.423.1623943366830;
+        Thu, 17 Jun 2021 08:22:46 -0700 (PDT)
+Received: from localhost.localdomain ([141.226.242.176])
+        by smtp.gmail.com with ESMTPSA id o7sm5835910wro.76.2021.06.17.08.22.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Jun 2021 08:22:46 -0700 (PDT)
+From:   Amir Goldstein <amir73il@gmail.com>
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     Chengguang Xu <cgxu519@mykernel.net>, linux-unionfs@vger.kernel.org
+Subject: [PATCH v2 0/3] Overlayfs fileattr related fixes
+Date:   Thu, 17 Jun 2021 18:22:38 +0300
+Message-Id: <20210617152241.987010-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20210617072014.9D8C1C318F@UPCDCDAMX02.upcl.org>
-To:     undisclosed-recipients:;
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSVA-9.1.0.1960-8.6.0.1013-26224.006
-X-TM-AS-Result: No-2.497-5.0-31-10
-X-imss-scan-details: No-2.497-5.0-31-10
-X-TMASE-Version: IMSVA-9.1.0.1960-8.6.1013-26224.006
-X-TMASE-Result: 10-2.496900-10.000000
-X-TMASE-MatchedRID: PEpoWB/n4wPoJ7ZHxnJI6/6CJzEkJBKDVOXpHWpii+ddyparHcc9UIhu
-        TvsiBEc/JfjcKHKDDk8K4MBRf7I7puawzjZNF/+9gM4D72plZiep43A0ENmZJqRrhpwKFLjUkZO
-        l7WKIImpu9tOD27u7FNTHX+rg7MGt505jRA97RdWRSAi45KhHyaxczqyf2GA9LHdIgRft8S1QSp
-        LfxZGQcl8vMu11r33KXPP583vQDYF3yrRBFBiPVS2s/H4x5wHg3QfwsVk0UbuGrPnef/I+ej6N5
-        5/6MNSnpdDo0PaPyGFHwD2XNKdI8sVZh7bvPcyg0m3qDro1rgcxP1evyC/00KVBBtW+D6/IR7CD
-        JBvMFOms6dZMAot5Yg==
-X-IMSS-DKIM-White-List: No
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-12:0,22:0,33:0,34:0-0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
- I think I have something huge you might be interested in.
+Miklos,
+
+With these patches, copy up preserves the vfs aware subset of fileattr
+flags, so xfstest overlay/075 passes.
+
+I've tested also some generic chattr xfstests and written a new test
+to verify the logic of overlay.xflags xattr [2].
+
+Changes since v1 [1]:
+- Store (i),(a) flags in xattr text format
+- Copy up (A),(S) flags to upper fileattr
+- Fixes the problems with setting ovl dirs and hardlinks immutable
+
+[1] https://lore.kernel.org/linux-unionfs/CAJfpeguMQca-+vTdzoDdDWNJraWyqMa3vYRFDWPMk_R6-L7Obw@mail.gmail.com/
+[2] https://github.com/amir73il/xfstests/commits/ovl-xflags
+
+Amir Goldstein (3):
+  ovl: pass ovl_fs to ovl_check_setxattr()
+  ovl: copy up sync/noatime fileattr flags
+  ovl: consistent behavior for immutable/append-only inodes
+
+ fs/overlayfs/copy_up.c   |  72 +++++++++++++---
+ fs/overlayfs/dir.c       |   6 +-
+ fs/overlayfs/inode.c     |  58 ++++++++++---
+ fs/overlayfs/namei.c     |   2 +-
+ fs/overlayfs/overlayfs.h |  44 +++++++++-
+ fs/overlayfs/util.c      | 178 ++++++++++++++++++++++++++++++++++++++-
+ 6 files changed, 323 insertions(+), 37 deletions(-)
+
+-- 
+2.32.0
+
