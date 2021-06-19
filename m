@@ -2,58 +2,58 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D21463AD8EA
-	for <lists+linux-unionfs@lfdr.de>; Sat, 19 Jun 2021 11:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D70C3AD8EC
+	for <lists+linux-unionfs@lfdr.de>; Sat, 19 Jun 2021 11:26:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231449AbhFSJ2h (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 19 Jun 2021 05:28:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43174 "EHLO
+        id S231940AbhFSJ2i (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 19 Jun 2021 05:28:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230107AbhFSJ2h (ORCPT
+        with ESMTP id S230107AbhFSJ2i (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 19 Jun 2021 05:28:37 -0400
+        Sat, 19 Jun 2021 05:28:38 -0400
 Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E207FC061756
-        for <linux-unionfs@vger.kernel.org>; Sat, 19 Jun 2021 02:26:24 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id o3so13562515wri.8
-        for <linux-unionfs@vger.kernel.org>; Sat, 19 Jun 2021 02:26:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DE79C06175F
+        for <linux-unionfs@vger.kernel.org>; Sat, 19 Jun 2021 02:26:26 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id c9so13559232wrt.5
+        for <linux-unionfs@vger.kernel.org>; Sat, 19 Jun 2021 02:26:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=P2MeVQUTmzjV7T33p8gxWNbwIG6ihISzESSYNTTgWNs=;
-        b=NYrZBhHVgC7uSFmFpOSAYof11TCL7GuGsBd+ihsJYoGNEFb1PFN9bUsUCeujvJGWEE
-         Htf/Z5v3z4WYSv8QYUIp+U+mCrZeva3OoLRcQqPZgH3hMQUOyPCu1NCg1CaIagwVqv+N
-         XSSe91kwF+3EBLrWl8ag/zKPnx0E3BQ2J1S3SGgC5U4nsIKXSU4jJKJ4p0ykXCqKrGx2
-         uJ6Qdzvh78n0KN3PJTNNRXZx+KbvycBjcuN6zMf95z0ljy5aZEL0W0KQiklHsbdt+iRS
-         6VAovUfHPMW5at0ZJ1GzrKqPssix42oWjolHFPYUn0fZMhSUNWyN6YZFKeQw68aywu8J
-         2HhA==
+        bh=N7yRz5fBvz0QjFHM/i+cV9QhWjVXY4W7zJhUSwe5b+Q=;
+        b=ZsBOGocW5gYIgjMPAT9jUkO4M0l28sMnLjDWJe9uTiLeGDdJUuxkrj+hBDUS6X0GH2
+         EEB/lvEKfCLZpZRJRO1UUpQnrxTIwsYBQVwmhHnj0o1CBm1+vWjDqYix46pTBE4y+V4O
+         4JUai1SUcRqi2/dvsefBqYEQrZOPtWBS1kJJGzjfaj0wX5mrYUM4+mb8qItfv24PcKZ1
+         1YRZ6IfUOcpRuSEh/6GTztqFjKAa2rOGONBRs8FP/Pi4bvrQCPpd32UelFwuEj4OBETM
+         qlGKzB8fpP8FJw0WA41r92S3pqhLpkoaGlzFcyITqiSFqBt2Wat4tXokY2knKGfq/sqU
+         zl0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=P2MeVQUTmzjV7T33p8gxWNbwIG6ihISzESSYNTTgWNs=;
-        b=t0l9BSgM/wGFYeFhSNMrFFyUtRXMBzeRKg8Cs0dIBzop3s60e4q+3AlZ6TRfYC7/nk
-         UB5jVA0sxAiGpscU13XlIHG0U+uWsj2wqKNrKS//cMMySipWsS25qEOZag1tTkV3sdnE
-         cQbcU7iHRl55Q+cdmPEtfZr0XzRBXOQWbuWsMXqp/+jq9GS0KXRfSEvwRZM02k1FTQQm
-         GjMSHWGJcprIxbi8CAV7G7BwkrSCOH1/tsGJrGg5Mp3tzv+7huS4ol48MyHTxHhU+Dev
-         xovJZYiDCeOvp9hf4pfL2NwpXGoCFjyaKboTmEn0G6ZREyDYPwpiydEQidRrUb9tgZs4
-         MizQ==
-X-Gm-Message-State: AOAM530fyYTcWkL8eRfTgEfIdEZSBSEW4GhMyWMPeAyR0GviEvIGlXyt
-        qoS/T5+FPszOTzpBnZCW0c4=
-X-Google-Smtp-Source: ABdhPJwyKc9IzU38GpSslr+eptoxSXh82pjU9E3KrRyQQEyHBtjMAh3nCECbglxyV9saJZGNLLsctw==
-X-Received: by 2002:a5d:6acc:: with SMTP id u12mr16846672wrw.414.1624094783487;
-        Sat, 19 Jun 2021 02:26:23 -0700 (PDT)
+        bh=N7yRz5fBvz0QjFHM/i+cV9QhWjVXY4W7zJhUSwe5b+Q=;
+        b=IWH9+mkveQeJ4bnAgC0JDbtxuXK9NFn2bkjeRo92JNKiYu5ubZ5Kb6Mx3TFteNO5A/
+         OO+WMbFpa17MtYgPsXgb81mHoWaInW4QL8DG1b29JZln3ZBdkYWgcJeqUCmQ3geIhU48
+         9uxe1DGcPyg17Ul+xyMjLFMpC5wrft4G1w1PVi/c+HXw0/MLOpqNKdARvDRKvKCsG4pX
+         deoId/a6ModgH3QSLgETAT9HdjNKGdOLd/cdriMMoAK5JOnIO5MfzhUS1LzXqImI9c98
+         t/tgyblVuVpiE6wBbEgFPpfZh0phw1VknzMv6dcpoKi/sx8biZ9Lh1d8msyj5vgO0n1+
+         P9QQ==
+X-Gm-Message-State: AOAM532HUWq39iU56xPDWr9+IrKBJ7Nyuq9iaMm4DndLmRg1Y+YSu89b
+        16t2MW7tfhtDaozlSN0V15c=
+X-Google-Smtp-Source: ABdhPJxdXWh/edHzs8G2lfxtxz7U9CxM30XgZHlrdPK6pWxuLRg3WOq7lEAWRzkzLCz5sS7YWOFErQ==
+X-Received: by 2002:a5d:4443:: with SMTP id x3mr1337589wrr.67.1624094784718;
+        Sat, 19 Jun 2021 02:26:24 -0700 (PDT)
 Received: from localhost.localdomain ([141.226.245.169])
-        by smtp.gmail.com with ESMTPSA id 2sm10904445wrz.87.2021.06.19.02.26.22
+        by smtp.gmail.com with ESMTPSA id 2sm10904445wrz.87.2021.06.19.02.26.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Jun 2021 02:26:22 -0700 (PDT)
+        Sat, 19 Jun 2021 02:26:24 -0700 (PDT)
 From:   Amir Goldstein <amir73il@gmail.com>
 To:     Miklos Szeredi <miklos@szeredi.hu>
 Cc:     Chengguang Xu <cgxu519@mykernel.net>, linux-unionfs@vger.kernel.org
-Subject: [PATCH v3 1/4] fs: add generic helper for filling statx attribute flags
-Date:   Sat, 19 Jun 2021 12:26:16 +0300
-Message-Id: <20210619092619.1107608-2-amir73il@gmail.com>
+Subject: [PATCH v3 2/4] ovl: pass ovl_fs to ovl_check_setxattr()
+Date:   Sat, 19 Jun 2021 12:26:17 +0300
+Message-Id: <20210619092619.1107608-3-amir73il@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210619092619.1107608-1-amir73il@gmail.com>
 References: <20210619092619.1107608-1-amir73il@gmail.com>
@@ -63,98 +63,163 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-The immutable and append-only properties on an inode are published on
-the inode's i_flags and enforced by the VFS.
+Instead of passing the overlay dentry.
 
-Create a helper to fill the corresponding STATX_ATTR_ flags in the kstat
-structure from the inode's i_flags.
-
-Only orange was converted to use this helper.
-Other filesystems could use it in the future.
-
-Suggested-by: Miklos Szeredi <miklos@szeredi.hu>
 Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 ---
- fs/orangefs/inode.c  |  7 +------
- fs/stat.c            | 18 ++++++++++++++++++
- include/linux/fs.h   |  1 +
- include/linux/stat.h |  4 ++++
- 4 files changed, 24 insertions(+), 6 deletions(-)
+ fs/overlayfs/copy_up.c   | 10 +++++-----
+ fs/overlayfs/dir.c       |  6 ++++--
+ fs/overlayfs/namei.c     |  2 +-
+ fs/overlayfs/overlayfs.h |  6 +++---
+ fs/overlayfs/util.c      |  7 +++----
+ 5 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
-index 6bf35a0d61f3..4092009716a3 100644
---- a/fs/orangefs/inode.c
-+++ b/fs/orangefs/inode.c
-@@ -883,12 +883,7 @@ int orangefs_getattr(struct user_namespace *mnt_userns, const struct path *path,
- 		if (!(request_mask & STATX_SIZE))
- 			stat->result_mask &= ~STATX_SIZE;
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index 2846b943e80c..3fa68a5cc16e 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -331,8 +331,8 @@ struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
+ 	return ERR_PTR(err);
+ }
  
--		stat->attributes_mask = STATX_ATTR_IMMUTABLE |
--		    STATX_ATTR_APPEND;
--		if (inode->i_flags & S_IMMUTABLE)
--			stat->attributes |= STATX_ATTR_IMMUTABLE;
--		if (inode->i_flags & S_APPEND)
--			stat->attributes |= STATX_ATTR_APPEND;
-+		generic_fill_statx_attr(inode, stat);
+-int ovl_set_origin(struct ovl_fs *ofs, struct dentry *dentry,
+-		   struct dentry *lower, struct dentry *upper)
++int ovl_set_origin(struct ovl_fs *ofs, struct dentry *lower,
++		   struct dentry *upper)
+ {
+ 	const struct ovl_fh *fh = NULL;
+ 	int err;
+@@ -351,7 +351,7 @@ int ovl_set_origin(struct ovl_fs *ofs, struct dentry *dentry,
+ 	/*
+ 	 * Do not fail when upper doesn't support xattrs.
+ 	 */
+-	err = ovl_check_setxattr(dentry, upper, OVL_XATTR_ORIGIN, fh->buf,
++	err = ovl_check_setxattr(ofs, upper, OVL_XATTR_ORIGIN, fh->buf,
+ 				 fh ? fh->fb.len : 0, 0);
+ 	kfree(fh);
+ 
+@@ -526,13 +526,13 @@ static int ovl_copy_up_inode(struct ovl_copy_up_ctx *c, struct dentry *temp)
+ 	 * hard link.
+ 	 */
+ 	if (c->origin) {
+-		err = ovl_set_origin(ofs, c->dentry, c->lowerpath.dentry, temp);
++		err = ovl_set_origin(ofs, c->lowerpath.dentry, temp);
+ 		if (err)
+ 			return err;
  	}
- 	return ret;
- }
-diff --git a/fs/stat.c b/fs/stat.c
-index 1fa38bdec1a6..314269150b5b 100644
---- a/fs/stat.c
-+++ b/fs/stat.c
-@@ -59,6 +59,24 @@ void generic_fillattr(struct user_namespace *mnt_userns, struct inode *inode,
- }
- EXPORT_SYMBOL(generic_fillattr);
  
-+/**
-+ * generic_fill_statx_attr - Fill in the statx attributes from the inode flags
-+ * @inode:	Inode to use as the source
-+ * @stat:	Where to fill in the attribute flags
-+ *
-+ * Fill in the STATX_ATTR_ flags in the kstat structure for properties of the
-+ * inode that are published on i_flags and enforced by the VFS.
-+ */
-+void generic_fill_statx_attr(struct inode *inode, struct kstat *stat)
-+{
-+	if (inode->i_flags & S_IMMUTABLE)
-+		stat->attributes |= STATX_ATTR_IMMUTABLE;
-+	if (inode->i_flags & S_APPEND)
-+		stat->attributes |= STATX_ATTR_APPEND;
-+	stat->attributes_mask |= KSTAT_ATTR_VFS_FLAGS;
-+}
-+EXPORT_SYMBOL(generic_fill_statx_attr);
-+
- /**
-  * vfs_getattr_nosec - getattr without security checks
-  * @path: file to get attributes from
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index c3c88fdb9b2a..647664316013 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3353,6 +3353,7 @@ extern int page_symlink(struct inode *inode, const char *symname, int len);
- extern const struct inode_operations page_symlink_inode_operations;
- extern void kfree_link(void *);
- void generic_fillattr(struct user_namespace *, struct inode *, struct kstat *);
-+void generic_fill_statx_attr(struct inode *inode, struct kstat *stat);
- extern int vfs_getattr_nosec(const struct path *, struct kstat *, u32, unsigned int);
- extern int vfs_getattr(const struct path *, struct kstat *, u32, unsigned int);
- void __inode_add_bytes(struct inode *inode, loff_t bytes);
-diff --git a/include/linux/stat.h b/include/linux/stat.h
-index fff27e603814..7df06931f25d 100644
---- a/include/linux/stat.h
-+++ b/include/linux/stat.h
-@@ -34,6 +34,10 @@ struct kstat {
- 	 STATX_ATTR_ENCRYPTED |				\
- 	 STATX_ATTR_VERITY				\
- 	 )/* Attrs corresponding to FS_*_FL flags */
-+#define KSTAT_ATTR_VFS_FLAGS				\
-+	(STATX_ATTR_IMMUTABLE |				\
-+	 STATX_ATTR_APPEND				\
-+	 ) /* Attrs corresponding to S_* flags that are enforced by the VFS */
- 	u64		ino;
- 	dev_t		dev;
- 	dev_t		rdev;
+ 	if (c->metacopy) {
+-		err = ovl_check_setxattr(c->dentry, temp, OVL_XATTR_METACOPY,
++		err = ovl_check_setxattr(ofs, temp, OVL_XATTR_METACOPY,
+ 					 NULL, 0, -EOPNOTSUPP);
+ 		if (err)
+ 			return err;
+diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
+index 03a22954fe61..9154222883e6 100644
+--- a/fs/overlayfs/dir.c
++++ b/fs/overlayfs/dir.c
+@@ -233,9 +233,10 @@ struct dentry *ovl_create_temp(struct dentry *workdir, struct ovl_cattr *attr)
+ static int ovl_set_opaque_xerr(struct dentry *dentry, struct dentry *upper,
+ 			       int xerr)
+ {
++	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
+ 	int err;
+ 
+-	err = ovl_check_setxattr(dentry, upper, OVL_XATTR_OPAQUE, "y", 1, xerr);
++	err = ovl_check_setxattr(ofs, upper, OVL_XATTR_OPAQUE, "y", 1, xerr);
+ 	if (!err)
+ 		ovl_dentry_set_opaque(dentry);
+ 
+@@ -1045,6 +1046,7 @@ static bool ovl_need_absolute_redirect(struct dentry *dentry, bool samedir)
+ static int ovl_set_redirect(struct dentry *dentry, bool samedir)
+ {
+ 	int err;
++	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
+ 	const char *redirect = ovl_dentry_get_redirect(dentry);
+ 	bool absolute_redirect = ovl_need_absolute_redirect(dentry, samedir);
+ 
+@@ -1055,7 +1057,7 @@ static int ovl_set_redirect(struct dentry *dentry, bool samedir)
+ 	if (IS_ERR(redirect))
+ 		return PTR_ERR(redirect);
+ 
+-	err = ovl_check_setxattr(dentry, ovl_dentry_upper(dentry),
++	err = ovl_check_setxattr(ofs, ovl_dentry_upper(dentry),
+ 				 OVL_XATTR_REDIRECT,
+ 				 redirect, strlen(redirect), -EXDEV);
+ 	if (!err) {
+diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
+index 210cd6f66e28..da063b18b419 100644
+--- a/fs/overlayfs/namei.c
++++ b/fs/overlayfs/namei.c
+@@ -811,7 +811,7 @@ static int ovl_fix_origin(struct ovl_fs *ofs, struct dentry *dentry,
+ 	if (err)
+ 		return err;
+ 
+-	err = ovl_set_origin(ofs, dentry, lower, upper);
++	err = ovl_set_origin(ofs, lower, upper);
+ 	if (!err)
+ 		err = ovl_set_impure(dentry->d_parent, upper->d_parent);
+ 
+diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+index 29d71f253db4..6e3a1bea1c9a 100644
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -332,7 +332,7 @@ bool ovl_already_copied_up(struct dentry *dentry, int flags);
+ bool ovl_check_origin_xattr(struct ovl_fs *ofs, struct dentry *dentry);
+ bool ovl_check_dir_xattr(struct super_block *sb, struct dentry *dentry,
+ 			 enum ovl_xattr ox);
+-int ovl_check_setxattr(struct dentry *dentry, struct dentry *upperdentry,
++int ovl_check_setxattr(struct ovl_fs *ofs, struct dentry *upperdentry,
+ 		       enum ovl_xattr ox, const void *value, size_t size,
+ 		       int xerr);
+ int ovl_set_impure(struct dentry *dentry, struct dentry *upperdentry);
+@@ -573,8 +573,8 @@ int ovl_copy_xattr(struct super_block *sb, struct dentry *old,
+ int ovl_set_attr(struct dentry *upper, struct kstat *stat);
+ struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
+ 				  bool is_upper);
+-int ovl_set_origin(struct ovl_fs *ofs, struct dentry *dentry,
+-		   struct dentry *lower, struct dentry *upper);
++int ovl_set_origin(struct ovl_fs *ofs, struct dentry *lower,
++		   struct dentry *upper);
+ 
+ /* export.c */
+ extern const struct export_operations ovl_export_operations;
+diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
+index b9d03627f364..81b8f135445a 100644
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -600,12 +600,11 @@ const char *const ovl_xattr_table[][2] = {
+ 	OVL_XATTR_TAB_ENTRY(OVL_XATTR_METACOPY),
+ };
+ 
+-int ovl_check_setxattr(struct dentry *dentry, struct dentry *upperdentry,
++int ovl_check_setxattr(struct ovl_fs *ofs, struct dentry *upperdentry,
+ 		       enum ovl_xattr ox, const void *value, size_t size,
+ 		       int xerr)
+ {
+ 	int err;
+-	struct ovl_fs *ofs = dentry->d_sb->s_fs_info;
+ 
+ 	if (ofs->noxattr)
+ 		return xerr;
+@@ -623,6 +622,7 @@ int ovl_check_setxattr(struct dentry *dentry, struct dentry *upperdentry,
+ 
+ int ovl_set_impure(struct dentry *dentry, struct dentry *upperdentry)
+ {
++	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
+ 	int err;
+ 
+ 	if (ovl_test_flag(OVL_IMPURE, d_inode(dentry)))
+@@ -632,8 +632,7 @@ int ovl_set_impure(struct dentry *dentry, struct dentry *upperdentry)
+ 	 * Do not fail when upper doesn't support xattrs.
+ 	 * Upper inodes won't have origin nor redirect xattr anyway.
+ 	 */
+-	err = ovl_check_setxattr(dentry, upperdentry, OVL_XATTR_IMPURE,
+-				 "y", 1, 0);
++	err = ovl_check_setxattr(ofs, upperdentry, OVL_XATTR_IMPURE, "y", 1, 0);
+ 	if (!err)
+ 		ovl_set_flag(OVL_IMPURE, d_inode(dentry));
+ 
 -- 
 2.32.0
 
