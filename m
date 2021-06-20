@@ -2,162 +2,104 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54C803AD8F7
-	for <lists+linux-unionfs@lfdr.de>; Sat, 19 Jun 2021 11:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3ADF3ADEA2
+	for <lists+linux-unionfs@lfdr.de>; Sun, 20 Jun 2021 15:33:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233697AbhFSJeV (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 19 Jun 2021 05:34:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44428 "EHLO
+        id S229680AbhFTNfL (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 20 Jun 2021 09:35:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232546AbhFSJeV (ORCPT
+        with ESMTP id S229768AbhFTNfJ (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 19 Jun 2021 05:34:21 -0400
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2171C061574;
-        Sat, 19 Jun 2021 02:32:10 -0700 (PDT)
-Received: by mail-io1-xd35.google.com with SMTP id l64so9825990ioa.7;
-        Sat, 19 Jun 2021 02:32:10 -0700 (PDT)
+        Sun, 20 Jun 2021 09:35:09 -0400
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20AD6C061766
+        for <linux-unionfs@vger.kernel.org>; Sun, 20 Jun 2021 06:32:56 -0700 (PDT)
+Received: by mail-pl1-x644.google.com with SMTP id i4so3393963plt.12
+        for <linux-unionfs@vger.kernel.org>; Sun, 20 Jun 2021 06:32:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ULd8HYJuBB9qyXhRiZpjAxSxHjvEWdS1msfJBI8/NOM=;
-        b=sFOPmplaWQsaZAkwWKz47rQhHjXUT7QZW2Bc+kSp1aCjzkyWNGBVbc4dE0obQIFQyK
-         t0FGlr0K+bnPg1raw9hEUre/ViL5aihx0bihjtZ1kB7K5B8nAskLn89JdxLhV2VeoPNu
-         fmZoNArScvycfQR20WiyVWkUOObXUfb740gAF+nRsJDZ0ZDGoUh+H9f8BMbVt8esXT3i
-         3sdVNoT5ctvs7fQMYl8IFXtKlGAgk1jShNYby4g3sMyNkFR5WLcBbVn9y1dXWAFg+djn
-         g9qr/cZCgjbuXuz5GTf8unmwczAANGRDq5rbQ770vIM5rzzA1qsd90cwUmAMWrM7Iw67
-         5dBw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=dH2qs8pOGF97K/MQd5HAAEkctrLeUXolqVtlebnH1HSZZsayuSoXQZJ4VeDtyGBk35
+         Er12oSb6eiSpX3j3YRGQme8wMBbhqvVIiLsP0bULwKabV2oKC6f2nFG6PRq13JX1MFuR
+         hRxUfpXYD9rRZyjTB4nCGoKhvgkA4LgvHHMteBR2lKS/6fg6zjdUPnG6+U+5q2Y8NJ+C
+         n+rlJIk0aCGSQy8BRp/YVaGW7Bo5OFwcOMbLT4nKLI6l8IU29cd2mlieWGjeuqsMq0Zv
+         8i7Ul4h31oRA2STp8EGplMegye6Io98EUPhfD5Y3hHIuHcMJ6LPd4crXM6HgS/mV28Rp
+         W6iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ULd8HYJuBB9qyXhRiZpjAxSxHjvEWdS1msfJBI8/NOM=;
-        b=Nd1gG9d7c7Q90MNEzNGxOMOrGck8eATtDS2UMwK+LwVspRifAaABGBAEoaJ5Ws76vu
-         b9SNMYTjza97mAOufEzbBxF00B0foT9Q1oivf/iirUGE74+Qo6WlZ1mtkw+PWRUpYFzC
-         ZlSfVcLvMP8XDrOjzdVJ0JqZyzajPujjt3ln19YPtCBYffMl7N25IWf+1dfsXNg9iUW8
-         /Aod5UHJlUqqC/Ed/Vw5+4ip905ycaFGjiW8cw6lA/eKj0AiqIKReb97ZqkNm5FdzrnN
-         ss8zzFux29UrhiatI4DvdXlfdv39WuzCDgUs/PpbSM9fRCijW0BNM0nh6zqjxSox7bDK
-         6dLA==
-X-Gm-Message-State: AOAM5330x7/TZC7EXzjrlq5xgEqOA37MSJnfbOLcfjDoydNJ/cjGYljz
-        JBYWNlEk1j+/mIQEUwchGCJIaFjKpTJPJkjoAZbNMeIQ
-X-Google-Smtp-Source: ABdhPJzO6wrkVfFRApgMcLyrrKX042iKgt9EOFU0bxVFTZjQIAr4ex7z7p2ZGlzYsxXry9a+3LxM1LA7LXQ8ZKTiHEk=
-X-Received: by 2002:a05:6602:2d83:: with SMTP id k3mr11699793iow.5.1624095130093;
- Sat, 19 Jun 2021 02:32:10 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=CxxVl7wIx3DtqFAITRBYoYkCZ15qvWA4wsBYOGaX7RbsAi8UzUvCevMJvUHNL+c9Ov
+         X/tyoAp/rP2tK3adQlx7JxMMhX2A/qsX9XH/ls5a9C1A6F232laG8PpkirSA6ZGI/TUM
+         25+1TKCwyFJyv+BxJbHetkZ3gi8MjHZuwcmAM/xum7lR0xHzs/1syhSZKjfWkQQMwyLf
+         4n8weRk6IaiqcOHoHJc+DhAOmgf9cGzmoaww82d5CXlSAPSJAhNxSVxb1Sr/VstwavyR
+         bttje5nMSCzO+Wml8lMre5d9yLFoutgd+YxTvLL4VO5dmvKdhuuEAm4XBQ3aeDOUMEVz
+         OGvg==
+X-Gm-Message-State: AOAM532lAIo9rNR+z4bfEBGdCDb5iti2lrJ7Gx4kfkblZi9RZwO7eOA/
+        cIE9vId7Qp7tEZpyC9IchVwF4W9J+QGRRFWOv6o=
+X-Google-Smtp-Source: ABdhPJx00tt/7aabVQcW6POE0TvfdiIkkIAZCpBR/30vjscsjT3jKr9zw9m3MkwyQc9oGQLSVkB5HYsPhxhU3CS3v6I=
+X-Received: by 2002:a17:90b:3842:: with SMTP id nl2mr32192239pjb.227.1624195975552;
+ Sun, 20 Jun 2021 06:32:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210619092619.1107608-1-amir73il@gmail.com> <20210619092619.1107608-2-amir73il@gmail.com>
-In-Reply-To: <20210619092619.1107608-2-amir73il@gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Sat, 19 Jun 2021 12:31:58 +0300
-Message-ID: <CAOQ4uxjS79g5wnOM59De6e4FG88e8h8Z58M8V+zKs-r80=Tv5w@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] fs: add generic helper for filling statx attribute flags
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Chengguang Xu <cgxu519@mykernel.net>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Mike Marshall <hubcap@omnibond.com>,
-        Al Viro <viro@zeniv.linux.org.uk>
+Received: by 2002:a17:90b:38c4:0:0:0:0 with HTTP; Sun, 20 Jun 2021 06:32:55
+ -0700 (PDT)
+Reply-To: sarahkoffi389@yahoo.co.jp
+From:   Sarah Koffi <william.p15179@gmail.com>
+Date:   Sun, 20 Jun 2021 15:32:55 +0200
+Message-ID: <CAGDeiXHSJFkD=4+MH2yCevC190Es0W98OwPTSfKNw23HQDt3Cw@mail.gmail.com>
+Subject: Greetings From Mrs. Sarah Koffi
+To:     sarahkoffi389@yahoo.co.jp
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Forgot to CC linux-fsdevel and vfs/orangefs maintainers
+Greetings From Mrs. Sarah Koffi
 
-On Sat, Jun 19, 2021 at 12:26 PM Amir Goldstein <amir73il@gmail.com> wrote:
->
-> The immutable and append-only properties on an inode are published on
-> the inode's i_flags and enforced by the VFS.
->
-> Create a helper to fill the corresponding STATX_ATTR_ flags in the kstat
-> structure from the inode's i_flags.
->
-> Only orange was converted to use this helper.
-> Other filesystems could use it in the future.
->
-> Suggested-by: Miklos Szeredi <miklos@szeredi.hu>
-> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> ---
->  fs/orangefs/inode.c  |  7 +------
->  fs/stat.c            | 18 ++++++++++++++++++
->  include/linux/fs.h   |  1 +
->  include/linux/stat.h |  4 ++++
->  4 files changed, 24 insertions(+), 6 deletions(-)
->
-> diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
-> index 6bf35a0d61f3..4092009716a3 100644
-> --- a/fs/orangefs/inode.c
-> +++ b/fs/orangefs/inode.c
-> @@ -883,12 +883,7 @@ int orangefs_getattr(struct user_namespace *mnt_userns, const struct path *path,
->                 if (!(request_mask & STATX_SIZE))
->                         stat->result_mask &= ~STATX_SIZE;
->
-> -               stat->attributes_mask = STATX_ATTR_IMMUTABLE |
-> -                   STATX_ATTR_APPEND;
-> -               if (inode->i_flags & S_IMMUTABLE)
-> -                       stat->attributes |= STATX_ATTR_IMMUTABLE;
-> -               if (inode->i_flags & S_APPEND)
-> -                       stat->attributes |= STATX_ATTR_APPEND;
-> +               generic_fill_statx_attr(inode, stat);
->         }
->         return ret;
->  }
-> diff --git a/fs/stat.c b/fs/stat.c
-> index 1fa38bdec1a6..314269150b5b 100644
-> --- a/fs/stat.c
-> +++ b/fs/stat.c
-> @@ -59,6 +59,24 @@ void generic_fillattr(struct user_namespace *mnt_userns, struct inode *inode,
->  }
->  EXPORT_SYMBOL(generic_fillattr);
->
-> +/**
-> + * generic_fill_statx_attr - Fill in the statx attributes from the inode flags
-> + * @inode:     Inode to use as the source
-> + * @stat:      Where to fill in the attribute flags
-> + *
-> + * Fill in the STATX_ATTR_ flags in the kstat structure for properties of the
-> + * inode that are published on i_flags and enforced by the VFS.
-> + */
-> +void generic_fill_statx_attr(struct inode *inode, struct kstat *stat)
-> +{
-> +       if (inode->i_flags & S_IMMUTABLE)
-> +               stat->attributes |= STATX_ATTR_IMMUTABLE;
-> +       if (inode->i_flags & S_APPEND)
-> +               stat->attributes |= STATX_ATTR_APPEND;
-> +       stat->attributes_mask |= KSTAT_ATTR_VFS_FLAGS;
-> +}
-> +EXPORT_SYMBOL(generic_fill_statx_attr);
-> +
->  /**
->   * vfs_getattr_nosec - getattr without security checks
->   * @path: file to get attributes from
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index c3c88fdb9b2a..647664316013 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -3353,6 +3353,7 @@ extern int page_symlink(struct inode *inode, const char *symname, int len);
->  extern const struct inode_operations page_symlink_inode_operations;
->  extern void kfree_link(void *);
->  void generic_fillattr(struct user_namespace *, struct inode *, struct kstat *);
-> +void generic_fill_statx_attr(struct inode *inode, struct kstat *stat);
->  extern int vfs_getattr_nosec(const struct path *, struct kstat *, u32, unsigned int);
->  extern int vfs_getattr(const struct path *, struct kstat *, u32, unsigned int);
->  void __inode_add_bytes(struct inode *inode, loff_t bytes);
-> diff --git a/include/linux/stat.h b/include/linux/stat.h
-> index fff27e603814..7df06931f25d 100644
-> --- a/include/linux/stat.h
-> +++ b/include/linux/stat.h
-> @@ -34,6 +34,10 @@ struct kstat {
->          STATX_ATTR_ENCRYPTED |                         \
->          STATX_ATTR_VERITY                              \
->          )/* Attrs corresponding to FS_*_FL flags */
-> +#define KSTAT_ATTR_VFS_FLAGS                           \
-> +       (STATX_ATTR_IMMUTABLE |                         \
-> +        STATX_ATTR_APPEND                              \
-> +        ) /* Attrs corresponding to S_* flags that are enforced by the VFS */
->         u64             ino;
->         dev_t           dev;
->         dev_t           rdev;
-> --
-> 2.32.0
->
+I'm contacting you based on your good profiles I read and for a good
+reasons, I am in search of a property to buy in your country as I
+intended to come over to your
+country for investment, Though I have not meet with you before but I
+believe that one has to risk confiding in someone to succeed sometimes
+in life.
+
+My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
+Federal Government of Sudan and he has a personal Oil firm in Bentiu
+Oil zone town and Upper
+Nile city. What I have experience physically, I don't wish to
+experience it again in my life due to the recent civil Ethnic war
+cause by our President Mr. Salva Kiir
+and the rebel leader Mr Riek Machar, I have been Under United Nation
+refuge camp in chad to save my life and that of my little daughter.
+
+Though, I do not know how you will feel to my proposal, but the truth
+is that I sneaked into Chad our neighboring country where I am living
+now as a refugee.
+I escaped with my little daughter when the rebels bust into our house
+and killed my husband as one of the big oil dealers in the country,
+ever since then, I have being on the run.
+
+I left my country and move to Chad our neighboring country with the
+little ceasefire we had, due to the face to face peace meeting accord
+coordinated by the US Secretary of State, Mr John Kerry and United
+Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
+and the rebel leader Mr Riek Machar to stop this war.
+
+I want to solicit for your partnership with trust to invest the $8
+million dollars deposited by my late husband in Bank because my life
+is no longer safe in our country, since the rebels are looking for the
+families of all the oil business men in the country to kill, saying
+that they are they one that is milking the country dry.
+
+I will offer you 20% of the total fund for your help while I will
+partner with you for the investment in your country.
+If I get your reply.
+
+I will wait to hear from you so as to give you details.With love from
+
+ i need you to contact me here sarahkoffi389@yahoo.co.jp
+
+Mrs. Sarah Koffi
