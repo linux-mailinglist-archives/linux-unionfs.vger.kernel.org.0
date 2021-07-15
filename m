@@ -2,61 +2,77 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AED2F3C9659
-	for <lists+linux-unionfs@lfdr.de>; Thu, 15 Jul 2021 05:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 492193CA416
+	for <lists+linux-unionfs@lfdr.de>; Thu, 15 Jul 2021 19:25:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234315AbhGODTQ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 14 Jul 2021 23:19:16 -0400
-Received: from foss.arm.com ([217.140.110.172]:46008 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233989AbhGODTJ (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 14 Jul 2021 23:19:09 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 718951042;
-        Wed, 14 Jul 2021 20:16:16 -0700 (PDT)
-Received: from entos-ampere-02.shanghai.arm.com (entos-ampere-02.shanghai.arm.com [10.169.214.103])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 17AC33F7D8;
-        Wed, 14 Jul 2021 20:16:13 -0700 (PDT)
-From:   Jia He <justin.he@arm.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Christoph Hellwig <hch@infradead.org>, nd@arm.com,
-        Jia He <justin.he@arm.com>, Miklos Szeredi <miklos@szeredi.hu>,
-        linux-unionfs@vger.kernel.org
-Subject: [PATCH RFC 06/13] ovl: remove the number postfix of '%pD' in format string
-Date:   Thu, 15 Jul 2021 11:15:26 +0800
-Message-Id: <20210715031533.9553-7-justin.he@arm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210715031533.9553-1-justin.he@arm.com>
-References: <20210715031533.9553-1-justin.he@arm.com>
+        id S235167AbhGOR2Q (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 15 Jul 2021 13:28:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37298 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232948AbhGOR2P (ORCPT
+        <rfc822;linux-unionfs@vger.kernel.org>);
+        Thu, 15 Jul 2021 13:28:15 -0400
+Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04EC6C061765
+        for <linux-unionfs@vger.kernel.org>; Thu, 15 Jul 2021 10:25:22 -0700 (PDT)
+Received: by mail-qk1-x72d.google.com with SMTP id j184so5910965qkd.6
+        for <linux-unionfs@vger.kernel.org>; Thu, 15 Jul 2021 10:25:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
+        b=VEbievBeLXzXz2IFTCJlfsSW3SGnPx5BRLHAunZVXukgfJX3HSSAUxCtdiKf61hv/8
+         dEjk1vTJjxHihT0WA1OL/uEOLbisu+eOZ9QBM+pSgOr0g3iviST/L7UaXer3M8NeFmjI
+         cUcDXANijM5RzePSgHNEUg4tiAZJvw7xY2717+o5bCXGYbN3j0in5RSdJSiv5QmZpfXV
+         xJwXiiE0C1Gs4ldNfG+SItE+RoyPJtAgR4hB34JMXRrPZxzy82ifiVVChBVQnRUKYafC
+         pLvyRURLCMNCEs5zTTafGrQe1zI12ARsnWy7gNJNMcFCKTa1+89JJPFI0mohmLMeae0x
+         ASdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
+        b=PIWyBPwAjyxARK0wSBFf3McXYRpT1kMY5awaTmtjZv6A0bQkuRV9kG9Q9vUrQaDd1a
+         YI1QnIAdwFl7oU2ZDGXPIuTAxyvsc/DX317+A0Znoxri+q86+7/tdjpC6z6qOxSU4IiU
+         VbWgsRy7gEvow55Cl72Wu6veMxP+n2ohe/sX9kFSALL/EgfYa4OalnGhJMTjhxhtGQ6S
+         kQuarRe++Zu9LF7Dc/vAZ9wGwrZ06vD+GNqzzy3zeMvpG6jpJLV0EfqtsIrIJmgesOxP
+         Gcnpa4Gf7syNV41dMFNa4JYcs+1pAcr/QGRSwW4dHvpE3S1oFReNUiaO79agGk6r/26y
+         HjtA==
+X-Gm-Message-State: AOAM533ytiQyyJCvMysbcCoM4Fpp/XejW0vVjWdXECgnBvnZ9r5zVi8c
+        3Qnoemhbbj00tXirIdKdMUlcTcCsHw2f5Pdjlgw=
+X-Google-Smtp-Source: ABdhPJyVA6gR/njuabWs2C2fW8gelCsYJFEl6/1qckwAKb5sFvak5SWUy5PHC6/Yk0GlmffBpcH6FQwcd62hdQoqBbA=
+X-Received: by 2002:a37:9947:: with SMTP id b68mr5263725qke.56.1626369920992;
+ Thu, 15 Jul 2021 10:25:20 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a0c:e502:0:0:0:0:0 with HTTP; Thu, 15 Jul 2021 10:25:20
+ -0700 (PDT)
+Reply-To: faty.muhamad@gmail.com
+From:   Ms Fatima Muhammad <steveokoh.fedexdeliveryagent@gmail.com>
+Date:   Thu, 15 Jul 2021 17:25:20 +0000
+Message-ID: <CAFKwDuBfMzCdHqoenSL2rqjnW5tE27dPjiWKbgxM_hjsa-G7pg@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-After the behavior of '%pD' is changed to print the full path of file,
-the previous number postfix is pointless.
+Hello Dear,
 
-Cc: Miklos Szeredi <miklos@szeredi.hu>
-Cc: linux-unionfs@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Jia He <justin.he@arm.com>
----
- fs/overlayfs/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+My name is Ms.Fatima Muhammad., Please forgive me for stressing you
+with my predicaments and I sorry to approach you through this media
+because is serves the fastest means of  my communication right now,
 
-diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
-index 4d53d3b7e5fe..f073c32319cd 100644
---- a/fs/overlayfs/file.c
-+++ b/fs/overlayfs/file.c
-@@ -62,7 +62,7 @@ static struct file *ovl_open_realfile(const struct file *file,
- 	}
- 	revert_creds(old_cred);
- 
--	pr_debug("open(%p[%pD2/%c], 0%o) -> (%p, 0%o)\n",
-+	pr_debug("open(%p[%pD/%c], 0%o) -> (%p, 0%o)\n",
- 		 file, file, ovl_whatisit(inode, realinode), file->f_flags,
- 		 realfile, IS_ERR(realfile) ? 0 : realfile->f_flags);
- 
--- 
-2.17.1
+I came across your Email from my personal search and I decided to
+contact you believing you will be honest to fulfill my business
+proposal which I believe that will be a very good opportunity for both
+of us. Please it is my pleasure to contact you today for a business
+partnership investments projects worth $4.6 million USD which I intend
+to establish in your country..
 
+Pls If this business proposal offends your moral and ethic values do
+accept my apology. therefore kindly contact me immediately if you are
+interested for more details.
+
+Thank you for your wiliness to help me
+Yours Sincerely Fatima Muhammad
