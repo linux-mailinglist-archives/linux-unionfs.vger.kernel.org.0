@@ -2,77 +2,68 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 492193CA416
-	for <lists+linux-unionfs@lfdr.de>; Thu, 15 Jul 2021 19:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E2113CD697
+	for <lists+linux-unionfs@lfdr.de>; Mon, 19 Jul 2021 16:28:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235167AbhGOR2Q (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 15 Jul 2021 13:28:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37298 "EHLO
+        id S232022AbhGSNr4 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 19 Jul 2021 09:47:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232948AbhGOR2P (ORCPT
+        with ESMTP id S231618AbhGSNr4 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 15 Jul 2021 13:28:15 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04EC6C061765
-        for <linux-unionfs@vger.kernel.org>; Thu, 15 Jul 2021 10:25:22 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id j184so5910965qkd.6
-        for <linux-unionfs@vger.kernel.org>; Thu, 15 Jul 2021 10:25:21 -0700 (PDT)
+        Mon, 19 Jul 2021 09:47:56 -0400
+Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com [IPv6:2607:f8b0:4864:20::e2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8D3CC061574
+        for <linux-unionfs@vger.kernel.org>; Mon, 19 Jul 2021 06:54:53 -0700 (PDT)
+Received: by mail-vs1-xe2a.google.com with SMTP id o19so7228659vsn.3
+        for <linux-unionfs@vger.kernel.org>; Mon, 19 Jul 2021 07:28:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
-        b=VEbievBeLXzXz2IFTCJlfsSW3SGnPx5BRLHAunZVXukgfJX3HSSAUxCtdiKf61hv/8
-         dEjk1vTJjxHihT0WA1OL/uEOLbisu+eOZ9QBM+pSgOr0g3iviST/L7UaXer3M8NeFmjI
-         cUcDXANijM5RzePSgHNEUg4tiAZJvw7xY2717+o5bCXGYbN3j0in5RSdJSiv5QmZpfXV
-         xJwXiiE0C1Gs4ldNfG+SItE+RoyPJtAgR4hB34JMXRrPZxzy82ifiVVChBVQnRUKYafC
-         pLvyRURLCMNCEs5zTTafGrQe1zI12ARsnWy7gNJNMcFCKTa1+89JJPFI0mohmLMeae0x
-         ASdQ==
+        d=szeredi.hu; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=uptZBoLGKL3TbXYrCb9HM+P76EE3P8ttyZ3QTK5C4dU=;
+        b=fifcrP9+kWjoQppXYAACJ+581X4cyw9Lf7CDKhnljfNzV0PYHWovBtR6Xwt7p3f5dA
+         0dDRltmaJINlART6yfOYq6t8qJpzHzQcE3iJIvdPfWwwOeteH6rjdeQBY1iWv05JeC2H
+         v/th8RBPHA/muVUynPzROMkm7hZVRKcf8KqyE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
-        b=PIWyBPwAjyxARK0wSBFf3McXYRpT1kMY5awaTmtjZv6A0bQkuRV9kG9Q9vUrQaDd1a
-         YI1QnIAdwFl7oU2ZDGXPIuTAxyvsc/DX317+A0Znoxri+q86+7/tdjpC6z6qOxSU4IiU
-         VbWgsRy7gEvow55Cl72Wu6veMxP+n2ohe/sX9kFSALL/EgfYa4OalnGhJMTjhxhtGQ6S
-         kQuarRe++Zu9LF7Dc/vAZ9wGwrZ06vD+GNqzzy3zeMvpG6jpJLV0EfqtsIrIJmgesOxP
-         Gcnpa4Gf7syNV41dMFNa4JYcs+1pAcr/QGRSwW4dHvpE3S1oFReNUiaO79agGk6r/26y
-         HjtA==
-X-Gm-Message-State: AOAM533ytiQyyJCvMysbcCoM4Fpp/XejW0vVjWdXECgnBvnZ9r5zVi8c
-        3Qnoemhbbj00tXirIdKdMUlcTcCsHw2f5Pdjlgw=
-X-Google-Smtp-Source: ABdhPJyVA6gR/njuabWs2C2fW8gelCsYJFEl6/1qckwAKb5sFvak5SWUy5PHC6/Yk0GlmffBpcH6FQwcd62hdQoqBbA=
-X-Received: by 2002:a37:9947:: with SMTP id b68mr5263725qke.56.1626369920992;
- Thu, 15 Jul 2021 10:25:20 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uptZBoLGKL3TbXYrCb9HM+P76EE3P8ttyZ3QTK5C4dU=;
+        b=qPcAb5Lf2u6fFi2T+2oAzmZBF8JG0OfPsA4AO+KHQ5AlpBYZPWeEw2nztaHVC6JrF0
+         0vKm3l3wm8ab8d4uAi28+FMoAxlRFTM1kw6v766/LHoKhsR7mMKKrxJg85By0k7gzQbS
+         6OeEYa2z7Mz1RBykkYNochiQlnajZMykLeeY3gIjxS5Dh4Kj38TeWd7wc3c8lqrdMkAK
+         mkyir7/WRMEmBgies2WGABVmz7W16c6sOqHRT3mjUJCS0vnlfNQmilmNTwAXt+cHxm7k
+         HKDKka8rUNWwxvSnlHLQ6hiSnBsarz20jPCJRW0+mP8InObdTyvlaITTz1BfZvrkkvZO
+         ZZQQ==
+X-Gm-Message-State: AOAM530s1Dcd9yxrwN7UtAGkokamMsEjExjjo7+6PJJ3I/TH5OBNHNXk
+        NEPxl1Tkoazxi4YyvEBRuDzxRi+DNvwTe1ZtkuIPiA==
+X-Google-Smtp-Source: ABdhPJyw8wfvcukfEItCIQ5TjFP/euUdgD0WjZtxKdu5VBG124nz44dpyc8ZQGI21HT7MXuDNqTTDu/MjAkAwoB9i2I=
+X-Received: by 2002:a67:87c6:: with SMTP id j189mr24465004vsd.0.1626704914256;
+ Mon, 19 Jul 2021 07:28:34 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a0c:e502:0:0:0:0:0 with HTTP; Thu, 15 Jul 2021 10:25:20
- -0700 (PDT)
-Reply-To: faty.muhamad@gmail.com
-From:   Ms Fatima Muhammad <steveokoh.fedexdeliveryagent@gmail.com>
-Date:   Thu, 15 Jul 2021 17:25:20 +0000
-Message-ID: <CAFKwDuBfMzCdHqoenSL2rqjnW5tE27dPjiWKbgxM_hjsa-G7pg@mail.gmail.com>
-Subject: Hello Dear
-To:     undisclosed-recipients:;
+References: <20210619092619.1107608-1-amir73il@gmail.com>
+In-Reply-To: <20210619092619.1107608-1-amir73il@gmail.com>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Mon, 19 Jul 2021 16:28:23 +0200
+Message-ID: <CAJfpegvtwFV-nVoAd70s7fDOgES=eGLRGHzJLZAQhzixEHsifQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/4] Overlayfs fileattr related fixes
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Chengguang Xu <cgxu519@mykernel.net>,
+        overlayfs <linux-unionfs@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Hello Dear,
+On Sat, 19 Jun 2021 at 11:26, Amir Goldstein <amir73il@gmail.com> wrote:
+>
+> Miklos,
+>
+> Following patch set addresses your comments to v2.
+> It passed all the old and new xfstests [3].
 
-My name is Ms.Fatima Muhammad., Please forgive me for stressing you
-with my predicaments and I sorry to approach you through this media
-because is serves the fastest means of  my communication right now,
+Applied with modifications and pushed to vfs.git#overlayfs-next.
 
-I came across your Email from my personal search and I decided to
-contact you believing you will be honest to fulfill my business
-proposal which I believe that will be a very good opportunity for both
-of us. Please it is my pleasure to contact you today for a business
-partnership investments projects worth $4.6 million USD which I intend
-to establish in your country..
-
-Pls If this business proposal offends your moral and ethic values do
-accept my apology. therefore kindly contact me immediately if you are
-interested for more details.
-
-Thank you for your wiliness to help me
-Yours Sincerely Fatima Muhammad
+Thanks,
+Miklos
