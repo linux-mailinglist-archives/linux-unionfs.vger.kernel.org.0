@@ -2,75 +2,264 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D55CD3DCF7C
-	for <lists+linux-unionfs@lfdr.de>; Mon,  2 Aug 2021 06:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7F7A3DE2E0
+	for <lists+linux-unionfs@lfdr.de>; Tue,  3 Aug 2021 01:07:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231496AbhHBEYo (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 2 Aug 2021 00:24:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43840 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229828AbhHBEYn (ORCPT
-        <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 2 Aug 2021 00:24:43 -0400
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91F4BC0617A4
-        for <linux-unionfs@vger.kernel.org>; Sun,  1 Aug 2021 21:24:33 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id gn26so28752630ejc.3
-        for <linux-unionfs@vger.kernel.org>; Sun, 01 Aug 2021 21:24:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
-        b=WDq9P0bY1AsY9kO7VoQiuEkd/+xeN2uAzVka1J/B7YABFMMcv9zsRMDuUzGU3t7LVq
-         x60AdfwMQPfhhBT91CFmxmNgG6fRcK6BFaIDqx+Ms1vLOgOAYNOd4Xbt+10CNKTcRAMK
-         KeTYcmNC0bNtdVd3yLIRxS8Pr5sLxpts2NC88pKkxuGBDjkmUnJislac8lDy7dNnd85N
-         dz7rwNTEXx7I9NqC47E4asccGsO9/P6huztRZkI4lkvRJ5hB7XcOxioVdhTGqNDSXebW
-         Md0Dh2ya6SQXgvhbdFNsJy7D030uG2HCPIxJG2TxztPigkWx+ZXfNLX+hVWs0ri0sCK7
-         k48A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
-        b=tN5ywX8caHDrQPosBrhI51TOJWvm2hwnOqRp/5WvNU0pkPvdxLHXqlcKscP5nC8Ybl
-         mt0pUN/rnHDDdXVbGNCx3Ankv1m4fgZQA5tZzHYcvuH47Pt5xdzWWrdJUfqOG523h3jf
-         RqH7C4+UbaKhcL1gKa3Zm6X5Q8bZFJQQiCNPbwlMtXYtd5atFQi1Pvfb8xJHhFVm6I8v
-         R5+B6U9YitvhNKc2eVXFVhFqotsk6brMFn8jSTvQJG9LNNpxnGvpm2GMgc9iXeI0ur+9
-         VEvpyR0nnbYiynnc/TztRPN6DL4OLzkoHYlF5OhT2TgJ2kIMKsPSf7Q/bV6TRbIJYkRE
-         FUNg==
-X-Gm-Message-State: AOAM533Tn9iDxs2sD+7a2WWSpBkInzTmQBCB8IjnhVmVv5D6RD2qfbSN
-        IpeRmC0cWaIkbXwilfOVQHmqJtDXlhq1Dzpz+p8=
-X-Google-Smtp-Source: ABdhPJyge6CE4/3PK9Ai4ltivb6MMxmm7LTQ2s8bjzS0dUrr9KzpIrZxfzN76q9x5Xx6YjpKdH1irFSuudYhIT6knzs=
-X-Received: by 2002:a17:906:3b87:: with SMTP id u7mr13818454ejf.66.1627878272087;
- Sun, 01 Aug 2021 21:24:32 -0700 (PDT)
+        id S232130AbhHBXHi (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 2 Aug 2021 19:07:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56410 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231126AbhHBXHi (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Mon, 2 Aug 2021 19:07:38 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 728AC60EB5;
+        Mon,  2 Aug 2021 23:07:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1627945648;
+        bh=Pa+RjoJ2mmxyO5qSgFuBHpVo/COkZopkBIiPuX3JAso=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=E1jX9RlXnqaq6Pq6qFs77u7knteoNrgDxfrxDCCZ83rPbaVw0oLWOWYkJEN8VLg3H
+         eK7VDdj7ZIjM6ZE9KIslL8S1s0S6ilxHfawcewWTVMINpP6M8FiULNHb2pX6NtnOVH
+         1dP3QdDLGynAoU1d0m47VRojJ/XD8ZNlD6mUzz3UAyiKukRj/HUlCgSnNVfzNRaIIS
+         dkDddOaENy0K3rmMYPXujhoCi6RlHn1PXvHQN6Y8YPlrFRODfv5MpP9Ppnd+Bl86Gk
+         9TQ07Pvwaz9k7Sxx3kSuMuH7aVN/t21bIX/Gn/QfnXiUx0GYM52v8hdDhdI/WArD5g
+         XYTBG3K9VDjRA==
+Date:   Mon, 2 Aug 2021 16:07:27 -0700
+From:   "Darrick J. Wong" <djwong@kernel.org>
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Eryu Guan <guaneryu@gmail.com>, Miklos Szeredi <miklos@szeredi.hu>,
+        linux-unionfs@vger.kernel.org, fstests@vger.kernel.org
+Subject: Re: [PATCH] overlay: add test for copy up of lower file attributes
+Message-ID: <20210802230727.GC3601425@magnolia>
+References: <20210722164634.394499-1-amir73il@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a17:907:d0b:0:0:0:0 with HTTP; Sun, 1 Aug 2021 21:24:31
- -0700 (PDT)
-Reply-To: ablahikazabl67@gmail.com
-From:   Abdoulahi Kazim <drwilliamcuthbert@gmail.com>
-Date:   Mon, 2 Aug 2021 05:24:31 +0100
-Message-ID: <CAKwBCXtg5uyf7Jb2AAcE1ghxD-+sCDTGfZ6n10fsvHdbE918iA@mail.gmail.com>
-Subject: More Authentic Information
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210722164634.394499-1-amir73il@gmail.com>
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
--- 
-Dear Partner,
+On Thu, Jul 22, 2021 at 07:46:34PM +0300, Amir Goldstein wrote:
+> Overlayfs copies up a subset of lower file attributes since kernel
+> commits:
+> 173ff5c9ec37 ("ovl: consistent behavior for immutable/append-only inodes")
+> 2e3f6e87c2b0 ("ovl: copy up sync/noatime fileattr flags")
+> 
+> This test verifies this functionality works correctly and that it
+> survives power failure and/or mount cycle.
 
-I am soliciting your partnership to relocate $12.5 Million to your
-country for investment on my behalf and you will be entitled to 30% of
-the sum once the transaction is successful made.
+Just out of curiosity -- is this supposed to succeed with a 5.14-rc4
+kernel?  I noticed a massive regression with this week's fstests,
+probably because something didn't get cleaned up properly:
 
-Please indicate your genuine interest if you are capable so that i
-will send you the authentic details and documents of the transaction
-in awareness with some of my fellow Directors in the bank.
+--- overlay/078.out
++++ overlay/078.out.bad
+@@ -1,2 +1,17 @@
+ QA output created by 078
+ Silence is golden
++Before copy up: -------A-------------- /opt/ovl-mnt/testfile
++After  copy up: ---------------------- /opt/ovl-mnt/testfile
++Before copy up: -------A-------------- /opt/ovl-mnt/testfile
++After  copy up: ---------------------- /opt/ovl-mnt/testfile
++Before copy up: --S----A-------------- /opt/ovl-mnt/testfile
++After  copy up: ---------------------- /opt/ovl-mnt/testfile
++Before copy up: --S----A-------------- /opt/ovl-mnt/testfile
++After  copy up: ---------------------- /opt/ovl-mnt/testfile
++Before copy up: --S--a-A-------------- /opt/ovl-mnt/testfile
++After  copy up: ---------------------- /opt/ovl-mnt/testfile
++Before copy up: --S--a-A-------------- /opt/ovl-mnt/testfile
++After  copy up: ---------------------- /opt/ovl-mnt/testfile
++rm: cannot remove '/opt/ovl-upper/testfile': Operation not permitted
++rm: cannot remove
+'/opt/ovl-work/index/00fb2100812f1a30dc474847dbad5281308293ece9030e00020000000054816fd1':
+Operation not permitted
++Write unexpectedly returned 0 for file with attribute 'i'
 
-If you are interested, here is my private Email address:
-(ablahikazabl67@gmail.com)
-For more authentic and legit information.
+and then the tests after it (e.g. generic/030) fail with:
+
++mount: /opt/ovl-mnt: mount(2) system call failed: Stale file handle.
++mount failed
++(see /var/tmp/fstests/generic/030.full for details)
 
 
-Regards :  Abdoulahi Kazim
+--D
+
+> 
+> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> ---
+> 
+> Eryu,
+> 
+> This test is failing on master and passes on overlayfs-next.
+> 
+> Thanks,
+> Amir.
+> 
+>  tests/overlay/078     | 145 ++++++++++++++++++++++++++++++++++++++++++
+>  tests/overlay/078.out |   2 +
+>  2 files changed, 147 insertions(+)
+>  create mode 100755 tests/overlay/078
+>  create mode 100644 tests/overlay/078.out
+> 
+> diff --git a/tests/overlay/078 b/tests/overlay/078
+> new file mode 100755
+> index 00000000..b43449d1
+> --- /dev/null
+> +++ b/tests/overlay/078
+> @@ -0,0 +1,145 @@
+> +#! /bin/bash
+> +# SPDX-License-Identifier: GPL-2.0
+> +# Copyright (c) 2018 Huawei.  All Rights Reserved.
+> +# Copyright (C) 2021 CTERA Networks. All Rights Reserved.
+> +#
+> +# FS QA Test 078
+> +#
+> +# Test copy up of lower file attributes.
+> +#
+> +# Overlayfs copies up a subset of lower file attributes since kernel commits:
+> +# 173ff5c9ec37 ("ovl: consistent behavior for immutable/append-only inodes")
+> +# 2e3f6e87c2b0 ("ovl: copy up sync/noatime fileattr flags")
+> +#
+> +# This test is similar and was derived from generic/507, but instead
+> +# of creating new files which are created in upper layer, prepare
+> +# the file with attributes in lower layer and verify that attributes
+> +# are not lost during copy up, (optional) shutdown and mount cycle.
+> +#
+> +. ./common/preamble
+> +_begin_fstest auto quick perms shutdown
+> +
+> +# Override the default cleanup function.
+> +_cleanup()
+> +{
+> +	cd /
+> +	$CHATTR_PROG -ai $lowertestfile &> /dev/null
+> +	rm -f $tmp.*
+> +}
+> +
+> +# Import common functions.
+> +. ./common/filter
+> +
+> +# real QA test starts here
+> +_supported_fs generic
+> +
+> +_require_command "$LSATTR_PROG" lasttr
+> +_require_command "$CHATTR_PROG" chattr
+> +_require_chattr ASai
+> +_require_xfs_io_command "syncfs"
+> +
+> +_require_scratch
+> +_require_scratch_shutdown
+> +
+> +lowerdir=$OVL_BASE_SCRATCH_MNT/$OVL_LOWER
+> +upperdir=$OVL_BASE_SCRATCH_MNT/$OVL_UPPER
+> +workdir=$OVL_BASE_SCRATCH_MNT/$OVL_WORK
+> +lowertestfile=$lowerdir/testfile
+> +testfile=$SCRATCH_MNT/testfile
+> +
+> +_scratch_mkfs
+> +mkdir -p $lowerdir
+> +touch $lowertestfile
+> +_scratch_mount
+> +
+> +# Set another flag on lowertestfile and verify all flags
+> +# are kept though copy up (optional shutdown) and mount cycle
+> +do_check()
+> +{
+> +	attr=$1
+> +
+> +	echo "Test chattr +$1 $2" >> $seqres.full
+> +
+> +	$UMOUNT_PROG $SCRATCH_MNT
+> +
+> +	# Add attribute to lower file
+> +	$CHATTR_PROG +$attr $lowertestfile
+> +
+> +	# Re-create upperdir/workdir
+> +	rm -rf $upperdir $workdir
+> +	mkdir -p $upperdir $workdir
+> +
+> +	if [ "$2" == "shutdown" ]; then
+> +		$XFS_IO_PROG -r $lowertestfile -c "fsync" | _filter_xfs_io
+> +	fi
+> +
+> +	_scratch_mount
+> +
+> +	before=`$LSATTR_PROG $testfile`
+> +
+> +	# Write file in append mode to test copy up of append-only attribute
+> +	# Expect failure on write to immutable file
+> +	expect=0
+> +	if [ "$1" == "i" ]; then
+> +		expect=1
+> +	fi
+> +	$XFS_IO_PROG -a -c "pwrite -S 0x61 0 10" $testfile >> $seqres.full 2>&1
+> +	result=$?
+> +	if [ $result != $expect ]; then
+> +		echo "Write unexpectedly returned $result for file with attribute '$attr'"
+> +	fi
+> +
+> +	if [ "$2" == "shutdown" ]; then
+> +		$XFS_IO_PROG -r $testfile -c "fsync" | _filter_xfs_io
+> +		_scratch_shutdown | tee -a $seqres.full
+> +	fi
+> +
+> +	_scratch_cycle_mount
+> +
+> +	after=`$LSATTR_PROG $testfile`
+> +	echo "Before copy up: $before" >> $seqres.full
+> +	echo "After  copy up: $after" >> $seqres.full
+> +
+> +	# Verify attributes were not lost during copy up, shutdown and mount cycle
+> +	if [ "$before" != "$after" ]; then
+> +		echo "Before copy up: $before"
+> +		echo "After  copy up: $after"
+> +	fi
+> +
+> +	echo "Test chattr -$1 $2" >> $seqres.full
+> +
+> +	# Delete attribute from overlay file
+> +	$CHATTR_PROG -$attr $testfile
+> +
+> +	before=`$LSATTR_PROG $testfile`
+> +
+> +	if [ "$2" == "shutdown" ]; then
+> +		$XFS_IO_PROG -r $testfile -c "fsync" | _filter_xfs_io
+> +		_scratch_shutdown | tee -a $seqres.full
+> +	fi
+> +
+> +	_scratch_cycle_mount
+> +
+> +	after=`$LSATTR_PROG $testfile`
+> +	echo "Before mount cycle: $before" >> $seqres.full
+> +	echo "After  mount cycle: $after" >> $seqres.full
+> +
+> +	# Verify attribute deletion was not lost during shutdown or mount cycle
+> +	if [ "$before" != "$after" ]; then
+> +		echo "Before mount cycle: $before"
+> +		echo "After  mount cycle: $after"
+> +	fi
+> +}
+> +
+> +echo "Silence is golden"
+> +
+> +# This is the subset of attributes copied up by overlayfs since kernel
+> +# commit ...
+> +opts="A S a i"
+> +for i in $opts; do
+> +	do_check $i
+> +	do_check $i shutdown
+> +done
+> +
+> +status=0
+> +exit
+> diff --git a/tests/overlay/078.out b/tests/overlay/078.out
+> new file mode 100644
+> index 00000000..b8acea8c
+> --- /dev/null
+> +++ b/tests/overlay/078.out
+> @@ -0,0 +1,2 @@
+> +QA output created by 078
+> +Silence is golden
+> -- 
+> 2.32.0
+> 
