@@ -2,60 +2,70 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7356E3E7DDA
-	for <lists+linux-unionfs@lfdr.de>; Tue, 10 Aug 2021 18:55:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A72F3E8247
+	for <lists+linux-unionfs@lfdr.de>; Tue, 10 Aug 2021 20:06:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230031AbhHJQ4M (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 10 Aug 2021 12:56:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56276 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230455AbhHJQzD (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 10 Aug 2021 12:55:03 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 971EC60462;
-        Tue, 10 Aug 2021 16:54:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628614446;
-        bh=yDyCnF9kOpqMQUvBKRiGkqMShf1t7P8gpGlvnG14Dss=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=jrXqDDDXJjVoYx/Z1bT1JEevH6bg/txHWDVMiEi+Qc+/7XNURyHUNeP1XQSJtGESC
-         SI26Xfwax8Y5CX4PyOpcsXdTIlCVRfecTHGFrmZhJEqwGU+8QZKNVp62UvUz+QNOLm
-         nxIX4lFQj1siP5IBXnEXwtZS9iPr6+fsZMvMYnTrYVZV4U3hrNFbJtdV341+LT0j51
-         1lLlkovHUCLiMPWg3CpSVsTi3OPZEyvAbDjpS2Lv5guwTqdUzDhLDCSm5ozj6LIOkv
-         k2GW65twSH16KEeqCWhR+tNw1ZFtE6cKi+mW0RB9V9hrIZ7x3j3ZbS1bxKC8e53QOg
-         kwN8ERgH9MipA==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 8193960986;
-        Tue, 10 Aug 2021 16:54:06 +0000 (UTC)
-Subject: Re: [GIT PULL v2] overlayfs fixes for 5.14-rc6
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <YRKVYyeAUqJSJ5rk@miu.piliscsaba.redhat.com>
-References: <YRKVYyeAUqJSJ5rk@miu.piliscsaba.redhat.com>
-X-PR-Tracked-List-Id: <linux-fsdevel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <YRKVYyeAUqJSJ5rk@miu.piliscsaba.redhat.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/vfs.git tags/ovl-fixes-5.14-rc6-v2
-X-PR-Tracked-Commit-Id: 427215d85e8d1476da1a86b8d67aceb485eb3631
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b3f0ccc59cfeb508a3774e8653069d76ffadc37e
-Message-Id: <162861444647.12822.547943425823515144.pr-tracker-bot@kernel.org>
-Date:   Tue, 10 Aug 2021 16:54:06 +0000
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-unionfs@vger.kernel.org
+        id S237932AbhHJSGY (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 10 Aug 2021 14:06:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57014 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238164AbhHJSDt (ORCPT
+        <rfc822;linux-unionfs@vger.kernel.org>);
+        Tue, 10 Aug 2021 14:03:49 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6517C09B131
+        for <linux-unionfs@vger.kernel.org>; Tue, 10 Aug 2021 10:36:54 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id n17so17860932lft.13
+        for <linux-unionfs@vger.kernel.org>; Tue, 10 Aug 2021 10:36:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
+        b=rZyDO+pQmFAMTqMMwbflMM4ql7GCGPeivQF49luaUKDh68BdWveTpXnyTbx8OavZh5
+         bGP7zLKVlUZwhT2f48vcZmIt1snZCfta1+RSsuWy7jL1bN3yiCeI7kSgY9GO+Mr9hMq3
+         QkduLfUrIvN/HhmkJo3bkzdVVz9B3L1xqaqjjeWbgQaiVHo19p8Fs6QUjc1RLTijFsZ1
+         J9z0vnpLd+WWbyIkFWEiiEi8HRNeEnyGx9q1dMSNuv5GsXDJ6u1Pt8dggrrGxNlZZA6H
+         nx910xE9Y9oc9IQRBXvrtvv831ie/oFdSTFPcOo+Z7/z7WR4icLIqTKALRAXVA68hURN
+         avgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
+        b=Qu/LV+Hc1GjGUHgiM9LZ5/OXJ0j8o7I+pyjOErGUZVRWXZKUax2ZuMk+CyDVGZvtwz
+         Yk72MZ5a00rGFObzIaxqX9aE92EjSigy9H5cOYeltJELrmBVS+2bTF2ygrKgvVhedvSI
+         glXC9SlNkS2DyZVbeIBfD600bEsbKFxmlbiMtzpOJfBcBrY9Uy/nOj8jPD+pZ9OpCaEe
+         TB3PpC4BiPEDrfKIhAVOq0+aX6NYFoyt4H7wl8jg20bEVU74isx6Ho6anLdGMtor1UfX
+         /IeNIDQ23TCZqA5eNEh84D1P+kBvUNpmdFGIXn0YCUThcJG1eRpYxIYy6lZ5qXOfiMLA
+         cxLg==
+X-Gm-Message-State: AOAM530uj2HTyom0BgMi/VJh1HCoWfvRggofcqmdNMq090A7bgoSRZ6d
+        jGzJDX9XyZkqyYm8CmzNpH1268g6dPMT+YwiF5U=
+X-Google-Smtp-Source: ABdhPJzIebxwo90Zyr4sj9ScmYCof4VCk1w95dCMQpZ4/cQfOuUDCqwTC1pz0BbxoizG48Nn6kSbzrBfyOpB9YVAvEQ=
+X-Received: by 2002:a05:6512:11c3:: with SMTP id h3mr22104381lfr.413.1628617013026;
+ Tue, 10 Aug 2021 10:36:53 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:ac2:4eca:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 10:36:52
+ -0700 (PDT)
+Reply-To: majidmuzaffar8@gmail.com
+From:   Majid Muzaffar <ngl.binabdul.rashiid333.me@gmail.com>
+Date:   Tue, 10 Aug 2021 20:36:52 +0300
+Message-ID: <CAG1gDZWXEFoLwsRk8a_qSWzn3-vwvvxE2XX3d--LKh2r2t4e1w@mail.gmail.com>
+Subject: Proposal
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-The pull request you sent on Tue, 10 Aug 2021 17:04:03 +0200:
+Salam alaikum,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/vfs.git tags/ovl-fixes-5.14-rc6-v2
+I am the investment officer of UAE based investment company who are
+ready to fund projects outside UAE, in the form of debt finance. We
+grant loan to both Corporate and private entities at a low interest
+rate of 3% ROI per annum. The terms are very flexible and interesting.
+Kindly revert back if you have projects that needs funding for further
+discussion and negotiation.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b3f0ccc59cfeb508a3774e8653069d76ffadc37e
+Thanks
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+investment officer
