@@ -2,61 +2,204 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 057033E9168
-	for <lists+linux-unionfs@lfdr.de>; Wed, 11 Aug 2021 14:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D0C73E9356
+	for <lists+linux-unionfs@lfdr.de>; Wed, 11 Aug 2021 16:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230139AbhHKMcz (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 11 Aug 2021 08:32:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55942 "EHLO
+        id S232261AbhHKOMO (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 11 Aug 2021 10:12:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230457AbhHKMco (ORCPT
+        with ESMTP id S232254AbhHKOMN (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 11 Aug 2021 08:32:44 -0400
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C82C08EA4A
-        for <linux-unionfs@vger.kernel.org>; Wed, 11 Aug 2021 05:30:50 -0700 (PDT)
-Received: by mail-oi1-x22b.google.com with SMTP id be20so4277624oib.8
-        for <linux-unionfs@vger.kernel.org>; Wed, 11 Aug 2021 05:30:49 -0700 (PDT)
+        Wed, 11 Aug 2021 10:12:13 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3498C061765
+        for <linux-unionfs@vger.kernel.org>; Wed, 11 Aug 2021 07:11:49 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id cf5so3994026edb.2
+        for <linux-unionfs@vger.kernel.org>; Wed, 11 Aug 2021 07:11:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=77BwqRII9XCweQU8IJul6unijI/BEL+vUJmVmCRLxH4=;
-        b=hdHPl6EhPO0rbYNHyzk/Qo8j2rhdvZw/z+/z3eKcJgnhYdIuV06zrz+zfq2oDrvqk1
-         c0LKRXc22iojVXH74sinAySKjYxv5qL4FjuzYeq7i+GiqO20jdVJ7UTxOeUF4SiSuiJX
-         RewKmhiwkp/6WsiVbTH9E136ovvKd6DNxFFBy4cd/2Trvv1j8/9pYWO5AOAs9fGFYGCd
-         iJ2P7Jrk1siLmf7tcfdXJyYqiDCNX3jxYLZ2givbERMcqk+LrtRXQVXYxkyOtGLqz+Qz
-         QvmU8mGajKHdAoDkeskW/1G1/HhtTB3nYcj6MlaVO9aRxejlmxHNIw739MwGHzNSpwcZ
-         ZsEg==
+        d=szeredi.hu; s=google;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :content-transfer-encoding;
+        bh=h8iKVDtBUyzsr7/V/NiTCr0uqw4kRNEUJDacgRjPpPI=;
+        b=XL181+6FYKSKBUdZaWYWBUY8mgGlgimGrbE6W9t+S/CSDUsMfhMILm5c4fJpe8cGWw
+         y69iS8ZOrpqeOroj49BS7wxsPVlCUcRdfdNbsYlFXhzeHCD4zDd6Y1FjOnfhb8XaTgmn
+         2UqXLYJFB69t5469hPnoS0iq7QRam7VNhUGBc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=77BwqRII9XCweQU8IJul6unijI/BEL+vUJmVmCRLxH4=;
-        b=piZD+IYRetcvRtrW2VB0y/t2gC0rxvVgllmdNrDBTacuGdQiUD8JfjKTSu1nV7mRHL
-         8fDbRJmC9oopd0Dul94kl2Zj1wvpP5/l4dzMrI7H6TNQFvejDSa/3n9gKj8wdEyUQtxX
-         cW16laEoNcsgmgxkbjBvUrrFbQOJfsSs67t4/lf93c1DMRlKG1+RCABgU5J01BvCqGue
-         C9xL9hzRBxc1tTvc99IYImCC5eyp1h/UuOTqXZSL8+RHm6T/Fdi/mFEC2wH6Tz/vwrQR
-         4i7l9ltpGyFWB9MqvOPUghmY8jSwi4WB9PEKKXZgsvHuIAlqpkWBTYbu8hYpqnpVG0uh
-         QQ6g==
-X-Gm-Message-State: AOAM533jh2um+nOaGN9MVPRgUwEndMLQ8/EEFGK6FmTO9pe+vRYXXpgC
-        niLEFvaaG9OL/Bgt8007rfiFlrUyttHf1A3PGUw=
-X-Google-Smtp-Source: ABdhPJzQ7QNnWBNY+00bZ2/vHMEXadQHBg9sM7+hqX/w5OdV5gUABk+MeuK4xdHXt9RivYMg5+YhMPfmKAKJ2sTGTK4=
-X-Received: by 2002:aca:1817:: with SMTP id h23mr11856802oih.146.1628685049402;
- Wed, 11 Aug 2021 05:30:49 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:content-transfer-encoding;
+        bh=h8iKVDtBUyzsr7/V/NiTCr0uqw4kRNEUJDacgRjPpPI=;
+        b=WBg0UBm2U8+Ty0e50npwv7mjMAIetkOkaZYzIkudFP5okdcRsZFSs+YsXPZzcx2WO4
+         L7lisP/ptotxm2YAtqfEmi0owQhOgJscfQJOVed10Kc5GNLJV2jvzsiT6WGjd+R5HK2L
+         xsJeIJ0CZqbYjS5OEzs3Bm7B/FY6eyhsdEOb/IA/+2IfyfsZVhpih8QNK+xnFYrzTWTB
+         Mu6+y/IuCxG7Lmozsu/EFdd8TSjuJt9zeuntJ/ke8n+u2RhYRBNb7QrK1QO6SJ4IuX5k
+         U3f9YVseIKugcdhQ+Zw6ceztReQ/9X+A7EeCsd+3jBlKgg79tHqT061+I78V/nGI+faN
+         EWIQ==
+X-Gm-Message-State: AOAM5334Dnx43LxwgWydyWk4RIxrtizJZ1UbA1+LSp8zRh7VulUwZ6AA
+        IH9Ye4nJnvIgmbQgSNKci5M9hA==
+X-Google-Smtp-Source: ABdhPJxzcRA6Pnf737/+TIKDMNnxcylKXpNDwUnkPSHJCb5Yk/qPApU4i/Om2je8VrI1JQyJESThkg==
+X-Received: by 2002:aa7:d296:: with SMTP id w22mr11561530edq.170.1628691108358;
+        Wed, 11 Aug 2021 07:11:48 -0700 (PDT)
+Received: from miu.piliscsaba.redhat.com (catv-86-101-169-16.catv.broadband.hu. [86.101.169.16])
+        by smtp.gmail.com with ESMTPSA id s24sm3290589edq.56.2021.08.11.07.11.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Aug 2021 07:11:47 -0700 (PDT)
+Date:   Wed, 11 Aug 2021 16:11:45 +0200
+From:   Miklos Szeredi <miklos@szeredi.hu>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        linux-mm <linux-mm@kvack.org>, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org
+Subject: mmap denywrite mess (Was: [GIT PULL] overlayfs fixes for 5.14-rc6)
+Message-ID: <YRPaodsBm3ambw8z@miu.piliscsaba.redhat.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6830:23a5:0:0:0:0 with HTTP; Wed, 11 Aug 2021 05:30:49
- -0700 (PDT)
-Reply-To: rihabmanyang07@yahoo.com
-From:   Rihab Manyang <ndourandiogou1@gmail.com>
-Date:   Wed, 11 Aug 2021 13:30:49 +0100
-Message-ID: <CAP5_mB5JzCUj=G2=OFQTUAHntUyVzX9U4Cd6GCXO82jwGUg2bQ@mail.gmail.com>
-Subject: hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
--- 
-How are you?I am miss.Rihab Manyang i will like to be your friend
-please write me back on my email for more details, Thanks.
+On Mon, Aug 09, 2021 at 02:25:17PM -0700, Linus Torvalds wrote:
+
+> Ugh. Th edances with denywrite and mapping_unmap_writable are really
+> really annoying.
+
+Attached version has error and success paths separated.  Was that your
+complaint?
+
+> I get the feeling that the whole thing with deny_write_access and
+> mapping_map_writable could possibly be done after-the-fact somehow as
+> part of actually inserting the vma in the vma tree, rather than done
+> as the vma is prepared.
+
+I don't know if that's doable or not.  The final denywrite count is obtained in
+__vma_link_file(), called after __vma_link().  The questions are:
+
+ - does the order of those helper calls matter?
+
+ - if it does, could the __vma_link() be safely undone after an unsuccessful
+   __vmal_link_file()?
+
+> And most users of vma_set_file() probably really don't want that whole
+> thing at all (ie the DRM stuff that just switches out a local thing.
+> They also don't check for the new error cases you've added.
+
+Christian König wants to follow up with those checks (which should be asserts,
+if the code wasn't buggy in the first place).
+
+> So I really think this is quite questionable, and those cases should
+> probably have been done entirely inside ovlfs rather than polluting
+> the cases that don't care and don't check.
+
+I don't get that.  mmap_region() currently drops the deny counts from the
+original file.  That doesn't work for overlayfs since it needs to take new temp
+counts on the override file.
+
+So mmap_region() is changed to drop the counts on vma->vm_file, but then all
+callers of vma_set_file() will need to do that switch of temp counts, there's no
+way around that.
+
+Thanks,
+Miklos
+
+For reference, here's the previous discussion:
+
+https://lore.kernel.org/linux-mm/YNHXzBgzRrZu1MrD@miu.piliscsaba.redhat.com/
+
+---
+ fs/overlayfs/file.c |    4 +++-
+ include/linux/mm.h  |    2 +-
+ mm/mmap.c           |    2 +-
+ mm/util.c           |   31 ++++++++++++++++++++++++++++++-
+ 4 files changed, 35 insertions(+), 4 deletions(-)
+
+--- a/fs/overlayfs/file.c
++++ b/fs/overlayfs/file.c
+@@ -475,7 +475,9 @@ static int ovl_mmap(struct file *file, s
+ 	if (WARN_ON(file != vma->vm_file))
+ 		return -EIO;
+ 
+-	vma_set_file(vma, realfile);
++	ret = vma_set_file(vma, realfile);
++	if (ret)
++		return ret;
+ 
+ 	old_cred = ovl_override_creds(file_inode(file)->i_sb);
+ 	ret = call_mmap(vma->vm_file, vma);
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2780,7 +2780,7 @@ static inline void vma_set_page_prot(str
+ }
+ #endif
+ 
+-void vma_set_file(struct vm_area_struct *vma, struct file *file);
++int /* __must_check */ vma_set_file(struct vm_area_struct *vma, struct file *file);
+ 
+ #ifdef CONFIG_NUMA_BALANCING
+ unsigned long change_prot_numa(struct vm_area_struct *vma,
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1806,6 +1806,7 @@ unsigned long mmap_region(struct file *f
+ 		 */
+ 		vma->vm_file = get_file(file);
+ 		error = call_mmap(file, vma);
++		file = vma->vm_file;
+ 		if (error)
+ 			goto unmap_and_free_vma;
+ 
+@@ -1867,7 +1868,6 @@ unsigned long mmap_region(struct file *f
+ 		if (vm_flags & VM_DENYWRITE)
+ 			allow_write_access(file);
+ 	}
+-	file = vma->vm_file;
+ out:
+ 	perf_event_mmap(vma);
+ 
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -314,12 +314,41 @@ int vma_is_stack_for_current(struct vm_a
+ /*
+  * Change backing file, only valid to use during initial VMA setup.
+  */
+-void vma_set_file(struct vm_area_struct *vma, struct file *file)
++int vma_set_file(struct vm_area_struct *vma, struct file *file)
+ {
++	vm_flags_t vm_flags = vma->vm_flags;
++	int err;
++
++	/* Get temporary denial counts on replacement */
++	if (vm_flags & VM_DENYWRITE) {
++		err = deny_write_access(file);
++		if (err)
++			return err;
++	}
++	if (vm_flags & VM_SHARED) {
++		err = mapping_map_writable(file->f_mapping);
++		if (err)
++			goto undo_denywrite;
++	}
++
+ 	/* Changing an anonymous vma with this is illegal */
+ 	get_file(file);
+ 	swap(vma->vm_file, file);
++
++	/* Undo temporary denial counts on replaced */
++	if (vm_flags & VM_SHARED)
++		mapping_unmap_writable(file->f_mapping);
++
++	if (vm_flags & VM_DENYWRITE)
++		allow_write_access(file);
++
+ 	fput(file);
++	return 0;
++
++undo_denywrite:
++	if (vm_flags & VM_DENYWRITE)
++		allow_write_access(file);
++	return err;
+ }
+ EXPORT_SYMBOL(vma_set_file);
+ 
