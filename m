@@ -2,38 +2,38 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B620C3EE115
-	for <lists+linux-unionfs@lfdr.de>; Tue, 17 Aug 2021 02:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00FE13EE14E
+	for <lists+linux-unionfs@lfdr.de>; Tue, 17 Aug 2021 02:38:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236050AbhHQAgc (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 16 Aug 2021 20:36:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35414 "EHLO mail.kernel.org"
+        id S236574AbhHQAiq (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 16 Aug 2021 20:38:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35916 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236051AbhHQAgY (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 16 Aug 2021 20:36:24 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DBEAE60FC3;
-        Tue, 17 Aug 2021 00:35:51 +0000 (UTC)
+        id S236079AbhHQAgh (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Mon, 16 Aug 2021 20:36:37 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EED3F6103A;
+        Tue, 17 Aug 2021 00:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629160552;
-        bh=EG8oCqNCpJ9I9kaz9k9fICEPwDby1FZHFnk/nQTYB7I=;
+        s=k20201202; t=1629160565;
+        bh=kIexKIdcMTVkOlUwD4Q2wR1/p8oEvDAmKeJCf5AcyZM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f+93b0oiiBM0fR+YzyLZ/gUQO7NS9jgUK98b8w2nuHnhe9GYcWbY66B27/4iAtqoN
-         O9kxXTly0Uf7Cs1AMG7w4lKAM8VBcS0xNJ+PpSKMIoaSFNsm+iVFYyNIDyeHefCxsG
-         F6Nfi39so0gt/G7lRIR4huzLaoK1kentHP5v/LbMArSPgX5z0p34CJcTZ3X1wcptWh
-         5OpavjCAmnPOWkSzgxrkKtMYKy4ZutuBokqhsNMqIT73VTtHcq6I2X2cqrcXgm5E++
-         BFWAhpupwYt58lAJlLlUP8WdPbDzR+E5v/5+iUwqToIWqo3oymTjd3Gz1IUGX8SGHL
-         ySBeAuT9lppoA==
+        b=BXMH0uAS9YlgasvPJdtkH49Z5NgoJxutYtrSrt0VmAXkiJzXvkHir8605FeQzlPWg
+         P8HbQ/LPsF8sAHqOBZhgwXb7qDrYZZplCSzdOtTA7knY7yYUehrrAHosub9y0rOkEd
+         Y1sWUs5J+rUKsPhM9FbEqIjMKCke67tzqkahq6dIeedKdYa0r+Ss5mS8tpYG9wdUgz
+         6z05wN+hiO4n/VKULw2cGqnnt9i103sNWPIWxcn2psfqOuql9UsRuibQfLL3D6A8J+
+         O3ABIohpKnAUhZziFoF6sUgvh+IAGURJcJhGhzdhe+c+wTDdzNVI89vQBL5r9Ke2aL
+         I0siDGXJUkxjw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Miklos Szeredi <mszeredi@redhat.com>,
         Colin Ian King <colin.king@canonical.com>,
         Sasha Levin <sashal@kernel.org>, linux-unionfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 11/12] ovl: fix uninitialized pointer read in ovl_lookup_real_one()
-Date:   Mon, 16 Aug 2021 20:35:35 -0400
-Message-Id: <20210817003536.83063-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 8/9] ovl: fix uninitialized pointer read in ovl_lookup_real_one()
+Date:   Mon, 16 Aug 2021 20:35:53 -0400
+Message-Id: <20210817003554.83213-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210817003536.83063-1-sashal@kernel.org>
-References: <20210817003536.83063-1-sashal@kernel.org>
+In-Reply-To: <20210817003554.83213-1-sashal@kernel.org>
+References: <20210817003554.83213-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -60,10 +60,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-index 41ebf52f1bbc..ebde05c9cf62 100644
+index ed35be3fafc6..f469982dcb36 100644
 --- a/fs/overlayfs/export.c
 +++ b/fs/overlayfs/export.c
-@@ -392,6 +392,7 @@ static struct dentry *ovl_lookup_real_one(struct dentry *connected,
+@@ -390,6 +390,7 @@ static struct dentry *ovl_lookup_real_one(struct dentry *connected,
  	 */
  	take_dentry_name_snapshot(&name, real);
  	this = lookup_one_len(name.name.name, connected, name.name.len);
@@ -71,7 +71,7 @@ index 41ebf52f1bbc..ebde05c9cf62 100644
  	err = PTR_ERR(this);
  	if (IS_ERR(this)) {
  		goto fail;
-@@ -406,7 +407,6 @@ static struct dentry *ovl_lookup_real_one(struct dentry *connected,
+@@ -404,7 +405,6 @@ static struct dentry *ovl_lookup_real_one(struct dentry *connected,
  	}
  
  out:
