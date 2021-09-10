@@ -2,109 +2,114 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EF9F406287
-	for <lists+linux-unionfs@lfdr.de>; Fri, 10 Sep 2021 02:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74E984066DA
+	for <lists+linux-unionfs@lfdr.de>; Fri, 10 Sep 2021 07:35:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231975AbhIJAqA (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 9 Sep 2021 20:46:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48778 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234387AbhIJAXQ (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 9 Sep 2021 20:23:16 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BDDE960FC0;
-        Fri, 10 Sep 2021 00:22:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631233326;
-        bh=6DvBScFx4vP3kesSnhRnFcB0+Ya19xx+IsfFPVT/zUE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e5X7AmbDnT2dEABoHiaSisUW+eYPIcF1gFXjOMUZPHaVJEKhw89tvZp+CbsimIfZP
-         288mi1eMf8Rl6Rmc8vOMokA1TRmzy3Bh5Csf0ysUf/TNGjjAmauCOy3i64oHycsHRD
-         KpNYUzKhHPaB/RWPS2bfMrweSxRI3fUSLkfrRg+vGQu+L6Ci/bwU6rbUJPQGJf+5Mr
-         da0HR0xgyD5JOzFGAsUtBIA+iIwAVTej0xo4qixIr+lLwkNExCCbIZj6iG8Arhf+qX
-         FxHymfSoi+KV9lJNZcVs6OUwRfN5cO9zOjQaLjUGM5fuVIKTf+gBq0fGktW34WYG0r
-         NVhybj4e6Lq8g==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Chengguang Xu <cgxu519@mykernel.net>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        Sasha Levin <sashal@kernel.org>, linux-doc@vger.kernel.org,
-        linux-unionfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 17/37] ovl: skip checking lower file's i_writecount on truncate
-Date:   Thu,  9 Sep 2021 20:21:22 -0400
-Message-Id: <20210910002143.175731-17-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210910002143.175731-1-sashal@kernel.org>
-References: <20210910002143.175731-1-sashal@kernel.org>
+        id S230324AbhIJFhF (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 10 Sep 2021 01:37:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51274 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230037AbhIJFhF (ORCPT
+        <rfc822;linux-unionfs@vger.kernel.org>);
+        Fri, 10 Sep 2021 01:37:05 -0400
+Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9A2BC061574;
+        Thu,  9 Sep 2021 22:35:54 -0700 (PDT)
+Received: by mail-il1-x133.google.com with SMTP id x10so852234ilm.12;
+        Thu, 09 Sep 2021 22:35:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tLXBpSkKxNkrugueLnZmnSC7kwKwOUit3SCtO4MJFbs=;
+        b=TXvA2GU/R4DmCZJMTpXr6A2ouW0uChXYTZQwYaGRYAqtjfw2x733rQDGUUxMfemy0C
+         vFNlh7gsI2GKyLHSIITVtgSQnP6Pmz4Cs4hbKlWQsKTzomZFr6y65RVNTMrWhrgYL6So
+         pIwSIEK2TLiBw05/lgfs1wvsoiw+vL6gTU4thyet/ADY6mQkIPK/oiIjT4CVcCwOp6ep
+         BWtIrzdcQCE1GDE6cSQSv2qUsTUceBIZUq99C6WeSUms2Ch8UZDGjbDWc1V8MJaEJDZ6
+         U9N8yUSS3Pz39Tj374CmHpDksJ0QnZ+DuOjyhgKW6b32Rxm+gejC5uDGd1tfbdtxeFfk
+         MzuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tLXBpSkKxNkrugueLnZmnSC7kwKwOUit3SCtO4MJFbs=;
+        b=Ts2dwuLI6kLaj/ja6SRoq4ZsEKSebT5L5/YqYGdeCp+/5nWrN4vzj9sFe6jKTPoZe0
+         7JmRMUgn7NwJrwETOT7PnRgkckDpASgUqfKDGn57YJfYXspY+SYZlPays5uSqtiN/i+g
+         +2OnDtD1fTGLf2aROQZQxQAyJ2ScImDkSwwhD74lyLxE9lvY6hQp7AUlPft5qJLI4MOM
+         B0MmxNA1/J0iyhk13hpTnfl3yFw4wqTHO6fexUDYrinfvISskDnv7X3IxtGkJBqCHHWi
+         MznEoK8SPn6HC68/b17CzjPQrRtV2IQ49cUFK/Nd6hgDVZmgaZiWcuUs6LQkzYw4wtOE
+         IPDQ==
+X-Gm-Message-State: AOAM532sERxr8x2wqpsWZgAE7azWEyRjuFYdHbNcs5gdfzDEhI7ehGsQ
+        Ib4J/Wa45r6ExNAh40eALis2czisPjBfzRc+m3cLTNrDQdI=
+X-Google-Smtp-Source: ABdhPJx4MM8hv+bkFDlbeP67z67/hbkMekdbNTplfGHmIuMSnCpsD1nCMu9r6al3tvxi9ctE+dSJLICqxe2F/8c2wiE=
+X-Received: by 2002:a05:6e02:198d:: with SMTP id g13mr5184331ilf.319.1631252153979;
+ Thu, 09 Sep 2021 22:35:53 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <20210910001558.173296-1-sashal@kernel.org> <20210910001558.173296-46-sashal@kernel.org>
+In-Reply-To: <20210910001558.173296-46-sashal@kernel.org>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Fri, 10 Sep 2021 08:35:41 +0300
+Message-ID: <CAOQ4uxi8Ae8Pk1bUDNmQgCvEn_SoXXeW4HsNV5k2+ceejevrLQ@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 5.14 46/99] ovl: copy up sync/noatime fileattr flags
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>,
+        Miklos Szeredi <mszeredi@redhat.com>,
+        overlayfs <linux-unionfs@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-From: Chengguang Xu <cgxu519@mykernel.net>
+On Fri, Sep 10, 2021 at 3:17 AM Sasha Levin <sashal@kernel.org> wrote:
+>
+> From: Amir Goldstein <amir73il@gmail.com>
+>
+> [ Upstream commit 72db82115d2bdfbfba8b15a92d91872cfe1b40c6 ]
+>
+> When a lower file has sync/noatime fileattr flags, the behavior of
+> overlayfs post copy up is inconsistent.
+>
+> Immediately after copy up, ovl inode still has the S_SYNC/S_NOATIME
+> inode flags copied from lower inode, so vfs code still treats the ovl
+> inode as sync/noatime.  After ovl inode evict or mount cycle,
+> the ovl inode does not have these inode flags anymore.
+>
+> To fix this inconsistency, try to copy the fileattr flags on copy up
+> if the upper fs supports the fileattr_set() method.
+>
+> This gives consistent behavior post copy up regardless of inode eviction
+> from cache.
+>
+> We cannot copy up the immutable/append-only inode flags in a similar
+> manner, because immutable/append-only inodes cannot be linked and because
+> overlayfs will not be able to set overlay.* xattr on the upper inodes.
+>
+> Those flags will be addressed by a followup patch.
+>
+> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
 
-[ Upstream commit b71759ef1e1730db81dab98e9dab9455e8c7f5a2 ]
+Sasha,
 
-It is possible that a directory tree is shared between multiple overlay
-instances as a lower layer.  In this case when one instance executes a file
-residing on the lower layer, the other instance denies a truncate(2) call
-on this file.
+I do not recommend applying this patch to stable.
+The value/risk ratio is not worth it IMO.
 
-This only happens for truncate(2) and not for open(2) with the O_TRUNC
-flag.
+I don't know of anyone who ever complained about not copying
+the NOATIME/SYNC fileattrs specifically.
 
-Fix this interference and inconsistency by removing the preliminary
-i_writecount check before copy-up.
+This patch is more of a complimentary patch to the IMMUTABLE/
+APPEND fileattr patch, which is not appropriate for stable either.
 
-This means that unlike on normal filesystems truncate(argv[0]) will now
-succeed.  If this ever causes a regression in a real world use case this
-needs to be revisited.
+OTOH, ovl-update-5.15 has this patch that was not included in the
+AUTOSEL batch, even though it has a Fixes tag, CC stable and
+very strong hints in the subject:
+52d5a0c6bd8a ("ovl: fix BUG_ON() in may_delete() when called from
+ovl_cleanup()")
 
-One way to fix this properly would be to keep a correct i_writecount in the
-overlay inode, but that is difficult due to memory mapping code only
-dealing with the real file/inode.
+I suppose AUTOSEL leaves these sorts of patches to Greg's scripts?
 
-Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- Documentation/filesystems/overlayfs.txt | 3 +++
- fs/overlayfs/inode.c                    | 6 ------
- 2 files changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/filesystems/overlayfs.txt b/Documentation/filesystems/overlayfs.txt
-index 845d689e0fd7..69ffd8ebf3a8 100644
---- a/Documentation/filesystems/overlayfs.txt
-+++ b/Documentation/filesystems/overlayfs.txt
-@@ -348,6 +348,9 @@ b) If a file residing on a lower layer is opened for read-only and then
- memory mapped with MAP_SHARED, then subsequent changes to the file are not
- reflected in the memory mapping.
- 
-+c) If a file residing on a lower layer is being executed, then opening that
-+file for write or truncating the file will not be denied with ETXTBSY.
-+
- The following options allow overlayfs to act more like a standards
- compliant filesystem:
- 
-diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index 56b55397a7a0..0486fc925002 100644
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -29,12 +29,6 @@ int ovl_setattr(struct dentry *dentry, struct iattr *attr)
- 		goto out;
- 
- 	if (attr->ia_valid & ATTR_SIZE) {
--		struct inode *realinode = d_inode(ovl_dentry_real(dentry));
--
--		err = -ETXTBSY;
--		if (atomic_read(&realinode->i_writecount) < 0)
--			goto out_drop_write;
--
- 		/* Truncate should trigger data copy up as well */
- 		full_copy_up = true;
- 	}
--- 
-2.30.2
-
+Thanks,
+Amir.
