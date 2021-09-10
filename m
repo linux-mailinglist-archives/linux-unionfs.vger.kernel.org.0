@@ -2,39 +2,39 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FE8E40627C
-	for <lists+linux-unionfs@lfdr.de>; Fri, 10 Sep 2021 02:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2A21406377
+	for <lists+linux-unionfs@lfdr.de>; Fri, 10 Sep 2021 02:46:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231464AbhIJAp5 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 9 Sep 2021 20:45:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46624 "EHLO mail.kernel.org"
+        id S231200AbhIJAp7 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 9 Sep 2021 20:45:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47940 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233626AbhIJAU3 (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 9 Sep 2021 20:20:29 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9C0F46023D;
-        Fri, 10 Sep 2021 00:19:18 +0000 (UTC)
+        id S233964AbhIJAWN (ORCPT <rfc822;linux-unionfs@vger.kernel.org>);
+        Thu, 9 Sep 2021 20:22:13 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B385D610E9;
+        Fri, 10 Sep 2021 00:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631233159;
-        bh=E4c3HQ78lDsQLlQX3N/Djo6I8196nom3UukxgmiwP3Y=;
+        s=k20201202; t=1631233263;
+        bh=9hbZSs7CGi5rrgcREuH1wow82wBAcaBkn6tOl9HQ2co=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cd+BQc925qGXZ3NeN9ZtZJzTxLrcOKqzuQ+gAliR4Uu/n0l6qd1e5TmCgRvmpm5ps
-         1+hHTYD7zS4TziOf2TI93awuhcOSJSxtLycYjBGS8zzkKq82R46RsSni/bMvZG05JX
-         yQsv9lpBWXBdSPFV8RLvm8Dv1uXsdmNJhvYd334ZfRQK/T7bBkaZV1GiO0wz6cwt5H
-         iO0hdML+Y+gRYtAqLLtAzsbj9z4j0UuLfZww69y1ddUcFIuafKk0ySz31dC+9u4ie1
-         603AAxLJROGegFKa+suhRPl8UIt0BSADFkjFhD2s0FmqsckcdpMeSQgYqq89uH0038
-         G4K6TLiG8nnmw==
+        b=a6btt/U2YdV0Pine77e0ulcyVJySUGtFLm9Z/hcF1O45cPeJ/tDH4GSxY5MUQXHZ2
+         g78t85f7+Ef2DP5lufdbRH3woFK2nMx7jl3lO3au3Nv7QIlTzm9vfLRJsSEOgdlkhC
+         rdx2ibZwm+53K1dtNTt859ZAJPFqS0XY1bYc7FzuwXiUjpUdESWZhhYFCBPQ/zILOw
+         e2brDfUcrTB9t0drp9QeCRN3mWW232x4FUpYBrzXPKVF2xYTRyh0ArcSjm8+NfOxAK
+         dbfggC3YZo1nz973ivF2QgbR77iD3nxtuIp4xu1K4tKkz8FUo5Qg3dxb7URqIMTDtL
+         PEnnH+UrP0WAA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Chengguang Xu <cgxu519@mykernel.net>,
         Miklos Szeredi <mszeredi@redhat.com>,
         Sasha Levin <sashal@kernel.org>, linux-unionfs@vger.kernel.org,
         linux-doc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 41/88] ovl: skip checking lower file's i_writecount on truncate
-Date:   Thu,  9 Sep 2021 20:17:33 -0400
-Message-Id: <20210910001820.174272-41-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 25/53] ovl: skip checking lower file's i_writecount on truncate
+Date:   Thu,  9 Sep 2021 20:20:00 -0400
+Message-Id: <20210910002028.175174-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210910001820.174272-1-sashal@kernel.org>
-References: <20210910001820.174272-1-sashal@kernel.org>
+In-Reply-To: <20210910002028.175174-1-sashal@kernel.org>
+References: <20210910002028.175174-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -75,7 +75,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/Documentation/filesystems/overlayfs.rst b/Documentation/filesystems/overlayfs.rst
-index 455ca86eb4fc..7da6c30ed596 100644
+index 137afeb3f581..7c40a135a919 100644
 --- a/Documentation/filesystems/overlayfs.rst
 +++ b/Documentation/filesystems/overlayfs.rst
 @@ -427,6 +427,9 @@ b) If a file residing on a lower layer is opened for read-only and then
@@ -89,10 +89,10 @@ index 455ca86eb4fc..7da6c30ed596 100644
  compliant filesystem:
  
 diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index b288843e6b42..6566294c5fd6 100644
+index 4fadafd8bdc1..6ee183e523c5 100644
 --- a/fs/overlayfs/inode.c
 +++ b/fs/overlayfs/inode.c
-@@ -33,12 +33,6 @@ int ovl_setattr(struct user_namespace *mnt_userns, struct dentry *dentry,
+@@ -30,12 +30,6 @@ int ovl_setattr(struct dentry *dentry, struct iattr *attr)
  		goto out;
  
  	if (attr->ia_valid & ATTR_SIZE) {
