@@ -2,128 +2,151 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4A8641DA55
-	for <lists+linux-unionfs@lfdr.de>; Thu, 30 Sep 2021 14:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0DE141DF54
+	for <lists+linux-unionfs@lfdr.de>; Thu, 30 Sep 2021 18:41:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351176AbhI3M5t (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 30 Sep 2021 08:57:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41666 "EHLO
+        id S1352240AbhI3Qni (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 30 Sep 2021 12:43:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351173AbhI3M5s (ORCPT
+        with ESMTP id S1352189AbhI3Qnh (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 30 Sep 2021 08:57:48 -0400
-Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56A2AC06176A
-        for <linux-unionfs@vger.kernel.org>; Thu, 30 Sep 2021 05:56:06 -0700 (PDT)
-Received: by mail-ua1-x934.google.com with SMTP id r8so4153237uap.0
-        for <linux-unionfs@vger.kernel.org>; Thu, 30 Sep 2021 05:56:06 -0700 (PDT)
+        Thu, 30 Sep 2021 12:43:37 -0400
+Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6DF5C06176A
+        for <linux-unionfs@vger.kernel.org>; Thu, 30 Sep 2021 09:41:54 -0700 (PDT)
+Received: by mail-vs1-xe41.google.com with SMTP id az15so8094480vsb.8
+        for <linux-unionfs@vger.kernel.org>; Thu, 30 Sep 2021 09:41:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4NMeHKKTyAGCpOOy3N5j+Y4kBgerv4UGsLR0VwEeEpQ=;
-        b=o7snawbz68x/cCIJ3BbRpgHNBQ6M+TzWngw5F6loARc9+dM6dSLNcB2h5xJNS+wxNd
-         tDNqpATgGxjazDV5qX6JxBUlW0+PC9UXHmskDWLNusLM8a/2ZSuYfHDKH2lqyOOdTfMc
-         NFI2xp+LDxV4TMX7yNVa57zV+M2diM6Wnl7k4=
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=pOaGKNYWfb4v0nwXyM4HQq5RhcHrgKkGxtXo9Ik9BWPtid2/WmjZyIl8LN1E6Sy1Yf
+         pdaezqCdtmbXNhV2+jv14JS+cyaV20spfm1Fv4CY7xN469gxbewLOgQJSg5+wzdJ7OTd
+         oGXlJUu2ADfKtdc2WvEWFBMIT6STlKwELS+QDAfJBm6Bf8TVRSON1fAlNczO1tSHH01Q
+         GhTm4uQSsW0kgUhMRFDXDpEy8bE6luXh1c2Z256gr1SWIS5gM95NLiiyVLRL356TMpBS
+         rhPTgcVllOzU9WYGJ0gotOkBzNbX3/Qb+LZOTv6W285uvxFIy/Xpl7bOeXWzBn+A2Tlr
+         Vofw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4NMeHKKTyAGCpOOy3N5j+Y4kBgerv4UGsLR0VwEeEpQ=;
-        b=CX/Z9dSQdBZo7PIZjgLf9lVq0TZBlVO34IyrBgkk7eI36qCGyQBaJzPLhpZHhtUeLi
-         OxxKsa3B0uTMl1//lhrJyyvp4xj17hJ+lBlOLuTaCHuod78tk1wH/9MY/W/j9dmO8vEs
-         TMre31S8ivaqBOMZv//sUL1IMux+nMg5ICul/cl4lJOt7gqhy429tjIRn/ALklATWo2I
-         cYRB2TT2bKAvQJliXoj52OO4gCDwzEl8oeiEaiXt8LT7P1SeA16zi/ELxOJIcyLf5v41
-         8sqeW3z6RrfKtKGtCJSDdb3O1ghRizuvmVEiFihWKQUd4chFlCvrTI2UMc7qmCJEvaoI
-         xqXA==
-X-Gm-Message-State: AOAM530qkbvh+8zvZ0C570vvudjT2+d1zGJ9ZJZRlgJEZ18VqUtmpm8f
-        oF+gNw7iWX614EnuNkTtqwYsmd9Hqx2F8juyetgJsg==
-X-Google-Smtp-Source: ABdhPJzZPqlYo/OA7xpYUhrwETBr1UDCOClvRBHiS5Ww7axivu/X0teXsDl0f45NKgox8G/g1rmvcRI9kgeWLXegaro=
-X-Received: by 2002:ab0:471d:: with SMTP id h29mr5262001uac.11.1633006565123;
- Thu, 30 Sep 2021 05:56:05 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=rb4VpYSUTTetG8tX72m7LSWKpAehhGmAf/t00TsGw8CWO2Omo4Icth7xRThkvx57r/
+         yDTaAr57r8UsjzX0f41cLlze0+hhklpHlpq1oXcOH4hMW+F/+Qinfk7LPG5Iwi4wCqo4
+         GpixDemF0oG/OsnOIjVamxmz1g7Gz6aU6T5BSLnBZ+iyIIdz2TbJixoMF8axyDSOnWCc
+         tNq5oaAAxiwM5gKKLSVhvn1wVaKCONPfUbds83GKeyNLEdOkQvjfbY2T1lmpqOL+xLiS
+         p3Dkz3nfQOdIKIx7tSrTgyP1vjoSc6zMsuZxDWztKV5sZ5vLY8CpfeWZSayCJLic0mRy
+         fX0A==
+X-Gm-Message-State: AOAM532Lwn4UPj8S6jd8aDVkH2y0iAtDyuZ+rqnB5ZyRtnXnjkVaERdN
+        5teYqbChqdd5Oc53/4Xmu+bZrUsM7QboTziPKN0=
+X-Google-Smtp-Source: ABdhPJyXJBR94aCQkDR2nyB9qUV3pduaZl7pZqBCOwpPstHXzcZti+KikFV2xiLcEDgbELfK9GtfAOGhGFV38IzhWX4=
+X-Received: by 2002:a67:d589:: with SMTP id m9mr267626vsj.30.1633020113945;
+ Thu, 30 Sep 2021 09:41:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210928124757.117556-1-cgxu519@mykernel.net>
-In-Reply-To: <20210928124757.117556-1-cgxu519@mykernel.net>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Thu, 30 Sep 2021 14:55:54 +0200
-Message-ID: <CAJfpegsHH1wpLXDJXemVM1mpcRACRwew8pc2X62KkyuwS91jKQ@mail.gmail.com>
-Subject: Re: [PATCH] ovl: set overlayfs inode's a_ops->direct_IO properly
-To:     Chengguang Xu <cgxu519@mykernel.net>
-Cc:     Miklos Szeredi <mszeredi@redhat.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Huang Jianan <huangjianan@oppo.com>
+Received: by 2002:a59:ab2e:0:b0:22d:7f44:603a with HTTP; Thu, 30 Sep 2021
+ 09:41:53 -0700 (PDT)
+Reply-To: irenezakari24@gmail.com
+From:   Irene zakari <irenezakari88@gmail.com>
+Date:   Thu, 30 Sep 2021 09:41:53 -0700
+Message-ID: <CAFT8PFHpXMWJg2tokhnCJ-6xrLEBPe7kzvKSH=Q-ze3yy8WSPw@mail.gmail.com>
+Subject: PLEASE I NEED YOUR HELP
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Tue, 28 Sept 2021 at 14:48, Chengguang Xu <cgxu519@mykernel.net> wrote:
->
-> Loop device checks the ability of DIRECT-IO by checking
-> a_ops->direct_IO of inode, in order to avoid this kind of
-> false detection we set a_ops->direct_IO for overlayfs inode
-> only when underlying inode really has DIRECT-IO ability.
->
-> Reported-by: Huang Jianan <huangjianan@oppo.com>
-> Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
+Hello   ..
 
-Can you please add  Fixes: and  Cc: stable@vger.kernel.org tags?
+How do you do over there? I hope you are doing well?
 
-> ---
->  fs/overlayfs/dir.c       |  2 ++
->  fs/overlayfs/inode.c     |  4 ++--
->  fs/overlayfs/overlayfs.h |  1 +
->  fs/overlayfs/util.c      | 14 ++++++++++++++
->  4 files changed, 19 insertions(+), 2 deletions(-)
->
-> diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
-> index 1fefb2b8960e..32a60f9e3f9e 100644
-> --- a/fs/overlayfs/dir.c
-> +++ b/fs/overlayfs/dir.c
-> @@ -648,6 +648,8 @@ static int ovl_create_object(struct dentry *dentry, int mode, dev_t rdev,
->         /* Did we end up using the preallocated inode? */
->         if (inode != d_inode(dentry))
->                 iput(inode);
-> +       else
-> +               ovl_inode_set_aops(inode);
+My name is Irene. (24 years), i am single, from Gambia, the only child
+of late Eng. Bernard Bakary Zakaria. the Director of Bajam Enterprise
+(Building Construction Company in The Gambia) also the CEO of Bernard
+Import and Export (GAMBIA).
 
-This is too late, since the dentry was instantiated and can be found
-through a cached lookup already.
+As a matter of fact my mother died when i was barely 4 years old
+according to my late father and because of the type of love he had for
+my mother made him to remain UN-married till he left the ghost..
 
-Anyway, I think this can be dropped, since ovl_inode_init() should be
-called for inodes preallocated by ovl_create_object() as well:
-inode_insert5() will set I_NEW on the preallocated inode.
+So after the death of my father as a result of assassinate, his brother (My
+Uncle) who is the purchasing and marketing sale manager of my late
+fathers company named (Mr. James Tokunbo Oriade Zakaria) wanted to
+convert all the properties and resources of my late father into his
+which i quarreled with him and it made him to lay his anger on me to
+the extent of hiring an assassins to kill me but to God be the glory i
+succeeded by making a way to Burkina faso for my dear life.
+Honestly i do live a fearful life even here in Burkina faso because of
+those Assassins coming after me .
 
-It is interesting that ovl_fill_inode() will be called a second time
-on the preallocated inode.  This is something that should probably be
-cleaned up, but that's a separate patch.
+I would want to live and study in your country for my better future.
+because my father same blood brother wanted to force me into undecided
+marriage, just for me to leave my father home and went and live with
+another man I never know as he want to occupied all my father home
+and maybe to sold it as my father no longer alive, I'm the only child
+daughter my father born, '' but he don't know that i am not
+interesting in any of my father properties or early marriage for now,
+because i still have future to think about and to focus on my studies
+first as i was doing my first year in the University before the death
+of my father.
 
->
->  out_drop_write:
->         ovl_drop_write(dentry);
-> diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-> index 832b17589733..a7a327e4f790 100644
-> --- a/fs/overlayfs/inode.c
-> +++ b/fs/overlayfs/inode.c
-> @@ -659,7 +659,7 @@ static const struct inode_operations ovl_special_inode_operations = {
->         .update_time    = ovl_update_time,
->  };
->
-> -static const struct address_space_operations ovl_aops = {
-> +const struct address_space_operations ovl_aops = {
->         /* For O_DIRECT dentry_open() checks f_mapping->a_ops->direct_IO */
->         .direct_IO              = noop_direct_IO,
->  };
-> @@ -786,6 +786,7 @@ void ovl_inode_init(struct inode *inode, struct ovl_inode_params *oip,
->         ovl_copyattr(realinode, inode);
->         ovl_copyflags(realinode, inode);
->         ovl_map_ino(inode, ino, fsid);
-> +       ovl_inode_set_aops(inode);
+Actually what I want to discuss with you is about my personal issue
+concern funds my late father deposited in a bank outside my country,
+worth $4.5 million united state dollars. i need your assistance to
+receive and invest this funds in your country.
 
-OVL_UPPERDATA is only set after ovl_get_inode() in all callers.  This
-needs to be moved into ovl_inode_init() before calling
-ovl_inode_set_aops() otherwise this won't work correctly for a copied
-up file.
+Please help me, I am sincere to you and I want to be member of your
+family as well if you wouldn't mind to accept me and lead me to better
+future in your country.
 
-Thanks,
-Miklos
+All the documents the bank issue to my father during time of deposit
+is with me now.
+I already notify the bank on phone about the death of my father and
+they are surprise for the news and accept that my father is their good
+customer.
+I will be happy if this money can be invested in any business of your
+choice and it will be under your control till i finished my education,
+also I'm assuring you good relationship and I am ready to discuss the
+amount of money to give you from this money for your help.
+
+Therefore, I shall give you the bank contact and other necessary
+information in my next email if you will only promise me that you will
+not/never betray and disclosed this matter to anybody, because, this
+money is the only hope i have for survival on earth since I have lost
+my parents.
+
+Moreover I have the FUND PLACEMENT CERTIFICATE and the DEATH
+CERTIFICATE here with me, but before I give you further information, i
+will like to know your full data
+
+1. Full Name: ........................
+2. Address: ..................
+3. Nationality: ........... Sex................
+4. Age:........... Date of Birth:................
+5. Occupation:...................
+.....
+6. Phone: ........... Fax:.........................
+7. State of Origin: .......Country:..............
+8. Occupation:...................
+................
+9. Marital status........... E-mail address's: ............
+10. Scan copy of your ID card or Driving License/Photo:............
+DECLARATION:
+
+so that i will be fully sure that i am not trusting the wrong person.
+and it will also give me the mind to send you the bank contact for you
+to communicate with them for more verification about this money. and
+to know you more better.
+
+Meanwhile, you can reach me through my pastor,his name is Pastor Paul
+any time you call, tell him that you want to speak with me because
+right now i am living in the church here in Burkina faso and i don't
+want to stay here any longer,
+send for me to speak with you his phone number is this(+226 75213646)
+
+I will stop here and i will be waiting for your reply and feel free
+ask any thing you want to know about me.
+Please help me, I would be highly appreciated
+Have nice day.
+From Irene
