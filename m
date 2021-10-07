@@ -2,174 +2,124 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99FE24252B8
-	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Oct 2021 14:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 626184252F8
+	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Oct 2021 14:27:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241369AbhJGMMD (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 7 Oct 2021 08:12:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51344 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241268AbhJGML5 (ORCPT
+        id S241288AbhJGM3B (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 7 Oct 2021 08:29:01 -0400
+Received: from sender2-pp-o92.zoho.com.cn ([163.53.93.251]:25310 "EHLO
+        sender2-pp-o92.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233135AbhJGM3A (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 7 Oct 2021 08:11:57 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C6C1C061772
-        for <linux-unionfs@vger.kernel.org>; Thu,  7 Oct 2021 05:10:04 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id r18so22262742edv.12
-        for <linux-unionfs@vger.kernel.org>; Thu, 07 Oct 2021 05:10:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=bJ7+Dsxqje/qCi5h9DIEBDXfxzFZ7kazLrywV6hzHWA=;
-        b=B6L9pCAUODPX1NnFXj/gPTXyVoDvCg73tyF169W6DFu3Dsqqb3U68cuBH10iugkFkI
-         WCbShsW4Z/Edx2BBxxE7vVpNT5OrfQQVLpxlCa2GUFhtjyBCIk2wqey58GX8FLOM4fkD
-         KELR5QaAsnIOkrKEMOXzK1+lpns3IcFI990Tg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=bJ7+Dsxqje/qCi5h9DIEBDXfxzFZ7kazLrywV6hzHWA=;
-        b=CLNTsg9W+5qsx9SAJhlNerAOExB+2yn7YBurolhZ5BHj9ifxs98h4ghoBrxgwvaYCv
-         Rf1DY5tj4n5P4TYphacWrfnfDFFuO+j6CwJGtV22c71PcIrkMMDVws0m8nf+UxbOQq75
-         J8vBbgT9q7tMXppJhzw3mKI8hYZrFYrj1t0hZuysNjhvGwMb/2kHzM7VR3jgqXoW8vcu
-         bOXuLAFBuSerebEthhvd6aKrp/vT1xXSZCYZN+OzrBaj26ZCPEUwPs/cFx6nx+UGc3W6
-         FW2smNE6hVNo2ITXLSHMEM0cTWGyT8y3060z1N+MNasQhe69Ud2Z4TDSdE1+pDMls2uJ
-         wXcQ==
-X-Gm-Message-State: AOAM530eCtKr362pKsKLX+sJRvO2GWhhBz//CvOZombto/TGhiiRbLiR
-        KesynJkcHP+8DurGrDOWxgmSew==
-X-Google-Smtp-Source: ABdhPJxveLKXr8MKtOMlZVhTrqH0xbiYJu7RT/nNY+3C1oVWu87i9AXOFvAV6i+eUC1w7wMRdmlbZw==
-X-Received: by 2002:a05:6402:50cc:: with SMTP id h12mr6031409edb.112.1633608602666;
-        Thu, 07 Oct 2021 05:10:02 -0700 (PDT)
-Received: from miu.piliscsaba.redhat.com (catv-86-101-169-16.catv.broadband.hu. [86.101.169.16])
-        by smtp.gmail.com with ESMTPSA id b2sm9919744ejj.124.2021.10.07.05.10.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Oct 2021 05:10:01 -0700 (PDT)
-Date:   Thu, 7 Oct 2021 14:09:59 +0200
-From:   Miklos Szeredi <miklos@szeredi.hu>
-To:     Chengguang Xu <cgxu519@mykernel.net>
-Cc:     Miklos Szeredi <mszeredi@redhat.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Huang Jianan <huangjianan@oppo.com>
-Subject: Re: [PATCH] ovl: set overlayfs inode's a_ops->direct_IO properly
-Message-ID: <YV7jl23vPilVb3zE@miu.piliscsaba.redhat.com>
-References: <20210928124757.117556-1-cgxu519@mykernel.net>
- <CAJfpegsHH1wpLXDJXemVM1mpcRACRwew8pc2X62KkyuwS91jKQ@mail.gmail.com>
- <17c469a5f3f.e5bfa83020210.6858947926351314597@mykernel.net>
+        Thu, 7 Oct 2021 08:29:00 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1633609599; cv=none; 
+        d=zoho.com.cn; s=zohoarc; 
+        b=pbVwJUO76c5OfYRLmclbHoK69TAyZ5YoRXtcgY/bqEBmjPnVUq5lDuAX5JD0uKnqMRINYTR0slHr0idsqHUxXsFj9Pode4MrKMEaJXG2qCS1Ccl059aerxJKAlHPEaCF/dAmf/J7Q3KlyLObr6DENE69/vlAyqT9h6FHlnuymkE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
+        t=1633609599; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:Reply-To:References:Subject:To; 
+        bh=ZmDQWllWGjCMvtEuij8KJbKB+KItbbkjy4HSIF8fY/w=; 
+        b=HaFm5YkJxmLKrToodDRb8aUqwVddH7KC7kao0e+i3TpeNw9/MlXk46f3yelj8fxTEdBmsAyuAU0Sg7Id+/t87OsT8gYTRPlccE+o7Dp55/AjdoHzU0Kln8yZbAEDKGun2de7bSz5lULNu/i9cNBsNq3fofvJX0hJvJsLx3SHjBA=
+ARC-Authentication-Results: i=1; mx.zoho.com.cn;
+        dkim=pass  header.i=mykernel.net;
+        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
+        dmarc=pass header.from=<cgxu519@mykernel.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1633609599;
+        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
+        h=Date:From:Reply-To:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=ZmDQWllWGjCMvtEuij8KJbKB+KItbbkjy4HSIF8fY/w=;
+        b=GeOvSt6R+tkMXJTQKpbnRvahIqsn55ytgPpB5ilePhrXK9obLeko2E6XKBbhIV3Z
+        6kBisByT+sz1Tp4mRWUE5FUs4ifKPCyGWaFM+JKxTwON7bfTccnC43z7QWsXBJmNJFT
+        /5OO78gyh6XAYCGnuwspIxcuuEXtc2jO/w8RmlMQ=
+Received: from mail.baihui.com by mx.zoho.com.cn
+        with SMTP id 1633609596273981.3428858564824; Thu, 7 Oct 2021 20:26:36 +0800 (CST)
+Date:   Thu, 07 Oct 2021 20:26:36 +0800
+From:   Chengguang Xu <cgxu519@mykernel.net>
+Reply-To: cgxu519@mykernel.net
+To:     "Jan Kara" <jack@suse.cz>
+Cc:     "miklos" <miklos@szeredi.hu>, "amir73il" <amir73il@gmail.com>,
+        "linux-fsdevel" <linux-fsdevel@vger.kernel.org>,
+        "linux-unionfs" <linux-unionfs@vger.kernel.org>,
+        "linux-kernel" <linux-kernel@vger.kernel.org>
+Message-ID: <17c5ab83d6d.10cdb35ab25883.3563739472838823734@mykernel.net>
+In-Reply-To: <20211007090157.GB12712@quack2.suse.cz>
+References: <20210923130814.140814-1-cgxu519@mykernel.net>
+ <20210923130814.140814-7-cgxu519@mykernel.net> <20211007090157.GB12712@quack2.suse.cz>
+Subject: Re: [RFC PATCH v5 06/10] ovl: implement overlayfs' ->write_inode
+ operation
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <17c469a5f3f.e5bfa83020210.6858947926351314597@mykernel.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Importance: Medium
+User-Agent: ZohoCN Mail
+X-Mailer: ZohoCN Mail
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Sun, Oct 03, 2021 at 10:41:34PM +0800, Chengguang Xu wrote:
-> ---- 在 星期四, 2021-09-30 20:55:54 Miklos Szeredi <miklos@szeredi.hu> 撰写 ----
+ ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E5=9B=9B, 2021-10-07 17:01:57 Jan Kara <=
+jack@suse.cz> =E6=92=B0=E5=86=99 ----
+ > On Thu 23-09-21 21:08:10, Chengguang Xu wrote:
+ > > Implement overlayfs' ->write_inode to sync dirty data
+ > > and redirty overlayfs' inode if necessary.
+ > >=20
+ > > Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
+ >=20
+ > ...
+ >=20
+ > > +static int ovl_write_inode(struct inode *inode,
+ > > +               struct writeback_control *wbc)
+ > > +{
+ > > +    struct ovl_fs *ofs =3D inode->i_sb->s_fs_info;
+ > > +    struct inode *upper =3D ovl_inode_upper(inode);
+ > > +    unsigned long iflag =3D 0;
+ > > +    int ret =3D 0;
+ > > +
+ > > +    if (!upper)
+ > > +        return 0;
+ > > +
+ > > +    if (!ovl_should_sync(ofs))
+ > > +        return 0;
+ > > +
+ > > +    if (upper->i_sb->s_op->write_inode)
+ > > +        ret =3D upper->i_sb->s_op->write_inode(inode, wbc);
+ > > +
+ >=20
+ > I'm somewhat confused here. 'inode' is overlayfs inode AFAIU, so how is =
+it
+ > correct to pass it to ->write_inode function of upper filesystem? Should=
+n't
+ > you pass 'upper' there instead?
 
->  > OVL_UPPERDATA is only set after ovl_get_inode() in all callers.  This
->  > needs to be moved into ovl_inode_init() before calling
->  > ovl_inode_set_aops() otherwise this won't work correctly for a copied
->  > up file.
->  > 
-> 
-> Hi Miklos,
-> 
-> I found it's not convenient to move setting OVL_UPPERDATA into ovl_inode_init() because
+That's right!
 
-If you look at the logic of the thing, then it becomes quite simple.  See
-following (untested) patch.
+ >=20
+ > > +    if (mapping_writably_mapped(upper->i_mapping) ||
+ > > +        mapping_tagged(upper->i_mapping, PAGECACHE_TAG_WRITEBACK))
+ > > +        iflag |=3D I_DIRTY_PAGES;
+ > > +
+ > > +    iflag |=3D upper->i_state & I_DIRTY_ALL;
+ >=20
+ > Also since you call ->write_inode directly upper->i_state won't be updat=
+ed
+ > to reflect that inode has been written out (I_DIRTY flags get cleared in
+ > __writeback_single_inode()). So it seems to me overlayfs will keep writi=
+ng
+ > out upper inode until flush worker on upper filesystem also writes the
+ > inode and clears the dirty flags? So you rather need to call something l=
+ike
+ > write_inode_now() that will handle the flag clearing and do writeback li=
+st
+ > handling for you?
+ >=20
+
+Calling ->write_inode directly upper->i_state won't be updated,=20
+however, I don't think overlayfs will keep writing out upper inode since ->=
+write_inode
+will be called when only overlay inode itself marked dirty.  Am I missing s=
+omething?
+
 
 Thanks,
-Miklos
+Chengguang
 
----
- fs/overlayfs/dir.c       |    3 +--
- fs/overlayfs/export.c    |    5 ++---
- fs/overlayfs/inode.c     |    3 +++
- fs/overlayfs/namei.c     |    3 +--
- fs/overlayfs/overlayfs.h |    1 +
- 5 files changed, 8 insertions(+), 7 deletions(-)
 
---- a/fs/overlayfs/dir.c
-+++ b/fs/overlayfs/dir.c
-@@ -264,6 +264,7 @@ static int ovl_instantiate(struct dentry
- 	struct ovl_inode_params oip = {
- 		.upperdentry = newdentry,
- 		.newinode = inode,
-+		.metacopy = false,
- 	};
- 
- 	ovl_dir_modified(dentry->d_parent, false);
-@@ -287,8 +288,6 @@ static int ovl_instantiate(struct dentry
- 		inode = ovl_get_inode(dentry->d_sb, &oip);
- 		if (IS_ERR(inode))
- 			return PTR_ERR(inode);
--		if (inode == oip.newinode)
--			ovl_set_flag(OVL_UPPERDATA, inode);
- 	} else {
- 		WARN_ON(ovl_inode_real(inode) != d_inode(newdentry));
- 		dput(newdentry);
---- a/fs/overlayfs/export.c
-+++ b/fs/overlayfs/export.c
-@@ -290,7 +290,8 @@ static struct dentry *ovl_obtain_alias(s
- 	struct ovl_inode_params oip = {
- 		.lowerpath = lowerpath,
- 		.index = index,
--		.numlower = !!lower
-+		.numlower = !!lower,
-+		.metacopy = false, /* No NFS export support for metacopy yet */
- 	};
- 
- 	/* We get overlay directory dentries with ovl_lookup_real() */
-@@ -304,8 +305,6 @@ static struct dentry *ovl_obtain_alias(s
- 		return ERR_CAST(inode);
- 	}
- 
--	if (upper)
--		ovl_set_flag(OVL_UPPERDATA, inode);
- 
- 	dentry = d_find_any_alias(inode);
- 	if (dentry)
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -1155,6 +1155,9 @@ struct inode *ovl_get_inode(struct super
- 		ino = realinode->i_ino;
- 		fsid = lowerpath->layer->fsid;
- 	}
-+	if (upperdentry && !oip->metacopy)
-+		ovl_set_flag(OVL_UPPERDATA, inode);
-+
- 	ovl_fill_inode(inode, realinode->i_mode, realinode->i_rdev);
- 	ovl_inode_init(inode, oip, ino, fsid);
- 
---- a/fs/overlayfs/namei.c
-+++ b/fs/overlayfs/namei.c
-@@ -1093,14 +1093,13 @@ struct dentry *ovl_lookup(struct inode *
- 			.redirect = upperredirect,
- 			.lowerdata = (ctr > 1 && !d.is_dir) ?
- 				      stack[ctr - 1].dentry : NULL,
-+			.metacopy = uppermetacopy,
- 		};
- 
- 		inode = ovl_get_inode(dentry->d_sb, &oip);
- 		err = PTR_ERR(inode);
- 		if (IS_ERR(inode))
- 			goto out_free_oe;
--		if (upperdentry && !uppermetacopy)
--			ovl_set_flag(OVL_UPPERDATA, inode);
- 	}
- 
- 	ovl_dentry_update_reval(dentry, upperdentry,
---- a/fs/overlayfs/overlayfs.h
-+++ b/fs/overlayfs/overlayfs.h
-@@ -507,6 +507,7 @@ struct ovl_inode_params {
- 	struct dentry *upperdentry;
- 	struct ovl_path *lowerpath;
- 	bool index;
-+	bool metacopy;
- 	unsigned int numlower;
- 	char *redirect;
- 	struct dentry *lowerdata;
