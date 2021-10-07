@@ -2,52 +2,52 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBFD7424FFE
-	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Oct 2021 11:23:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15BCA4251BF
+	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Oct 2021 13:10:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240600AbhJGJZM (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 7 Oct 2021 05:25:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41158 "EHLO
+        id S232680AbhJGLLw (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 7 Oct 2021 07:11:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240598AbhJGJZM (ORCPT
+        with ESMTP id S231366AbhJGLLv (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 7 Oct 2021 05:25:12 -0400
-Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com [IPv6:2607:f8b0:4864:20::e33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85A4BC061760
-        for <linux-unionfs@vger.kernel.org>; Thu,  7 Oct 2021 02:23:18 -0700 (PDT)
-Received: by mail-vs1-xe33.google.com with SMTP id o15so1203679vsr.13
-        for <linux-unionfs@vger.kernel.org>; Thu, 07 Oct 2021 02:23:18 -0700 (PDT)
+        Thu, 7 Oct 2021 07:11:51 -0400
+Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F8E0C061755
+        for <linux-unionfs@vger.kernel.org>; Thu,  7 Oct 2021 04:09:58 -0700 (PDT)
+Received: by mail-vs1-xe36.google.com with SMTP id p18so6224765vsu.7
+        for <linux-unionfs@vger.kernel.org>; Thu, 07 Oct 2021 04:09:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=szeredi.hu; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=rUWh8/nzui59AslYBGE2UZsOtVDOFLafNPVpXzsA5k0=;
-        b=LdQoTfuILlI4bUYn34I0nglU9SK7YTIYJZ8ovMH6IzZzlwbsBelfcMO6mz/t0TnDgD
-         9NPHc4AyQZxZvAwaiUbbANwYwj3v8nKg6Vwt4cJ/16oOLdhsHBKolnYGkem7Lnhbop1S
-         u5EvLLkgZIayXwvPzfuUYzNF+SENB3fb1JF74=
+        bh=HzsMoRJsH8Sqc/5QUEzazNk9LwUNPwGYQgI6XlOhwdM=;
+        b=jjMWBQ2b9mG7NVaxJoDtibQ3OU6rQZ2zpfbaqAgq2HL5qORXLUX1Vi07dspO0J6aAE
+         ICBr2srIBsmVhXWLi/2xcHtw0vRKfJqJudBZZkWofSZIHP70MUigU+lFODf0f10lqDtK
+         UBD1UJGTDLuVUHTwzgYl9626fOtXaPkl82ihM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=rUWh8/nzui59AslYBGE2UZsOtVDOFLafNPVpXzsA5k0=;
-        b=tYi7/7za+BOzMmcIgG1B4a/MrB9bn9sVl9+L0Gy8x6VbubF7MukGIoBrml4YCYczgb
-         yyQznOCwSI6Nb/T7izaU91P7RZQJO3AgRjzidq7BRPMz8dnebZOPJxdcEocJBQAWNmBe
-         OClCaYLmMBTqJoVqvIp6a+PgSHPs7K1q8KprFeUPXYMK1FaDqiJr/Doi6wvVjHKWjYpy
-         Yh2talFgzYKYRr5duZzR8xlbpiu2qUflr5ZEWkbanQQBUAAHIUIqdKMIA01e8BO/VmxZ
-         Q3ILQ6poqtbhc3uwuoxWH8fpyuVkoQxyfs6OP9vfk4rAiYK1GGlQN9VhUUkgEpjaKueG
-         oO4g==
-X-Gm-Message-State: AOAM531e/SxyZxiDa9wOTSMvgRdONhBPTt7y2+hkr3g8obzjsZP0+FUF
-        lNnoJMzwFMmrTPBs5Jz+IA6EfCUJOjUTHYgzHMZtqw==
-X-Google-Smtp-Source: ABdhPJwKmuyoUN96r/uOpk7uvGkP1btKzYR/lUkNsBES9CO8VlwM7PF9JuCilztl58w8Qi5nUUZHjepATMqzufo12s0=
-X-Received: by 2002:a67:ec94:: with SMTP id h20mr2591162vsp.59.1633598597621;
- Thu, 07 Oct 2021 02:23:17 -0700 (PDT)
+        bh=HzsMoRJsH8Sqc/5QUEzazNk9LwUNPwGYQgI6XlOhwdM=;
+        b=p8FvpRriKhLpE9jUXWUpEWCuXePWRw1naID3Y4vpcntU45/fXx0TrSevNP7ermLypO
+         qJDFE8Qkdb46X5lhpiQcbdwg2N2o6GALjXbFSVbs6oYTlNTQpr4Mp2Bse5X9wFOI0P0Z
+         gDpD7NOhUCkgtCG4r6I2NzR31MKxCbmZy1tbfqbN/shy3I90b9LBO/c6o/oKS3Gtbfa4
+         kdq+dAAvQ1kAECqFxDBvNvpae4Ilra1v2O/KJhjm3TtVEes9YbPVNu4aoGij9LuiCQ6O
+         heWiUB28b04MoJilDUFy8R8j8WXMhNvPZShSmZSy8Xk9qkmmxm1Zl3db6DMGS8QH+hMS
+         o7+w==
+X-Gm-Message-State: AOAM532r7PJBIa3K8FH+8vKPrxWqPI4qXbJ5ZCfRqC/JDmxzNfpqFUHM
+        VvSGFB4pBkHnuUb6JabM7Cp8VbTTYWzsgIzwlTUsdQ==
+X-Google-Smtp-Source: ABdhPJwwlMDrzL1eRmXK79q/c/bQxWvYBLZtluQeSTQttotP78WIpfO7fpUap6vTe2AKIKk7F7bBMi6PJsRRqyRS7HI=
+X-Received: by 2002:a05:6102:3c3:: with SMTP id n3mr3179780vsq.19.1633604997574;
+ Thu, 07 Oct 2021 04:09:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210923130814.140814-1-cgxu519@mykernel.net> <20210923130814.140814-7-cgxu519@mykernel.net>
-In-Reply-To: <20210923130814.140814-7-cgxu519@mykernel.net>
+References: <20210923130814.140814-1-cgxu519@mykernel.net> <20210923130814.140814-8-cgxu519@mykernel.net>
+In-Reply-To: <20210923130814.140814-8-cgxu519@mykernel.net>
 From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Thu, 7 Oct 2021 11:23:06 +0200
-Message-ID: <CAJfpeguqj2vst4Zj5EovSktJkXiDSCSWY=X12X0Yrz4M8gPRmQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v5 06/10] ovl: implement overlayfs' ->write_inode operation
+Date:   Thu, 7 Oct 2021 13:09:46 +0200
+Message-ID: <CAJfpegtLi1PsfpkohJ-8kTHVazf7cZiX96OSBMn7Q39PY_PXaw@mail.gmail.com>
+Subject: Re: [RFC PATCH v5 07/10] ovl: cache dirty overlayfs' inode
 To:     Chengguang Xu <cgxu519@mykernel.net>
 Cc:     Jan Kara <jack@suse.cz>, Amir Goldstein <amir73il@gmail.com>,
         linux-fsdevel@vger.kernel.org,
@@ -60,40 +60,46 @@ X-Mailing-List: linux-unionfs@vger.kernel.org
 
 On Thu, 23 Sept 2021 at 15:08, Chengguang Xu <cgxu519@mykernel.net> wrote:
 >
-> Implement overlayfs' ->write_inode to sync dirty data
-> and redirty overlayfs' inode if necessary.
+> Now drop overlayfs' inode will sync dirty data,
+> so we change to only drop clean inode.
+>
+> The purpose of doing this is to keep compatible
+> behavior with before because without this change
+> dropping overlayfs inode will not trigger syncing
+> of underlying dirty inode.
 >
 > Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
 > ---
->  fs/overlayfs/super.c | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
+>  fs/overlayfs/super.c | 16 +++++++++++++++-
+>  1 file changed, 15 insertions(+), 1 deletion(-)
 >
 > diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-> index 2ab77adf7256..cddae3ca2fa5 100644
+> index cddae3ca2fa5..bf4000eb9be8 100644
 > --- a/fs/overlayfs/super.c
 > +++ b/fs/overlayfs/super.c
-> @@ -412,12 +412,42 @@ static void ovl_evict_inode(struct inode *inode)
->         clear_inode(inode);
+> @@ -441,11 +441,25 @@ static int ovl_write_inode(struct inode *inode,
+>         return ret;
 >  }
 >
-> +static int ovl_write_inode(struct inode *inode,
-> +                          struct writeback_control *wbc)
+> +/*
+> + * In iput_final(), clean inode will drop directly and dirty inode will
+> + * keep in the cache until write back to sync dirty data then add to lru
+> + * list to wait reclaim.
+> + */
+> +static int ovl_drop_inode(struct inode *inode)
 > +{
-> +       struct ovl_fs *ofs = inode->i_sb->s_fs_info;
 > +       struct inode *upper = ovl_inode_upper(inode);
-> +       unsigned long iflag = 0;
-> +       int ret = 0;
 > +
-> +       if (!upper)
-> +               return 0;
-> +
-> +       if (!ovl_should_sync(ofs))
-> +               return 0;
-> +
-> +       if (upper->i_sb->s_op->write_inode)
-> +               ret = upper->i_sb->s_op->write_inode(inode, wbc);
+> +       if (!upper || !(inode->i_state & I_DIRTY_ALL))
 
-Where is page writeback on upper inode triggered?
+Could we check upper dirtyness here? That would give a more precise result.
+
+Alternatively don't set .drop_inode (i.e. use generic_drop_inode())
+and set I_DONTCACHE on overlay inodes.  That would cause the upper
+inode to be always written back before eviction.
+
+The latter would result in simpler logic, and I think performance-wise
+it wouldn't matter.   But I may be missing something.
 
 Thanks,
 Miklos
