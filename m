@@ -2,81 +2,87 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C931D428B65
-	for <lists+linux-unionfs@lfdr.de>; Mon, 11 Oct 2021 12:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86EED429ECC
+	for <lists+linux-unionfs@lfdr.de>; Tue, 12 Oct 2021 09:41:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236099AbhJKK6W (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 11 Oct 2021 06:58:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51566 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236132AbhJKK6R (ORCPT
+        id S233849AbhJLHnp (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 12 Oct 2021 03:43:45 -0400
+Received: from sender2-pp-o92.zoho.com.cn ([163.53.93.251]:25329 "EHLO
+        sender2-pp-o92.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232565AbhJLHnp (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 11 Oct 2021 06:58:17 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22DF7C061768
-        for <linux-unionfs@vger.kernel.org>; Mon, 11 Oct 2021 03:56:12 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id e3so21221793wrc.11
-        for <linux-unionfs@vger.kernel.org>; Mon, 11 Oct 2021 03:56:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
-        b=km/+rwE10MGCG3K0BNjxD+A2l394aMlSCDFqBEiDyrs45mObKwVEkOccUp5BPFftJU
-         5cB06txNzUPVxcrxQnkqMq9zaxAqQeR9eoa3+7DqnAg3rX7wMze/dloERdrhczopiGET
-         PvxtLks7kWCMKTs5Q8Mmq12LwUKUT5cPH1x1mszpEwl0kuXWAYNTl0kX4+cL3oWAj8+a
-         6an2wLimFEmscCT9jtQf7FGYav0q/UTa6GRCeFihab7mYp8KZTVzyAi9ONxHllw1wfay
-         OSS3CoE7RnQ2PFKTnc/5Yya8gHnSshWvMzermo1msudbBS7MTk09iY8fA6ci8A/KmFSk
-         +E4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
-        b=fJggVT3gYSkmLpH/fawTYQeiiRjvyyxvbTv1MrvHtPemPq6GCFopMSDvw/xZ2T22zK
-         NAlSfMvuLYfAHoCdW7MhXkVGdwNiq/Tk1fTdPXykgWDxTDIgyA5rf6siuyFObh1RNOzb
-         mBdoOTSJ4j7suS9O/SVmJzFjpX5UTDQBa4y1fxf7aGYMjIfYk6E85z0VhVrmPPjRurZB
-         8OWxC8zHEXK4prUxfW5Y95vZfNq797F5iGY7UgcwCzbUrJIKR4DxvaLdXmxt395oTMTP
-         An6zBG5sMV6xxABtzM/WlzHm/1LPREurLSGfl8LQByhUsMjxNG9qCuhohLW4m8OP5HhA
-         TW0w==
-X-Gm-Message-State: AOAM53113rp7PZ29HnvzCzwivUOFpovAiQyVUidRJMK3YZ7varyLyEoH
-        r+A0FbLK227LmlG3RLRvPH/g1/QNw++JKQISOamTmVvEOEHgmg==
-X-Google-Smtp-Source: ABdhPJxWYMUVxuj7Tly9azrkWxEMXzTPZAklmoVIH4V2ykknMMiBN9imOFz2zTqxux/zk/7pzvFSRlX+C6mfjc7ADy4=
-X-Received: by 2002:adf:8b9a:: with SMTP id o26mr24377548wra.109.1633949760323;
- Mon, 11 Oct 2021 03:56:00 -0700 (PDT)
+        Tue, 12 Oct 2021 03:43:45 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1634024481; cv=none; 
+        d=zoho.com.cn; s=zohoarc; 
+        b=iMT5drS6JaCUd6HlArvx9LAgZx3l7KgmDRxKdC67Qg4oMBo6JGE1R4EyXNSEe+06CMinQsduZlk5hAAty3WRygYJDjtrt27keUaN1c2kWKlnjNtNoM7ysYz+FSapX0wzRutXMMW8PbI8oqvKA5Hsr8oJO2Arp32z3hzS4g/UMiE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
+        t=1634024481; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:Reply-To:References:Subject:To; 
+        bh=Y55ZB+W2WPdq2M0rxVYHY+K1z/6thucvjEyyG7/Pl10=; 
+        b=O7Wpp+zymEJmmxP/A9I+ioX4IXU79Pjk8YLDAiK7tfSlcYQQqkalQAbrpr6DnQEKObzDHDEy0DY2KgJqTtYvv9IJpLpaGjdJRgpkbfJ5uRknNIYHUZpkbND3VX5w7hwOJKF2mqyOoURXXZM4Prny5AWCbPrd86yuNWGAbN4ba+0=
+ARC-Authentication-Results: i=1; mx.zoho.com.cn;
+        dkim=pass  header.i=mykernel.net;
+        spf=pass  smtp.mailfrom=cgxu519@mykernel.net;
+        dmarc=pass header.from=<cgxu519@mykernel.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1634024481;
+        s=zohomail; d=mykernel.net; i=cgxu519@mykernel.net;
+        h=Date:From:Reply-To:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=Y55ZB+W2WPdq2M0rxVYHY+K1z/6thucvjEyyG7/Pl10=;
+        b=PRXcC7mEViEd6a3DZfGYWFWq00g12xJaHihHD3DDR4756UprmZvZBRtWQgipLteq
+        eiiWii5O6TGROEF2UqFApdMp11C2hPnCterYisxLDLvoKswO8fzr5jBOYfEolw3RbuX
+        LJp/lLwmIZUbq+2BvpiZsu7UvOthqK0tZN9TuY2g=
+Received: from mail.baihui.com by mx.zoho.com.cn
+        with SMTP id 1634024480327712.9263693463994; Tue, 12 Oct 2021 15:41:20 +0800 (CST)
+Date:   Tue, 12 Oct 2021 15:41:20 +0800
+From:   Chengguang Xu <cgxu519@mykernel.net>
+Reply-To: cgxu519@mykernel.net
+To:     "Miklos Szeredi" <miklos@szeredi.hu>
+Cc:     "Miklos Szeredi" <mszeredi@redhat.com>,
+        "overlayfs" <linux-unionfs@vger.kernel.org>,
+        "Huang Jianan" <huangjianan@oppo.com>
+Message-ID: <17c7372de44.e12e505836828.6893331941011091543@mykernel.net>
+In-Reply-To: <YV7jl23vPilVb3zE@miu.piliscsaba.redhat.com>
+References: <20210928124757.117556-1-cgxu519@mykernel.net>
+ <CAJfpegsHH1wpLXDJXemVM1mpcRACRwew8pc2X62KkyuwS91jKQ@mail.gmail.com>
+ <17c469a5f3f.e5bfa83020210.6858947926351314597@mykernel.net> <YV7jl23vPilVb3zE@miu.piliscsaba.redhat.com>
+Subject: Re: [PATCH] ovl: set overlayfs inode's a_ops->direct_IO properly
 MIME-Version: 1.0
-Received: by 2002:adf:dd8c:0:0:0:0:0 with HTTP; Mon, 11 Oct 2021 03:55:59
- -0700 (PDT)
-Reply-To: ramcharan9910@outlook.com
-From:   "Cr.David Ramcharan" <convy0101@gmail.com>
-Date:   Mon, 11 Oct 2021 03:55:59 -0700
-Message-ID: <CADDRs95718H=K3tUjphEHH_C96xYhoJw7jeCMpt_FfZZjhEXrA@mail.gmail.com>
-Subject: Thank You
-To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Importance: Medium
+User-Agent: ZohoCN Mail
+X-Mailer: ZohoCN Mail
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Please I am writing to notify you again on my intention to list your
-name as a beneficiary to the total sum of GBP6.350 million (Six
-million, Three hundred and fifty thousand British Pounds Sterlings) in
-the intent of the deceased (name now withheld since this is my second
-letter to you).
 
-I contacted you because you bear the surname identity and therefore
-can present you as the beneficiary to inherit the account proceeds of
-the deceased since there is no written "WILL" or trace to the deceased
-family relatives. My aim is to present you to my Bank Authorities as
-the Next of Kin to our deceased client. I will guide you all through
-the Claim procedure by providing all relevant Information and guiding
-you in your decisions and response to the Bank Management. All the
-papers will be processed after your acceptance.
+ ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E5=9B=9B, 2021-10-07 20:09:59 Miklos Sze=
+redi <miklos@szeredi.hu> =E6=92=B0=E5=86=99 ----
+ > On Sun, Oct 03, 2021 at 10:41:34PM +0800, Chengguang Xu wrote:
+ > > ---- =E5=9C=A8 =E6=98=9F=E6=9C=9F=E5=9B=9B, 2021-09-30 20:55:54 Miklos=
+ Szeredi <miklos@szeredi.hu> =E6=92=B0=E5=86=99 ----
+ >=20
+ > >  > OVL_UPPERDATA is only set after ovl_get_inode() in all callers.  Th=
+is
+ > >  > needs to be moved into ovl_inode_init() before calling
+ > >  > ovl_inode_set_aops() otherwise this won't work correctly for a copi=
+ed
+ > >  > up file.
+ > >  >=20
+ > >=20
+ > > Hi Miklos,
+ > >=20
+ > > I found it's not convenient to move setting OVL_UPPERDATA into ovl_ino=
+de_init() because
+ >=20
+ > If you look at the logic of the thing, then it becomes quite simple.  Se=
+e
+ > following (untested) patch.
+ >=20
 
-In your acceptance of this deal, I request that you kindly forward to
-me your letter of acceptance; your current telephone and fax numbers
-,age, occupational status and a forwarding address to enable me submit
-to the Bank Management the details as the Next of Kin to their
-deceased customer. Reply strictly through: ramcharancrdavid@gmail.com
+Hi Miklos,
 
-Yours faithfully,
-Cr.David Ramcharan
+Okay, thanks for the suggestion. I'll check fot it.
+
+Thanks,
+Chengguang
