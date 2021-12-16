@@ -2,156 +2,86 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43C1946CE02
-	for <lists+linux-unionfs@lfdr.de>; Wed,  8 Dec 2021 08:01:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 305BF4770BF
+	for <lists+linux-unionfs@lfdr.de>; Thu, 16 Dec 2021 12:42:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240468AbhLHHE5 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 8 Dec 2021 02:04:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50456 "EHLO
+        id S232394AbhLPLmx (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 16 Dec 2021 06:42:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240435AbhLHHE5 (ORCPT
+        with ESMTP id S233573AbhLPLml (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 8 Dec 2021 02:04:57 -0500
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0123C061574
-        for <linux-unionfs@vger.kernel.org>; Tue,  7 Dec 2021 23:01:25 -0800 (PST)
-Received: by mail-il1-x134.google.com with SMTP id t8so1314397ilu.8
-        for <linux-unionfs@vger.kernel.org>; Tue, 07 Dec 2021 23:01:25 -0800 (PST)
+        Thu, 16 Dec 2021 06:42:41 -0500
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEE1FC061396
+        for <linux-unionfs@vger.kernel.org>; Thu, 16 Dec 2021 03:42:39 -0800 (PST)
+Received: by mail-qv1-xf2b.google.com with SMTP id m6so5957999qvh.10
+        for <linux-unionfs@vger.kernel.org>; Thu, 16 Dec 2021 03:42:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0jYE5vSptQ1KqL8SqpU9wSHPFOy5JhWjnzkpTkShnbY=;
-        b=Nnyuqaz1PaxNq7+76peQEgDxVGRER34RJU8g3pVgk+JhqDRMPQgObsGOI1M31M+F6L
-         tp3aUj/7BM8HLK1ONMTtqWewv5Pd8HJNCRHPwCBwGiEryLj9B5nrQYGd3jjJyOjCswwb
-         jxrLIgRyy7zrpnfdXNGueYoV6rfu/UFLeTHATl7Dw+r+yXlHWaMAx4s3Ozyu6d3I/00A
-         buHDoE8ftAILZVDoSjQ8tGQ59fexb06l0zN7baMBllJ5j49HWVXsdCWIjYF8oJeVe6ve
-         +vYJfD2ndXH9i1uYKy/17mVPp2PeNQyxnhvf6XETtYhCPeAr4HO3irZzIGWJ9v662V4O
-         6U4A==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
+        b=K+n9/Q643hF06qaRTfNZAWda8LVlgLOG5CgJcxFPWIFoMhWM1EYpXAS64XJojMwQQx
+         EqR+WcL8ZKNdKxI1rlI6J1X97CAv/GhyzN+frFPEhWEVujbKy2tsQcjkeqXCKP3RT5yd
+         lKeuN0Xs1P/9DhC82fVpgIS54J8emMt0iaVxeunUZuwWzCiKeFFLaXjlQtjXsDp+7Fh/
+         B+VWl/xgmUtxz+BtFM5UhxSltD/0zH4S4seawy0715by/jAvKD9YON3PqOtBI62SbWBD
+         jWpeya/GzA0ycvExWcOcBmWl/DCk9yUsFN2bNj9QfFGM6FIFkaKrPoGkEqRJBjgcerBq
+         tR0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0jYE5vSptQ1KqL8SqpU9wSHPFOy5JhWjnzkpTkShnbY=;
-        b=JS8QYXszhYnKUpB6xgEumLgcAmx+F3Se4RZPCrU0uMyB/rwyjyLuOzU9IQYdp7cy2I
-         o3XO1zJpRK0okf943XCqQoKlF2p0wtHBuz8+bY09lfUkJClWxly5Qfkp9aJRhgXJ2+ty
-         a0f0Ck7xWpgz/PrbaBK+AS4rqaLuj4mycZjilqTbmb2MGaIf0kcttB6ZVRfbKavhtJ5+
-         VVMsE3JeCMOYnHgoxY3bmyepBd+uaGKrrmJiFgP7ZQ2jaUH03ph7TlK2qa4JofRMDxyP
-         dFeN1UbCMo2CQIlJY8l4qJZ3s5bMoXLlumP6GxicFFjNURvOidF4i79JTuC78w3BGXB8
-         UJSg==
-X-Gm-Message-State: AOAM530CVadhxHLPi1hbQjQyS1zqPkTzApWAucp2hN2DJOGfFORoq0yS
-        4KcdbqqzVigqFaOJ0wDlosPkZC90v+Z0s1w6UfKvojIw
-X-Google-Smtp-Source: ABdhPJwNa7s0N3TIh8EMJs5NC9d5AdDfJWb4WYm+9khYv2caz2Gcow4/3P4xdzdYY/F99J3ADxyl5eMQ4n+n8dtAEn8=
-X-Received: by 2002:a05:6e02:c87:: with SMTP id b7mr4225233ile.198.1638946885286;
- Tue, 07 Dec 2021 23:01:25 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
+        b=fDnBRQrPkj2PPcuU/jELNO9miYLqwD4clVeodkZz8Wewu4VC75nWWNqMCBIZPy10kw
+         lLHJSwMrER8x/sASuROpgEj/alppAXC7btZulVccmbKO88j6GMpGGvjYtq5F6+6HuuBL
+         rdvBuaa0keOfTn9SfjOiWKz6DnX4F0K2cnANEjN/8uK/s4OgOZrSQ7s8ifoIYf0mPz02
+         gip5SalxVs+Gnh4lWceAkCRiJ68noLkCD4778W86kk1XAT9mUntnWR4acx0o/K3lU8yl
+         QX54xly6rUsxLUBW6S9lkgDRoYspR3Yxs32pXW++6zo/XmDS+lrrhi1JkYL4FRMmfwrA
+         URpg==
+X-Gm-Message-State: AOAM531lk3sQBYurjPAvb/qQaXiXwy2hhc82DO6+nvT4BFBdL8KdVNd1
+        OTG1izBKkO5xnAeiWY8qCFKLe7hZoDQaiFUKOw0=
+X-Google-Smtp-Source: ABdhPJw1cRuUMMVas+y+QgdrxBW0LuhuWfZ+tfQTS0xFMTT3zW1pjnPXSYKcurxzVoeaOVJevX3+oCe2P65vw9z9/aU=
+X-Received: by 2002:a0c:e5d1:: with SMTP id u17mr15209801qvm.120.1639654958961;
+ Thu, 16 Dec 2021 03:42:38 -0800 (PST)
 MIME-Version: 1.0
-References: <CADmzSSjKoiYn7moEVFDV2p+x2BuTnWBLMBtdPQYsqQOttcgN1A@mail.gmail.com>
- <CAOQ4uxgb4cGHS9ZU-LfJAzSnmFDQmZgEBwHHA-J+G520gVsCyg@mail.gmail.com> <CADmzSSj2F77Z0Ufp-O7xQzPW=_BbUW3h3OCn7uhNUnS-tz8tCw@mail.gmail.com>
-In-Reply-To: <CADmzSSj2F77Z0Ufp-O7xQzPW=_BbUW3h3OCn7uhNUnS-tz8tCw@mail.gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Wed, 8 Dec 2021 09:01:14 +0200
-Message-ID: <CAOQ4uxj-7fcQykRLxS3S=wOz+rbNXA5R-yV-jwF3WrcZ=Lq=Aw@mail.gmail.com>
-Subject: Re: failed to verify upper - halts boot
-To:     Carl Karsten <carl@nextdayvideo.com>
-Cc:     overlayfs <linux-unionfs@vger.kernel.org>
+Received: by 2002:a05:622a:199c:0:0:0:0 with HTTP; Thu, 16 Dec 2021 03:42:38
+ -0800 (PST)
+Reply-To: selviasantiago1@gmail.com
+From:   Selvia Santiago <mariamatinez119@gmail.com>
+Date:   Thu, 16 Dec 2021 11:42:38 +0000
+Message-ID: <CAONDhKPEx+GKyJvnzbcBxs-brt1E0c+b0jdG7u7Uf+rYJ1N+fA@mail.gmail.com>
+Subject: Urgent
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Tue, Dec 7, 2021 at 11:17 PM Carl Karsten <carl@nextdayvideo.com> wrote:
->
-> On Mon, Dec 6, 2021 at 9:55 PM Amir Goldstein <amir73il@gmail.com> wrote:
-> >
-> > On Tue, Dec 7, 2021 at 4:38 AM Carl Karsten <carl@nextdayvideo.com> wrote:
-> > >
-> > > I powercyced my box, I'm assuming I did a sudo poweroff or halt or
-> > > something, but maybe not.
-> > >
-> > > It got stuck, (enter rescue mode, root account disabled, hit enter to
-> > > enter rescue mode... )  so I killed power.
-> > >
-> > > I edited fstab, changed auto to noauto, booted.
-> > >
-> > > overlay   /srv/nfs/rpi/bullseye/boot/merged    overlay
-> > > noauto,defaults,ro,lowerdir=/srv/nfs/rpi/bullseye/boot/updates:/srv/nfs/rpi/bullseye/boot/setup:/srv/nfs/rpi/bullseye/boot/base,upperdir=/srv/nfs/rpi/bullseye/boot/play,workdir=/srv/nfs/rpi/bullseye/boot/work,nfs_export=on
-> > >    0   0
-> > >
-> > > # mount /srv/nfs/rpi/bullseye/boot/merged
-> > > mount: /srv/nfs/rpi/bullseye/boot/merged: mount(2) system call failed:
-> > > Stale file handle.
-> > >
-> > > dmesg shows:
-> > >
-> > > [   45.941350] overlayfs: failed to verify upper (boot/play,
-> > > ino=379405, err=-116)
-> > > [   45.941369] overlayfs: failed to verify index dir 'upper' xattr
-> > > [   45.941379] overlayfs: try deleting index dir or mounting with '-o
-> > > index=off' to disable inodes index.
-> > >
-> >
-> > Did you by any change re-create boot/play dir without re-creating
-> > boot/work dir? because that is what that message means.
-> > I doubt it has to do with the power cycle.
->
-> Maybe.
->
-> would that include:
-> mount: lower=base,setup upper= updates
-> unmount
-> mount: lower=base,setup,updates upper=play
-> ?
->
-> That might have happened.
+-- 
+Urgent
 
-Yes, that would do it.
+I am Mrs. Selvia Santiago from Abidjan, Cote D'Ivoire, I am a widow
+suffering from long time illness (Cancer), there is funds I inherited
+from my late loving husband Mr. Santiago Carlos, the sum of (US$2.7
+Million Dollars) which he deposited in bank before his death, I need a
+honest and Faithful person that can use these funds for humanity work.
 
->
-> >
-> > > It is a bit concerning that I need to consider a power cycle may
-> > > require local console use.  I plan on managing this remotely.  For now
-> > > I'll leave it noauto and remotely mount when needed.  so this isn't a
-> > > critical blocker to me.
-> > >
-> > > What would happen:  errors=remount-ro
-> > >
-> > > errors={continue|remount-ro|panic}
-> > >     Define the behavior  when  an  error  is  encountered.  The
-> > > default is set in the filesystem superblock,  ...     and can be
-> > > changed using tune2fs(8).
-> > >
-> >
-> > This looks like a quote from the man page section about ext2 mount options.
-> > Those are not options supported for overlayfs.
-> >
-> > Anyway, with that error, as the kernel log says, you could have mounted
-> > overlayfs ro with -o index=off and we could have added a mount option
-> > to fallback to ro mount with index=off, but that means no nfs_export,
-> > so not sure if that is what you wanted.
->
-> That would be an improvement, as would errors=continue.
->
-> Either of these would let a healthy system come up and be usable, and
-> errors would let the system come up (finish booting) but the
-> nfs/overlay part needs attention.
->
-> Currently I have noauto so any reboot requires attention.
-> If I set auto, an error will cause the boot to stop and I don't have a
-> way to fix it remotely. I don't want to risk that, so noauto.
->
+I took this decision because I don't have any child that will inherit
+this money and I don't want a situation where this money will be used
+in an ungodly way. That is why I am taking this decision, and my
+doctor has confirmed to me that I have less than two weeks to live,
+having known my condition I decided to donate this fund to a charity
+or individual that will utilize this money to assist the poor and the
+needy in accordance to my instructions.
 
-There is no need for a kernel change.
-You can use boot scripts or mount helper to implement the mount options
-fallback that suits your system needs.
+I want you to use 70% of this funds for orphanages, school, church,
+widows, propagating the word and other humanity works,The remaining
+30% should be yours for your efforts as the new beneficiary.
 
-> I think I would prefer errors=continue as It would be more obvious
-> that the overlayfs mount has issues.
->
+Please if you would be able to use these funds for humanity work
+kindly reply me. As soon as I have received your response, I will give
+you further directives on how you are to go about the claims of the
+said funds.
 
-That is not likely to happen and FYI errors=continue does not even
-mean what you think for ext4 where it is supported.
-It does not continue on failure to mount, it continues on IO and
-fs corruption errors detected during operations on a mounted fs.
-
-Thanks,
-Amir.
+Remain blessed.
+Mrs Selvia Santiago.
