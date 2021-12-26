@@ -2,86 +2,51 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 305BF4770BF
-	for <lists+linux-unionfs@lfdr.de>; Thu, 16 Dec 2021 12:42:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FC7B47F64D
+	for <lists+linux-unionfs@lfdr.de>; Sun, 26 Dec 2021 10:43:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232394AbhLPLmx (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 16 Dec 2021 06:42:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60280 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233573AbhLPLml (ORCPT
+        id S229828AbhLZJm6 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 26 Dec 2021 04:42:58 -0500
+Received: from slot0.jllresort.com ([62.197.136.5]:55675 "EHLO
+        slot0.jllresort.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231749AbhLZJm6 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 16 Dec 2021 06:42:41 -0500
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEE1FC061396
-        for <linux-unionfs@vger.kernel.org>; Thu, 16 Dec 2021 03:42:39 -0800 (PST)
-Received: by mail-qv1-xf2b.google.com with SMTP id m6so5957999qvh.10
-        for <linux-unionfs@vger.kernel.org>; Thu, 16 Dec 2021 03:42:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
-        b=K+n9/Q643hF06qaRTfNZAWda8LVlgLOG5CgJcxFPWIFoMhWM1EYpXAS64XJojMwQQx
-         EqR+WcL8ZKNdKxI1rlI6J1X97CAv/GhyzN+frFPEhWEVujbKy2tsQcjkeqXCKP3RT5yd
-         lKeuN0Xs1P/9DhC82fVpgIS54J8emMt0iaVxeunUZuwWzCiKeFFLaXjlQtjXsDp+7Fh/
-         B+VWl/xgmUtxz+BtFM5UhxSltD/0zH4S4seawy0715by/jAvKD9YON3PqOtBI62SbWBD
-         jWpeya/GzA0ycvExWcOcBmWl/DCk9yUsFN2bNj9QfFGM6FIFkaKrPoGkEqRJBjgcerBq
-         tR0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
-        b=fDnBRQrPkj2PPcuU/jELNO9miYLqwD4clVeodkZz8Wewu4VC75nWWNqMCBIZPy10kw
-         lLHJSwMrER8x/sASuROpgEj/alppAXC7btZulVccmbKO88j6GMpGGvjYtq5F6+6HuuBL
-         rdvBuaa0keOfTn9SfjOiWKz6DnX4F0K2cnANEjN/8uK/s4OgOZrSQ7s8ifoIYf0mPz02
-         gip5SalxVs+Gnh4lWceAkCRiJ68noLkCD4778W86kk1XAT9mUntnWR4acx0o/K3lU8yl
-         QX54xly6rUsxLUBW6S9lkgDRoYspR3Yxs32pXW++6zo/XmDS+lrrhi1JkYL4FRMmfwrA
-         URpg==
-X-Gm-Message-State: AOAM531lk3sQBYurjPAvb/qQaXiXwy2hhc82DO6+nvT4BFBdL8KdVNd1
-        OTG1izBKkO5xnAeiWY8qCFKLe7hZoDQaiFUKOw0=
-X-Google-Smtp-Source: ABdhPJw1cRuUMMVas+y+QgdrxBW0LuhuWfZ+tfQTS0xFMTT3zW1pjnPXSYKcurxzVoeaOVJevX3+oCe2P65vw9z9/aU=
-X-Received: by 2002:a0c:e5d1:: with SMTP id u17mr15209801qvm.120.1639654958961;
- Thu, 16 Dec 2021 03:42:38 -0800 (PST)
+        Sun, 26 Dec 2021 04:42:58 -0500
+X-Greylist: delayed 740 seconds by postgrey-1.27 at vger.kernel.org; Sun, 26 Dec 2021 04:42:57 EST
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=jllresort.com;
+ h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=ele.mon@jllresort.com;
+ bh=KpU3b2JVQsFDTWFplxA6AuhpHsY=;
+ b=0zDtzjiOj8mVbDkIpt58O7d6KUUc2sNEUjLC6ObIKZL1zCLUDEQ/pGsD/1rrZNoxD3jyaC8IcS/q
+   vEuIL0FgkEtsCdTfWJq99/RFCAbXa09txCMaj8BEAHrUtTrc4BMkSh72UYexxsPZRKTw0IJsP4mC
+   Xd2TMPmxeViuADmPg5hD7A4zEheoID/2U/h89+JZVPAqnvTxses3679aLlH2yK8wFPjYmS0Tate7
+   jqTa8GKvFhtbn25aEU4WPxMhth+RvDKTuL5Sl1tLL4qHZsAMRP7jdfrRJmfj224V4Qj/IKcp8RdM
+   qwPWNre1xBhKFqV5cTuE/d9Tp0Tl7JJOCqzJYg==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=jllresort.com;
+ b=IyITgvyNZKLkT/nSbu+pTAKLaei7X/m0GZNJKrkoUQJ1U1HJuXFBVDQVyp6z+AUK2hc+eCmFWiQC
+   A4EKwV3838U9AdNG1sfIi25sxfRLD+ZA82QNhKLEyuk7jxhdI4Fvudcb2L4G50j2smfZQfz4k490
+   vB9z5glsyeHZHh6AWOPuyGZRXu9NauAEQ8TQNfxDfpeNBp/YfI/D8zBAMKnEn5v6aKVFC9I19uEb
+   9dQjd3/EgS1lQXZ0qL8NNpzWLQDnyg1PYgzli1+FwIuX6BK2faPv59WLs9fccZsL4bX2ZjQoFdwE
+   vIBKGY1sZxAqyXEPd7RNqIngDsLUUkYfqc7+9w==;
+Reply-To: mustafa.ayvaz@ayvazburosu.com
+From:   ele.mon@jllresort.com
+To:     linux-unionfs@vger.kernel.org
+Subject: Happy Weekend:
+Date:   26 Dec 2021 10:29:34 +0100
+Message-ID: <20211226102855.6E397711CAE52FB3@jllresort.com>
 MIME-Version: 1.0
-Received: by 2002:a05:622a:199c:0:0:0:0 with HTTP; Thu, 16 Dec 2021 03:42:38
- -0800 (PST)
-Reply-To: selviasantiago1@gmail.com
-From:   Selvia Santiago <mariamatinez119@gmail.com>
-Date:   Thu, 16 Dec 2021 11:42:38 +0000
-Message-ID: <CAONDhKPEx+GKyJvnzbcBxs-brt1E0c+b0jdG7u7Uf+rYJ1N+fA@mail.gmail.com>
-Subject: Urgent
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
--- 
-Urgent
+Greetings to you linux-unionfs,
 
-I am Mrs. Selvia Santiago from Abidjan, Cote D'Ivoire, I am a widow
-suffering from long time illness (Cancer), there is funds I inherited
-from my late loving husband Mr. Santiago Carlos, the sum of (US$2.7
-Million Dollars) which he deposited in bank before his death, I need a
-honest and Faithful person that can use these funds for humanity work.
+I was wondering if you got my previous email? I have been trying=20
+to reach you by email linux-unionfs@vger.kernel.org, kindly get=20
+back to me swiftly, it is very important and urgent.
 
-I took this decision because I don't have any child that will inherit
-this money and I don't want a situation where this money will be used
-in an ungodly way. That is why I am taking this decision, and my
-doctor has confirmed to me that I have less than two weeks to live,
-having known my condition I decided to donate this fund to a charity
-or individual that will utilize this money to assist the poor and the
-needy in accordance to my instructions.
-
-I want you to use 70% of this funds for orphanages, school, church,
-widows, propagating the word and other humanity works,The remaining
-30% should be yours for your efforts as the new beneficiary.
-
-Please if you would be able to use these funds for humanity work
-kindly reply me. As soon as I have received your response, I will give
-you further directives on how you are to go about the claims of the
-said funds.
-
-Remain blessed.
-Mrs Selvia Santiago.
+Thanks
+Mustafa Ayvaz
+Email: mustafa.ayvaz@ayvazburosu.com
