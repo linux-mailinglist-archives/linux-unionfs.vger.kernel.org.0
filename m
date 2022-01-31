@@ -2,67 +2,114 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55FBE4A33E1
-	for <lists+linux-unionfs@lfdr.de>; Sun, 30 Jan 2022 05:28:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C3234A49E8
+	for <lists+linux-unionfs@lfdr.de>; Mon, 31 Jan 2022 16:12:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354191AbiA3E2k (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 29 Jan 2022 23:28:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38056 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354164AbiA3E20 (ORCPT
+        id S1345257AbiAaPM5 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 31 Jan 2022 10:12:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:22889 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1359162AbiAaPM4 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 29 Jan 2022 23:28:26 -0500
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C16C06175A
-        for <linux-unionfs@vger.kernel.org>; Sat, 29 Jan 2022 20:28:24 -0800 (PST)
-Received: by mail-yb1-xb33.google.com with SMTP id i10so30409895ybt.10
-        for <linux-unionfs@vger.kernel.org>; Sat, 29 Jan 2022 20:28:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
-        b=QI2firgHOSt+2ZiRAEUqBnRqfCndbuygIyUz1kdYlPzS6AXkdk+mfMubksdM+6U8hJ
-         A4UbXdfo0bhasYFmsw5ceBBj4ub2bgaEqkI+Cp5foQd/M11l9HiEax3hX9+hB29fNDF1
-         4XtAbOKK0Jrn48roHo8mUNvKaz7FG0Csy4DWdnw8Q+/oXs7GbWFZBjN+ifwhy6Rfe8k0
-         Pzhs5uXUX+5v6iQyGpPCJWV84GisQUz+5cfOraMc3PalgV6vYI9t2Z4JMkhIMshepKV2
-         BM+Zj3o1QTUTRt1Kxwo+5vz+cvvR7n44irHUjPq0LbDCW52O0lwQK7qPtMHxw7vn0Id9
-         5U2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
-        b=IpWxib+sxMb02373OrwwnfUSrXfXl5+6kUzyuvBPmbtfRER5hvwvQgICQzg8PS0K6r
-         bGuAYf46gfqi+SVDrRv/+6Rg3GLO2+tarYlQgplIyJGZiminkeFoLuucegNNHuo1k9ok
-         fGu6tgvq5B4ZXJ0E3qoDRmfpMNrMLi8tC1DSLgDZT6aThebNTQxU8V2BY4j8yx9BYY5z
-         6xB/d0LypkCg48sKPV8IFkd4vqDuOFJ6xZYrHxg/BMUa2JPONFhXkvsR3JREmXYD8A/e
-         KSrdVfOq+SkncdqOme5ppuWiGoK8377zlh9+8n6qubxkRPBWdpyBKaOHVJM6nA1+Dilb
-         7zBw==
-X-Gm-Message-State: AOAM5326LvP61LWkEkhF9E4cl0+x6ROndD5RATz2hGu0tMpBhbSVUUr+
-        +azrB9k6qnJy5ovfxr37gfZw0Lv06UMQ3eC7moHjp7OkBVM=
-X-Google-Smtp-Source: ABdhPJz3bgso8viJFkNwiW8XigzdjL6JZBPDE3NfxKOCgEqvWjdU/qagorQKM5joSRLXylFmq9/zlHP85rUYuZ5fTGQ=
-X-Received: by 2002:a25:6d45:: with SMTP id i66mr23246397ybc.352.1643516893721;
- Sat, 29 Jan 2022 20:28:13 -0800 (PST)
+        Mon, 31 Jan 2022 10:12:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1643641976;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=UBuMZR3GQdzPiBlUuQs6kPeXjEyft4S1kfNh1v0fTuU=;
+        b=GfjGDQHmWoC3fEav1vLuGrwFxUW++kGHoEQG+rsnbc4Kz7ztlMRLCXHEqJzJXXd64HepCs
+        J5eCyDbmGNojSIzRP2ZkaO2rr+wnwdBOjaRWwgSCVvkrYMQmDULt1hk/6N6hjVMjsejYQp
+        b9vCAs+EeSvHYrgqXVhl6Vban8ol1no=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-265-7rr8uPTHOFyxwdsp32amkA-1; Mon, 31 Jan 2022 10:12:52 -0500
+X-MC-Unique: 7rr8uPTHOFyxwdsp32amkA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 350578519E0;
+        Mon, 31 Jan 2022 15:12:51 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.33.36.26])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 12BF47DE26;
+        Mon, 31 Jan 2022 15:12:44 +0000 (UTC)
+Subject: [RFC][PATCH 0/5] vfs, overlayfs,
+ cachefiles: Combine I_OVL_INUSE and S_KERNEL_FILE and split out no-remove
+From:   David Howells <dhowells@redhat.com>
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     linux-unionfs@vger.kernel.org, linux-cachefs@redhat.com,
+        Miklos Szeredi <miklos@szeredi.hu>, dhowells@redhat.com,
+        Christoph Hellwig <hch@infradead.org>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Jeff Layton <jlayton@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        torvalds@linux-foundation.org, linux-unionfs@vger.kernel.org,
+        linux-cachefs@redhat.com, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Mon, 31 Jan 2022 15:12:44 +0000
+Message-ID: <164364196407.1476539.8450117784231043601.stgit@warthog.procyon.org.uk>
+User-Agent: StGit/1.4
 MIME-Version: 1.0
-Received: by 2002:a05:7010:2312:b0:201:cd76:102e with HTTP; Sat, 29 Jan 2022
- 20:28:13 -0800 (PST)
-Reply-To: mrs.bill.chantalone01@gmail.com
-From:   "Mrs.Bill.Chantal" <grassroot309@gmail.com>
-Date:   Sun, 30 Jan 2022 05:28:13 +0100
-Message-ID: <CAO3iUMDzg_ZovNWXtuQhU6sDXk7LsNwvNc2pOb7zvX7pPCdMAw@mail.gmail.com>
-Subject: Hello....
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-You have been compensated with the sum of 9.5 million dollars in this
-united nation the payment will be issue into atm visa  card and send
-to you from the santander bank we need your address and your
-Whatsapp number  + 1 6465853907  this my email.ID
-( mrs.bill.chantal.roland@gmail.com )  contact  me
 
-Thanks my
+Hi Amir,
 
-mrs bill chantal
+How about this as a set of patches to do what you suggest[1] and hoist the
+handler functions for I_OVL_INUSE into common code and rename the flag to
+I_EXCL_INUSE.  This can then be shared with cachefiles - allowing me to get
+rid of S_KERNEL_FILE.
+
+I did split out the functionality for preventing file/dir removal to a
+separate flag, I_NO_REMOVE, so that it's not tied to I_EXCL_INUSE in case
+overlayfs doesn't want to use it.  The downside to that, though is that it
+requires a separate locking of i_lock to set/clear it.
+
+I also added four general tracepoints to log successful lock/unlock,
+failure to lock and a bad unlock.  The lock tracepoints log which driver
+asked for the lock and all tracepoints allow the driver to log an arbitrary
+reference number (in cachefiles's case this is the object debug ID).
+
+Questions:
+
+ (1) Should it be using a flag in i_state or a flag in i_flags?  I'm not
+     sure what the difference is really.
+
+ (2) Do we really need to take i_lock when testing I_EXCL_INUSE?  Would
+     READ_ONCE() suffice?
+
+
+The patches are on a branch here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=fscache-fixes
+
+David
+
+Link: https://lore.kernel.org/r/CAOQ4uxhRS3MGEnCUDcsB1RL0d1Oy0g0Rzm75hVFAJw2dJ7uKSA@mail.gmail.com/ [1]
+
+---
+David Howells (5):
+      vfs, overlayfs, cachefiles: Turn I_OVL_INUSE into something generic
+      vfs: Add tracepoints for inode_excl_inuse_trylock/unlock
+      cachefiles: Split removal-prevention from S_KERNEL_FILE and extend effects
+      cachefiles: Use I_EXCL_INUSE instead of S_KERNEL_FILE
+      cachefiles: Remove the now-unused mark-inode-in-use tracepoints
+
+
+ fs/cachefiles/namei.c             | 54 +++++++++++++-------------
+ fs/inode.c                        | 56 +++++++++++++++++++++++++++
+ fs/namei.c                        |  8 ++--
+ fs/overlayfs/overlayfs.h          |  3 --
+ fs/overlayfs/super.c              | 14 ++++---
+ fs/overlayfs/util.c               | 43 ---------------------
+ include/linux/fs.h                | 33 ++++++++++++++--
+ include/trace/events/cachefiles.h | 63 -------------------------------
+ 8 files changed, 126 insertions(+), 148 deletions(-)
+
+
