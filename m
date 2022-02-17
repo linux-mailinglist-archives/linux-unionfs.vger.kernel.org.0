@@ -2,75 +2,79 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4F394B6787
-	for <lists+linux-unionfs@lfdr.de>; Tue, 15 Feb 2022 10:25:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB5244BA811
+	for <lists+linux-unionfs@lfdr.de>; Thu, 17 Feb 2022 19:25:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235867AbiBOJZt (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 15 Feb 2022 04:25:49 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42248 "EHLO
+        id S244200AbiBQSXQ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 17 Feb 2022 13:23:16 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231675AbiBOJZi (ORCPT
+        with ESMTP id S244188AbiBQSXP (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 15 Feb 2022 04:25:38 -0500
-Received: from mail-ua1-x930.google.com (mail-ua1-x930.google.com [IPv6:2607:f8b0:4864:20::930])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCE696CA5F
-        for <linux-unionfs@vger.kernel.org>; Tue, 15 Feb 2022 01:25:28 -0800 (PST)
-Received: by mail-ua1-x930.google.com with SMTP id v5so9511677uam.3
-        for <linux-unionfs@vger.kernel.org>; Tue, 15 Feb 2022 01:25:28 -0800 (PST)
+        Thu, 17 Feb 2022 13:23:15 -0500
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28EF41CFC8
+        for <linux-unionfs@vger.kernel.org>; Thu, 17 Feb 2022 10:23:00 -0800 (PST)
+Received: by mail-ot1-x332.google.com with SMTP id l12-20020a0568302b0c00b005a4856ff4ceso309642otv.13
+        for <linux-unionfs@vger.kernel.org>; Thu, 17 Feb 2022 10:23:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pztr6ZjrlMm6SZ2CFckcy5D/+COkYlSBkp7ZDH5NxlE=;
-        b=DVKNS09tcQMmgoykdKjbTy9TXc69ELQdOOWpM9+isnzq9AcxllCN6+3cnj87EOEKRp
-         e52Rz8CXQVR5NKiYBfhTwZ7nhk9Unkq/0DeYI2gmTC3iYuOhwFll+remTQ0WYDZ5UeoX
-         1mxpMF1lI8IlHjG9T7qhHNWVkYsowh/4vhY1A=
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=GD9Xd5dWI7sJ3Pbd5RkpJQIUhjnU3aaZsmwDIRNYaQQ=;
+        b=cYWXLok5orKyXaqQL3HqiGRLC4YgCbCRJR67XzVsQ4QrgCI97Q/erizlVPeUD6yXi9
+         LqYvuFCONxXssC4uBEjKDbUpfqsVa4Fk1ITk+CRgVNJfdOLgnchjSDTz8voKWXBtNPTd
+         K8MlPDYlPbpqNGDg7uKo8MgmA0m6tQ9I4r0zMF/jrQdpzkbIfEYMzY1mZzmhIbCc5AF1
+         7fncHQAIc3A+A7Kr6bfhG+jMIIubkgtFd1cZ0Z+gCE7CTBkPMdSXZqS7bpzqm4XTddFI
+         bFd/LS3JBtAuhIxKGN3LhrFA532hLIeCuDQR3SyIZUqCphXiy/6X1TQELRf21x7Emmr5
+         G25Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pztr6ZjrlMm6SZ2CFckcy5D/+COkYlSBkp7ZDH5NxlE=;
-        b=Ykk+6Q/RdzR/gq4HmMY7CHPhPpBak6hthuGFTdU3vL95hF2vISw592zfZW29fXoK+C
-         fmtQpUyduzPqVPFqZ3tEzYgi9mngTirRkxESgpE6jjTGBoUdPbAS7XV0MaqN4P4ixXnk
-         tpqXCvT5S+Bt78H958rMdRlgYIoFpcnfEVOxaUsdDC7t9uEP8aVKropufiKm4YJZMhZR
-         +dJb2tCmnTpym/hdwo6PZvfmdf3SWgmr6gibTg3RiGOPOYfMpIZKdlESr8rTsN14vxA3
-         BO7j/Hhxjc5VlEoRbB+gXzyCHfpZ3uF0MvWDM56b44y+7po3lQv/VgDRZngFDfpY33cT
-         7z5w==
-X-Gm-Message-State: AOAM532rX+3K9K9JwZ7lDFpxeFd/iNia4izJfZ68eR9uKKLG1hDJWrZI
-        g3IQf45QEeaIfKgtz46uNuElNoEI1N+U8uYRgb3trg==
-X-Google-Smtp-Source: ABdhPJzpo81BcjwjAi4JkpMuvtX8237p3398kdXcjI0PcOugjKoZ/ShDIT3/oWPm9RFeUkzm1c5Dre5rJwVAm77+Pq4=
-X-Received: by 2002:a9f:31b2:: with SMTP id v47mr991333uad.8.1644917127382;
- Tue, 15 Feb 2022 01:25:27 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=GD9Xd5dWI7sJ3Pbd5RkpJQIUhjnU3aaZsmwDIRNYaQQ=;
+        b=PCbiDujkVAB4tTzoa0xbcLj6aFJtCbREpMx+EC+sQvfyMcyLLxTo8TNtm1wHLHf3a3
+         D8lj9jG62NA0Dk8tMddPEl4I3g0xId199vqpUy67IQcVBrH1prBtsodjAeaPDkAleB/c
+         mweUgCZBG3GGfoZpZYOMSZI9DiXNVsobuhKMpVd+S6yeVDTNM/FHjhfA2IcJoyC3ByJo
+         dxMhoTzX9OAhl92BqPAtVPevwVDA6sha9jwPBVSBJyVBqeHji3XBGquCbOm1MVeEfoEU
+         J+tkGiOFwIdtVjaYxuOoKVtNDNdJyIq1Rm+J6/6XWz5hIEIZLa8m96ppoSFWBgvyKfYJ
+         jznA==
+X-Gm-Message-State: AOAM532CnivfvpnSmoF0GIakSf1ANfG3ER0eO237QrX5186EwZivCMZu
+        K9FliIO2nUcaPBRPZPB9kHcDJ8okXtnFnd5E9MU=
+X-Google-Smtp-Source: ABdhPJxp/rS0M7l3ds7ab3rZlo938CclzpZ+7NeZ4xPrytI3gKzikfZkN1t72H/zHbRvEfYQP7+8GtabYeGHgyrDa10=
+X-Received: by 2002:a9d:4c16:0:b0:59f:7079:3d1b with SMTP id
+ l22-20020a9d4c16000000b0059f70793d1bmr1308194otf.57.1645122179173; Thu, 17
+ Feb 2022 10:22:59 -0800 (PST)
 MIME-Version: 1.0
-References: <8d81eae9-1fb9-6c66-2c31-b02540db6af7@mykernel.net>
-In-Reply-To: <8d81eae9-1fb9-6c66-2c31-b02540db6af7@mykernel.net>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Tue, 15 Feb 2022 10:25:16 +0100
-Message-ID: <CAJfpegu2L-7wk0ZUHGs5yv8PgEF1mwJ2oCvXwJiNQToLkakwCg@mail.gmail.com>
-Subject: Re: Question about fsync in copy-up operaton
-To:     Chengguang Xu <cgxu519@mykernel.net>
-Cc:     overlayfs <linux-unionfs@vger.kernel.org>
+Received: by 2002:a4a:ae04:0:0:0:0:0 with HTTP; Thu, 17 Feb 2022 10:22:58
+ -0800 (PST)
+Reply-To: wijh555@gmail.com
+From:   "Mr. Ali Moses" <alimoses07@gmail.com>
+Date:   Thu, 17 Feb 2022 10:22:58 -0800
+Message-ID: <CADWzZe5-O+iUJ=4LcbVWTHXcyL28qpk1fiT_veS_nnKVgvfQcw@mail.gmail.com>
+Subject: Greetings,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Sun, 13 Feb 2022 at 15:56, Chengguang Xu <cgxu519@mykernel.net> wrote:
->
-> Hi Folks,
->
-> During copy-up when parent dir does not exist then will create parent
-> dir first.
-> However, I noticed only regular file calls fsync in the end of copy-up
-> operation,
-> so how newly created parent dir get synced in this case?
+-- 
+I'm Mr. Ali Moses, how are you doing hope you are in good health, the
+Board director try to reach you on phone several times Meanwhile, your
+number was not connecting. before he ask me to send you an email to
+hear from you if you are fine. hoping to hear from you soonest.
 
-Looks like an oversight.  It should fsync parent dir as well.
+Thanks
+Mr. Ali Moses
 
-Thanks,
-Miklos
+Sincerely.
+Dr. Irene Lam.
