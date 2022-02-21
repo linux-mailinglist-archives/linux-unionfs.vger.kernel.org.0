@@ -2,79 +2,124 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB5244BA811
-	for <lists+linux-unionfs@lfdr.de>; Thu, 17 Feb 2022 19:25:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B7DD4BE820
+	for <lists+linux-unionfs@lfdr.de>; Mon, 21 Feb 2022 19:04:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244200AbiBQSXQ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 17 Feb 2022 13:23:16 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53352 "EHLO
+        id S1355978AbiBULWb (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 21 Feb 2022 06:22:31 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244188AbiBQSXP (ORCPT
+        with ESMTP id S1356393AbiBULVG (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 17 Feb 2022 13:23:15 -0500
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28EF41CFC8
-        for <linux-unionfs@vger.kernel.org>; Thu, 17 Feb 2022 10:23:00 -0800 (PST)
-Received: by mail-ot1-x332.google.com with SMTP id l12-20020a0568302b0c00b005a4856ff4ceso309642otv.13
-        for <linux-unionfs@vger.kernel.org>; Thu, 17 Feb 2022 10:23:00 -0800 (PST)
+        Mon, 21 Feb 2022 06:21:06 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 914AB2193
+        for <linux-unionfs@vger.kernel.org>; Mon, 21 Feb 2022 03:11:51 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id x5so28493178edd.11
+        for <linux-unionfs@vger.kernel.org>; Mon, 21 Feb 2022 03:11:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=GD9Xd5dWI7sJ3Pbd5RkpJQIUhjnU3aaZsmwDIRNYaQQ=;
-        b=cYWXLok5orKyXaqQL3HqiGRLC4YgCbCRJR67XzVsQ4QrgCI97Q/erizlVPeUD6yXi9
-         LqYvuFCONxXssC4uBEjKDbUpfqsVa4Fk1ITk+CRgVNJfdOLgnchjSDTz8voKWXBtNPTd
-         K8MlPDYlPbpqNGDg7uKo8MgmA0m6tQ9I4r0zMF/jrQdpzkbIfEYMzY1mZzmhIbCc5AF1
-         7fncHQAIc3A+A7Kr6bfhG+jMIIubkgtFd1cZ0Z+gCE7CTBkPMdSXZqS7bpzqm4XTddFI
-         bFd/LS3JBtAuhIxKGN3LhrFA532hLIeCuDQR3SyIZUqCphXiy/6X1TQELRf21x7Emmr5
-         G25Q==
+        d=szeredi.hu; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=mZK3sq6aCOHjPE/wikruaHnKvlqiGOa64aJPVy9I1wc=;
+        b=qV8+5WSPKScehLKtlkkkCIXQYywQ3YFx/N/gs5DkozC+Euq35Yxjydk1dU/ABDn18t
+         9Y6t+u2sNVo6gasjPHp+8r2VlqZAybV0kVF+ABBbG1qb+oOT93BH4fg7dl/mh7eQTjey
+         8ovdEUMqE4pnjXV+r89bY+vgajbp7hhnD+cAA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=GD9Xd5dWI7sJ3Pbd5RkpJQIUhjnU3aaZsmwDIRNYaQQ=;
-        b=PCbiDujkVAB4tTzoa0xbcLj6aFJtCbREpMx+EC+sQvfyMcyLLxTo8TNtm1wHLHf3a3
-         D8lj9jG62NA0Dk8tMddPEl4I3g0xId199vqpUy67IQcVBrH1prBtsodjAeaPDkAleB/c
-         mweUgCZBG3GGfoZpZYOMSZI9DiXNVsobuhKMpVd+S6yeVDTNM/FHjhfA2IcJoyC3ByJo
-         dxMhoTzX9OAhl92BqPAtVPevwVDA6sha9jwPBVSBJyVBqeHji3XBGquCbOm1MVeEfoEU
-         J+tkGiOFwIdtVjaYxuOoKVtNDNdJyIq1Rm+J6/6XWz5hIEIZLa8m96ppoSFWBgvyKfYJ
-         jznA==
-X-Gm-Message-State: AOAM532CnivfvpnSmoF0GIakSf1ANfG3ER0eO237QrX5186EwZivCMZu
-        K9FliIO2nUcaPBRPZPB9kHcDJ8okXtnFnd5E9MU=
-X-Google-Smtp-Source: ABdhPJxp/rS0M7l3ds7ab3rZlo938CclzpZ+7NeZ4xPrytI3gKzikfZkN1t72H/zHbRvEfYQP7+8GtabYeGHgyrDa10=
-X-Received: by 2002:a9d:4c16:0:b0:59f:7079:3d1b with SMTP id
- l22-20020a9d4c16000000b0059f70793d1bmr1308194otf.57.1645122179173; Thu, 17
- Feb 2022 10:22:59 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=mZK3sq6aCOHjPE/wikruaHnKvlqiGOa64aJPVy9I1wc=;
+        b=GJWeCa8w2KaSCatUsbKVkVMmmsfUdy0UT7KIhI+5EfJ+1wmZv0gLCwhiPR5FxKgRgy
+         xOlctzlbCUJ8qMEZ5p1jc725NWTZSrDxZNrsjXRSIWYAIV+ImCbgqh17kJYoqsVm9EhM
+         BXh47kSUmav7TlzA6dqq3VbrC5R0ZXlPO9Veqq1SjkU5F64h7oqCCBE8Ns3mxt3mC9Sq
+         geEURI+KDyQn0vPjDwduTqq3Txc2th+0+coIcOAITl+hN4apj5h63XdrS21OUP8TeaL/
+         0ZNCoU/QIXeVwoRexL9+KV+gfSebtwuPGq9lqOXrk+qBGb7x9tR/1/FRIjgjSw+LMP5m
+         SksA==
+X-Gm-Message-State: AOAM5338Q9gWYK9IjE6mfPBv8aj2V9Dk9bc44PTLKx5ScGuZR99UgRhb
+        qeN5fJrdKKzrVWrnEgAmw8sfvFTrVWNNmA==
+X-Google-Smtp-Source: ABdhPJxJzcjLPzJzGYO9f0nhLLry7CASSgSeVyxigW4CfvIOhfF9RUUR+7eq3ZIvVTYPfwQocOekqw==
+X-Received: by 2002:a05:6402:d08:b0:412:a33e:24fe with SMTP id eb8-20020a0564020d0800b00412a33e24femr21029638edb.281.1645441910177;
+        Mon, 21 Feb 2022 03:11:50 -0800 (PST)
+Received: from miu.piliscsaba.redhat.com (catv-178-48-189-3.catv.fixed.vodafone.hu. [178.48.189.3])
+        by smtp.gmail.com with ESMTPSA id ay16sm2462214ejb.61.2022.02.21.03.11.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Feb 2022 03:11:49 -0800 (PST)
+Date:   Mon, 21 Feb 2022 12:11:47 +0100
+From:   Miklos Szeredi <miklos@szeredi.hu>
+To:     Alois Wohlschlager <alois1@gmx-topmail.de>
+Cc:     linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ovl: warn if trusted xattr creation fails
+Message-ID: <YhNzc/++SHzdMXyt@miu.piliscsaba.redhat.com>
+References: <2783448.iqOl4yHqVZ@genesis>
 MIME-Version: 1.0
-Received: by 2002:a4a:ae04:0:0:0:0:0 with HTTP; Thu, 17 Feb 2022 10:22:58
- -0800 (PST)
-Reply-To: wijh555@gmail.com
-From:   "Mr. Ali Moses" <alimoses07@gmail.com>
-Date:   Thu, 17 Feb 2022 10:22:58 -0800
-Message-ID: <CADWzZe5-O+iUJ=4LcbVWTHXcyL28qpk1fiT_veS_nnKVgvfQcw@mail.gmail.com>
-Subject: Greetings,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_40,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2783448.iqOl4yHqVZ@genesis>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
--- 
-I'm Mr. Ali Moses, how are you doing hope you are in good health, the
-Board director try to reach you on phone several times Meanwhile, your
-number was not connecting. before he ask me to send you an email to
-hear from you if you are fine. hoping to hear from you soonest.
+On Thu, Feb 03, 2022 at 12:02:46PM +0100, Alois Wohlschlager wrote:
+> When mounting overlayfs in an unprivileged user namespace, trusted xattr
+> creation will fail. This will lead to failures in some file operations,
+> e.g. in the following situation:
+> 
+>   mkdir lower upper work merged
+>   mkdir lower/directory
+>   mount -toverlay -olowerdir=lower,upperdir=upper,workdir=work none merged
+>   rmdir merged/directory
+>   mkdir merged/directory
+> 
+> The last mkdir will fail:
+> 
+>   mkdir: cannot create directory 'merged/directory': Input/output error
+> 
+> The cause for these failures is currently extremely non-obvious and hard
+> to debug. Hence, warn the user and suggest using the userxattr mount
+> option, if it is not already supplied and xattr creation fails during
+> the self-check.
 
-Thanks
-Mr. Ali Moses
+Thanks for the patch.
 
-Sincerely.
-Dr. Irene Lam.
+How about the following (untested) variant?
+
+Thanks,
+Miklos
+
+
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 7bb0a47cb615..955aeefc3b29 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1413,11 +1413,12 @@ static int ovl_make_workdir(struct super_block *sb, struct ovl_fs *ofs,
+ 	 */
+ 	err = ovl_do_setxattr(ofs, ofs->workdir, OVL_XATTR_OPAQUE, "0", 1);
+ 	if (err) {
++		pr_warn("failed to set xattr on upper\n");
+ 		ofs->noxattr = true;
+ 		if (ofs->config.index || ofs->config.metacopy) {
+ 			ofs->config.index = false;
+ 			ofs->config.metacopy = false;
+-			pr_warn("upper fs does not support xattr, falling back to index=off,metacopy=off.\n");
++			pr_warn("...falling back to index=off,metacopy=off.\n");
+ 		}
+ 		/*
+ 		 * xattr support is required for persistent st_ino.
+@@ -1425,8 +1426,10 @@ static int ovl_make_workdir(struct super_block *sb, struct ovl_fs *ofs,
+ 		 */
+ 		if (ofs->config.xino == OVL_XINO_AUTO) {
+ 			ofs->config.xino = OVL_XINO_OFF;
+-			pr_warn("upper fs does not support xattr, falling back to xino=off.\n");
++			pr_warn("...falling back to xino=off.\n");
+ 		}
++		if (err == -EPERM && !ofs->config.userxattr)
++			pr_info("try mounting with 'userxattr' option\n");
+ 		err = 0;
+ 	} else {
+ 		ovl_do_removexattr(ofs, ofs->workdir, OVL_XATTR_OPAQUE);
