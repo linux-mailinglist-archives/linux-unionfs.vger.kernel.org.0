@@ -2,124 +2,80 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49AB24C9373
-	for <lists+linux-unionfs@lfdr.de>; Tue,  1 Mar 2022 19:42:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 757B84C9E16
+	for <lists+linux-unionfs@lfdr.de>; Wed,  2 Mar 2022 07:59:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236968AbiCASn3 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 1 Mar 2022 13:43:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51292 "EHLO
+        id S236705AbiCBHAk (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 2 Mar 2022 02:00:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236910AbiCASn2 (ORCPT
+        with ESMTP id S235475AbiCBHAj (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 1 Mar 2022 13:43:28 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63B505F9F;
-        Tue,  1 Mar 2022 10:42:46 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id q7-20020a7bce87000000b00382255f4ca9so1271225wmj.2;
-        Tue, 01 Mar 2022 10:42:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=keu9XQdfLfISkI3it9Db+YQ9uyOCCwUS2A+od60Osj8=;
-        b=G+z/lzCJEZBFBWlqsLo6tNPh4FGNQTLjf5h5dqt3kIF3nwF/8hymAed/XgdjfQuDtA
-         ICIIUY9c1yd3YT8SdK5V+7+5FpH6hc3GEO9uHSPV4A6y+FCmAG5E7kpgNuB2JsQVBca4
-         5nN7lnp0iv/5+Q/ajOjjmXYzU2ZZsBiHr1qxulIsTHw47/Jjc+ZLLFqViRjZAl8suV4k
-         k/JJ835Rhp9n/5WgF6joh34HGv5lOeS6pYvDrIfFObUfmQs1tIhU3OgulDVDuTDpNXJk
-         fnriEbUF9nswpXgpcAIHGz5qhisT6iGST8uvxhdBkldMqO90Khav9/1GtPZx8IvxRI0J
-         b0QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=keu9XQdfLfISkI3it9Db+YQ9uyOCCwUS2A+od60Osj8=;
-        b=qt7Do7habv4pnVuutwONMcNrJ/3IBf4j2Y0bdWSurRmaxsLHLYPFguVA416W7pWHHl
-         i/Y9t7l9UfJsXX1t2njfZ0W8sdm5R/T6Hu2wNEI7TjscSHR5DEaNvLszPJmr7JMR3jdC
-         zlLDLVJ3/3S+TCB0QvN7UMKtJYaQferfomkqCCJVx/T8JFl7DNOD28+AdYf6uzwPezcY
-         bJBLI+cuYRpqyWyqPzX4ON75ydg2gG4mow2mjzDgZh4fgglbYKFoA5ia2WieqPac8+mI
-         wQZdAiyAPPt8QmgTiNohGdBqZl2e+sl1BSPe3aBpEpRk/NR0fZDRhKHeCMASH3ghSKHi
-         CD2g==
-X-Gm-Message-State: AOAM5301UZpFhBvgemxpVUhkZp/M0iZAl27OWwWfdVl8GwEifQsB17an
-        ZW9EfK7vclG/9AExSjlC10s1eNptx/4=
-X-Google-Smtp-Source: ABdhPJz4MhuP1dVTfxo3a0hBm9dAT0IO3U32gcTpSu/6Qml5rElhu8Bg/0welr5e0juVKTefq8i2Tw==
-X-Received: by 2002:a7b:cb46:0:b0:37b:dd79:e1c4 with SMTP id v6-20020a7bcb46000000b0037bdd79e1c4mr17704458wmj.39.1646160164933;
-        Tue, 01 Mar 2022 10:42:44 -0800 (PST)
-Received: from localhost.localdomain ([77.137.71.203])
-        by smtp.gmail.com with ESMTPSA id f1-20020a5d4dc1000000b001eeadc98c0csm14020381wru.101.2022.03.01.10.42.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Mar 2022 10:42:44 -0800 (PST)
-From:   Amir Goldstein <amir73il@gmail.com>
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Dave Chinner <david@fromorbit.com>,
+        Wed, 2 Mar 2022 02:00:39 -0500
+Received: from mail104.syd.optusnet.com.au (mail104.syd.optusnet.com.au [211.29.132.246])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 216C8B0A75;
+        Tue,  1 Mar 2022 22:59:57 -0800 (PST)
+Received: from dread.disaster.area (pa49-186-17-0.pa.vic.optusnet.com.au [49.186.17.0])
+        by mail104.syd.optusnet.com.au (Postfix) with ESMTPS id AA7DF533D99;
+        Wed,  2 Mar 2022 17:59:53 +1100 (AEDT)
+Received: from dave by dread.disaster.area with local (Exim 4.92.3)
+        (envelope-from <david@fromorbit.com>)
+        id 1nPIxk-000XUh-CB; Wed, 02 Mar 2022 17:59:52 +1100
+Date:   Wed, 2 Mar 2022 17:59:52 +1100
+From:   Dave Chinner <david@fromorbit.com>
+To:     Amir Goldstein <amir73il@gmail.com>
+Cc:     Miklos Szeredi <miklos@szeredi.hu>,
         Al Viro <viro@zeniv.linux.org.uk>,
         linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: [PATCH v3 6/6] fuse: opt-in for per-sb io stats
-Date:   Tue,  1 Mar 2022 20:42:21 +0200
-Message-Id: <20220301184221.371853-7-amir73il@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220301184221.371853-1-amir73il@gmail.com>
+Subject: Re: [PATCH v3 0/6] Generic per-sb io stats
+Message-ID: <20220302065952.GE3927073@dread.disaster.area>
 References: <20220301184221.371853-1-amir73il@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220301184221.371853-1-amir73il@gmail.com>
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.4 cv=e9dl9Yl/ c=1 sm=1 tr=0 ts=621f15eb
+        a=+dVDrTVfsjPpH/ci3UuFng==:117 a=+dVDrTVfsjPpH/ci3UuFng==:17
+        a=kj9zAlcOel0A:10 a=o8Y5sQTvuykA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
+        a=7-415B0cAAAA:8 a=5vdu9WYVys6x0XKM02IA:9 a=CjuIK1q_8ugA:10
+        a=AjGcO6oz07-iQ99wixmX:22 a=biEYGPWJfzWAr4FL6Ov7:22
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Traditionally, system administrators have used the iostat utility
-to track the amount of io performed to a local disk filesystem.
+On Tue, Mar 01, 2022 at 08:42:15PM +0200, Amir Goldstein wrote:
+> Miklos,
+> 
+> Following your feedback on v2 [1], I moved the iostats to per-sb.
+> 
+> Thanks,
+> Amir.
+> 
+> [1] https://lore.kernel.org/linux-unionfs/20220228113910.1727819-1-amir73il@gmail.com/
+> 
+> Changes since v2:
+> - Change from per-mount to per-sb io stats (szeredi)
+> - Avoid percpu loop when reading mountstats (dchinner)
+> 
+> Changes since v1:
+> - Opt-in for per-mount io stats for overlayfs and fuse
 
-Similar functionality is provided for NFS mounts via the nfsstat
-utility that reads the NFS client's stats from /proc/pid/mountstats.
+Why make it optional only for specific filesystem types? Shouldn't
+every superblock capture these stats and export them in exactly the
+same place?
 
-There is currently no good way for a system administrator or a
-monitoring application to track the amount of io performed via fuse
-filesystems.
+Making it properly generic greatly simplifies the implementation,
+too...
 
-Opt-in for generic io stats via /proc/pid/mountstats to provide
-that functionality.
+Cheers,
 
-It is possible to collect io stats on the server side inside libfuse,
-but those io stats will not cover cached writes and reads.  Therefore,
-implementing the server side io stats would be complementary to these
-client side io stats.  Also, this feature provides the io stats for
-existing fuse filesystem/lib release binaries.
-
-This feature depends on CONFIG_FS_IOSTATS.
-
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
----
- fs/fuse/inode.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index 9ee36aa73251..f19c666b9ac3 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -16,6 +16,7 @@
- #include <linux/module.h>
- #include <linux/moduleparam.h>
- #include <linux/fs_context.h>
-+#include <linux/fs_iostats.h>
- #include <linux/fs_parser.h>
- #include <linux/statfs.h>
- #include <linux/random.h>
-@@ -1517,6 +1518,10 @@ int fuse_fill_super_common(struct super_block *sb, struct fuse_fs_context *ctx)
- 	if (sb->s_flags & SB_MANDLOCK)
- 		goto err;
- 
-+	err = sb_iostats_init(sb);
-+	if (err && err != -EOPNOTSUPP)
-+		goto err;
-+
- 	rcu_assign_pointer(fc->curr_bucket, fuse_sync_bucket_alloc());
- 	fuse_sb_defaults(sb);
- 
+Dave.
 -- 
-2.25.1
-
+Dave Chinner
+david@fromorbit.com
