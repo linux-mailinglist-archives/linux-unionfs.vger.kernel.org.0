@@ -2,65 +2,63 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D32424CB72E
-	for <lists+linux-unionfs@lfdr.de>; Thu,  3 Mar 2022 07:51:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 737854CE5BA
+	for <lists+linux-unionfs@lfdr.de>; Sat,  5 Mar 2022 17:04:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229636AbiCCGv4 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 3 Mar 2022 01:51:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32952 "EHLO
+        id S229878AbiCEQFg (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 5 Mar 2022 11:05:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbiCCGvz (ORCPT
+        with ESMTP id S231978AbiCEQFf (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 3 Mar 2022 01:51:55 -0500
-Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D79B1693B2;
-        Wed,  2 Mar 2022 22:51:10 -0800 (PST)
-Received: by mail-il1-x135.google.com with SMTP id i14so3308592ilv.4;
-        Wed, 02 Mar 2022 22:51:10 -0800 (PST)
+        Sat, 5 Mar 2022 11:05:35 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF2C54BCA;
+        Sat,  5 Mar 2022 08:04:42 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id c192so6671279wma.4;
+        Sat, 05 Mar 2022 08:04:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=R9tum+mvr4r/WQl+w9fpdy1xDFA2vaS1Lr9K70S1GO0=;
-        b=JLzjn/yVFIuobabw72Ns8KSDhUmcLdI3HnTJb8Q0FislWK/Tph7rGclk8pCwSS1Aot
-         KMlitYQYCY5bY5GzON8KLFVgUAL8qSAbTFH7ovtgtA8ZID+JITwGYIyvM27/yeQladCx
-         zIqyQyFGVwjw9zOdg4m/Ahd+KTfTZTFX8pOvmz2J+xAksBRiMU6kB0HRUUi4YMdnENY0
-         VaRF550DRxJmJyGVzJ3EfClCsl7nV3fjgoVHOR1RRuWNsjBBjuE+j+Znk6smJvfEqrVg
-         pNiwPF3IVCsj0neb+C75W+XblKcwHX53X8tTZzMQ5YX4ne9Iduq2rqprZeUxccAfXBU0
-         VcJQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=aI1kTSJlZCn6rF/b3gjxXvp8qotZbFaZ/Pvew62pBcE=;
+        b=AAiHZ/vqILwHzCHEOOWothYV5SvTsEwlDIYzqEbw+ti46tVsM2+69sFPF1VrhfhSl4
+         8xqAxhPmYVzIWrbg9toQN4WgYULcoFI/M8RTB42FA6FrSf3xKB2uEiS6YqArZHeA1md5
+         7jKua0rm9tDbo5ZFq+y6fFRy8Dfu+N2FOE3rPYxNVKXHytmQl8ZVKCo9vgRFZtaajMG+
+         Mh15ztHBkWrGLHWnWuzsWseahC+IESDkSmv6T7EV5PljInndr8CsQm9Yb0gotxi/rWfm
+         0DiMlie27kI5kt7dN2QHgY/pLZ0t6l/WisaynwOydT58h6jPZxtyi6T+CrnrZY079fiU
+         9W2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=R9tum+mvr4r/WQl+w9fpdy1xDFA2vaS1Lr9K70S1GO0=;
-        b=FpvGvdxQWUti965/SfNo+cIeb3ePcN4ejHXnmF2yLNexYlCaM3sSRRGVQlFIB8NK8Z
-         aD3hn0Cr35+zBNvkdDHoRyznW/977PgM9ITVH87fsTOqjE60kjjThyPcOM0jsn17q1Au
-         An4OV2qqYOldBDG/tDagWo78jQDy7pQKNCpfDBLZIrESmncnxZJ6I12RZQ6tyCb7sKnH
-         75gh03gF5sSyuCOHEaakGVhLBrEob6gLGeleRDUeEcCuYYvqw2amnp6apgs+qtslVJlg
-         SVvOzPkqpAMn2RbrFXvS1vUwAOY704ChJKzadsfsJwAmeHBM/HVnwq0+YR8OziDOIS38
-         qquA==
-X-Gm-Message-State: AOAM533BDBOT7QBisw+EU+YilJ3KMQo0EK8JHliL9+pf2e7nOLpQD748
-        VaHZgTC2fhMm4VQbuQqVgWLoU54dYa7U2a7bXCO0nqGCYrc=
-X-Google-Smtp-Source: ABdhPJxKy0R/Yh5ganr1VmaK08okUWjWic+bOwe2Vc9kCJ4PMCFYeVcvbkrblvCKe1kUfICoVLoF4PdLlqD4LsuGpdI=
-X-Received: by 2002:a05:6e02:1aa2:b0:2c2:2fc1:face with SMTP id
- l2-20020a056e021aa200b002c22fc1facemr32431214ilv.198.1646290269553; Wed, 02
- Mar 2022 22:51:09 -0800 (PST)
-MIME-Version: 1.0
-References: <20220301184221.371853-1-amir73il@gmail.com> <20220302065952.GE3927073@dread.disaster.area>
- <CAOQ4uxgU7cYAO+KMd=Yb8Fo4AwScQ2J0eqkYn3xWjzBWKtUziQ@mail.gmail.com>
- <20220302082658.GF3927073@dread.disaster.area> <CAOQ4uxgiL2eqx-kad+dddXvXPREKT-w3_BnLzdoJaJqGm=H=vA@mail.gmail.com>
- <20220302211226.GG3927073@dread.disaster.area>
-In-Reply-To: <20220302211226.GG3927073@dread.disaster.area>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=aI1kTSJlZCn6rF/b3gjxXvp8qotZbFaZ/Pvew62pBcE=;
+        b=skQ75UM2emmvXugtMdIPpDjuyyllyGm1yOlym7MrL7AfCY3qahw5oblyYdCVe5pxWq
+         XTmAfKo+bMeNlR19jiHEMnNUYZZeBtrKSSsKgKRqfk7gpFksglYTKlIZ9CLlJi+P0X30
+         TNroLeS8hJiz8dkga5HYy9org0vgo1N8+owYQL2OBK9bP7BO6wKI5+Xc8dt+gDPJe4t+
+         ClTeTyR6vyt3lj84IpLkg3jrV8eAY+t/tbqkK47n5vNfREQ2rF5MEOhKO152oel8V5Hv
+         pLjCVi9VaB3BI3f2FKixhdBjqLGJJEymAeC6ZfZUx2chO6+tosVlBGsUD92TeZ9PHBc2
+         kiUg==
+X-Gm-Message-State: AOAM530eHebuLwwEu2y1grpinjeqeVdPu3Jg+XXzWm/JFqKSt/omNcXv
+        kQ69MkDXpiEu7Ncj+15pObiG8joaxN8=
+X-Google-Smtp-Source: ABdhPJzgX5GZP4r5MA8tuA72HG+BIxF7n7MruKdyXRDBLKLj+eS6/ZL7t+HlhLhnUxa3ulZ+81T6jw==
+X-Received: by 2002:a7b:c381:0:b0:37b:e01f:c1c0 with SMTP id s1-20020a7bc381000000b0037be01fc1c0mr11961550wmj.98.1646496281007;
+        Sat, 05 Mar 2022 08:04:41 -0800 (PST)
+Received: from localhost.localdomain ([77.137.71.203])
+        by smtp.gmail.com with ESMTPSA id n5-20020a5d5985000000b001f0122f63e1sm1650717wri.85.2022.03.05.08.04.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 05 Mar 2022 08:04:40 -0800 (PST)
 From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 3 Mar 2022 08:50:58 +0200
-Message-ID: <CAOQ4uxhv=g6hDS6LbNRY48Jmprhn7zWS8cedFQqMChKoGEs5FA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] Generic per-sb io stats
-To:     Dave Chinner <david@fromorbit.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     Dave Chinner <david@fromorbit.com>,
         Al Viro <viro@zeniv.linux.org.uk>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: [PATCH v4 0/9] Generic per-sb io stats
+Date:   Sat,  5 Mar 2022 18:04:15 +0200
+Message-Id: <20220305160424.1040102-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -71,112 +69,71 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-> > Not that simple.
-> > First of all alloc_super() is used for all sorts of internal kernel sb
-> > (e.g. pipes) that really don't need those stats.
->
-> Doesn't change anything - it still should be entirely set up and
-> managed by alloc_super/deactivate_locked_super.
->
-> If it really has to be selected by filesystem, alloc_super() has
-> a fstype passes to it and you can put a falg in the fstype to say
-> this is supported. Then filesystems only need to set a feature flag
-> to enable it, not have to manage allocation/freeing of something
-> that only the core VFS code uses.
->
+Miklos,
 
-That sounds good to me.
+I ran some micro benchmarks on v3 patch [1] which demonstrated up to
+20% slowdown for some workloads (many small reads/writes in a small VM).
+This revision adds the "relaxed" percpu counter helpers to mitigate
+the iostats counters overhead.
 
-It will still leave the decision per fs maintainer whether to support
-sb iostats or not, but at least it won't cluttle mountstats with less
-interesting stats from the many pseudo filesystem mounts.
+With the relaxed counters, the micro benchmarks that I ran did not
+demonstrate any measurable overhead on xfs, on overlayfs over xfs
+and overlayfs over tmpfs.
 
-I wish I had a good heuristic for which filesystems iostats should
-be enabled. I was thinking for blockdev fs and for fs with private BDI
-the iostats make more sense, because those fs are more likely to be
-io intensive. Then I would not initialize iostats in alloc_super() but in
-vfs_get_tree() as my test patch does.
+Dave Chinner asked why the io stats should not be enabled for all
+filesystems.  That change seems too bold for me so instead, I included
+an extra patch to auto-enable per-sb io stats for blockdev filesystems.
 
-Overlayfs does not have a private BDI yet [1], but overlayfs can use
-an fstype flag to opt-in for iostats as you suggested.
-
-[1] https://lore.kernel.org/linux-unionfs/20210923130814.140814-2-cgxu519@mykernel.net/
-
-> > Second, counters can have performance impact.
->
-> So does adding branches for feature checks that nobody except some
-> special case uses.
->
-> But if the counters have perf overhead, then fix the counter
-> implementation to have less overhead.
->
-> > Depending on the fs, overhead may or may not be significant.
-> > I used the attached patch for testing and ran some micro benchmarks
-> > on tmpfs (10M small read/writes).
-> > The patch hacks -omand for enabling iostats [*]
-> >
-> > The results were not great. up to 20% slower when io size > default
-> > batch size (32).
-> > Increasing the counter batch size for rchar/wchar to 1K fixed this
-> > micro benchmark,
->
-> Why do you think that is? Think about it: what size IO did you test?
-> I bet it was larger than 32 bytes and so it was forcing the
-> default generic percpu counter implementation to take a spin lock on
-> every syscall.  Yes?
-
-Yes. I know why that is.
-
->
-> Which means this addition will need to use a custom batch size for
-> *all* filesystems, and it will have to be substantially larger than
-> PAGE_SIZE because we need to amortise the cost of the global percpu
-> counter update across multiple IOs, not just one. IOWs, the counter
-> batch size likely needs to be set to several megabytes so that we
-> don't need to take the per-cpu spinlock in every decent sized IO
-> that applications issue.
->
-> So this isn't a negative against enabling the feature for all
-> superblocks - you just discovered a general problem because you
-> hadn't considered the impact of the counter implementation on
-> high performance, high concurrency IO. overlay does get used in such
-> environments hence if the implementation isn't up to spec for
-> filesystems like XFS, tmpfs, etc that overlay might sit on top of
-> then it's not good enough for overlay, either.
->
-
-I very much agree with you here. The batch size should be increased
-to several MB, but that brings me back to your comment in the beginning
-of this thread that I should use percpu_counter_read_positive() instead of
-percpu_counter_sum_positive().
-
-It's true that stats don't need to be accurate, but those stats are pretty
-useful for sanity tests and testing some simple operations without ever
-seeing the counters increase can be very confusing to users, especially
-if megabytes are missing.
-
-My instinct here is that I should use percpu_counter_sum_positive()
-for mountstats and if someone reads this file too often, they should
-pay the price for it. It is also not hard at all to spot the process and
-function to blame for the extra CPU cycles, so unless this change is
-going to regress a very common use case, I don't think this is going
-to be a real life problem.
-
-> > but it may not be a one size fits all situation.
-> > So I'd rather be cautious and not enable the feature unconditionally.
->
-> But now that you've realised that the counter configs need to be
-> specifically tuned for the use case and the perf overhead is pretty
-> much a non-issue, what's the argument against enabling it for
-> all superblocks?
->
-
-One argument still is the bloat of the mountstats file.
-If people do not want iostats for pseudo fs I do not want to force
-feed it to them.
-
-I think the blockdev+private BDI+explicit opt-in by fstype flag
-is a good balance.
+Should you decide to take the patches for enabling io stats for
+overlayfs and/or fuse through your tree, it is up to you to whether you
+want to take this patch as well or leave it out until more people have
+a chance to test it and run more performance tests on their setups.
 
 Thanks,
 Amir.
+
+[1] https://lore.kernel.org/linux-fsdevel/20220301184221.371853-1-amir73il@gmail.com/
+
+Changes since v3:
+- Use "relaxed" counters to reduce performance overhead
+- Opt-in to per-sb io stats via fs_flags (dchinner)
+- Add patch to auto-enable io stats for all blockdev fs (dchinner)
+
+Changes since v2:
+- Change from per-mount to per-sb io stats (szeredi)
+- Avoid percpu loop when reading mountstats (dchinner)
+
+Changes since v1:
+- Opt-in for per-mount io stats for overlayfs and fuse
+
+Amir Goldstein (9):
+  lib/percpu_counter: add helpers for "relaxed" counters
+  lib/percpu_counter: add helpers for arrays of counters
+  fs: tidy up fs_flags definitions
+  fs: add optional iostats counters to struct super_block
+  fs: collect per-sb io stats
+  fs: report per-sb io stats
+  ovl: opt-in for per-sb io stats
+  fuse: opt-in for per-sb io stats
+  fs: enable per-sb io stats for all blockdev filesystems
+
+ fs/Kconfig                     |   8 ++
+ fs/fuse/inode.c                |   3 +-
+ fs/nfsd/export.c               |  10 ++-
+ fs/nfsd/nfscache.c             |   5 +-
+ fs/nfsd/stats.c                |  37 +---------
+ fs/nfsd/stats.h                |   3 -
+ fs/overlayfs/super.c           |   3 +-
+ fs/proc_namespace.c            |  16 ++++
+ fs/read_write.c                |  88 ++++++++++++++++------
+ fs/super.c                     |  11 +++
+ include/linux/fs.h             |  25 ++++---
+ include/linux/fs_iostats.h     | 130 +++++++++++++++++++++++++++++++++
+ include/linux/percpu_counter.h |  48 ++++++++++++
+ lib/percpu_counter.c           |  27 +++++++
+ 14 files changed, 337 insertions(+), 77 deletions(-)
+ create mode 100644 include/linux/fs_iostats.h
+
+-- 
+2.25.1
+
