@@ -2,36 +2,36 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F9C44EAB66
-	for <lists+linux-unionfs@lfdr.de>; Tue, 29 Mar 2022 12:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FF454EAB67
+	for <lists+linux-unionfs@lfdr.de>; Tue, 29 Mar 2022 12:37:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235214AbiC2Ki4 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 29 Mar 2022 06:38:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44290 "EHLO
+        id S235235AbiC2Ki7 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 29 Mar 2022 06:38:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235226AbiC2Kix (ORCPT
+        with ESMTP id S235226AbiC2Ki6 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 29 Mar 2022 06:38:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0760EC12E2
-        for <linux-unionfs@vger.kernel.org>; Tue, 29 Mar 2022 03:37:11 -0700 (PDT)
+        Tue, 29 Mar 2022 06:38:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41C65C12E2
+        for <linux-unionfs@vger.kernel.org>; Tue, 29 Mar 2022 03:37:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9590A60ADF
-        for <linux-unionfs@vger.kernel.org>; Tue, 29 Mar 2022 10:37:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2368DC340ED;
-        Tue, 29 Mar 2022 10:37:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D56F761195
+        for <linux-unionfs@vger.kernel.org>; Tue, 29 Mar 2022 10:37:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640C3C340ED;
+        Tue, 29 Mar 2022 10:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648550230;
-        bh=aCJEyE7xept0ohQd/V0mlPqNgaIhmTR7qbjZGHhX7xk=;
+        s=k20201202; t=1648550234;
+        bh=JRC3vjWrKM28/LpMQVqCBfzXf4Uh+Zc0QCglIh/EIdY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KUjTGue+u/4w5q1e2gUQ5pRn1b+dK4nWA/QmWtIeR7lW9HoMUp8hQ+8uSv7yAsANu
-         b9rUZ5F49kNpFC1juMT8QPIQ8OQPjTEJ6ZD8xzjyvltXTlEl4f46DAsUizWYE6ZlkU
-         JzY5Ec6oYcjhvcn04kZArTyb7vRSY42Fd67bPOJo+T1REN728z9LuvIalg5+QLLpPB
-         +yh/WgbgwIj6jk5HQwpJfk+BdOrzmQfTP4dNjl4g4u9u038uX7/SEFwdVc5QLI4rXU
-         0hMMGtAvDLgr9qNTVJFOcG1hvU3JW+6Itmz8dJVLGXlDfXjdqLcscUNG0jeWxv3g56
-         ydW3Ar//Yk0Sw==
+        b=fkYd1YtJaSrj/PDwtbrE2yB5kC23iNSFVPS90UeBUYcOo9F9Y3jI7QIP9zLGGSkR5
+         ZdNQDexuy7kBdF7g7JEE50TKGj9Kde0on0lWcFC9LGBPIx1ed12BBAuwdklDZllu8J
+         2IRse7O1yAQeVykxn/FCCzSYJ8UrrJWKSbXLBCWf2c7E4c9WrvsY0IFw7jNW7Jwpgr
+         j3dHq66dGVNExe3jCJIOrKWr3eLqi83gjfFcW25mMSW2gfhDaBjl2yQIAewWwCj/yY
+         fXO6hvGmPPMKM5qvn6eZ0UWMj8OcKebveIvpJXLhU0YXNOg5/vGVJCR3gKvWdnHIUl
+         X9T5mZmlynP+A==
 From:   Christian Brauner <brauner@kernel.org>
 To:     Amir Goldstein <amir73il@gmail.com>,
         Miklos Szeredi <mszeredi@redhat.com>
@@ -44,51 +44,150 @@ Cc:     Christian Brauner <brauner@kernel.org>,
         Luca Bocassi <luca.boccassi@microsoft.com>,
         Lennart Poettering <mzxreary@0pointer.de>,
         =?UTF-8?q?St=C3=A9phane=20Graber?= <stgraber@ubuntu.com>
-Subject: [PATCH 11/18] ovl: handle idmappings for layer fileattrs
-Date:   Tue, 29 Mar 2022 12:35:18 +0200
-Message-Id: <20220329103526.1207086-12-brauner@kernel.org>
+Subject: [PATCH 12/18] ovl: handle idmappings for layer lookup
+Date:   Tue, 29 Mar 2022 12:35:19 +0200
+Message-Id: <20220329103526.1207086-13-brauner@kernel.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220329103526.1207086-1-brauner@kernel.org>
 References: <20220329103526.1207086-1-brauner@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=944; h=from:subject; bh=aCJEyE7xept0ohQd/V0mlPqNgaIhmTR7qbjZGHhX7xk=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMSQ5Pdjveth7/p2JT7nL26r5Z/Eslsy83+FVNXt77geG8HwR mfbrHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABN5q8fI8L+MZ47ovgNNcyYztVru4/ +Slyu3Y8a5ThndDl4t/o0zhBgZlr+SnPkk/IzzczfBigdab6Ki1p7KO+HLdzSVY8PHD+GNXAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5197; h=from:subject; bh=JRC3vjWrKM28/LpMQVqCBfzXf4Uh+Zc0QCglIh/EIdY=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMSQ5Pdgv7hzzO1T9jFnUx0/pv+8UZmQLT663Osm6oXJ/3e2U yX3BHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABM5fo+R4ZqO+HR9m921y2c+6NSwvB WxRnIf/77jHnNrPj9ZHHCkZAMjw99FF14cyD/zxvOn2+mgXJkT7w8ltUdMLtiSu2Tx8ksZlfwA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Take the upper mount's idmapping into account when setting fileattrs on
-the upper layer. This is needed to support idmapped base layers with
-overlay.
+Make the two places where lookup helpers can be called either on lower
+or upper layers take the mount's idmapping into account. To this end we
+pass down the mount in struct ovl_lookup_data. It can later also be used
+to construct struct path for various other helpers. This is needed to
+support idmapped base layers with overlay.
 
 Cc: <linux-unionfs@vger.kernel.org>
 Tested-by: Giuseppe Scrivano <gscrivan@redhat.com>
 Reviewed-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Christian Brauner (Microsoft) <brauner@kernel.org>
 ---
- fs/overlayfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/overlayfs/export.c  |  3 ++-
+ fs/overlayfs/namei.c   | 14 ++++++++------
+ fs/overlayfs/readdir.c | 10 +++++-----
+ 3 files changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index 763dada2ae68..f18b02b9dd53 100644
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -537,7 +537,7 @@ int ovl_real_fileattr_set(struct path *realpath, struct fileattr *fa)
- 	if (err)
- 		return err;
- 
--	return vfs_fileattr_set(&init_user_ns, realpath->dentry, fa);
-+	return vfs_fileattr_set(mnt_user_ns(realpath->mnt), realpath->dentry, fa);
+diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+index ebde05c9cf62..5acf353d160b 100644
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -391,7 +391,8 @@ static struct dentry *ovl_lookup_real_one(struct dentry *connected,
+ 	 * pointer because we hold no lock on the real dentry.
+ 	 */
+ 	take_dentry_name_snapshot(&name, real);
+-	this = lookup_one_len(name.name.name, connected, name.name.len);
++	this = lookup_one(mnt_user_ns(layer->mnt), name.name.name,
++			  connected, name.name.len);
+ 	release_dentry_name_snapshot(&name);
+ 	err = PTR_ERR(this);
+ 	if (IS_ERR(this)) {
+diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
+index 32f9d9089059..f7b550eafc1b 100644
+--- a/fs/overlayfs/namei.c
++++ b/fs/overlayfs/namei.c
+@@ -199,11 +199,12 @@ static bool ovl_is_opaquedir(struct ovl_fs *ofs, struct path *path)
+ 	return ovl_path_check_dir_xattr(ofs, path, OVL_XATTR_OPAQUE);
  }
  
- int ovl_fileattr_set(struct user_namespace *mnt_userns,
+-static struct dentry *ovl_lookup_positive_unlocked(const char *name,
++static struct dentry *ovl_lookup_positive_unlocked(struct ovl_lookup_data *d,
++						   const char *name,
+ 						   struct dentry *base, int len,
+ 						   bool drop_negative)
+ {
+-	struct dentry *ret = lookup_one_len_unlocked(name, base, len);
++	struct dentry *ret = lookup_one_unlocked(mnt_user_ns(d->mnt), name, base, len);
+ 
+ 	if (!IS_ERR(ret) && d_flags_negative(smp_load_acquire(&ret->d_flags))) {
+ 		if (drop_negative && ret->d_lockref.count == 1) {
+@@ -229,7 +230,7 @@ static int ovl_lookup_single(struct dentry *base, struct ovl_lookup_data *d,
+ 	int err;
+ 	bool last_element = !post[0];
+ 
+-	this = ovl_lookup_positive_unlocked(name, base, namelen, drop_negative);
++	this = ovl_lookup_positive_unlocked(d, name, base, namelen, drop_negative);
+ 	if (IS_ERR(this)) {
+ 		err = PTR_ERR(this);
+ 		this = NULL;
+@@ -709,7 +710,8 @@ struct dentry *ovl_lookup_index(struct ovl_fs *ofs, struct dentry *upper,
+ 	if (err)
+ 		return ERR_PTR(err);
+ 
+-	index = lookup_positive_unlocked(name.name, ofs->indexdir, name.len);
++	index = lookup_one_positive_unlocked(ovl_upper_idmap(ofs), name.name,
++					     ofs->indexdir, name.len);
+ 	if (IS_ERR(index)) {
+ 		err = PTR_ERR(index);
+ 		if (err == -ENOENT) {
+@@ -1174,8 +1176,8 @@ bool ovl_lower_positive(struct dentry *dentry)
+ 		struct dentry *this;
+ 		struct dentry *lowerdir = poe->lowerstack[i].dentry;
+ 
+-		this = lookup_positive_unlocked(name->name, lowerdir,
+-					       name->len);
++		this = lookup_one_positive_unlocked(mnt_user_ns(poe->lowerstack[i].layer->mnt),
++						   name->name, lowerdir, name->len);
+ 		if (IS_ERR(this)) {
+ 			switch (PTR_ERR(this)) {
+ 			case -ENOENT:
+diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
+index 1d06222a496c..78f62cc1797b 100644
+--- a/fs/overlayfs/readdir.c
++++ b/fs/overlayfs/readdir.c
+@@ -264,11 +264,11 @@ static int ovl_fill_merge(struct dir_context *ctx, const char *name,
+ 		return ovl_fill_lowest(rdd, name, namelen, offset, ino, d_type);
+ }
+ 
+-static int ovl_check_whiteouts(struct dentry *dir, struct ovl_readdir_data *rdd)
++static int ovl_check_whiteouts(struct path *path, struct ovl_readdir_data *rdd)
+ {
+ 	int err;
+ 	struct ovl_cache_entry *p;
+-	struct dentry *dentry;
++	struct dentry *dentry, *dir = path->dentry;
+ 	const struct cred *old_cred;
+ 
+ 	old_cred = ovl_override_creds(rdd->dentry->d_sb);
+@@ -278,7 +278,7 @@ static int ovl_check_whiteouts(struct dentry *dir, struct ovl_readdir_data *rdd)
+ 		while (rdd->first_maybe_whiteout) {
+ 			p = rdd->first_maybe_whiteout;
+ 			rdd->first_maybe_whiteout = p->next_maybe_whiteout;
+-			dentry = lookup_one_len(p->name, dir, p->len);
++			dentry = lookup_one(mnt_user_ns(path->mnt), p->name, dir, p->len);
+ 			if (!IS_ERR(dentry)) {
+ 				p->is_whiteout = ovl_is_whiteout(dentry);
+ 				dput(dentry);
+@@ -312,7 +312,7 @@ static inline int ovl_dir_read(struct path *realpath,
+ 	} while (!err && rdd->count);
+ 
+ 	if (!err && rdd->first_maybe_whiteout && rdd->dentry)
+-		err = ovl_check_whiteouts(realpath->dentry, rdd);
++		err = ovl_check_whiteouts(realpath, rdd);
+ 
+ 	fput(realfile);
+ 
+@@ -479,7 +479,7 @@ static int ovl_cache_update_ino(struct path *path, struct ovl_cache_entry *p)
+ 			goto get;
+ 		}
+ 	}
+-	this = lookup_one_len(p->name, dir, p->len);
++	this = lookup_one(mnt_user_ns(path->mnt), p->name, dir, p->len);
+ 	if (IS_ERR_OR_NULL(this) || !this->d_inode) {
+ 		/* Mark a stale entry */
+ 		p->is_whiteout = true;
 -- 
 2.32.0
 
