@@ -2,107 +2,92 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F8185034E7
-	for <lists+linux-unionfs@lfdr.de>; Sat, 16 Apr 2022 09:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6E81506F9D
+	for <lists+linux-unionfs@lfdr.de>; Tue, 19 Apr 2022 16:02:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229659AbiDPHwm (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 16 Apr 2022 03:52:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44150 "EHLO
+        id S231682AbiDSODw (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 19 Apr 2022 10:03:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230244AbiDPHwZ (ORCPT
+        with ESMTP id S238692AbiDSODv (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 16 Apr 2022 03:52:25 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75F55100744
-        for <linux-unionfs@vger.kernel.org>; Sat, 16 Apr 2022 00:49:38 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id h5so10073658pgc.7
-        for <linux-unionfs@vger.kernel.org>; Sat, 16 Apr 2022 00:49:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=bJd2DIgtyK+bZCVQpMa9XLiI7bVnFQgVFeGzbZ6bXamjrEFIUCNaIDR9YpvR5iTRQC
-         EoRjHn2hxdGgHpTmUXoJLhLdkz8kw8CpdMkf+RjOM2yxgJf0M2w5tnzpw0NiczM9cGQm
-         aTRY2J48j2+AVBVM6ZplapTERLwB7sqpQHn0KTPy+GATyEE1HlWbU25nZewZyTln9PiO
-         eb2iuPe3VcoLkYjZ6tmC44EeIcF1BzRiek/y+/+gg720T1wEvd/5m2iOgdTIUS3isI5Z
-         q2z1OdX/gYACU6OexrbNcXzEKBC+MKUq0Bm7V68HpmeyS3D5tFhEEP1iOfnkPKJo7x6w
-         XtNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=DpvAqOcUNMwe6PFhRa/e/qvuKKIux6MO8Q77Qhoj/b0Z/cXQA9bhvUCdxdK6UlSmZC
-         kAzoaUL/TXTCP2gv1aqy5KIA9hqjA9uiL/waZZ9/d+dV9e6YgEQDTO7R4a7SV/4iWsdb
-         1ifbcDLpujLqqm8ntshfdg/KUA/jmNI/kiGzaBlpRW+V8wxpbWXxfiDVw6kQcvSLS5A5
-         Edkegqu2vVyt04SHWMbaREgiZtR3hBf/TkPIFSIBkqDHMJ9gYiSBIFYUN9TwTC6E+SXO
-         hva5CDGhB36B/dj4VuZNaYac4Cwe/4wzpwpzKgwpJiNLi+H0Z124HyEB4vbyVpg6n7qA
-         osOg==
-X-Gm-Message-State: AOAM531cN/JvzF/UCD1E5FAk2u/gojzGQ4TTK7SiQtU9723hAkzIPPWt
-        D8qw3mfaSf+W/rvRWaYd5Kc/310DpccNa/L4BfzV29Bn3wA=
-X-Google-Smtp-Source: ABdhPJzPQ782jxaaybf4v05kBQtFRTzv0MMrux20NcZ4Q10XmGrK6dnUIabFDBNBmBOv8fFyQY5zqzYAgf4Cnc3KaCc=
-X-Received: by 2002:a92:508:0:b0:2cb:ebd8:a76b with SMTP id
- q8-20020a920508000000b002cbebd8a76bmr1009500ile.156.1650095366830; Sat, 16
- Apr 2022 00:49:26 -0700 (PDT)
+        Tue, 19 Apr 2022 10:03:51 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 108C613FBF
+        for <linux-unionfs@vger.kernel.org>; Tue, 19 Apr 2022 07:01:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1650376865;
+        bh=/4mM1U2bjx4Fy8z2B7P1fETVi8k09m4ldCezXZViXX0=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=NEdf5BxiZZjOyH2MaDw20C1x/kZrC1awXHddOndL5E8MmW7ZPFFsqRqzY5K0MKxSz
+         Csl+ZZ4AHBjbPTimuPQYGu6IoRm1uO9PXVshOoXltLSfDa5A+vFvQ+ZxeFmBRC8TYB
+         sUlj14/9GGFyiSUlTgvuRFGnHg+FRfv0j+bcdQAw=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [10.54.0.101] ([87.167.92.4]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mq2nK-1oJm7v3HdK-00n7X7; Tue, 19
+ Apr 2022 16:01:05 +0200
+Message-ID: <330252e9-45c1-26f2-4add-b2dcd2701bb7@gmx.net>
+Date:   Tue, 19 Apr 2022 16:01:05 +0200
 MIME-Version: 1.0
-Received: by 2002:a05:6638:1309:0:0:0:0 with HTTP; Sat, 16 Apr 2022 00:49:26
- -0700 (PDT)
-Reply-To: daniel.seyba@yahoo.com
-From:   Seyba Daniel <royhalton13@gmail.com>
-Date:   Sat, 16 Apr 2022 09:49:26 +0200
-Message-ID: <CALSxb2w9zQYotuLcRSCPns53ksvT9UrEMVx-1Cp1f8RE7er3cA@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:542 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [royhalton13[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [royhalton13[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: overlayfs: supporting O_TMPFILE
+Content-Language: en-US
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     overlayfs <linux-unionfs@vger.kernel.org>
+References: <951c68ed-3f0e-8d9b-6c10-690df778ecc2@gmx.net>
+ <CAOQ4uxh_P0fiV9gQOs9CLvB+xJpJT4hWfAFyKBx0A-TyxAma8Q@mail.gmail.com>
+ <YXvvAMJxj/DlyUqC@miu.piliscsaba.redhat.com>
+From:   =?UTF-8?Q?Georg_M=c3=bcller?= <georgmueller@gmx.net>
+In-Reply-To: <YXvvAMJxj/DlyUqC@miu.piliscsaba.redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:LoYYBKbhPyBu+i6ubqgvwwNPk3vr1QxoyCZe5uiGu/EOmdbqldI
+ tVJ6s5Ym7cDO1jIaJX29AcOpAUJ8ZzaBJihpi/AcvWwzpMCZjJI/YQJzyKW8aVyI01uVWwZ
+ Ebq0/UBWu5ZoNcKguNbFn9oO3+Ead/FUBj20o0ApW9vg0Qto1tAN8Hm/1jpai81x8wvMsDN
+ J8l3PVNrS7dxVGoib7S5A==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:kYA+x2WSyxk=:9YxyDTM3oouPU7Uagfpg3+
+ acTs2nvFiYMAxowaE1jO9NLb3P8h5adOZGJmvqawdGphhT4Os+eQm6ScC4B5u0kWQm/4hvVnj
+ PaAEJ9WPbax+sryVJlcQG16lsTfupMVhez0/WbWzKvuMIujolL2LfBvHGysfwfWycQ0nU5mgS
+ O7PfPLc1mNQYkNvJvn3LdUMzlBcgm8oOwVWAG1T4/Jvk69KhyvDJr1ax0xWB5Lxez0LjiFqja
+ 2zx/bEZQ5qa9MR/0++2/0M7ySGwVOSTBkbzuUq8tjihxt0M8QelvrGlLF/WnvhzyPuyx5WImk
+ S1Z4V7FYsMhEESSQHYf0ppu8x2K5l8mxYdFWE9XPbPKVdSys2SBXokeGLBQ//5tjEs/dr81Nn
+ K3VhtZAuljYa0QIgCUdQsuKrfsDuPt27BlQI7vEGyFrMy9ClIOr+Ah08h09nBwcqj+G+YEE15
+ iwtUTIQ1clBsvLB9wDVihev83SehgWeaXjPEmjIDBwSRn1H63dPKyREBIhmEXZbKFLP7frKiu
+ pW/+rYhLxOD23YOKQuNsf6NI5gHjl/T2Yu1jI3kAKPpAyan24IbU3QePmnH8CFWxj9E2ikNBv
+ PQrC4fxm04wxhigX0cr55qs1gLfwslXQzST4/P7HLcwqpiOj+9Z67xEUzXK0mB8nqfqmeEwq9
+ pSW34RuSUQ6hs5uTUk+dBkXDKz7XNlpdauK/yLZMlESFdGO1vQBOZ7MUKgRQcT7TXkWtVhsoH
+ A1U/+GCiBX6J49zKG9zs19fcpl08U273W8+/y1dYOR3UBW2GsGvVTxjSry/yorZ9n8Bl2BnHh
+ E88QXZVAtu7d6a/V07HVbg1T72MVBlxFCWpGN9n7nhFs/wbVQ0oLpwdbqImbzqWiVVAKRwte8
+ aQWR+1FjpAEFfZiv9KmKBNaoL/Z4qEzF+h6Oe9D4PEBhiyWRz909yMZAe+j8Ws7bOqBOb1Yxj
+ ZCKKvBR9L6QEMM6ZzBFuK797q98fglKZANcMlg/DJOLeIBmIH0u9Nj1h/a1ch++8GbHc731T3
+ N+IsoVos9AkdtQlMWEoHjXx5L7/H4HoqO75dkFB1a3xeX3DC9mw2HVg2wuYN29OOrwUUZDM6W
+ tubPTOqhXZ0lXo=
+X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Hello,
+Hi Miklos,
 
-I am so sorry contacting you in this means especially when we have never
-met before. I urgently seek your service to represent me in investing in
-your region / country and you will be rewarded for your service without
-affecting your present job with very little time invested in it.
+Am 29.10.21 um 14:54 schrieb Miklos Szeredi:
+> Here's something I prepared earlier;)
+>
+> Don't know why it got stuck, quite possibly I realized some fatal flaw t=
+hat I
+> can't remember anymore...
+>
+> Seems to work though, so getting this out for review and testing.
 
-My interest is in buying real estate, private schools or companies with
-potentials for rapid growth in long terms.
+Is there a special reason why the O_TMPFILE patch from you is not consider=
+ed for inclusion?
+Are there more tests I could do?
 
-So please confirm interest by responding back.
-
-My dearest regards
-
-Seyba Daniel
+Best regards,
+Georg
