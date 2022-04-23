@@ -2,295 +2,105 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 914AF50834B
-	for <lists+linux-unionfs@lfdr.de>; Wed, 20 Apr 2022 10:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02B9950CDDE
+	for <lists+linux-unionfs@lfdr.de>; Sun, 24 Apr 2022 00:05:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376699AbiDTIYz (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 20 Apr 2022 04:24:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46642 "EHLO
+        id S229764AbiDWWIs (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 23 Apr 2022 18:08:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376694AbiDTIYy (ORCPT
+        with ESMTP id S229741AbiDWWIs (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 20 Apr 2022 04:24:54 -0400
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5F7F255AA
-        for <linux-unionfs@vger.kernel.org>; Wed, 20 Apr 2022 01:22:08 -0700 (PDT)
-Received: by mail-qt1-x832.google.com with SMTP id f14so484309qtq.1
-        for <linux-unionfs@vger.kernel.org>; Wed, 20 Apr 2022 01:22:08 -0700 (PDT)
+        Sat, 23 Apr 2022 18:08:48 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E52B065C8
+        for <linux-unionfs@vger.kernel.org>; Sat, 23 Apr 2022 15:05:49 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id u15so22672399ejf.11
+        for <linux-unionfs@vger.kernel.org>; Sat, 23 Apr 2022 15:05:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=pVxuJJXCuSArBE1h4V18bAfaqjFXStGzpp3sS7jwSvo=;
-        b=QYrCQlm30bPBFiJdXDmO4aU7bpaIWLms3HhAYWSGfM1yMXA14Rv+A+qVET7z1sU5aN
-         V7pZxKTd0KrVo+Cp0qJ34kSmVji0Snzkhf/0oSw+piRR37+UYdKR7Uq39WX7+IBm0A6O
-         zdmgmZcmMLra6/saCozgEh0bNr1uK0KkU1evMKgZUFDmlwa7/D9bb/P63lXYNcaQquSS
-         TqfPgZuCgH2pNm88IUC/3miA/BAj3b80uoipnXwDLHiqWFBEILS/4wzEw8Y6VY8z7bR1
-         r/9SST2xoNqg/4hzDua02kalmVuYy7Qx8rnciplRl1wFaMFblKnbspCyaivR4fLjWvyL
-         ai+Q==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=WiFwTh79e/vDiEl2X1EIBN4kgkhCfNrDRpDpgRmEVDk=;
+        b=GpuB+1ubhT2BD3XCTrdY/EqBZmMRTF4U5R6sqoE2ix7rWg07Yv9Mp1Z61AVrv6zGa+
+         pKUozdrZj+VQtsADxvXQsWyM1hLUCn0+kRfmDfGkOsncvBAaSfd5VCVG6P8SbbznP8tS
+         QhYJp7xyoYhYFbULOcho7W5wwzuBZAXP1MWa/Q16ZR0pvf7rqgxobG+m3lrA5RPQi6SE
+         7E3IqW/C9y7ta7/CNuDbdMkBezqImjCj9JA2Fi4sXlBIxM0IUvdQcOPlQNz5n03sfq/b
+         TMv0Md2vqhka2Tj6aN5a7bW+hFJ/3QFh+v/Y+O6oXBtZQZYEOjf+VoUn6eE2bCx767l/
+         Fp5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=pVxuJJXCuSArBE1h4V18bAfaqjFXStGzpp3sS7jwSvo=;
-        b=r+fVFANVBGeiaEuFDEtxbevuXzp0wrfQBnn4xgc0EdRvqjndsY0yMs7TQ4s1tO+WPw
-         LD7/diiIx+9sWqJSE1TYEmjzdoVeYHCXbfNFLI2SV6bBRHhewHLvRmZTR/O4Z57thSy4
-         9ry2B+bdPuQZk+0X12fCOrhK2tdkiDm0nUg8K4CLiSTfJHpVXUaak0iCnRxcydk9SNj9
-         EjSB1OnyXRSy1rbMKuLXsQ+tUa4seBlQFQIFt3Jq3fFV4kRBocZRU+EuKzL5c6KRpyKj
-         /4b419xMUPoZxXOcoNHLMPAaA7bxMLKH7dndNev7YVHA6sVZhvv+9F6umnRQKeJgVBH5
-         yWFQ==
-X-Gm-Message-State: AOAM530hpx1ggE0cGvsW0LdNFyFnvbhZ1Y5/oN2lU6OH9IpNj20et22z
-        ssIz1z3GE8LWTM8Ey/9GfmM5w52gPrzbPf0WT+s=
-X-Google-Smtp-Source: ABdhPJxJUCpFZ4JNS1m5/uRmRbUMS/AfExLf2+mKj+wLCEkrr0Mev+tImMPvcWaC19pGhtp33sCzMUnCkIwpXycaJ7U=
-X-Received: by 2002:ac8:4e46:0:b0:2e1:b933:ec06 with SMTP id
- e6-20020ac84e46000000b002e1b933ec06mr13020450qtw.684.1650442927820; Wed, 20
- Apr 2022 01:22:07 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=WiFwTh79e/vDiEl2X1EIBN4kgkhCfNrDRpDpgRmEVDk=;
+        b=3ybg7HudwW0/LdJCJSASYr1dTEoFYgKeT3yUDqGHKcGmC9fL8A1VJAzK/fhd392PdU
+         9aSIRa2LpLv5xKEOBKj+4T4gJ5CIYs/1YGl+RVyvBW+9qhMdjLnsoVK/efNpjotkncnP
+         7iQGmtyJx4XhrC1P3J+6RHfZu5r3MEvNEhp6gvlDO7tChUmvbTssFs95RiVGay69zh0V
+         plWpR/eEJRPsDEIDCZZviTt6rYcdE/ZXWb33i0PUAQ/4tdw6pXx3vS2trazvIirW6g6c
+         ZyXDZID3jM1UcY67aW2g3U5UezcjIzjDrh7DTGqETHu9icdKJxvYOStYi9383fmSn9PD
+         6QgQ==
+X-Gm-Message-State: AOAM533fPI/XkLDmrI7E/DGgIov4021JLwhy+fImEZFrHYt8+BFlim0p
+        RmD/+PLrNK0O1VypRxuyr3ZpeqQJr9Vo/puh3KY=
+X-Google-Smtp-Source: ABdhPJzWuO26zWYAGqo1A1d8yoxs/IYnTcT34lSOkxx8xs5sazLfklLgF5fElBPmpSpErpmgqvj/3AsxvbR5wosmNxE=
+X-Received: by 2002:a17:906:c0e:b0:6f0:2b1e:9077 with SMTP id
+ s14-20020a1709060c0e00b006f02b1e9077mr9759059ejf.411.1650751548262; Sat, 23
+ Apr 2022 15:05:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <951c68ed-3f0e-8d9b-6c10-690df778ecc2@gmx.net> <CAOQ4uxh_P0fiV9gQOs9CLvB+xJpJT4hWfAFyKBx0A-TyxAma8Q@mail.gmail.com>
- <YXvvAMJxj/DlyUqC@miu.piliscsaba.redhat.com>
-In-Reply-To: <YXvvAMJxj/DlyUqC@miu.piliscsaba.redhat.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Wed, 20 Apr 2022 11:21:56 +0300
-Message-ID: <CAOQ4uxi2QR=v-KXMKT70H=dwo1hF1BasFX3QaBz2XRiyQAOreQ@mail.gmail.com>
-Subject: Re: overlayfs: supporting O_TMPFILE
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     =?UTF-8?Q?Georg_M=C3=BCller?= <georgmueller@gmx.net>,
-        overlayfs <linux-unionfs@vger.kernel.org>
+Received: by 2002:a05:6f02:39b:b0:1a:6c4e:3ca7 with HTTP; Sat, 23 Apr 2022
+ 15:05:47 -0700 (PDT)
+Reply-To: wijh555@gmail.com
+From:   "Mr. Yakubu Abubakar," <yakubuabubakar1884@gmail.com>
+Date:   Sat, 23 Apr 2022 15:05:47 -0700
+Message-ID: <CANt38eu7083QKs-K6se4Mk2auKWth9igO_cs==LKBt0HOnyG=Q@mail.gmail.com>
+Subject: Good Day,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:62e listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4972]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [yakubuabubakar1884[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [wijh555[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [yakubuabubakar1884[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Fri, Oct 29, 2021 at 3:54 PM Miklos Szeredi <miklos@szeredi.hu> wrote:
->
-> On Fri, Oct 29, 2021 at 01:37:49AM +0300, Amir Goldstein wrote:
-> > On Thu, Oct 28, 2021 at 11:41 PM Georg M=C3=BCller <georgmueller@gmx.ne=
-t> wrote:
-> > >
-> > > Hi,
-> > >
-> > > I was trying to implement .tmpfile for overlayfs inode_operations to =
-support O_TMPFILE.
-> > >
-> > > Docker with aufs supports it, but this is deprecated and removed from=
- current docker. I now have a work-around in my code (create tmpfile+unlink=
-), but
-> > > I thought it might be a good idea to have tmpfile support in overlayf=
-s.
-> > >
-> > > I was trying to do it on my own, but I have some headaches to what is=
- necessary to achieve the goal.
-> > >
-> > >  From my understanding, I have to find the dentry for the upper dir (=
-or workdir) and call vfs_tmpdir() for this, but I am running from oops to o=
-ops.
-> > >
-> > > Is there some hint what I have to do to achieve the goal?
-> > >
-> >
-> > You'd want to use ovl_create_object() and probably pass a tmpfile argum=
-ent
-> > then pass it on struct ovl_cattr to ovl_create_or_link() after that
-> > it becomes more complicated. You'd need ovl_create_tempfile() like
-> > ovl_create_upper().
-> > You can follow xfs_generic_create() for some clues.
-> > You need parts of ovl_instantiate() but not all of it - it's a mess.
->
-> Here's something I prepared earlier ;)
->
-> Don't know why it got stuck, quite possibly I realized some fatal flaw th=
-at I
-> can't remember anymore...
->
-> Seems to work though, so getting this out for review and testing.
->
-
-You may add:
-
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-
-(See one suggestion below)
-
-and
-
-Tested-by: Amir Goldstein <amir73il@gmail.com>
-
-With this patch, these fstests now run and pass:
-generic/004 generic/389
-
-generic/530 and generic/531 also use O_TMPFILE, but they also ran before th=
-is
-patch because they fall back to creat+unlink when O_TMPFILE fails
-
-generic/530 passes and generic/531 OOMs on my VM with or without this patch=
-.
-
-No regressions observed with -g overlay/quick.
+-- 
+Greetings,
+I'm Mr. Yakubu Abubakar, how are you doing hope you are in good
+health, the Board irector
+try to reach you on phone several times Meanwhile, your number was not
+connecting. before he ask me to send you an email to hear from you if
+you are fine. hope to hear you are in good Health.
 
 Thanks,
-Amir.
-
->
-> ---
->  fs/overlayfs/dir.c |  122 ++++++++++++++++++++++++++++++++++++++++++++++=
-+++++++
->  1 file changed, 122 insertions(+)
->
-> --- a/fs/overlayfs/dir.c
-> +++ b/fs/overlayfs/dir.c
-> @@ -1295,6 +1295,127 @@ static int ovl_rename(struct user_namesp
->         return err;
->  }
->
-> +static int ovl_create_upper_tmpfile(struct dentry *dentry, struct inode =
-*inode,
-> +                                   umode_t mode)
-> +{
-> +       struct dentry *upperdir =3D ovl_dentry_upper(dentry->d_parent);
-> +       struct dentry *newdentry;
-> +       struct ovl_inode_params oip;
-> +
-> +       if (!IS_POSIXACL(d_inode(upperdir)))
-> +               mode &=3D ~current_umask();
-> +
-> +       newdentry =3D vfs_tmpfile(&init_user_ns, upperdir, mode, 0);
-> +       if (IS_ERR(newdentry))
-> +               return PTR_ERR(newdentry);
-> +
-> +       oip =3D (struct ovl_inode_params) {
-> +               .upperdentry =3D newdentry,
-> +               .newinode =3D inode,
-> +       };
-> +
-> +       ovl_dentry_set_upper_alias(dentry);
-> +       ovl_dentry_update_reval(dentry, newdentry,
-> +                       DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE)=
-;
-> +
-> +       /*
-> +        * ovl_obtain_alias() can be called after ovl_create_real()
-> +        * and before we get here, so we may get an inode from cache
-> +        * with the same real upperdentry that is not the inode we
-> +        * pre-allocated.  In this case we will use the cached inode
-> +        * to instantiate the new dentry.
-> +        */
-> +       inode =3D ovl_get_inode(dentry->d_sb, &oip);
-> +       if (IS_ERR(inode)) {
-> +               dput(newdentry);
-> +               return PTR_ERR(inode);
-> +       }
-> +       /* d_tmpfile() expects inode to have a positive link count */
-> +       set_nlink(inode, 1);
-> +
-> +       d_tmpfile(dentry, inode);
-> +       if (inode !=3D oip.newinode) {
-> +               pr_warn_ratelimited("newly created inode found in cache (=
-%pd2)\n",
-> +                                   dentry);
-> +       }
-> +       return 0;
-> +}
-> +
-> +static int ovl_create_tmpfile(struct dentry *dentry, struct inode *inode=
-,
-> +                             umode_t mode)
-> +{
-> +       int err;
-> +       const struct cred *old_cred;
-> +       struct cred *override_cred;
-> +       struct dentry *parent =3D dentry->d_parent;
-> +
-> +       err =3D ovl_copy_up(parent);
-> +       if (err)
-> +               return err;
-> +
-> +       old_cred =3D ovl_override_creds(dentry->d_sb);
-> +
-> +       err =3D -ENOMEM;
-> +       override_cred =3D prepare_creds();
-> +       if (override_cred) {
-> +               override_cred->fsuid =3D inode->i_uid;
-> +               override_cred->fsgid =3D inode->i_gid;
-> +               err =3D security_dentry_create_files_as(dentry, mode,
-> +                                                     &dentry->d_name, ol=
-d_cred,
-> +                                                     override_cred);
-> +               if (err) {
-> +                       put_cred(override_cred);
-> +                       goto out_revert_creds;
-> +               }
-> +               put_cred(override_creds(override_cred));
-> +               put_cred(override_cred);
-> +
-> +               err =3D ovl_create_upper_tmpfile(dentry, inode, mode);
-> +       }
-> +out_revert_creds:
-> +       revert_creds(old_cred);
-> +       return err;
-> +}
-> +
-> +
-> +static int ovl_tmpfile(struct user_namespace *mnt_userns, struct inode *=
-dir,
-> +                      struct dentry *dentry, umode_t mode)
-> +{
-> +       int err;
-> +       struct inode *inode;
-> +
-
-You could add here:
-
-+       if (!OVL_FS(dentry->d_sb)->tmpfile)
-+               return -EOPNOTSUPP;
-
-+
-
-> +       dentry->d_fsdata =3D ovl_alloc_entry(0);
-> +       if (!dentry->d_fsdata)
-> +               return -ENOMEM;
-> +
-> +       err =3D ovl_want_write(dentry);
-> +       if (err)
-> +               goto out;
-> +
-> +       /* Preallocate inode to be used by ovl_get_inode() */
-> +       err =3D -ENOMEM;
-> +       inode =3D ovl_new_inode(dentry->d_sb, mode, 0);
-> +       if (!inode)
-> +               goto out_drop_write;
-> +
-> +       spin_lock(&inode->i_lock);
-> +       inode->i_state |=3D I_CREATING;
-> +       spin_unlock(&inode->i_lock);
-> +
-> +       inode_init_owner(&init_user_ns, inode, dentry->d_parent->d_inode,=
- mode);
-> +       mode =3D inode->i_mode;
-> +
-> +       err =3D ovl_create_tmpfile(dentry, inode, mode);
-> +       /* Did we end up using the preallocated inode? */
-> +       if (inode !=3D d_inode(dentry))
-> +               iput(inode);
-> +
-> +out_drop_write:
-> +       ovl_drop_write(dentry);
-> +out:
-> +       return err;
-> +}
-> +
->  const struct inode_operations ovl_dir_inode_operations =3D {
->         .lookup         =3D ovl_lookup,
->         .mkdir          =3D ovl_mkdir,
-> @@ -1313,4 +1434,5 @@ const struct inode_operations ovl_dir_in
->         .update_time    =3D ovl_update_time,
->         .fileattr_get   =3D ovl_fileattr_get,
->         .fileattr_set   =3D ovl_fileattr_set,
-> +       .tmpfile        =3D ovl_tmpfile,
->  };
+Mr. Yakubu Abubakar.
