@@ -2,123 +2,105 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4C2E51F92E
-	for <lists+linux-unionfs@lfdr.de>; Mon,  9 May 2022 12:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8DC522B3C
+	for <lists+linux-unionfs@lfdr.de>; Wed, 11 May 2022 06:40:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230040AbiEIKDY (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 9 May 2022 06:03:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40210 "EHLO
+        id S240472AbiEKEkH (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 11 May 2022 00:40:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230241AbiEIJzH (ORCPT
+        with ESMTP id S239443AbiEKEj1 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 9 May 2022 05:55:07 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4861721A951
-        for <linux-unionfs@vger.kernel.org>; Mon,  9 May 2022 02:51:10 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id j6so25671208ejc.13
-        for <linux-unionfs@vger.kernel.org>; Mon, 09 May 2022 02:51:10 -0700 (PDT)
+        Wed, 11 May 2022 00:39:27 -0400
+Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA73814FCB0
+        for <linux-unionfs@vger.kernel.org>; Tue, 10 May 2022 21:39:23 -0700 (PDT)
+Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-d6e29fb3d7so1475532fac.7
+        for <linux-unionfs@vger.kernel.org>; Tue, 10 May 2022 21:39:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=VKCKWY3pNK4bqqNossvOh9G1q+xPwVvjW+fqomdEuhg=;
-        b=K2oSr06jqjssuAU2743bmj9/ARmbiH4f2+DBF8rGDCj0fjLyftWwIrKfSSAyP5jNvW
-         +tGopApXS6w+nQgNfESw5TDfVPH/KxYeoDJ4wCDYlinTBrTeoIxK8GJf9YCUHSt/DH0A
-         Jh4lmQ7HYnneGFTbK3kTSweAwmWW3vqnDSaR8ORa9J2XgCWKs1fQ/1XEUExDc/55Hr2J
-         cUf8UNHk1694WZe9CuvrsO/nz9SlBmkCB0V2CIC8ooHwpnhokyzFTUjUJ+iKMh0HexrZ
-         gAQDWmwInEGC90+sqlEklI+49MxeLMZMVq2A600svt76M5J4i5mZ6bGRlh0R3NbRGDFp
-         Zi6A==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=nrkBIDyCffFbQz5WNhQU88q5l+bx8m1CoLNL/nRcxBFZRgp3B2RwRJzpJi69hjmFPQ
+         Eotn36CVTQor8sTwq84btYhQQ+OsypTpYdHIfGkC/Ekjg8a9U0HkQq0T/gbcQg5/if4Y
+         i1yzcJYhTRMm8ny1NIiOYUNRazrfloxlCC/1XVxW2+TG0ItQpx2/G3cXjgMuOALgO1Rc
+         auxKHXwS3ghK6vFFIfR8essc70JXfRi2oIpi3YT/VLqISCMTaVWCOI/Xf0rWfpfTmlnw
+         XgqCFC8jOuHD5AjsEtox3h0b9tzcHlVM0fA1RrJyDFubK9aS707t1BYf/K43qSc4slo4
+         wrQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=VKCKWY3pNK4bqqNossvOh9G1q+xPwVvjW+fqomdEuhg=;
-        b=7iu7b4CJ4Y4iNGF8aynvpw2CR1wQkF3drqNT6oy7Sqc2O7dKHNAiCERKrFqoNNX8oL
-         sDqdSYIfPL7HO/yNSmSLYFTXMa3ZnMp/YP8rxhJ5XE6AMFwQSo22gdkEcZTUL0Z/L7ao
-         zYWi7Pp0FdqfFAgCQkv9eVSWg/ILHhTKnuUJU5Cw2kAgGLTUlU8S3M7LyA6T2tBoeDWL
-         skEy9DMAd2EQvrzheFGlrv9pI+qUe7Xigx6C0c3KgT7BOel6/wKzg2ZYCWd4PLkGK1mM
-         3jegsucEXcs9sLdmn9H5HgovMLKD+8xIT+C567kbXExub3XGpdyVUeki25eOWDeBycYa
-         vuuA==
-X-Gm-Message-State: AOAM530Z8xxuh3fV2vcXkiY5XEiVj+S6QNT5pXRVYpTmtUsq/BslbMjM
-        sTkzQwYikv7o3c4xsHD9fPaS4b6SUW6LP+4Th4A=
-X-Google-Smtp-Source: ABdhPJzrBa3si78R8AdVAik4/zzMDV54ZeW9fAtciNjlio5IeU7b3ZP6ePAULVvfPnnanRF6ESvKfEiCGvp0UvpCLlQ=
-X-Received: by 2002:a17:906:1691:b0:6f3:a3bf:451a with SMTP id
- s17-20020a170906169100b006f3a3bf451amr14005919ejd.61.1652089789321; Mon, 09
- May 2022 02:49:49 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=KJFeeKHt7uQ8OQJiKr8fy0kUDdo5n+45PKhtpXaHKLcLRLmTfR47RHMRxEgmY972xu
+         zgs2r7g282haon2TlTge6gkSSPBMB5xZ2YPtmnwTvnpgclJ1IATCVMK1Qd+CmNL15CN3
+         1B9WduheZCMh6Cpp9vQ6eobvZJNrTxdES73FiCC2/BosngWQUV5wPaHH0hKuIfNOGusF
+         /+jKRS3tO/HyqtwIkeCLEr4NxW8ZS4HD8SpI+N+PGC/d67QFWqmI4bV2uR5o1UvNkTNe
+         7XJ+8Taj/oZ/4AQof1EtXkOjtECvLBJBqJgv1FrEU1IifcbZexfpVZurOKFBbcqSDZiZ
+         2wEA==
+X-Gm-Message-State: AOAM532OD0WzUOMlMAJPhlm4uxHvRC4ROe6Dm4lhGiDpDZlLqxuFMXiV
+        t5eouKs/8k5jv02liiW2uQuLuKUsiYiqlVFlsy2Ws7zi5gM9lw==
+X-Google-Smtp-Source: ABdhPJwbKHmbnZDflMHBZCcp2YbZAAZvFdPcM4owWeuPIkoxodmwIZJ+Xpgi08ylB1RFXLrw63SQRxJzumbwJKMTxhs=
+X-Received: by 2002:a17:90b:1007:b0:1dc:9862:68af with SMTP id
+ gm7-20020a17090b100700b001dc986268afmr3261389pjb.205.1652243951499; Tue, 10
+ May 2022 21:39:11 -0700 (PDT)
 MIME-Version: 1.0
-Sender: barpeterkobby@gmail.com
-Received: by 2002:a17:907:e92:0:0:0:0 with HTTP; Mon, 9 May 2022 02:49:48
+Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:39:10
  -0700 (PDT)
-From:   "Mr. Jimmy Moore" <jimmymoore265@gmail.com>
-Date:   Mon, 9 May 2022 10:49:48 +0100
-X-Google-Sender-Auth: JbISFsK7ibg9rm6eJ9jAtAqGumM
-Message-ID: <CADyxcKn9AJzunJ52AcVGByL2gY0gfVPqaYTLpf+HUThiPSwcOg@mail.gmail.com>
-Subject: YOUR COVID-19 COMPENSATION
+From:   Private Mail <privatemail1961@gmail.com>
+Date:   Tue, 10 May 2022 21:39:10 -0700
+Message-ID: <CANjAOAiiVcSrSv31FjThCVmeppS54UVvGVj3SRSvMfxOB+T8DA@mail.gmail.com>
+Subject: Have you had this? It is for your Benefit
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLY,
-        HK_NAME_FM_MR_MRS,LOTS_OF_MONEY,LOTTO_DEPT,MILLION_USD,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
+        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
+        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
         version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:642 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [barpeterkobby[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 MILLION_USD BODY: Talks about millions of dollars
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  1.5 HK_NAME_FM_MR_MRS No description available.
-        *  1.0 FREEMAIL_REPLY From and body contain different freemails
-        *  1.6 LOTTO_DEPT Claims Department
-        *  2.4 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-UNITED NATIONS COVID-19 OVERDUE COMPENSATION UNIT.
-REFERENCE PAYMENT CODE: 8525595
-BAILOUT AMOUNT:$10.5 MILLION USD
-ADDRESS: NEW YORK, NY 10017, UNITED STATES
+Our Ref: BG/WA0151/2022
 
-Dear award recipient, Covid-19 Compensation Funds.
+Dear Beneficiary
 
-You are receiving this correspondence because we have finally reached
-a consensus with the UN, IRS, and IMF that your total fund worth $10.5
-Million Dollars of Covid-19 Compensation payment shall be delivered to
-your nominated mode of receipt, and you are expected to pay the sum of
-$12,000 for levies owed to authorities after receiving your funds.
+Subject: An Estate of US$15.8 Million
 
-You have a grace period of 2 weeks to pay the $12,000 levy after you
-have received your Covid-19 Compensation total sum of $10.5 Million.
-We shall proceed with the payment of your bailout grant only if you
-agree to the terms and conditions stated.
+Blount and Griffin Genealogical Investigators specializes in probate
+research to locate missing heirs and beneficiaries to estates in the
+United Kingdom and Europe.
 
-Contact Dr. Mustafa Ali, for more information by email at:(
-mustafaliali180@gmail.com ) Your consent in this regard would be
-highly appreciated.
+We can also help you find wills, obtain copies of certificates, help
+you to administer an estate, as well as calculating how an estate,
+intestacy or trust should be distributed.
 
-Best Regards,
-Mr. Jimmy Moore.
-Undersecretary-General United Nations
-Office of Internal Oversight-UNIOS
-UN making the world a better place
-http://www.un.org/sg/
+You may be entitled to a large pay out for an inheritance in Europe
+worth US$15.8 million. We have discovered an estate belonging to the
+late Depositor has remained unclaimed since he died in 2011 and we
+have strong reasons to believe you are the closest living relative to
+the deceased we can find.
+
+You may unknowingly be the heir of this person who died without
+leaving a will (intestate). We will conduct a probate research to
+prove your entitlement, and can submit a claim on your behalf all at
+no risk to yourselves.
+
+Our service fee of 10% will be paid to us after you have received the estate.
+
+The estate transfer process should take just a matter of days as we
+have the mechanism and expertise to get this done very quickly. This
+message may come to you as a shock, however we hope to work with you
+to transfer the estate to you as quickly as possible.
+
+Feel free to email our senior case worker Mr. Malcolm Casey on email:
+malcolmcasey68@yahoo.com for further discussions.
+
+With warm regards,
+
+Mr. Blount W. Gort, CEO.
+Blount and Griffin Associates Inc
