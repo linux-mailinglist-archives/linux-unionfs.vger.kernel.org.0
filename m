@@ -2,105 +2,93 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E8DC522B3C
-	for <lists+linux-unionfs@lfdr.de>; Wed, 11 May 2022 06:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4381552C707
+	for <lists+linux-unionfs@lfdr.de>; Thu, 19 May 2022 00:57:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240472AbiEKEkH (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 11 May 2022 00:40:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43186 "EHLO
+        id S231271AbiERW5e (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 18 May 2022 18:57:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239443AbiEKEj1 (ORCPT
+        with ESMTP id S231267AbiERW5H (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 11 May 2022 00:39:27 -0400
-Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA73814FCB0
-        for <linux-unionfs@vger.kernel.org>; Tue, 10 May 2022 21:39:23 -0700 (PDT)
-Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-d6e29fb3d7so1475532fac.7
-        for <linux-unionfs@vger.kernel.org>; Tue, 10 May 2022 21:39:23 -0700 (PDT)
+        Wed, 18 May 2022 18:57:07 -0400
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18BD95FF6
+        for <linux-unionfs@vger.kernel.org>; Wed, 18 May 2022 15:57:05 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id a3so6156081ybg.5
+        for <linux-unionfs@vger.kernel.org>; Wed, 18 May 2022 15:57:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=nrkBIDyCffFbQz5WNhQU88q5l+bx8m1CoLNL/nRcxBFZRgp3B2RwRJzpJi69hjmFPQ
-         Eotn36CVTQor8sTwq84btYhQQ+OsypTpYdHIfGkC/Ekjg8a9U0HkQq0T/gbcQg5/if4Y
-         i1yzcJYhTRMm8ny1NIiOYUNRazrfloxlCC/1XVxW2+TG0ItQpx2/G3cXjgMuOALgO1Rc
-         auxKHXwS3ghK6vFFIfR8essc70JXfRi2oIpi3YT/VLqISCMTaVWCOI/Xf0rWfpfTmlnw
-         XgqCFC8jOuHD5AjsEtox3h0b9tzcHlVM0fA1RrJyDFubK9aS707t1BYf/K43qSc4slo4
-         wrQw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=mZ3wqB4NmL7z6lpFr/h15h1rYqsZKafJnUpMVahbEPg=;
+        b=ovbcf3BPb/ZrA/FpQ+ZjErGDIEZ9sF3fYOxqsE4Z0xdiTlYY9UY36hS3ty6MLllddq
+         FdZzNc2PcFHW5cwKZ0FlQqx6F8uTY06Ab/cmT+eL89dkm6I4fHT5v6DDGzwY+fqIjM8b
+         RjeYQt93Ckr4p0lPVWY342OwWKznH6xDl4nV36uj7bwrBPcHFh3ePzF5GNEmu/mQBhIV
+         GwWDekgJIDWSV60014hyLdzt2NtjUStY8MI6SiwBWMH8LEBnRGkE0W6Db0zUE9IYWmDQ
+         Ifd6nbhkESdcIbQrjo3sdEfmdPtb1VAIHCw/LAZv1DOtvQwqLYnhML4dVDmuoYeMmVFn
+         q7TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=KJFeeKHt7uQ8OQJiKr8fy0kUDdo5n+45PKhtpXaHKLcLRLmTfR47RHMRxEgmY972xu
-         zgs2r7g282haon2TlTge6gkSSPBMB5xZ2YPtmnwTvnpgclJ1IATCVMK1Qd+CmNL15CN3
-         1B9WduheZCMh6Cpp9vQ6eobvZJNrTxdES73FiCC2/BosngWQUV5wPaHH0hKuIfNOGusF
-         /+jKRS3tO/HyqtwIkeCLEr4NxW8ZS4HD8SpI+N+PGC/d67QFWqmI4bV2uR5o1UvNkTNe
-         7XJ+8Taj/oZ/4AQof1EtXkOjtECvLBJBqJgv1FrEU1IifcbZexfpVZurOKFBbcqSDZiZ
-         2wEA==
-X-Gm-Message-State: AOAM532OD0WzUOMlMAJPhlm4uxHvRC4ROe6Dm4lhGiDpDZlLqxuFMXiV
-        t5eouKs/8k5jv02liiW2uQuLuKUsiYiqlVFlsy2Ws7zi5gM9lw==
-X-Google-Smtp-Source: ABdhPJwbKHmbnZDflMHBZCcp2YbZAAZvFdPcM4owWeuPIkoxodmwIZJ+Xpgi08ylB1RFXLrw63SQRxJzumbwJKMTxhs=
-X-Received: by 2002:a17:90b:1007:b0:1dc:9862:68af with SMTP id
- gm7-20020a17090b100700b001dc986268afmr3261389pjb.205.1652243951499; Tue, 10
- May 2022 21:39:11 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=mZ3wqB4NmL7z6lpFr/h15h1rYqsZKafJnUpMVahbEPg=;
+        b=DLzDyTDM69/vZzEmEehKkJiT4FKktyDi5/H+qMhAQqZRuCqJdstRmYUa7sxhCzuowF
+         DLsV1AqL9ABWw6R7C536ZdJsOVySuq+fgHE6xq7djcqaSKPEUxc7sdtGal8IhD8jevl0
+         aqjym80yggdH8VfLvoqEp0GszbRFp2tELFsT51Poees3PcvBQqDRKrnqKClGGOMvrQL2
+         H2llnBWFu2vCOktjhofcaqyuCXfFskBXqy9EtB94Vbxl9MG1UQiwaYyAxMVjopW+Q3ux
+         0i8lKYVzX0R5jz/eshAMJEODUJ2+ZDuNml/HzrT5KMFAIHEvxH61pfpdZJz6+gsTk85l
+         NdBA==
+X-Gm-Message-State: AOAM5304NhOIzxvTPB3Tc6H7n+lyoYRav5fVhhMQqUvVwQvbdvX8H6O2
+        OvJo+Dfpn3f6WkLmK2J8wuh4G88Ie0Hb93AIe5EKHagf/YrKTJOUAznNCRlR
+X-Google-Smtp-Source: ABdhPJyyLDAg+sVdsLTxwEXiZ5avjedwK/uWMP/Y3UWcChEjwDE+iXuY4kOycHY8vIqM/rcV0hLTcVdg0IN0RAQYgBc=
+X-Received: by 2002:a5b:f87:0:b0:64a:9aa6:e181 with SMTP id
+ q7-20020a5b0f87000000b0064a9aa6e181mr1852277ybh.157.1652914614913; Wed, 18
+ May 2022 15:56:54 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:39:10
+Received: by 2002:a05:7000:7143:0:0:0:0 with HTTP; Wed, 18 May 2022 15:56:53
  -0700 (PDT)
-From:   Private Mail <privatemail1961@gmail.com>
-Date:   Tue, 10 May 2022 21:39:10 -0700
-Message-ID: <CANjAOAiiVcSrSv31FjThCVmeppS54UVvGVj3SRSvMfxOB+T8DA@mail.gmail.com>
-Subject: Have you had this? It is for your Benefit
+Reply-To: tonywenn@asia.com
+From:   Tony Wen <weboutloock4@gmail.com>
+Date:   Thu, 19 May 2022 06:56:53 +0800
+Message-ID: <CAE2_YrD=5bo8j9+ah-xptEBBV-HEC4=Gb0SRHf996phiopc3WQ@mail.gmail.com>
+Subject: engage
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
-        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
-        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:b31 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4933]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [weboutloock4[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [weboutloock4[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.4 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Our Ref: BG/WA0151/2022
-
-Dear Beneficiary
-
-Subject: An Estate of US$15.8 Million
-
-Blount and Griffin Genealogical Investigators specializes in probate
-research to locate missing heirs and beneficiaries to estates in the
-United Kingdom and Europe.
-
-We can also help you find wills, obtain copies of certificates, help
-you to administer an estate, as well as calculating how an estate,
-intestacy or trust should be distributed.
-
-You may be entitled to a large pay out for an inheritance in Europe
-worth US$15.8 million. We have discovered an estate belonging to the
-late Depositor has remained unclaimed since he died in 2011 and we
-have strong reasons to believe you are the closest living relative to
-the deceased we can find.
-
-You may unknowingly be the heir of this person who died without
-leaving a will (intestate). We will conduct a probate research to
-prove your entitlement, and can submit a claim on your behalf all at
-no risk to yourselves.
-
-Our service fee of 10% will be paid to us after you have received the estate.
-
-The estate transfer process should take just a matter of days as we
-have the mechanism and expertise to get this done very quickly. This
-message may come to you as a shock, however we hope to work with you
-to transfer the estate to you as quickly as possible.
-
-Feel free to email our senior case worker Mr. Malcolm Casey on email:
-malcolmcasey68@yahoo.com for further discussions.
-
-With warm regards,
-
-Mr. Blount W. Gort, CEO.
-Blount and Griffin Associates Inc
+Can I engage your services?
