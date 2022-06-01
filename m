@@ -2,37 +2,62 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 319D8539B4A
-	for <lists+linux-unionfs@lfdr.de>; Wed,  1 Jun 2022 04:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66F5153AE49
+	for <lists+linux-unionfs@lfdr.de>; Wed,  1 Jun 2022 22:51:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349177AbiFAC2X (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 31 May 2022 22:28:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59918 "EHLO
+        id S229878AbiFAUn3 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 1 Jun 2022 16:43:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231981AbiFAC2W (ORCPT
+        with ESMTP id S229830AbiFAUmw (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 31 May 2022 22:28:22 -0400
-Received: from out199-7.us.a.mail.aliyun.com (out199-7.us.a.mail.aliyun.com [47.90.199.7])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C489A66C93;
-        Tue, 31 May 2022 19:28:19 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046060;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0VEyjSoC_1654050495;
-Received: from localhost(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0VEyjSoC_1654050495)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 01 Jun 2022 10:28:15 +0800
-From:   Yang Li <yang.lee@linux.alibaba.com>
-To:     miklos@szeredi.hu
-Cc:     linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: [PATCH -next] ovl: Fix some kernel-doc comments
-Date:   Wed,  1 Jun 2022 10:28:14 +0800
-Message-Id: <20220601022814.122620-1-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 2.20.1.7.g153144c
+        Wed, 1 Jun 2022 16:42:52 -0400
+Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A22A1B1775
+        for <linux-unionfs@vger.kernel.org>; Wed,  1 Jun 2022 13:25:04 -0700 (PDT)
+Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-e93bbb54f9so4186896fac.12
+        for <linux-unionfs@vger.kernel.org>; Wed, 01 Jun 2022 13:25:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Gk4nfCem3ECRa7Gml0J0mN/3RZoOAdfGaQAqyHPKtiI=;
+        b=HLFKV03IvnCnmYNulbqEkPjTK3riUL87h2wHAPtiQ15M9iY6Q8e992KMQxJwLdk6f+
+         yc6asPWVRklcz8AY8oqwyi19SO9Z3FXfSKl8KIcHwdn2diZ16fcVN3Noj9XYHhxCnXOp
+         L86c6aBumcYcai1ti0jT0anzEO5LqUJSpP7KiFxQXIe3O9qnWY7viJfSABa1ly9ubc5O
+         7xqU4M/fQQEbpLLu8u6cCuAo0xRfp/5LoTJYIMP5ne/O4VXGwgI3hKlV02ue3fdzqvYA
+         6IABKhDngCz8ZKTuipfv5GZ/7HEqJFbM8x/u/85qQFiKTPs+Mb3XRU84XoMrlsTu1Zr+
+         PsMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Gk4nfCem3ECRa7Gml0J0mN/3RZoOAdfGaQAqyHPKtiI=;
+        b=oUPmv3yUSdX6Q5HoMw6n2XXM1Vw6iednk+2oynQZQtM7Ot54jdiicTq+5BjKkyRIfD
+         LaqWGqcLS5ToWbXh3RPjCIANcBCMtPkmjvNuQ5xhZAhho5W2ABhTClUY8VxQd8+efPuZ
+         BjXk14hFdG2Hdtf+d7TuM6bIGnD1ypSWS4TIkmvB5LIs3zN8xRHPMR1LhtIrIe4nmx4L
+         SVWrRV11nTK07yeIWJ/9yofQAOSSMoceD+vksjzwNHF7ElputVguMiyUcYNDU0Yg0pjx
+         FkT8Z8DviOdkSqGDNnxDHZLibkB4zFmuMAnxBDgqZqk4yg+YRvrDggwWR/V1CcSw1Fwy
+         TStg==
+X-Gm-Message-State: AOAM530ZMRf1m1FpZdNG7yUt/ROqbtYFa+tmB5rYsIfqjYHNvzLZ0qAL
+        hPJI9JhOGR879sGQwIa6t8RaDjODu+DotPdufAtjqAy2lHc=
+X-Google-Smtp-Source: ABdhPJzieEZsH3sz7p7h/CGCrygaKC3twss2VqEDgMRTw52PjXyF0yZxDsfC/Wcw+CTWK4gcBihtpQQBph7O0cnThRw=
+X-Received: by 2002:a05:6870:308:b0:f1:ddfe:8ac5 with SMTP id
+ m8-20020a056870030800b000f1ddfe8ac5mr16670934oaf.237.1654111051378; Wed, 01
+ Jun 2022 12:17:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
+Received: by 2002:a05:6358:3601:b0:a3:2139:251d with HTTP; Wed, 1 Jun 2022
+ 12:17:30 -0700 (PDT)
+Reply-To: johnwinery@online.ee
+From:   johnwinery <alicejohnson8974@gmail.com>
+Date:   Wed, 1 Jun 2022 12:17:30 -0700
+Message-ID: <CAFqHCSSUC0MpbjYK8d-GCxOG4b6Qbk2uH3+xQDZte6cPBsxLGA@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -40,45 +65,4 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Remove warnings found by running scripts/kernel-doc,
-which is caused by using 'make W=1'.
-fs/overlayfs/super.c:311: warning: Function parameter or member 'dentry'
-not described in 'ovl_statfs'
-fs/overlayfs/super.c:311: warning: Excess function parameter 'sb'
-description in 'ovl_statfs'
-fs/overlayfs/super.c:357: warning: Function parameter or member 'm' not
-described in 'ovl_show_options'
-fs/overlayfs/super.c:357: warning: Function parameter or member 'dentry'
-not described in 'ovl_show_options'
-
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- fs/overlayfs/super.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index e0a2e0468ee7..9282296dc4c9 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -301,7 +301,7 @@ static int ovl_sync_fs(struct super_block *sb, int wait)
- 
- /**
-  * ovl_statfs
-- * @sb: The overlayfs super block
-+ * @dentry: The dentry to query
-  * @buf: The struct kstatfs to fill in with stats
-  *
-  * Get the filesystem statistics.  As writes always target the upper layer
-@@ -349,6 +349,8 @@ static inline int ovl_xino_def(void)
- 
- /**
-  * ovl_show_options
-+ * @m: the seq_file handle
-+ * @dentry: The dentry to query
-  *
-  * Prints the mount options for a given superblock.
-  * Returns zero; does not fail.
--- 
-2.20.1.7.g153144c
-
+Greeting ,I had written an earlier mail to you but without response
