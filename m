@@ -2,153 +2,69 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EB8954E59E
-	for <lists+linux-unionfs@lfdr.de>; Thu, 16 Jun 2022 17:04:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CB7B54F66E
+	for <lists+linux-unionfs@lfdr.de>; Fri, 17 Jun 2022 13:10:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377317AbiFPPEN (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 16 Jun 2022 11:04:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43776 "EHLO
+        id S1382324AbiFQLKs (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 17 Jun 2022 07:10:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377757AbiFPPEM (ORCPT
+        with ESMTP id S1382297AbiFQLKo (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 16 Jun 2022 11:04:12 -0400
-Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3CD134664
-        for <linux-unionfs@vger.kernel.org>; Thu, 16 Jun 2022 08:04:10 -0700 (PDT)
-Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-fe15832ce5so2189464fac.8
-        for <linux-unionfs@vger.kernel.org>; Thu, 16 Jun 2022 08:04:10 -0700 (PDT)
+        Fri, 17 Jun 2022 07:10:44 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2A946CA88
+        for <linux-unionfs@vger.kernel.org>; Fri, 17 Jun 2022 04:10:43 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id s6so6384601lfo.13
+        for <linux-unionfs@vger.kernel.org>; Fri, 17 Jun 2022 04:10:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=zoPzQU7tFCHKbazE96n62nKhOYL6lpl30iCKAfHWF3k=;
-        b=hzB+iWkLegyX/YVU4Z4Uk20/fD5mQ12Bb87V6Eh8E5BihrifNpR/2Kid3c5IL3kULj
-         /Kav66ARa+qN/N67YFml7VO4vjU3H+d51tIoMenFO1qIG1cNa0TEMy6orpmxvFp0gMGw
-         /kiER4gc6alC0Jl/FnyoXaEN+XA94MiTxlaik=
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Jh3M8LDovYWs/mBJiVJoI/DS8xun0EDDqspVSX/swmY=;
+        b=a5lpETF3CiAr1MD9se/qBuFLxUdbv1nm7l/Zsrl8+yFWc+taBtqRwVrI6CqWZSio6N
+         0R/GxqHbvDQYj/NFN2n8p1JwVkJmrnXUdjSQO83PN/MBS+ysc4iceW595H54x1i710Ll
+         FYx5ZZAK9JZFLQ388FDL1dy5cLZ8kaR60jD92as27qEgEZi+hgrqiMNy6YJ32fuLDcv/
+         hHQUlzUmpEy3/3IvlKi6iUfcHVNZ534NgRf6wGQ+47jrqIWVg4cKYbRWiWMI3T4Jhi+Q
+         Xq75cJ0pks/g/mxbKfe8Ak1RRS8ULqz1aa/d5BiKENEqkdtik2+BLOvWTy6WDtpEs+z0
+         fGpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=zoPzQU7tFCHKbazE96n62nKhOYL6lpl30iCKAfHWF3k=;
-        b=yTOovA7jVhGshNXHgYWxvHzANHNoHOTri8q6/f4Ti1sKwslN0/s9PRo+px705NlBjr
-         4iAekoQV/TprpQzxR1ToaK3HiIKjClU1VkD+/pAIhPfL4QcMVyxdGa2eTMXA957sNWUJ
-         6kFG9tiuT3YqQBb16/GcdW7jdjm8s2oUjmKg6VOh2vPvaCnPbMynEFQlMKK5yHkPPGwy
-         K2pDtVQPxx6lB9xRytt5XBHKMLb37cyyVBKNtlJBoGxjGaH871zuEh1s2Sv9A4NT+jsU
-         VSjD34S+9JqI7FpH2lTgbts48RWkd3JmG780lxgeuvl5PJpgp1msg6aWGsRITp+zTbu7
-         hAmg==
-X-Gm-Message-State: AJIora/+tkO1NxZQjhGeQDU4BE/nNOJBaRjnJ1V9WTqunZ3AdKg/7tXf
-        FUSImdbyx89UumRd3hnHymOdGA==
-X-Google-Smtp-Source: AGRyM1t/ql2JMv1ewpAojMoM3/cs4LVSN9IuvwaxwKyqaHE21iNNhZqbPJBxqQN/Cljh9oFWXsyihg==
-X-Received: by 2002:a05:6870:c181:b0:f1:ea2f:f7f7 with SMTP id h1-20020a056870c18100b000f1ea2ff7f7mr8618905oad.18.1655391849854;
-        Thu, 16 Jun 2022 08:04:09 -0700 (PDT)
-Received: from [192.168.0.41] ([184.4.90.121])
-        by smtp.gmail.com with ESMTPSA id n5-20020a4ab345000000b0035eb4e5a6d6sm1098587ooo.44.2022.06.16.08.04.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Jun 2022 08:04:08 -0700 (PDT)
-Message-ID: <9fe9cd9f-1ded-a179-8ded-5fde8960a586@cloudflare.com>
-Date:   Thu, 16 Jun 2022 10:04:07 -0500
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Jh3M8LDovYWs/mBJiVJoI/DS8xun0EDDqspVSX/swmY=;
+        b=ONjYorOAtzzaoW1BL4gKpsvKvsgM/wqkj+Zvsdy1HP7NQ9ToxJ4jsK0aKR/nxTfL/8
+         zN8reMiypnOJSwDkymX3RyuNVD0A0Lexq20+OmbHlsKdm1v+PEolYr5seyllYEpXhMn1
+         pPmtBMfq/YlAlvJ65Ya5s99kWOlRJWCwu4ziCJQ4UXo9LtziHvJMLrkOn30sldVqJDFX
+         2fDSFkusmbfAbxHNQs0lDZgANNzVpt7DVuH5YPM3CO4GXSmyeOuQu0IjoB6g0vkmh2kU
+         q1nh2W3w3oKUjJhQXdrM+uvm9A0vCear2ejxhGeC8K2ClNCDvL21PDYiUEZxlhuRLmnl
+         JH6g==
+X-Gm-Message-State: AJIora/slcafoY0lAVK7TDok/UkYU7mtndhd8aPnaQs9HjECTfPZPXXF
+        tW07mQP1fjeWqaNLWWYlcXdYGsoH7C2qEKOCh2c=
+X-Google-Smtp-Source: AGRyM1v1wDuvX6n4XY7KoVwHSQTKQ+o32cf0zrXSJNM55HDBk1s+fYaML8/ymRMvfw9zftl0EfSWJ1FIxJgS2pf1fHY=
+X-Received: by 2002:a05:6512:2286:b0:479:7a60:5e42 with SMTP id
+ f6-20020a056512228600b004797a605e42mr5253740lfu.625.1655464242205; Fri, 17
+ Jun 2022 04:10:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v3] cred: Propagate security_prepare_creds() error code
-Content-Language: en-US
-To:     Casey Schaufler <casey@schaufler-ca.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Ignat Korchagin <ignat@cloudflare.com>
-Cc:     Christian Brauner <brauner@kernel.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        linux-doc@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>, linux-aio@kvack.org,
-        linux-fsdevel@vger.kernel.org, linux-cachefs@redhat.com,
-        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
-        linux-mm@kvack.org, linux-nfs@vger.kernel.org,
-        linux-unionfs@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        netdev <netdev@vger.kernel.org>, keyrings@vger.kernel.org,
-        selinux@vger.kernel.org, serge@hallyn.com, amir73il@gmail.com,
-        kernel-team <kernel-team@cloudflare.com>,
-        Jeff Moyer <jmoyer@redhat.com>
-References: <20220608150942.776446-1-fred@cloudflare.com>
- <87tu8oze94.fsf@email.froward.int.ebiederm.org>
- <e1b62234-9b8a-e7c2-2946-5ef9f6f23a08@cloudflare.com>
- <87y1xzyhub.fsf@email.froward.int.ebiederm.org>
- <859cb593-9e96-5846-2191-6613677b07c5@cloudflare.com>
- <87o7yvxl4x.fsf@email.froward.int.ebiederm.org>
- <9ed91f15-420c-3db6-8b3b-85438b02bf97@cloudflare.com>
- <20220615103031.qkzae4xr34wysj4b@wittgenstein>
- <CAHC9VhR8yPHZb2sCu4JGgXOSs7rudm=9opB+-LsG6_Lta9466A@mail.gmail.com>
- <CALrw=nGZtrNYn+CV+Q_w-2=Va_9m3C8PDvvPtd01d0tS=2NMWQ@mail.gmail.com>
- <CAHC9VhRSzXeAZmBdNSAFEh=6XR57ecO7Ov+6BV9b0xVN1YR_Qw@mail.gmail.com>
- <1c4b1c0d-12f6-6e9e-a6a3-cdce7418110c@schaufler-ca.com>
-From:   Frederick Lawler <fred@cloudflare.com>
-In-Reply-To: <1c4b1c0d-12f6-6e9e-a6a3-cdce7418110c@schaufler-ca.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: by 2002:ab3:680f:0:0:0:0:0 with HTTP; Fri, 17 Jun 2022 04:10:41
+ -0700 (PDT)
+Reply-To: sj7209917@gmail.com
+From:   Joseph smith <maelyskpeta@gmail.com>
+Date:   Fri, 17 Jun 2022 04:10:41 -0700
+Message-ID: <CACKGxpx1qvVYtiHHrZyM5G0z9SCjvAsXsGNJ81Ure7BFu2ZoKQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On 6/15/22 10:55 AM, Casey Schaufler wrote:
-> On 6/15/2022 8:33 AM, Paul Moore wrote:
->> On Wed, Jun 15, 2022 at 11:06 AM Ignat Korchagin 
->> <ignat@cloudflare.com> wrote:
->>> On Wed, Jun 15, 2022 at 3:14 PM Paul Moore <paul@paul-moore.com> wrote:
->>>> On Wed, Jun 15, 2022 at 6:30 AM Christian Brauner 
->>>> <brauner@kernel.org> wrote:
->> ...
->>
->>>>> Fwiw, from this commit it wasn't very clear what you wanted to achieve
->>>>> with this. It might be worth considering adding a new security hook 
->>>>> for
->>>>> this. Within msft it recently came up SELinux might have an 
->>>>> interest in
->>>>> something like this as well.
->>>> Just to clarify things a bit, I believe SELinux would have an interest
->>>> in a LSM hook capable of implementing an access control point for user
->>>> namespaces regardless of Microsoft's current needs.  I suspect due to
->>>> the security relevant nature of user namespaces most other LSMs would
->>>> be interested as well; it seems like a well crafted hook would be
->>>> welcome by most folks I think.
->>> Just to get the full picture: is there actually a good reason not to
->>> make this hook support this scenario? I understand it was not
->>> originally intended for this, but it is well positioned in the code,
->>> covers multiple subsystems (not only user namespaces), doesn't require
->>> changing the LSM interface and it already does the job - just the
->>> kernel internals need to respect the error code better. What bad
->>> things can happen if we extend its use case to not only allocate
->>> resources in LSMs?
->> My concern is that the security_prepare_creds() hook, while only
->> called from two different functions, ends up being called for a
->> variety of different uses (look at the prepare_creds() and
->> perpare_kernel_cred() callers) and I think it would be a challenge to
->> identify the proper calling context in the LSM hook implementation
->> given the current hook parameters.  One might be able to modify the
->> hook to pass the necessary information, but I don't think that would
->> be any cleaner than adding a userns specific hook.  I'm also guessing
->> that the modified security_prepare_creds() hook implementations would
->> also be more likely to encounter future maintenance issues as
->> overriding credentials in the kernel seems only to be increasing, and
->> each future caller would risk using the modified hook wrong by passing
->> the wrong context and triggering the wrong behavior in the LSM.
-> 
-> We don't usually have hooks that do both attribute management and
-> access control. Some people seem excessively concerned about "cluttering"
-> calling code with security_something() instances, but for the most
-> part I think we're past that. I agree that making security_prepare_creds()
-> multi-purpose is a bad idea. Shared cred management isn't simple, and
-> adding access checks there is only going to make it worse.
-> 
-
-Sounds like we've reached the conclusion not to proceed with a v4 of 
-this patch. I'll pivot to propose a new hook instead.
-
-Thanks for the feedback everyone :)
-
-Fred
+Hi   are you available to  speak now
+Thanks
