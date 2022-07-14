@@ -2,94 +2,98 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 778FA5733FB
-	for <lists+linux-unionfs@lfdr.de>; Wed, 13 Jul 2022 12:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1BE357472C
+	for <lists+linux-unionfs@lfdr.de>; Thu, 14 Jul 2022 10:37:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234823AbiGMKSZ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 13 Jul 2022 06:18:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42844 "EHLO
+        id S237498AbiGNIhz (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 14 Jul 2022 04:37:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230472AbiGMKSY (ORCPT
+        with ESMTP id S236396AbiGNIhP (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 13 Jul 2022 06:18:24 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D63E3FA1D8
-        for <linux-unionfs@vger.kernel.org>; Wed, 13 Jul 2022 03:18:23 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9650EB81D87
-        for <linux-unionfs@vger.kernel.org>; Wed, 13 Jul 2022 10:18:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91315C34114;
-        Wed, 13 Jul 2022 10:18:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657707501;
-        bh=6uwWow39rEewEZPxJu+5vNne5J3Fr2dD6Ha1qbLbTTw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=f4oPAxUy8WGxtQ/kaMMVzK6LZIAurhVfMb15L84vtDIMkXsWkxhLY4PTiZIye7Y25
-         td0UuyTKpILaqtzAOfq8oH1fQN/tmYCBFmpXFDZHvg1VzFz26rC7SaIIGv7lxkoCrv
-         eiRFBqBE9Ye+m7Tr0w2G6zAvEA/W2He55Mtig7R9GQ3vtia+seqXOAz+VnyutJA6Q+
-         mrkO8mXsbL5Kaai1qAKA0/ylE09DhbA8I1X2g3HKYrh9vgyKYBe4niBCGMrGnMku3U
-         rwdRGqt/dk6qIjKO6wEqNhwkU0/ERSLLa9XBvcAWnZDyHfYPGMHgV3au9JOb97YsQG
-         f4HM3DFg/lHRw==
-Date:   Wed, 13 Jul 2022 12:18:14 +0200
-From:   Christian Brauner <brauner@kernel.org>
-To:     Miklos Szeredi <mszeredi@redhat.com>
-Cc:     Vivek Goyal <vgoyal@redhat.com>, Christoph Hellwig <hch@lst.de>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        linux-unionfs@vger.kernel.org, Amir Goldstein <amir73il@gmail.com>,
-        Seth Forshee <sforshee@digitalocean.com>
-Subject: Re: [PATCH v2 0/3] ovl: acl fixes
-Message-ID: <20220713101814.d5vg3qcc2qk46vqs@wittgenstein>
-References: <20220708090134.385160-1-brauner@kernel.org>
+        Thu, 14 Jul 2022 04:37:15 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45BF53FA3D
+        for <linux-unionfs@vger.kernel.org>; Thu, 14 Jul 2022 01:37:13 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id bu42so1708513lfb.0
+        for <linux-unionfs@vger.kernel.org>; Thu, 14 Jul 2022 01:37:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
+        b=eOKhIHPUU5qPTZbjyQcWfvRUY0zDAP8hnIUzGBjF2Jn5DfdNsbEWN2bt7ALPYmKFVp
+         Dxr1gDHkbIBW6Zt+nHPJYVynuk8AW0yQZ/Zbg6Hs/Db/0s9SnaRXX8dPxs4FUxGCTJqt
+         PUYZva9zdBfTCaw+ACjLsUUgRvbYiV1yKAF3EhOBh+YW55bYBsAw2vjNobpxCrdB648X
+         A9Vj0WSfJubet8viXTg/I9X1Zmn6KwP7YNCJiSogQMOb5VTL9XQBYGsxHSC28kklqMwQ
+         Xqm1mx/as6lOSd/UexvuUJPMkR0uIfSfLSUsGSd7SP6mXh7BeziDYVk18AfHAMhcFado
+         ZNLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
+        b=YQEkkFWFTKjQW3chLeZRh+77gL7OLaWp9AN2FO5DNXARJM/10a7y/eXdtYnGjbbO1f
+         lAbuXPYBJ1cu5zO8HFERfu1oZCyhGlz7tbEQylifsckmwgURJnoHzLzMc+9r5twM5ZWX
+         E/n5Mv64355estXgABrCnHG/UwYO5yV19/bbXZZxFVPq0/qw7+mXXuuZIJdB0d5nntWI
+         NKeidiDWCFPPr1cpqWLWmm4WXUtiqne8sGcVcvkDj0LsdlpvyrBaHyCmHQQbBUmVYs60
+         K8SI3/1yI2sx9dfP/ePhqxTcocxiFgGLQDcOtQ5gMB58Nl2+KViU/2ce0ekbjyTtvfkO
+         i96w==
+X-Gm-Message-State: AJIora8V9+iXPJSujUUQw6mxqocl0Jd+E0c+Cxqfy5CCchTQ5lU6RKzH
+        aqzKZKSUw9m5dyidX+FnHmO6JTcfdKRuDJsYaqg=
+X-Google-Smtp-Source: AGRyM1suH6kpL0bxxrdPqBdRw7fjg6QmbYsIJ5KtUWeYknhIH8CIkHpjEQ1bnLxbFcENJg0E8wYhVlYhJeESVTPizkI=
+X-Received: by 2002:a05:6512:12c8:b0:489:efbf:18d1 with SMTP id
+ p8-20020a05651212c800b00489efbf18d1mr4734610lfg.192.1657787832538; Thu, 14
+ Jul 2022 01:37:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220708090134.385160-1-brauner@kernel.org>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Received: by 2002:a2e:9041:0:0:0:0:0 with HTTP; Thu, 14 Jul 2022 01:37:11
+ -0700 (PDT)
+Reply-To: abdwabbomaddahm@gmail.com
+From:   Abdwabbo Maddah <abdwabbomaddah746@gmail.com>
+Date:   Thu, 14 Jul 2022 09:37:11 +0100
+Message-ID: <CAFC-3icPrpmNqEMcqzAOFvzCPc-r5yv89mNAZ9SsCQvcOZ=+9g@mail.gmail.com>
+Subject: Get back to me... URGENT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:135 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4791]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [abdwabbomaddah746[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [abdwabbomaddah746[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Fri, Jul 08, 2022 at 11:01:31AM +0200, Christian Brauner wrote:
-> From: "Christian Brauner (Microsoft)" <brauner@kernel.org>
-> 
-> Hey everyone,
-> Hey Miklos,
-> 
-> This is the series I described and announced in the commit message to
-> the patch I sent yesterdat (see [1]). It enables POSIX ACLs for
-> overlayfs on top of idmapped layers. It encompasses everything that is
-> needed to make this work correctly. There is a detailed explanation in
-> the first patch of this series so I won't repeat it all here in the
-> cover letter.
-> 
-> My plan would be to get this ready for the next merge window.
-> Once Miklos has merged the temporary fix I sent out yesterday in [1] and
-> it shows up in mainline I will rebase this series on top of the next
-> mainline rc. I will then add a revert of the fix in [1] to this series
-> reenabling POSIX ACL support for overlayfs on top of idmapped layers.
-> 
-> I will also merge in the vfs{g,u}id_t work that is in -next replacing
-> the old idmapped mount helpers with the new type safe idmapping helpers.
-
-Hey Miklos,
-
-I've moved this into my for-next now with the changes I mentioned above.
-Could please take a look at the
-
-    fs.idmapped.overlay.acl
-
-branch at
-
-    git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux.git
-
-and tell me if that looks ok to you?
-
-Thanks!
-Christian
+-- 
+Dear,
+I had sent you a mail but i don't think you received it that's why am
+writing you again.It is important you get back to me as soon as you
+can.
+Abd-Wabbo Maddah
