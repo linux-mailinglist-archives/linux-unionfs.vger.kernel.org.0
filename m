@@ -2,98 +2,103 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1BE357472C
-	for <lists+linux-unionfs@lfdr.de>; Thu, 14 Jul 2022 10:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E99D57570A
+	for <lists+linux-unionfs@lfdr.de>; Thu, 14 Jul 2022 23:36:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237498AbiGNIhz (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 14 Jul 2022 04:37:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60760 "EHLO
+        id S232321AbiGNVg0 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 14 Jul 2022 17:36:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236396AbiGNIhP (ORCPT
+        with ESMTP id S232404AbiGNVg0 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 14 Jul 2022 04:37:15 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45BF53FA3D
-        for <linux-unionfs@vger.kernel.org>; Thu, 14 Jul 2022 01:37:13 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id bu42so1708513lfb.0
-        for <linux-unionfs@vger.kernel.org>; Thu, 14 Jul 2022 01:37:13 -0700 (PDT)
+        Thu, 14 Jul 2022 17:36:26 -0400
+Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BF64DFE6
+        for <linux-unionfs@vger.kernel.org>; Thu, 14 Jul 2022 14:36:23 -0700 (PDT)
+Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-10c8e8d973eso4090618fac.5
+        for <linux-unionfs@vger.kernel.org>; Thu, 14 Jul 2022 14:36:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
-        b=eOKhIHPUU5qPTZbjyQcWfvRUY0zDAP8hnIUzGBjF2Jn5DfdNsbEWN2bt7ALPYmKFVp
-         Dxr1gDHkbIBW6Zt+nHPJYVynuk8AW0yQZ/Zbg6Hs/Db/0s9SnaRXX8dPxs4FUxGCTJqt
-         PUYZva9zdBfTCaw+ACjLsUUgRvbYiV1yKAF3EhOBh+YW55bYBsAw2vjNobpxCrdB648X
-         A9Vj0WSfJubet8viXTg/I9X1Zmn6KwP7YNCJiSogQMOb5VTL9XQBYGsxHSC28kklqMwQ
-         Xqm1mx/as6lOSd/UexvuUJPMkR0uIfSfLSUsGSd7SP6mXh7BeziDYVk18AfHAMhcFado
-         ZNLA==
+        d=digitalocean.com; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=d6Y4PJn4e4OHfXaqqzt6DxiZwXN++QJEYWcqrk5YCAk=;
+        b=Wf2PaExtCvQQhSD6GzFj9p3mnGi6MmdHeptNTa6pcjWaTSqRXDcdGKGNRxhnnIcXwn
+         nT1Y4dfvj44AJdbrnfyQ8/aUL2h82xCTc6e9U0OVHMheoCdQAEt2CaVkUA0ArCG/gH+R
+         sZdOnagpL9XtefeYbEPpTBmprfVJ6jCSo1BPg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
-        b=YQEkkFWFTKjQW3chLeZRh+77gL7OLaWp9AN2FO5DNXARJM/10a7y/eXdtYnGjbbO1f
-         lAbuXPYBJ1cu5zO8HFERfu1oZCyhGlz7tbEQylifsckmwgURJnoHzLzMc+9r5twM5ZWX
-         E/n5Mv64355estXgABrCnHG/UwYO5yV19/bbXZZxFVPq0/qw7+mXXuuZIJdB0d5nntWI
-         NKeidiDWCFPPr1cpqWLWmm4WXUtiqne8sGcVcvkDj0LsdlpvyrBaHyCmHQQbBUmVYs60
-         K8SI3/1yI2sx9dfP/ePhqxTcocxiFgGLQDcOtQ5gMB58Nl2+KViU/2ce0ekbjyTtvfkO
-         i96w==
-X-Gm-Message-State: AJIora8V9+iXPJSujUUQw6mxqocl0Jd+E0c+Cxqfy5CCchTQ5lU6RKzH
-        aqzKZKSUw9m5dyidX+FnHmO6JTcfdKRuDJsYaqg=
-X-Google-Smtp-Source: AGRyM1suH6kpL0bxxrdPqBdRw7fjg6QmbYsIJ5KtUWeYknhIH8CIkHpjEQ1bnLxbFcENJg0E8wYhVlYhJeESVTPizkI=
-X-Received: by 2002:a05:6512:12c8:b0:489:efbf:18d1 with SMTP id
- p8-20020a05651212c800b00489efbf18d1mr4734610lfg.192.1657787832538; Thu, 14
- Jul 2022 01:37:12 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=d6Y4PJn4e4OHfXaqqzt6DxiZwXN++QJEYWcqrk5YCAk=;
+        b=eNTrL2mXf4fsoCbUPO/GGlLqH0We7CpWHfbIu/Nqi9c+LVKHEWMaeWj/irdvD3BYMX
+         ZiyEjitSbhAzxDDvT6/aVJbkvU+/Jv9BqWL7Hy7RfLyRiN6MOxrQ2BBtfg0eqScVTpa3
+         OIvdH6Tyg5s0QLt8PgP9nG0I+CCRrQOpLuDr8XpKHn6yc1zZcSZJFJZ6Zy1lMVylB9aF
+         GlcA0JnAo9Mj/A1rsp7n2Ft8pLHQ216O1O/8e9EoVuwr1ewwvYSk6zbXYSL9AVjU118T
+         hjoTp+N+sX2JK3ViG4TLR7hXiL8uqpMeqkbfRSeurBcJN1SyQ/5H7+iOZVmZyyT9sSTi
+         OG1Q==
+X-Gm-Message-State: AJIora+r13bGCofz5IazlP15buuSlIeIBkrXp0PZ1A63wK8uMIs6tLjU
+        qD8yh5CiGRj6jmkjtHjqJ0hSBQ==
+X-Google-Smtp-Source: AGRyM1t4Myc5kFjsvPLRN34EdAntuLawCu4x0RTBiHDikYjVawkz58ozSAKImIJQhn742UNLxKdUHQ==
+X-Received: by 2002:a05:6870:51c6:b0:10c:2b7c:a542 with SMTP id b6-20020a05687051c600b0010c2b7ca542mr8348378oaj.19.1657834582793;
+        Thu, 14 Jul 2022 14:36:22 -0700 (PDT)
+Received: from localhost ([2605:a601:ac0f:820:1f77:47fa:4ce9:ddce])
+        by smtp.gmail.com with ESMTPSA id e18-20020a4ae0d2000000b00432ac97ad09sm1123189oot.26.2022.07.14.14.36.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Jul 2022 14:36:22 -0700 (PDT)
+Date:   Thu, 14 Jul 2022 16:36:21 -0500
+From:   Seth Forshee <sforshee@digitalocean.com>
+To:     Christian Brauner <brauner@kernel.org>
+Cc:     Amir Goldstein <amir73il@gmail.com>,
+        Miklos Szeredi <mszeredi@redhat.com>,
+        Vivek Goyal <vgoyal@redhat.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] acl: move idmapped mount fixup into
+ vfs_{g,s}etxattr()
+Message-ID: <YtCMVQIm0cU1wnYU@do-x1extreme>
+References: <20220708090134.385160-1-brauner@kernel.org>
+ <20220708090134.385160-2-brauner@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:a2e:9041:0:0:0:0:0 with HTTP; Thu, 14 Jul 2022 01:37:11
- -0700 (PDT)
-Reply-To: abdwabbomaddahm@gmail.com
-From:   Abdwabbo Maddah <abdwabbomaddah746@gmail.com>
-Date:   Thu, 14 Jul 2022 09:37:11 +0100
-Message-ID: <CAFC-3icPrpmNqEMcqzAOFvzCPc-r5yv89mNAZ9SsCQvcOZ=+9g@mail.gmail.com>
-Subject: Get back to me... URGENT
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220708090134.385160-2-brauner@kernel.org>
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:135 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4791]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [abdwabbomaddah746[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [abdwabbomaddah746[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
--- 
-Dear,
-I had sent you a mail but i don't think you received it that's why am
-writing you again.It is important you get back to me as soon as you
-can.
-Abd-Wabbo Maddah
+On Fri, Jul 08, 2022 at 11:01:32AM +0200, Christian Brauner wrote:
+> This cycle we added support for mounting overlayfs on top of idmapped mounts.
+> Recently I've started looking into potential corner cases when trying to add
+> additional tests and I noticed that reporting for POSIX ACLs is currently wrong
+> when using idmapped layers with overlayfs mounted on top of it.
+
+<snip detailed explanation>
+
+Beyond the issues described here, it also looks like the vfs_*() calls
+are been inconsistent wrt idmapped mounts. With acls it takes/returns
+unmapped ids, but other interfaces like vfs_getattr() return mapped ids.
+So it makes sense to make vfs_{get,set}xattr() behave likewise.
+
+I have one small suggestion below, but I think this looks good.
+
+Reviewed-by: Seth Forshee <sforshee@digitalocean.com>
+
+> +static inline bool is_posix_acl_xattr(const char *name)
+> +{
+> +	return (strcmp(name, XATTR_NAME_POSIX_ACL_ACCESS) == 0) ||
+> +	       (strcmp(name, XATTR_NAME_POSIX_ACL_DEFAULT) == 0);
+> +}
+> +
+
+There are locations still open-coding this check -- setxattr_convert()
+and do_getxattr(). Maybe consider adding a follow-on patch to convert
+those too.
+
+Seth
