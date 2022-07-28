@@ -2,82 +2,66 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D430658367E
-	for <lists+linux-unionfs@lfdr.de>; Thu, 28 Jul 2022 03:48:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FB885838E0
+	for <lists+linux-unionfs@lfdr.de>; Thu, 28 Jul 2022 08:40:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229919AbiG1Bsw (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 27 Jul 2022 21:48:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57448 "EHLO
+        id S233104AbiG1Gj7 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 28 Jul 2022 02:39:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbiG1Bsv (ORCPT
+        with ESMTP id S229682AbiG1Gj6 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 27 Jul 2022 21:48:51 -0400
-Received: from mail1.bemta32.messagelabs.com (mail1.bemta32.messagelabs.com [195.245.230.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23022564F7
-        for <linux-unionfs@vger.kernel.org>; Wed, 27 Jul 2022 18:48:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fujitsu.com;
-        s=170520fj; t=1658972928; i=@fujitsu.com;
-        bh=C3n1xiSbSsvSq9M5rpBPCaD2RbJQY0jXFMYUS8FbTUg=;
-        h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type;
-        b=teT8zpdA8Dx+kwpNLRSASX5MinCKwao2tM/0MzEpZ4l5vhYDLVqkc0XxFJDNGACHh
-         ESOe651PTyPM9rbjqUBnpKcsMCWzxDC1R/50JSuENN7ma5N3iJowJo8KJ9hAS43O+e
-         MFNEym6plB00QbgtPI9njz3Pp/Y8ZZD+sa85xiS9Vcn5E2YszGV54gtDByM3A9Xrg2
-         BjeV6pisma5OiAfBX2BYh5V2EG2Ttfur+GTjh3TkynEnUr7iavxBefdaK+uFZGxLQk
-         0oE6yhlMKoIaL6XzcPzuFbyjbExWYhrU/i25nm/rTBZncA5E2UJFbz9crnN8yQBPvY
-         69mkkjqdtFBpA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrCIsWRWlGSWpSXmKPExsViZ8MxSff/q4d
-  JBsceGVi8PvyJ0aLt+hpGi2e7NzI7MHtsWtXJ5rFi2kUmj8+b5AKYo1gz85LyKxJYM17eX8tU
-  0MxXMf/0VKYGxlaeLkYuDiGBLYwS3XvPskM4y5kkLrRPhXL2MEr83H6QsYuRk4NNQFPiWecCZ
-  hBbREBc4vTH86wgNrNAvMStbXvA4sICRhJH7iwHi7MIqEp8vbENKM7BwSvgIbFkTQFIWEJAQW
-  LKw/dg5bwCghInZz5hgRgjIXHwxQtmiBpFiUsd3xgh7AqJ14cvQcXVJK6e28Q8gZF/FpL2WUj
-  aFzAyrWK0TCrKTM8oyU3MzNE1NDDQNTQ01TXWtTDTS6zSTdRLLdUtTy0u0TXUSywv1kstLtYr
-  rsxNzknRy0st2cQIDNyUYuawHYx/en/qHWKU5GBSEuWdufBhkhBfUn5KZUZicUZ8UWlOavEhR
-  hkODiUJ3sIXQDnBotT01Iq0zBxgFMGkJTh4lER4Zz8DSvMWFyTmFmemQ6ROMSpKifPa3wdKCI
-  AkMkrz4NpgkXuJUVZKmJeRgYFBiKcgtSg3swRV/hWjOAejkjDvBpDxPJl5JXDTXwEtZgJavEX
-  hAcjikkSElFQDU1JwbVlUpE1PRcL9/7pLl3P9nLZAwW1dUdvSu4zukxvn9PxiNi5M+LSOXaBK
-  ip/7d6GB5L8kPtEv6+KW+3+at+T1lDC+ngWKZsVRjjOMAhu2xtcc0X2+8bb06dSvbzT5E/Qr9
-  60NWW/CxLz3jlSJo0Zd4renjtt/5N9OtenO9mfTKxLUqv0eIbP265ld5y9W5HZ/Uv7876l37I
-  lVlocUI6T6F9stf39Royle963gml0VZxWz+Pqzfui0P1NXNiiTifp0Tf6j5if2GFW1oN3fsk1
-  kEzPONsg4Ml5qd924f0NB+7vrdbu9/vWIFtdeit/zMO32+1zL458ylm+IbP1dOMU0jlVrwWI5
-  Tt1VHPpKLMUZiYZazEXFiQB4IPklVwMAAA==
-X-Env-Sender: xuyang2018.jy@fujitsu.com
-X-Msg-Ref: server-4.tower-587.messagelabs.com!1658972927!56236!1
-X-Originating-IP: [62.60.8.146]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.87.3; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 9454 invoked from network); 28 Jul 2022 01:48:47 -0000
-Received: from unknown (HELO n03ukasimr02.n03.fujitsu.local) (62.60.8.146)
-  by server-4.tower-587.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 28 Jul 2022 01:48:47 -0000
-Received: from n03ukasimr02.n03.fujitsu.local (localhost [127.0.0.1])
-        by n03ukasimr02.n03.fujitsu.local (Postfix) with ESMTP id 68436100077;
-        Thu, 28 Jul 2022 02:48:47 +0100 (BST)
-Received: from R01UKEXCASM126.r01.fujitsu.local (R01UKEXCASM126 [10.183.43.178])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by n03ukasimr02.n03.fujitsu.local (Postfix) with ESMTPS id 5B3B7100078;
-        Thu, 28 Jul 2022 02:48:47 +0100 (BST)
-Received: from localhost.localdomain (10.167.220.84) by
- R01UKEXCASM126.r01.fujitsu.local (10.183.43.178) with Microsoft SMTP Server
- (TLS) id 15.0.1497.32; Thu, 28 Jul 2022 02:48:45 +0100
-From:   Yang Xu <xuyang2018.jy@fujitsu.com>
-To:     <miklos@szeredi.hu>
-CC:     <linux-unionfs@vger.kernel.org>, <brauner@kernel.org>,
-        Yang Xu <xuyang2018.jy@fujitsu.com>
-Subject: [PATCH v2] overlayfs: improve ovl_get_acl
-Date:   Thu, 28 Jul 2022 10:49:24 +0800
-Message-ID: <1658976564-2163-1-git-send-email-xuyang2018.jy@fujitsu.com>
-X-Mailer: git-send-email 1.8.3.1
+        Thu, 28 Jul 2022 02:39:58 -0400
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FC0B54AD3
+        for <linux-unionfs@vger.kernel.org>; Wed, 27 Jul 2022 23:39:57 -0700 (PDT)
+Received: by mail-pg1-x531.google.com with SMTP id 6so780293pgb.13
+        for <linux-unionfs@vger.kernel.org>; Wed, 27 Jul 2022 23:39:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/kUZ/dgqC7iw0jhI4uYoWyAcN87LUuqF13JYqIaofqY=;
+        b=hTxJbdtJd14HVPheUaqfh98GeNpnBo3mzEF73RKAoFpp+jNZuDAMxRDyKMNSidAYur
+         lWqQY/766U1A1JtH3lOY4TzIlJXpOZenWrAFHJlgNMpROvL18TdxgfISIWp3i0Ywll1j
+         j6Z+uq/2+NlpnaVM63F+yyb7MYeXg4cwVh15kC0KXxVuPbV5KknP7MNMI1WDeXvG45rR
+         72LX1ZOOVRsD0BMe7cAsrhhUMMk8ZoMQYwXKiBkLEwJ+93Ypmw/TCotxWMZMN0kv949x
+         Zwxy8sNaYe3oo40Hkzj5VQScEIgTDYo5hgUPhoLcawI+BU+Yzad3YwEPD0tcsne7Nkwv
+         ArRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/kUZ/dgqC7iw0jhI4uYoWyAcN87LUuqF13JYqIaofqY=;
+        b=VJiREOxPwaJ8/Skqe9iKH0/yWg+SJpMutKcbZG2fhwwZ3JyfVWSIG5+Vn1cM5n0HLy
+         8P1AEgtQ+zUF84dy35h6uEdWf0x5uiE5y2yaYjoMwWWsGz0GkuPCjulMhdhEsZo2r8j9
+         ilPFTnOYLf0BbBI16mL30VOFdiw/5+dqL7V832LQ7j6BTnHI3ntn3CYUu2YvCN2Snzzn
+         JiRG746+ARD09SGkHrlaVKWgamEXIIbyDHla6Bsbwbyz1deJxgTtdkEYEPtnt2ggmCmA
+         FYr3vBR6aREXquKNSbEcyaIyggkANreUbFMAphDFOsQuwswi30waJWAESOxlFtL4CgQO
+         mVRg==
+X-Gm-Message-State: AJIora+4X87ujkQo8gtr1C+b9sl+ZczcymTZEJBpxLw5DhnJvpOB3ajm
+        Vi72C4ZbZbICFDAjCxOPQOaSow==
+X-Google-Smtp-Source: AGRyM1tvBFvRXWWgx31iR7pfQeXgyc4b1FfwvZgr1t5Z3xxZ5QUrFkoWWUhy4aMXTTZ+7pxYqOhPQg==
+X-Received: by 2002:a65:57c6:0:b0:415:c329:5d49 with SMTP id q6-20020a6557c6000000b00415c3295d49mr21175206pgr.581.1658990397120;
+        Wed, 27 Jul 2022 23:39:57 -0700 (PDT)
+Received: from localhost.localdomain ([61.120.150.71])
+        by smtp.gmail.com with ESMTPSA id l1-20020a17090a384100b001f31e91200asm704723pjf.44.2022.07.27.23.39.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Jul 2022 23:39:56 -0700 (PDT)
+From:   Jiachen Zhang <zhangjiachen.jaycee@bytedance.com>
+To:     miklos@szeredi.hu
+Cc:     linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jiachen Zhang <zhangjiachen.jaycee@bytedance.com>,
+        Hongbo Yin <yinhongbo@bytedance.com>,
+        Tianci Zhang <zhangtianci.1997@bytedance.com>
+Subject: [PATCH] ovl: only WARN_ON_ONCE() if dentry is NULL in ovl_encode_fh()
+Date:   Thu, 28 Jul 2022 14:38:55 +0800
+Message-Id: <20220728063856.72705-1-zhangjiachen.jaycee@bytedance.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.167.220.84]
-X-ClientProxiedBy: G08CNEXCHPEKD08.g08.fujitsu.local (10.167.33.83) To
- R01UKEXCASM126.r01.fujitsu.local (10.183.43.178)
-X-Virus-Scanned: ClamAV using ClamSMTP
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,60 +69,53 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Provide a proper stub for the !CONFIG_FS_POSIX_ACL case.
+Some code paths cannot guarantee the inode have any dentry alias. So
+WARN_ON() all !dentry may flood the kernel logs.
 
-Signed-off-by: Yang Xu <xuyang2018.jy@fujitsu.com>
+For example, when an overlayfs inode is watched by inotifywait (1), and
+someone is trying to read the /proc/$(pidof inotifywait)/fdinfo/INOTIFY_FD,
+at that time if the dentry has been reclaimed by kernel (such as
+echo 2 > /proc/sys/vm/drop_caches), there will be a WARN_ON(). The
+printed call stack would be like:
+
+    ? show_mark_fhandle+0xf0/0xf0
+    show_mark_fhandle+0x4a/0xf0
+    ? show_mark_fhandle+0xf0/0xf0
+    ? seq_vprintf+0x30/0x50
+    ? seq_printf+0x53/0x70
+    ? show_mark_fhandle+0xf0/0xf0
+    inotify_fdinfo+0x70/0x90
+    show_fdinfo.isra.4+0x53/0x70
+    seq_show+0x130/0x170
+    seq_read+0x153/0x440
+    vfs_read+0x94/0x150
+    ksys_read+0x5f/0xe0
+    do_syscall_64+0x59/0x1e0
+    entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+So let's replace WARN_ON() with WARN_ON_ONCE() to avoid kernel log
+flooding.
+
+Reported-by: Hongbo Yin <yinhongbo@bytedance.com>
+Signed-off-by: Jiachen Zhang <zhangjiachen.jaycee@bytedance.com>
+Signed-off-by: Tianci Zhang <zhangtianci.1997@bytedance.com>
 ---
- fs/overlayfs/inode.c     | 4 +++-
- fs/overlayfs/overlayfs.h | 6 ++++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ fs/overlayfs/export.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index 492eddeb481f..beef5e2ff563 100644
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -454,13 +454,14 @@ ssize_t ovl_listxattr(struct dentry *dentry, char *list, size_t size)
- 	return res;
- }
+diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+index 2eada97bbd23..3a8650442aec 100644
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -259,7 +259,7 @@ static int ovl_encode_fh(struct inode *inode, u32 *fid, int *max_len,
+ 		return FILEID_INVALID;
  
-+#ifdef CONFIG_FS_POSIX_ACL
- struct posix_acl *ovl_get_acl(struct inode *inode, int type, bool rcu)
- {
- 	struct inode *realinode = ovl_inode_real(inode);
- 	const struct cred *old_cred;
- 	struct posix_acl *acl;
+ 	dentry = d_find_any_alias(inode);
+-	if (WARN_ON(!dentry))
++	if (WARN_ON_ONCE(!dentry))
+ 		return FILEID_INVALID;
  
--	if (!IS_ENABLED(CONFIG_FS_POSIX_ACL) || !IS_POSIXACL(realinode))
-+	if (!IS_POSIXACL(realinode))
- 		return NULL;
- 
- 	if (rcu)
-@@ -472,6 +473,7 @@ struct posix_acl *ovl_get_acl(struct inode *inode, int type, bool rcu)
- 
- 	return acl;
- }
-+#endif
- 
- int ovl_update_time(struct inode *inode, struct timespec64 *ts, int flags)
- {
-diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
-index 4f34b7e02eee..3d8de16a76e9 100644
---- a/fs/overlayfs/overlayfs.h
-+++ b/fs/overlayfs/overlayfs.h
-@@ -599,7 +599,13 @@ int ovl_xattr_set(struct dentry *dentry, struct inode *inode, const char *name,
- int ovl_xattr_get(struct dentry *dentry, struct inode *inode, const char *name,
- 		  void *value, size_t size);
- ssize_t ovl_listxattr(struct dentry *dentry, char *list, size_t size);
-+
-+#ifdef CONFIG_FS_POSIX_ACL
- struct posix_acl *ovl_get_acl(struct inode *inode, int type, bool rcu);
-+#else
-+#define ovl_get_acl	NULL
-+#endif
-+
- int ovl_update_time(struct inode *inode, struct timespec64 *ts, int flags);
- bool ovl_is_private_xattr(struct super_block *sb, const char *name);
- 
+ 	bytes = ovl_dentry_to_fid(ofs, dentry, fid, buflen);
 -- 
-2.27.0
+2.20.1
 
