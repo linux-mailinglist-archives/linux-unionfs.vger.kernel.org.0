@@ -2,107 +2,122 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E33EB58E308
-	for <lists+linux-unionfs@lfdr.de>; Wed, 10 Aug 2022 00:17:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 032A25923CF
+	for <lists+linux-unionfs@lfdr.de>; Sun, 14 Aug 2022 18:25:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230499AbiHIWQp (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 9 Aug 2022 18:16:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38370 "EHLO
+        id S240192AbiHNQZL (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 14 Aug 2022 12:25:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230136AbiHIWPW (ORCPT
+        with ESMTP id S241471AbiHNQYt (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 9 Aug 2022 18:15:22 -0400
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BD8326AED
-        for <linux-unionfs@vger.kernel.org>; Tue,  9 Aug 2022 15:15:16 -0700 (PDT)
-Received: by mail-io1-xd31.google.com with SMTP id y82so3923690iof.7
-        for <linux-unionfs@vger.kernel.org>; Tue, 09 Aug 2022 15:15:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
-        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
-        b=QTP95oQi+RYhXbI8sz4RyTZp0RSE4jP48cyyUmWbTiK1ItvOHbADVtjkGHK/8zFbqv
-         EIzUG3d4HgG5eAQxnVHuBpH33ycuIiNpMEXk8S0LHARhhQGb6AufQVVn/40aQfLvP77W
-         778oK7qnpGZXO0Q2aGCYT4Mad4FGDHlh1br3s7D4D+9Vr7gPQrhXDR8bwR1fyz6kQ1n2
-         /mI7/+oIm6xqfpBjeRephfywWnzvzUcqvvdKwYuFsxmTm/GRVEQb9jKfBsLPvHEPeyBR
-         SLk52BQ10Zm7GZ4Mv5gugSKJZhGFXVOipaGDVsAOq6ABLyMrmGMv+5RYTjL3cqduwO+M
-         O1Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc;
-        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
-        b=fT9GchqanQvqs8pngNw76eA4+q/uKFxpFH3e9m0yhaawFsY6LPAif/eQ7nzexVVzKm
-         Qzz4uRJzCbYKD5RmC9E/gBiVVvcRoXmkf6iDnH4xkhY6YMyHSQOnZqeKEoAEigCqDL3g
-         sbLsbHiEKQjh6juwl5uMD9jF78bYGx8/qXiIpUAmmPdlOzKCAYWc2aNNPwJRbx+bdXbf
-         RqopLNlWCqRswcjqclCXc0TS5QlWRUDYOONzpfvISvt5fG4dMgYhpsROU2Re8EY1r41s
-         Uz3yxwF31k5a0dBC9i1GsLVsDaCHXnbXBqDbKt51IIU6GmV8u2pjnNxjFovMMB8O5XeI
-         +OXg==
-X-Gm-Message-State: ACgBeo17s44mVCeW1cXLehfBzP0NLlaaK+J2InNu0401jkrohJNB0tfC
-        RroR3HXhSjBhgDlGcnumwfS3GZWOU2AMg4drI+OBiWVhGdoFuw==
-X-Google-Smtp-Source: AA6agR7pJ6r7fhR2kV9XLe+oV3h+/ej1weqLnpTQS1YP5ule1vsDwGSNCnOW6LlEIY2xTapZFY+hu5KXPqSjTYpoaJM=
-X-Received: by 2002:a63:4642:0:b0:41b:d353:c5c7 with SMTP id
- v2-20020a634642000000b0041bd353c5c7mr20359415pgk.568.1660083303718; Tue, 09
- Aug 2022 15:15:03 -0700 (PDT)
+        Sun, 14 Aug 2022 12:24:49 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCB3015A17;
+        Sun, 14 Aug 2022 09:22:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3A4B4B80B7C;
+        Sun, 14 Aug 2022 16:22:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E33C4314E;
+        Sun, 14 Aug 2022 16:22:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660494152;
+        bh=nn64llpKQwSVbNBIKVAhqVnQyKZuwOGj7VhDj+fGt14=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=MZDfoAZvkwuXt1X36A2QFVfPNd/AN/x3xD4xFxONQEY2n2NyFQmGu2feKSAsnJJYJ
+         Fwta6wcEjb8Myi6wU08twTcGo2PvX1AA0AEOk8g5vphY+lFq12U72Yhk0igAdN5AgE
+         HzKjksO2goz7qQYvbhATzdlcD5IEYOjR5qlq8b/JDV2VWIVimngfGp9kk+eC+VbyWl
+         adcLrnPmgEpcXz5RN8VGPJe3bXD/NakImS3oX5jB4mcgrGElX0MjWhUO0E+mSILuNR
+         9gMqfImLQTA53LAttW8rmZfB0OXu/b2eteL2W0GYU6CCq4cZjoRGV1IwilXvMvt1jS
+         So3iKN1akW+5w==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Miklos Szeredi <mszeredi@redhat.com>,
+        Alois Wohlschlager <alois1@gmx-topmail.de>,
+        Sasha Levin <sashal@kernel.org>, miklos@szeredi.hu,
+        linux-unionfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.19 34/48] ovl: warn if trusted xattr creation fails
+Date:   Sun, 14 Aug 2022 12:19:27 -0400
+Message-Id: <20220814161943.2394452-34-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220814161943.2394452-1-sashal@kernel.org>
+References: <20220814161943.2394452-1-sashal@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:e8a6:b0:2d4:fb1c:cc5e with HTTP; Tue, 9 Aug 2022
- 15:15:03 -0700 (PDT)
-Reply-To: wijh555@gmail.com
-From:   "Dr. Ali Moses" <alimoses07@gmail.com>
-Date:   Tue, 9 Aug 2022 15:15:03 -0700
-Message-ID: <CADWzZe65tcOX2+bMZfMLLauGpHEQ9Cdv814nLU=uQvKzDFrEVg@mail.gmail.com>
-Subject: Good Day,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:d31 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [alimoses07[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [wijh555[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [alimoses07[at]gmail.com]
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
+From: Miklos Szeredi <mszeredi@redhat.com>
+
+[ Upstream commit b10b85fe5149ee8b39fbbf86095b303632dde2cd ]
+
+When mounting overlayfs in an unprivileged user namespace, trusted xattr
+creation will fail.  This will lead to failures in some file operations,
+e.g. in the following situation:
+
+  mkdir lower upper work merged
+  mkdir lower/directory
+  mount -toverlay -olowerdir=lower,upperdir=upper,workdir=work none merged
+  rmdir merged/directory
+  mkdir merged/directory
+
+The last mkdir will fail:
+
+  mkdir: cannot create directory 'merged/directory': Input/output error
+
+The cause for these failures is currently extremely non-obvious and hard to
+debug.  Hence, warn the user and suggest using the userxattr mount option,
+if it is not already supplied and xattr creation fails during the
+self-check.
+
+Reported-by: Alois Wohlschlager <alois1@gmx-topmail.de>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/overlayfs/super.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 1ce5c9698393..4c2096130209 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1418,11 +1418,12 @@ static int ovl_make_workdir(struct super_block *sb, struct ovl_fs *ofs,
+ 	 */
+ 	err = ovl_setxattr(ofs, ofs->workdir, OVL_XATTR_OPAQUE, "0", 1);
+ 	if (err) {
++		pr_warn("failed to set xattr on upper\n");
+ 		ofs->noxattr = true;
+ 		if (ofs->config.index || ofs->config.metacopy) {
+ 			ofs->config.index = false;
+ 			ofs->config.metacopy = false;
+-			pr_warn("upper fs does not support xattr, falling back to index=off,metacopy=off.\n");
++			pr_warn("...falling back to index=off,metacopy=off.\n");
+ 		}
+ 		/*
+ 		 * xattr support is required for persistent st_ino.
+@@ -1430,8 +1431,10 @@ static int ovl_make_workdir(struct super_block *sb, struct ovl_fs *ofs,
+ 		 */
+ 		if (ofs->config.xino == OVL_XINO_AUTO) {
+ 			ofs->config.xino = OVL_XINO_OFF;
+-			pr_warn("upper fs does not support xattr, falling back to xino=off.\n");
++			pr_warn("...falling back to xino=off.\n");
+ 		}
++		if (err == -EPERM && !ofs->config.userxattr)
++			pr_info("try mounting with 'userxattr' option\n");
+ 		err = 0;
+ 	} else {
+ 		ovl_removexattr(ofs, ofs->workdir, OVL_XATTR_OPAQUE);
 -- 
-Hello,
-We the Board Directors believe you are in good health, doing great and
-with the hope that this mail will meet you in good condition, We are
-privileged and delighted to reach you via email" And we are urgently
-waiting to hear from you. and again your number is not connecting.
+2.35.1
 
-My regards,
-Dr. Ali Moses..
-
-Sincerely,
-Prof. Chin Guang
