@@ -2,114 +2,188 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9ED25B06DB
-	for <lists+linux-unionfs@lfdr.de>; Wed,  7 Sep 2022 16:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36FD55B12F7
+	for <lists+linux-unionfs@lfdr.de>; Thu,  8 Sep 2022 05:31:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229608AbiIGOdC (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 7 Sep 2022 10:33:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47702 "EHLO
+        id S229696AbiIHDb4 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 7 Sep 2022 23:31:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230291AbiIGOcN (ORCPT
+        with ESMTP id S229589AbiIHDbz (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 7 Sep 2022 10:32:13 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E290AFAF8
-        for <linux-unionfs@vger.kernel.org>; Wed,  7 Sep 2022 07:32:11 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id z21so9964843edi.1
-        for <linux-unionfs@vger.kernel.org>; Wed, 07 Sep 2022 07:32:10 -0700 (PDT)
+        Wed, 7 Sep 2022 23:31:55 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF58C7B91
+        for <linux-unionfs@vger.kernel.org>; Wed,  7 Sep 2022 20:31:53 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id bt10so25614912lfb.1
+        for <linux-unionfs@vger.kernel.org>; Wed, 07 Sep 2022 20:31:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date;
-        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
-        b=F9yMmaIgSJ7x+iStBVtJEVNXfuHmNuRwH0oeGQZVEKjdO6DhdtNMd/isOm61Mbr/sg
-         xfKr3XSywaIr4UtWLvFYPLTvFzJ7h/Hm2dTXLAIBAXs8GSUGrRcaGfrF44kItgvLNssI
-         mdCrrU6xo0k06TKggYMVy8FOcAbkBgo1wC5PjqDsVEhsblNCO7wJZs+Uz3UyfKMq66jc
-         LBZlB+02LZPjcLDn2rXew+EJosOoyYb0qI+DEdM9Q7gGpQpAuWFiAiGu2xaPJNPE8Z0z
-         1dPz+Ukvd+R1N2c6VsiSc8mvEG74skD4zo8WmW09cr/Ve033R6BY3xgueFtUzfnE1WmC
-         UQAw==
+        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=KaoFc74GmRSLfr2we5jMwmRErDrqJp9U9XXRXD2HWw4=;
+        b=T7O9HsOFEMK4XPHbLXga9V9XLxi/foOiup5gNWksgalQzWyuigBR4K8/e+4JGRBgUP
+         W/1quQczCZX9I561s6zZOTx5nKMAfJhQh5Eiu7nUaSjLdxcjclVRFNyYEQYHY0HUNI9g
+         WRxwnY5qYSVxuHDREb7RA+4X7a5Mqf2YGaqg0sitSVUf8f7Tp7xTLxgqBcbaOvE2MXWS
+         wtpW/DMbGqa72eLcRD+9lWY1oqkRJ7nKNahxaATeAhLO5v7TrRmFaGUO3ce8S7mqtf8z
+         IzO8MyVFfygX6BxsSJqyRSfYfeYptEyCWpowOETdnUlpk8EmIznyhcvn2Q+zdk2JG91A
+         oZrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
-        b=4rsrV6TaBgkWiiH3dvqJxFXmKihcH/EFZfU5wcibu/lyG62RSm5mPzPqCA5B2FtBQV
-         YO3+auFKHZ8OdxvFeei/m0yLFTBjCxwtaWMJfBLrYOWlgSPcny6UFTPAkhOURD9AONju
-         wD/SS09YYadt0WqUMx+GpzkWzVpbedpOob3aUlx8ovenWUr+DMakDjQDSvoBxFYXZLyH
-         DwN1wJrTw2hAeIfAgIv33hKv21fE4IR9IkgWkVi/VrVzy7Aqm3QV3e4Vg/mJAcdjm768
-         puc3Nqlg/9+FzUIiIVLjOlzdmKvjZBeooZ7zqVCW+M2tgvYg3vMOx3iMJhnG3NrzddFy
-         Izyg==
-X-Gm-Message-State: ACgBeo2NxgvUcEjKUSzDACpCV4WQbLnUTimLxHwP4W4yi019paNPD/aQ
-        20Jup5U2+AS1fNgkwLbrvL2Dg5PyCIB9+Qv6eXc=
-X-Google-Smtp-Source: AA6agR4uPOOUp+ayJg7njU0xYMAyBPmGFYJGRdL33Bi7R249qZwUmqVQ08qkjiR05GuTGJWJL9HGuiFQ37xnsFlHbf4=
-X-Received: by 2002:aa7:db8b:0:b0:44e:5ce1:f29a with SMTP id
- u11-20020aa7db8b000000b0044e5ce1f29amr3424831edt.109.1662561128989; Wed, 07
- Sep 2022 07:32:08 -0700 (PDT)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=KaoFc74GmRSLfr2we5jMwmRErDrqJp9U9XXRXD2HWw4=;
+        b=T/IY/ysNBqdYCYewvO0fNsTjgKPsVI+2OIcfNgptTR0mirfJoxajayXGZ6+EZXqtVU
+         zHR6g7ooBNIExO+uJCMfNRmsbaC7T/5/ON55wN6PLTNIjPraUYYgYmUzU+41oPIIw7Pd
+         fHH0/s4o9MeIhZ+qlhsq3wlEJOvHM5vWOsca8c7UKvxWDlQvAfZ+nG06dlB+sZOCwu9E
+         sk3rMBFQ0yDeZflmkdcPXZrNve9H453J3vfXny/gYdZgyAZxNwz0bJLzt/vYt5iG6liA
+         Sv2OIH5TYlGw5A+s7nT+fTKl6Ixc1vgO3MuCGgzZOuW+rhOKPCCR25YvMjRE26awpDY0
+         arxw==
+X-Gm-Message-State: ACgBeo1TCbEiDfgWhg/Cdz1XRTfDaTpiVgPY5rDbjOGz+eQc9MIobyUv
+        zDc8fouyUsQ7IpYwer+LcAEsKFVx9idYQBfDIbHtYw==
+X-Google-Smtp-Source: AA6agR4g4eNK25Uc91F9VeyGTJ2sIz4k+g+D4tzhNWI5fVTlxBI9NxJoHbk9hq7VkDZtwb+frPNXa0tbZ8atz9Qjeog=
+X-Received: by 2002:ac2:4a61:0:b0:497:ae0c:4f66 with SMTP id
+ q1-20020ac24a61000000b00497ae0c4f66mr766564lfp.660.1662607911503; Wed, 07 Sep
+ 2022 20:31:51 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a54:3fc4:0:0:0:0:0 with HTTP; Wed, 7 Sep 2022 07:32:07 -0700 (PDT)
-Reply-To: lumar.casey@outlook.com
-From:   LUMAR CASEY <miriankushrat@gmail.com>
-Date:   Wed, 7 Sep 2022 16:32:07 +0200
-Message-ID: <CAO4StN3iFKypeHLByNWR98VPw-8s6UHDJYgBRpLm-4kdPR=60w@mail.gmail.com>
-Subject: ATTENTION/PROPOSAL
-To:     undisclosed-recipients:;
+References: <20220901082929.66831-1-zhangtianci.1997@bytedance.com>
+In-Reply-To: <20220901082929.66831-1-zhangtianci.1997@bytedance.com>
+From:   Zhang Tianci <zhangtianci.1997@bytedance.com>
+Date:   Thu, 8 Sep 2022 11:31:40 +0800
+Message-ID: <CAP4dvsf9sMmsT2opNxKYk-37FUVaLJcYTuMVeVhVfTjAKpV5OA@mail.gmail.com>
+Subject: Re: [PATCH v3] ovl: Use ovl mounter's fsuid and fsgid in ovl_link()
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     overlayfs <linux-unionfs@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Jiachen Zhang <zhangjiachen.jaycee@bytedance.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM,UNDISC_MONEY,UPPERCASE_75_100 autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:541 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [miriankushrat[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  0.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: ******
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-ATTENTION
+On Thu, Sep 1, 2022 at 4:29 PM Zhang Tianci
+<zhangtianci.1997@bytedance.com> wrote:
+>
+> There is a wrong case of link() on overlay:
+>   $ mkdir /lower /fuse /merge
+>   $ mount -t fuse /fuse
+>   $ mkdir /fuse/upper /fuse/work
+>   $ mount -t overlay /merge -o lowerdir=/lower,upperdir=/fuse/upper,\
+>     workdir=work
+>   $ touch /merge/file
+>   $ chown bin.bin /merge/file // the file's caller becomes "bin"
+>   $ ln /merge/file /merge/lnkfile
+>
+> Then we will get an error(EACCES) because fuse daemon checks the link()'s
+> caller is "bin", it denied this request.
+>
+> In the changing history of ovl_link(), there are two key commits:
+>
+> The first is commit bb0d2b8ad296 ("ovl: fix sgid on directory") which
+> overrides the cred's fsuid/fsgid using the new inode. The new inode's
+> owner is initialized by inode_init_owner(), and inode->fsuid is
+> assigned to the current user. So the override fsuid becomes the
+> current user. We know link() is actually modifying the directory, so
+> the caller must have the MAY_WRITE permission on the directory. The
+> current caller may should have this permission. This is acceptable
+> to use the caller's fsuid.
+>
+> The second is commit 51f7e52dc943 ("ovl: share inode for hard link")
+> which removed the inode creation in ovl_link(). This commit move
+> inode_init_owner() into ovl_create_object(), so the ovl_link() just
+> give the old inode to ovl_create_or_link(). Then the override fsuid
+> becomes the old inode's fsuid, neither the caller nor the overlay's
+> mounter! So this is incorrect.
+>
+> Fix this bug by using ovl mounter's fsuid/fsgid to do underlying
+> fs's link().
+>
+> v1: https://lore.kernel.org/all/20220817102952.xnvesg3a7rbv576x@wittgenstein/T
+> v2: https://lore.kernel.org/lkml/20220825130552.29587-1-zhangtianci.1997@bytedance.com/t
+>
+> Signed-off-by: Zhang Tianci <zhangtianci.1997@bytedance.com>
+> Signed-off-by: Jiachen Zhang <zhangjiachen.jaycee@bytedance.com>
+> ---
+>  fs/overlayfs/dir.c | 46 ++++++++++++++++++++++++++++++----------------
+>  1 file changed, 30 insertions(+), 16 deletions(-)
+>
+> diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
+> index 6b03457f72bb..c3032cef391e 100644
+> --- a/fs/overlayfs/dir.c
+> +++ b/fs/overlayfs/dir.c
+> @@ -592,28 +592,42 @@ static int ovl_create_or_link(struct dentry *dentry, struct inode *inode,
+>                         goto out_revert_creds;
+>         }
+>
+> -       err = -ENOMEM;
+> -       override_cred = prepare_creds();
+> -       if (override_cred) {
+> +       if (!attr->hardlink) {
+> +               err = -ENOMEM;
+> +               override_cred = prepare_creds();
+> +               if (!override_cred)
+> +                       goto out_revert_creds;
+> +               /*
+> +                * In the creation cases(create, mkdir, mknod, symlink),
+> +                * ovl should transfer current's fs{u,g}id to underlying
+> +                * fs. Because underlying fs want to initialize its new
+> +                * inode owner using current's fs{u,g}id. And in this
+> +                * case, the @inode is a new inode that is initialized
+> +                * in inode_init_owner() to current's fs{u,g}id. So use
+> +                * the inode's i_{u,g}id to override the cred's fs{u,g}id.
+> +                *
+> +                * But in the other hardlink case, ovl_link() does not
+> +                * create a new inode, so just use the ovl mounter's
+> +                * fs{u,g}id.
+> +                */
+>                 override_cred->fsuid = inode->i_uid;
+>                 override_cred->fsgid = inode->i_gid;
+> -               if (!attr->hardlink) {
+> -                       err = security_dentry_create_files_as(dentry,
+> -                                       attr->mode, &dentry->d_name, old_cred,
+> -                                       override_cred);
+> -                       if (err) {
+> -                               put_cred(override_cred);
+> -                               goto out_revert_creds;
+> -                       }
+> +               err = security_dentry_create_files_as(dentry,
+> +                               attr->mode, &dentry->d_name, old_cred,
+> +                               override_cred);
+> +               if (err) {
+> +                       put_cred(override_cred);
+> +                       goto out_revert_creds;
+>                 }
+>                 put_cred(override_creds(override_cred));
+>                 put_cred(override_cred);
+> -
+> -               if (!ovl_dentry_is_whiteout(dentry))
+> -                       err = ovl_create_upper(dentry, inode, attr);
+> -               else
+> -                       err = ovl_create_over_whiteout(dentry, inode, attr);
+>         }
+> +
+> +       if (!ovl_dentry_is_whiteout(dentry))
+> +               err = ovl_create_upper(dentry, inode, attr);
+> +       else
+> +               err = ovl_create_over_whiteout(dentry, inode, attr);
+> +
+>  out_revert_creds:
+>         revert_creds(old_cred);
+>         return err;
+> --
+> 2.32.1 (Apple Git-133)
+>
 
-BUSINESS PARTNER,
+Hello Miklos,
 
-I AM LUMAR CASEY WORKING WITH AN INSURANCE FINANCIAL INSTITUTE, WITH
-MY POSITION AND PRIVILEGES I WAS ABLE TO SOURCE OUT AN OVER DUE
-PAYMENT OF 12.8 MILLION POUNDS THAT IS NOW SECURED WITH A SHIPPING
-DIPLOMATIC OUTLET.
+Gentle ping...
 
-I AM SEEKING YOUR PARTNERSHIP TO RECEIVE THIS CONSIGNMENT AS AS MY
-PARTNER TO INVEST THIS FUND INTO A PROSPEROUS INVESTMENT VENTURE IN
-YOUR COUNTRY.
-
-I AWAIT YOUR REPLY TO ENABLE US PROCEED WITH THIS BUSINESS PARTNERSHIP TOGETHER.
-
-REGARDS,
-
-LUMAR CASEY
+Thanks,
+Tianci
