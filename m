@@ -2,222 +2,105 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2D67602AE9
-	for <lists+linux-unionfs@lfdr.de>; Tue, 18 Oct 2022 14:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75579608AFD
+	for <lists+linux-unionfs@lfdr.de>; Sat, 22 Oct 2022 11:18:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230399AbiJRMAb (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 18 Oct 2022 08:00:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58092 "EHLO
+        id S230003AbiJVJSa (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 22 Oct 2022 05:18:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229846AbiJRL7f (ORCPT
+        with ESMTP id S231939AbiJVJRv (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 18 Oct 2022 07:59:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9406BE2EC;
-        Tue, 18 Oct 2022 04:58:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1382D6153A;
-        Tue, 18 Oct 2022 11:58:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F43FC43470;
-        Tue, 18 Oct 2022 11:58:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666094309;
-        bh=WzXM5WS7TjbMYEjZT5Omz7yBQ2wP5xFOjrFQWZY2TPI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=boRhdrtmuICCrgbqwLjEgX3COaAr7MXIe+Q00jt/y7El1DAS8qKvAEl/PM3tXDYSw
-         RX3jzkNzjStvIk3dyQj17Ro39GSq6EvNXE31tBXsgy6BP88X4I8K5WeyxaZZqRFiYU
-         Yl+IkWGWOEkUEBOKmVEcf7uBlgo2N9UEemEj9+Oz9rGZSumnUELqXBGuZPwWUfvw62
-         vWUi0odBFtz/65VoH311pJoFB08aE556tvpe0SMMpkEfhGNqfqNRfFpgvGJsTzddFU
-         2QDwXbZhXkNT2Hoawz9ovkdCquEKUIGkSM3oAlPPt7jmvWBrSlnFXSrs2YIor9iUbS
-         211uC5isN0jEw==
-From:   Christian Brauner <brauner@kernel.org>
-To:     linux-fsdevel@vger.kernel.org
-Cc:     Christian Brauner <brauner@kernel.org>,
-        Seth Forshee <sforshee@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Amir Goldstein <amir73il@gmail.com>,
-        linux-unionfs@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-Subject: [PATCH v5 27/30] ovl: use stub posix acl handlers
-Date:   Tue, 18 Oct 2022 13:56:57 +0200
-Message-Id: <20221018115700.166010-28-brauner@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221018115700.166010-1-brauner@kernel.org>
-References: <20221018115700.166010-1-brauner@kernel.org>
+        Sat, 22 Oct 2022 05:17:51 -0400
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF9B430A0D5
+        for <linux-unionfs@vger.kernel.org>; Sat, 22 Oct 2022 01:31:59 -0700 (PDT)
+Received: by mail-oi1-x22a.google.com with SMTP id r204so2986233oie.5
+        for <linux-unionfs@vger.kernel.org>; Sat, 22 Oct 2022 01:31:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:sender:reply-to:mime-version:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=kj8yT1aescp9KUmhAU+OnX3yqGYsYjZZxBqS8fRj4xt28Y2IJQlH9CwNqevX9hbGEc
+         wxp2ZQjk/f4EJMZSkjixwkk++F/mzVH9Sx3DpbsutyGayWqFlvxHHyPyxo1hfjiqSbfi
+         OnhCJS+ZjbHkV1wSeI+OJ93E2iT35tXhxV36wQK8IuDxPBZwtRAOob0buPtnOlp8uJ3s
+         1RP2wck4q73CCaT81PzJ/90Pv9UVYPgiCAfY6JgCmkwB7CPSeIMcvqntdrF5hgxPi8d/
+         MC1b4imlzF1JTKSalowCETbHXgRz+QwjjxSypZamQ0w/xLIWD9SwCGIMioKkDB5MpUmi
+         kTPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:sender:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=FiHh5dOeqfjHqNZI83xkHBhhWuHAK5VTRznKGfscNqTVmdGUpdw6YPQZtEPsxvucSO
+         jNrptUGNgrVAfkl5cnwUUJ981uccnbM5VgfTW2/X/I8fLVv/NVdywT2/s4gMZAqbKT2q
+         j3GYSg0aZtt+esDkukDT0ej/IPFRAnoa+t7wAaUdCoIGQIS/QFJOmHSf87538vvn1Ioq
+         3hSGiiP5x/NJzBVZ2P4xlmdma9+06EbAE0b/lsQl411EavQAcaURDwBaIDGZatLZEIGd
+         UDuhsKB1rP57AVvGxsfNfPQsi73QO/CbJutKqNzJSx/cZH6m+y+tAQkjeHnLWL38LpYW
+         MTPQ==
+X-Gm-Message-State: ACrzQf2jrCSxY3pqZUjE/SH/3BDkmZK/qwTMr91eqImSV44TRVWU1YoP
+        Km7oKZo4clWCjwrIubZrLZKdfmxG7zfJ7YqIQBs=
+X-Google-Smtp-Source: AMsMyM65H/XoedxIoj+eZqLQkEYT3oJp+iV84hYVI9iYrXYEFliH8aQPZ0Vr9M1+f3MAhS7qubeu6BnYJX+6ddGx/f8=
+X-Received: by 2002:a05:6808:13d2:b0:355:1770:c6ef with SMTP id
+ d18-20020a05680813d200b003551770c6efmr21666174oiw.284.1666427421833; Sat, 22
+ Oct 2022 01:30:21 -0700 (PDT)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5171; i=brauner@kernel.org; h=from:subject; bh=WzXM5WS7TjbMYEjZT5Omz7yBQ2wP5xFOjrFQWZY2TPI=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMST7TdGSkffcw7x1tZjuJ+7UZWofTid+vC9lvTN7Qeg5GfZ5 r9RWdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEwkYhXDXwGVUL3H27n//mu6eEO4S4 1hmtShIzpnFxWeznvUueC51XRGhqvHnzArxVcvuKRxbE+dTeJbw6sGWSmZEmF9zGuur06ewAYA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Reply-To: mrs.susanelwoodhara17@gmail.com
+Sender: mrs.arawayann01@gmail.com
+Received: by 2002:a05:6838:aea5:0:0:0:0 with HTTP; Sat, 22 Oct 2022 01:30:21
+ -0700 (PDT)
+From:   Mrs Susan Elwood Hara <mrs.susanelwoodhara17@gmail.com>
+Date:   Sat, 22 Oct 2022 08:30:21 +0000
+X-Google-Sender-Auth: A6D2lMu0F8qsw51kZmtE-lVfuFw
+Message-ID: <CAAOf0OFL-GNvLwo5BeAcuFerncjSOZ92WVxnF2CpNmZXeRE7XA@mail.gmail.com>
+Subject: GOD BLESS YOU AS YOU REPLY URGENTLY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.4 required=5.0 tests=BAYES_60,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:22a listed in]
+        [list.dnswl.org]
+        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
+        *      [score: 0.7366]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [mrs.arawayann01[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mrs.susanelwoodhara17[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [mrs.susanelwoodhara17[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  3.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Now that ovl supports the get and set acl inode operations and the vfs
-has been switched to the new posi api, ovl can simply rely on the stub
-posix acl handlers. The custom xattr handlers and associated unused
-helpers can be removed.
+GOD BLESS YOU AS YOU REPLY URGENTLY
 
-Signed-off-by: Christian Brauner (Microsoft) <brauner@kernel.org>
----
-
-Notes:
-    /* v2 */
-    unchanged
-    
-    /* v3 */
-    unchanged
-    
-    /* v4 */
-    unchanged
-    
-    /* v5 */
-    unchanged
-
- fs/overlayfs/super.c | 101 ++-----------------------------------------
- 1 file changed, 4 insertions(+), 97 deletions(-)
-
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index 5c1b7971a9b3..2addafe4e14a 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -999,83 +999,6 @@ static unsigned int ovl_split_lowerdirs(char *str)
- 	return ctr;
- }
- 
--static int __maybe_unused
--ovl_posix_acl_xattr_get(const struct xattr_handler *handler,
--			struct dentry *dentry, struct inode *inode,
--			const char *name, void *buffer, size_t size)
--{
--	return ovl_xattr_get(dentry, inode, handler->name, buffer, size);
--}
--
--static int __maybe_unused
--ovl_posix_acl_xattr_set(const struct xattr_handler *handler,
--			struct user_namespace *mnt_userns,
--			struct dentry *dentry, struct inode *inode,
--			const char *name, const void *value,
--			size_t size, int flags)
--{
--	struct dentry *workdir = ovl_workdir(dentry);
--	struct inode *realinode = ovl_inode_real(inode);
--	struct posix_acl *acl = NULL;
--	int err;
--
--	/* Check that everything is OK before copy-up */
--	if (value) {
--		/* The above comment can be understood in two ways:
--		 *
--		 * 1. We just want to check whether the basic POSIX ACL format
--		 *    is ok. For example, if the header is correct and the size
--		 *    is sane.
--		 * 2. We want to know whether the ACL_{GROUP,USER} entries can
--		 *    be mapped according to the underlying filesystem.
--		 *
--		 * Currently, we only check 1. If we wanted to check 2. we
--		 * would need to pass the mnt_userns and the fs_userns of the
--		 * underlying filesystem. But frankly, I think checking 1. is
--		 * enough to start the copy-up.
--		 */
--		acl = vfs_set_acl_prepare(&init_user_ns, &init_user_ns, value, size);
--		if (IS_ERR(acl))
--			return PTR_ERR(acl);
--	}
--	err = -EOPNOTSUPP;
--	if (!IS_POSIXACL(d_inode(workdir)))
--		goto out_acl_release;
--	if (!realinode->i_op->set_acl)
--		goto out_acl_release;
--	if (handler->flags == ACL_TYPE_DEFAULT && !S_ISDIR(inode->i_mode)) {
--		err = acl ? -EACCES : 0;
--		goto out_acl_release;
--	}
--	err = -EPERM;
--	if (!inode_owner_or_capable(&init_user_ns, inode))
--		goto out_acl_release;
--
--	posix_acl_release(acl);
--
--	/*
--	 * Check if sgid bit needs to be cleared (actual setacl operation will
--	 * be done with mounter's capabilities and so that won't do it for us).
--	 */
--	if (unlikely(inode->i_mode & S_ISGID) &&
--	    handler->flags == ACL_TYPE_ACCESS &&
--	    !in_group_p(inode->i_gid) &&
--	    !capable_wrt_inode_uidgid(&init_user_ns, inode, CAP_FSETID)) {
--		struct iattr iattr = { .ia_valid = ATTR_KILL_SGID };
--
--		err = ovl_setattr(&init_user_ns, dentry, &iattr);
--		if (err)
--			return err;
--	}
--
--	err = ovl_xattr_set(dentry, inode, handler->name, value, size, flags);
--	return err;
--
--out_acl_release:
--	posix_acl_release(acl);
--	return err;
--}
--
- static int ovl_own_xattr_get(const struct xattr_handler *handler,
- 			     struct dentry *dentry, struct inode *inode,
- 			     const char *name, void *buffer, size_t size)
-@@ -1108,22 +1031,6 @@ static int ovl_other_xattr_set(const struct xattr_handler *handler,
- 	return ovl_xattr_set(dentry, inode, name, value, size, flags);
- }
- 
--static const struct xattr_handler __maybe_unused
--ovl_posix_acl_access_xattr_handler = {
--	.name = XATTR_NAME_POSIX_ACL_ACCESS,
--	.flags = ACL_TYPE_ACCESS,
--	.get = ovl_posix_acl_xattr_get,
--	.set = ovl_posix_acl_xattr_set,
--};
--
--static const struct xattr_handler __maybe_unused
--ovl_posix_acl_default_xattr_handler = {
--	.name = XATTR_NAME_POSIX_ACL_DEFAULT,
--	.flags = ACL_TYPE_DEFAULT,
--	.get = ovl_posix_acl_xattr_get,
--	.set = ovl_posix_acl_xattr_set,
--};
--
- static const struct xattr_handler ovl_own_trusted_xattr_handler = {
- 	.prefix	= OVL_XATTR_TRUSTED_PREFIX,
- 	.get = ovl_own_xattr_get,
-@@ -1144,8 +1051,8 @@ static const struct xattr_handler ovl_other_xattr_handler = {
- 
- static const struct xattr_handler *ovl_trusted_xattr_handlers[] = {
- #ifdef CONFIG_FS_POSIX_ACL
--	&ovl_posix_acl_access_xattr_handler,
--	&ovl_posix_acl_default_xattr_handler,
-+	&posix_acl_access_xattr_handler,
-+	&posix_acl_default_xattr_handler,
- #endif
- 	&ovl_own_trusted_xattr_handler,
- 	&ovl_other_xattr_handler,
-@@ -1154,8 +1061,8 @@ static const struct xattr_handler *ovl_trusted_xattr_handlers[] = {
- 
- static const struct xattr_handler *ovl_user_xattr_handlers[] = {
- #ifdef CONFIG_FS_POSIX_ACL
--	&ovl_posix_acl_access_xattr_handler,
--	&ovl_posix_acl_default_xattr_handler,
-+	&posix_acl_access_xattr_handler,
-+	&posix_acl_default_xattr_handler,
- #endif
- 	&ovl_own_user_xattr_handler,
- 	&ovl_other_xattr_handler,
--- 
-2.34.1
-
+ Hello Dear,
+Greetings, I am contacting you regarding an important information i
+have for you please reply to confirm your email address and for more
+details Thanks
+Regards
+Mrs Susan Elwood Hara.
