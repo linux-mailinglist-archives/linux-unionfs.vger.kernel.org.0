@@ -2,82 +2,130 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0896649BBE
-	for <lists+linux-unionfs@lfdr.de>; Mon, 12 Dec 2022 11:10:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84B38649D27
+	for <lists+linux-unionfs@lfdr.de>; Mon, 12 Dec 2022 12:08:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232057AbiLLKK4 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 12 Dec 2022 05:10:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42552 "EHLO
+        id S231260AbiLLLIK (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 12 Dec 2022 06:08:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232063AbiLLKKe (ORCPT
+        with ESMTP id S231536AbiLLLHY (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 12 Dec 2022 05:10:34 -0500
-Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4B241004C
-        for <linux-unionfs@vger.kernel.org>; Mon, 12 Dec 2022 02:09:40 -0800 (PST)
-Received: by mail-vs1-xe30.google.com with SMTP id i2so10695547vsc.1
-        for <linux-unionfs@vger.kernel.org>; Mon, 12 Dec 2022 02:09:40 -0800 (PST)
+        Mon, 12 Dec 2022 06:07:24 -0500
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91A3F11C0E
+        for <linux-unionfs@vger.kernel.org>; Mon, 12 Dec 2022 02:56:15 -0800 (PST)
+Received: by mail-ej1-x62e.google.com with SMTP id vv4so26940449ejc.2
+        for <linux-unionfs@vger.kernel.org>; Mon, 12 Dec 2022 02:56:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4s9K/+lMEs5qEFbAtakvSrIm/fChVksj2dPdXChFNK4=;
-        b=QfbRRA6i4p9/NoxwVfWQdQiOjGRN61+yA8Qo74qEEhP7aXYHRTSRsyGxMUdh+Alpx7
-         y6jRVhtpV0gn87Kqi6TNcEQ0y69eciHEqSxmiTPmu8U9wzlBsW74iuTmjtwnbKUQ8SeA
-         VQgX0uQbPqqyto59YWRnkhUfupUkM5fxac2yDGlB1HdiMLR10reSK7ZnpQOMG0bIxO0i
-         Ir9Iyirj4IG/MIsTdDz4VB3wTj2Nx2vKNd+BZ8537mpNjfMLDgLf32Hc7vJMhNvkshIW
-         wDSz6RrLfVqE1bVlFYZ4zLzfoGAilm3nN87Sp8jJcXH5Y0cQiPNRf99dy/T3PovtkZXe
-         cHyQ==
+        d=szeredi.hu; s=google;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sUJ5cvuCsGK8YGIL2fUMIgBzFaSAkYgBHiJvuOvGsag=;
+        b=UzwWO/goR1hVNGn165QBf2OGcAY+wwDHNMH9vgOU7ZEDy0WMopnshPMZW5BWLKcZls
+         zDx5YjKL3tqHm2U0ki5mvpUZUpEmAcl5WYNKWbLJ6E41F3l5JvTq8U7Mxebo9Kg1kDMh
+         mfylwJ5mKFk/DcVAgwCVMSqsJvWMH802dmTZA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4s9K/+lMEs5qEFbAtakvSrIm/fChVksj2dPdXChFNK4=;
-        b=bUkbtufgR4VusvFsV6mf79gd/hZSJ2CP2khhEUVLPllNotowpzIQvDbTOktrU4gNX8
-         gFJBlB3UHyQ024W1FpC3rchGaSDCqxJEXSLOmt8CMATHsxUNN8dNWaQ7giXHRuKmSd/Q
-         p5lHiDbTD0+N+K/aawAfau25Y1snmiapLXSVfvqlXtFmFVsaOfNonzO5EVrzh72KXMTb
-         62QlMiBPhgnpw/De5JTY0DdiUFfOkFEBexa2/FfCBtEYyiApXAqB2lyATv/75ZBgRHqD
-         11ZL2R85NAQLuuTKePw+m18P3s0biuTX4B9B5s8aKmo0bB+u7qcJUlZBDVxONP+XIeSa
-         abFQ==
-X-Gm-Message-State: ANoB5pnL2ho3sJvVnvt7ICg4ZLWLTnMCGhI9RL55pRPy7iMsj0zM+thE
-        ZCJdpStfkXLOX3dssqAS/XwQFKD8kpYWflDqIrw=
-X-Google-Smtp-Source: AA0mqf7Ow/HFbucVBIk5EPWpDo4kAvi2ONbt+Q+aNkWLq1VQeLBbLUeiNBkkNGAZueFU0qDf63OTIfPSfOjlF40oK80=
-X-Received: by 2002:a67:fe53:0:b0:3b1:3d9a:6932 with SMTP id
- m19-20020a67fe53000000b003b13d9a6932mr10678744vsr.59.1670839779627; Mon, 12
- Dec 2022 02:09:39 -0800 (PST)
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sUJ5cvuCsGK8YGIL2fUMIgBzFaSAkYgBHiJvuOvGsag=;
+        b=NZui774cV8uCCgnHkJbhnYZ1BD3fyrmCmBt9UtAMUNYC1FiSKjYYbYYYjsuXDyqAoK
+         GGdN1jxEF8X5MSoqBZGtBf31DPy+WI4HpJmLy1rI30KKDw0LzJjr9SKtL3JElDf3/f3y
+         nJh9NoLJZVExH4vb6jTBFFz0y/Z+tuXP2FIRe6jLHwjT88P11yXyHfqN5Y7fOxerTa+f
+         u/vxA8EEpvOjxiNRJdXsOVsCtCdJ/VXbC/w4tv059AwRIoTIsHS9vJJsenlYum6d9ENL
+         pg3RM5fuaIgqhmDxMOJmdW5kTHvhYEPv19uGYUsIWqgJYFX/dPj7pSA3J7Y+SPB7MDYF
+         eDFQ==
+X-Gm-Message-State: ANoB5plzaj81v6Xt6gcHv5hhvDy4nSbuAUbR3NGmzF7qf9n5G3nikxjg
+        NZVAiNVF5C7jY7p3Dg/jCBOPMQ==
+X-Google-Smtp-Source: AA0mqf6QIcYu5BUKcyXNA3ylKVdp/HuLErE5ZfNLmUTMoY4QP0E3qyfe4lWhXF+OkPxUAAlhXbiWHQ==
+X-Received: by 2002:a17:906:71c2:b0:7ba:9c18:1205 with SMTP id i2-20020a17090671c200b007ba9c181205mr9922913ejk.50.1670842574188;
+        Mon, 12 Dec 2022 02:56:14 -0800 (PST)
+Received: from miu.piliscsaba.redhat.com (193-226-215-206.pool.digikabel.hu. [193.226.215.206])
+        by smtp.gmail.com with ESMTPSA id k4-20020a170906970400b007aea1dc1840sm3141236ejx.111.2022.12.12.02.56.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Dec 2022 02:56:13 -0800 (PST)
+Date:   Mon, 12 Dec 2022 11:56:06 +0100
+From:   Miklos Szeredi <miklos@szeredi.hu>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-unionfs@vger.kernel.org
+Subject: [GIT PULL] overlayfs update for 6.2
+Message-ID: <Y5cIxrmoeQSCJMlQ@miu.piliscsaba.redhat.com>
 MIME-Version: 1.0
-Received: by 2002:a67:ea8b:0:0:0:0:0 with HTTP; Mon, 12 Dec 2022 02:09:39
- -0800 (PST)
-From:   Koko Yovo <kokoyovo1959@gmail.com>
-Date:   Mon, 12 Dec 2022 10:09:39 +0000
-Message-ID: <CAKX_-gUs40JZRmvgKtsQ4fhVuTEEG2X=orFv+i+oifSU5=qviw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Warum schweigst du, ich hoffe, es geht dir gut, weil ich dir diese
-Mail jetzt schon zweimal geschickt habe, ohne von dir zu h=C3=B6ren? Heute
-komme ich von meiner Reise zur=C3=BCck und Sie schweigen =C3=BCber die Post=
-, die
-ich Ihnen seit letzter Woche geschickt habe. Bitte teilen Sie mir den
-Grund mit, warum Sie geschwiegen haben. Ich habe mir vorgestellt,
-warum Sie mir nicht geantwortet haben. Sehr wichtig Ehrliches
-Vertrauen und Hilfe? Mit meiner guten Absicht kann ich darauf
-vertrauen, dass Sie die Summe von 47.500.000.00 Millionen US-Dollar
-auf Ihr Konto in Ihrem Land =C3=BCberweisen, wenn m=C3=B6glich, kontaktiere=
-n Sie
-mich f=C3=BCr weitere Details. Ich warte auf Ihre Antwort und bitte lassen
-Sie es mich wissen, als zu schweigen ?
-Herr Koko Yovo.
+Hi Linus,
+
+Please pull from:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/vfs.git tags/ovl-update-6.2
+
+ - Fix a couple of bugs found by syzbot
+
+ - Don't ingore some open flags set by fcntl(F_SETFL)
+
+ - Fix failure to create a hard link in certain cases
+
+ - Use type safe helpers for some mnt_userns transformations
+
+ - Improve performance of mount
+
+ - Misc cleanups
+
+Thanks,
+Miklos
+
+---
+Al Viro (1):
+      ovl: update ->f_iocb_flags when ovl_change_flags() modifies ->f_flags
+
+Amir Goldstein (2):
+      ovl: do not reconnect upper index records in ovl_indexdir_cleanup()
+      ovl: use plain list filler in indexdir and workdir cleanup
+
+Chen Zhongjin (1):
+      ovl: fix use inode directly in rcu-walk mode
+
+Christian Brauner (1):
+      ovl: port to vfs{g,u}id_t and associated helpers
+
+Colin Ian King (1):
+      ovl: Kconfig: Fix spelling mistake "undelying" -> "underlying"
+
+Jiangshan Yi (1):
+      ovl: fix comment typos
+
+Kees Cook (1):
+      ovl: Use "buf" flexible array for memcpy() destination
+
+Miklos Szeredi (1):
+      ovl: use inode instead of dentry where possible
+
+Stanislav Goriainov (1):
+      ovl: Add comment on upperredirect reassignment
+
+Zhang Tianci (1):
+      ovl: Use ovl mounter's fsuid and fsgid in ovl_link()
+
+---
+ fs/overlayfs/Kconfig     |  2 +-
+ fs/overlayfs/dir.c       | 46 +++++++++++++++++++++++++-------------
+ fs/overlayfs/export.c    |  8 +++----
+ fs/overlayfs/file.c      |  3 ++-
+ fs/overlayfs/namei.c     | 12 +++++++---
+ fs/overlayfs/overlayfs.h | 11 ++++-----
+ fs/overlayfs/readdir.c   | 58 ++++++++++++++++++++++--------------------------
+ fs/overlayfs/super.c     |  7 +++++-
+ fs/overlayfs/util.c      | 15 ++++++++-----
+ 9 files changed, 93 insertions(+), 69 deletions(-)
