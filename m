@@ -2,108 +2,159 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E137064BE33
-	for <lists+linux-unionfs@lfdr.de>; Tue, 13 Dec 2022 22:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D770654C37
+	for <lists+linux-unionfs@lfdr.de>; Fri, 23 Dec 2022 06:32:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236501AbiLMVGm (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 13 Dec 2022 16:06:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57006 "EHLO
+        id S229656AbiLWFci (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 23 Dec 2022 00:32:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236719AbiLMVGT (ORCPT
+        with ESMTP id S229524AbiLWFch (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 13 Dec 2022 16:06:19 -0500
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7838321E16
-        for <linux-unionfs@vger.kernel.org>; Tue, 13 Dec 2022 13:06:17 -0800 (PST)
-Received: by mail-qk1-x732.google.com with SMTP id e1so452286qka.6
-        for <linux-unionfs@vger.kernel.org>; Tue, 13 Dec 2022 13:06:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=pGENH+jbzoJT1RmKoVt6qI6z9upLI95OLIGVFgRFmmw=;
-        b=TF6U++llSwp4JNXMtXTkcDvc/5ShJCpSpzeIJmQHoWcCR3hocyh/J51E63JhgkfBR9
-         q9h53Aaguu9NTzyVFs0/FNISY1sqGv+QBgnf42r14HrC+Eubj9mqJX/69XPToND99vx2
-         5BkChMAVOF3y/kF5G4P6GBibVWzLjCLL/R7hamWWps3gw02JIx9RXfb8FSkucimk3cr6
-         ajkiMoYSUNmt2qtBbukKXKvqBEs8NfcR1ft5m40SA/2u8BkPZIoyVnTlWvM8y+6b5jew
-         nVPpELQ8r4XcrC/GMUKtncWbIdX2SGLhiDLDuidrxAB6X6mX7CFJfAK1o+BeLLdOxVI5
-         qyxw==
+        Fri, 23 Dec 2022 00:32:37 -0500
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 857B61DDE6
+        for <linux-unionfs@vger.kernel.org>; Thu, 22 Dec 2022 21:32:36 -0800 (PST)
+Received: by mail-il1-f198.google.com with SMTP id l13-20020a056e021c0d00b003034e24b866so2193778ilh.22
+        for <linux-unionfs@vger.kernel.org>; Thu, 22 Dec 2022 21:32:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pGENH+jbzoJT1RmKoVt6qI6z9upLI95OLIGVFgRFmmw=;
-        b=UX7CpUa6BYAKs3kpBq5t2a21ppPXreO9u8u0A5dtekIlPMTBjpJCmoMBCPoAqoE3wG
-         oG0itJY+0C4EBcNB1ZVqrj7GFHESiI/WkbY78eab2apQf9+mNcDiFpfV3Dc1ReqTEgQW
-         2azFspoUvbw/zsJecm1L3gOyP6aYrMPm7qfphIbW5QgrTgZ9gPAQOpyujnMRf4j+Cc7h
-         HumpL/HdcWkP/B5q1RwE+nkfOJQEFi3IteX13YAgwo6jjCIOAfr4GMA4fX/iS4KuaHzF
-         MGUkaexBk0LQVyBIsIsk37FFqnUoQ/FR3QCf7A+A66xruv7cPGYOyZXRKsjAwRe54DIV
-         TGKA==
-X-Gm-Message-State: ANoB5plwCtqx9SDHwrK7QwF8uQjhEY8J7PqER74MQnizCKr7PFvbQoZD
-        jhB0tRb+s8tP+5+/l86lf1tUEkTeo8Yv2qS+lVE=
-X-Google-Smtp-Source: AA0mqf7sCcngAhFN/qSTCbDklApRDjtnr97gE4w1dNAoZFmQ+b4Iwf0vo6JtGKV77pLyOpabkxSh09jnNoTCEAUN0so=
-X-Received: by 2002:ae9:c302:0:b0:6fc:9e90:8c9a with SMTP id
- n2-20020ae9c302000000b006fc9e908c9amr30423351qkg.249.1670965576587; Tue, 13
- Dec 2022 13:06:16 -0800 (PST)
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ni4mphJUAgKMmVIzV7kxWJxdUZPFnCiR6GRzfr562dI=;
+        b=aFZgIXpHL69lQudMJJDP+/wbXBy3zR7JMJyIgq4zGtecXXPVWCzfANdPMpIGJa5JNc
+         ERoBSHepxC2iB3W33JTO60tpfGsycqJNTsSR3YT1f/iF9hLf8U/NTAVlTUX7H4k5lNqV
+         9bpnCeOEHynAXdEOYCKJGsaoEMd5phzBNI2mDM+kiofLXnFj1oywqeI/vXS6L9qzz5ks
+         gDgMaBuZITEUyvG2dDP4BFyL6ejEkKb7ylxPVONfVqCWNlrQx4f5d8CCPYQSSe3J0aA1
+         0qZc9chr1ng+I7OCS04i/glIkMgO/BXCRu7NSQWZN4LKeKqUUx1mN05KsBQh/rzCQHvu
+         rXAA==
+X-Gm-Message-State: AFqh2kogLlp3/gUgwr0Ui+aP4tOsCaXcOOGSSP9J2cLusoNsAFRuwpFQ
+        8Ir5JJ8NiKfQcQvVYf/RWS65VIW1+Afa3UqSpyun9DQ2Gz+B
+X-Google-Smtp-Source: AMrXdXteYysgp1onezYl2qAiqNPVZ7UUQkAAykSC78EksEOi4lbDygNp2+XhGAbZsP3KcqmegfzemxW1c1bp4hMInYiveCKCygcm
 MIME-Version: 1.0
-Received: by 2002:a05:622a:1a0b:b0:3a7:e2d9:5b0e with HTTP; Tue, 13 Dec 2022
- 13:06:16 -0800 (PST)
-From:   johnson50 mike <jm2175940@gmail.com>
-Date:   Tue, 13 Dec 2022 13:06:16 -0800
-Message-ID: <CAPotKQOPWTPumQ6=CGNwFC+U+xoy5EkE4KEs6H6H0Jf_mrmvHA@mail.gmail.com>
-Subject: waiting transfer
-To:     undisclosed-recipients:;
+X-Received: by 2002:a92:b703:0:b0:309:1c59:dd30 with SMTP id
+ k3-20020a92b703000000b003091c59dd30mr601758ili.225.1671773555919; Thu, 22 Dec
+ 2022 21:32:35 -0800 (PST)
+Date:   Thu, 22 Dec 2022 21:32:35 -0800
+In-Reply-To: <0000000000003b7fee05eec392a8@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000f213ae05f0781c98@google.com>
+Subject: Re: [syzbot] [reiserfs?] [fat?] BUG: unable to handle kernel paging
+ request in take_dentry_name_snapshot
+From:   syzbot <syzbot+90392eaed540afcc8fc3@syzkaller.appspotmail.com>
+To:     linux-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org,
+        miklos@szeredi.hu, reiserfs-devel@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_60,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLY,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:732 listed in]
-        [list.dnswl.org]
-        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.6300]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [jm2175940[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [jm2175940[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  1.0 FREEMAIL_REPLY From and body contain different freemails
-        *  3.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *****
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Valued Attention Sir!
-Our recent record   indicates that you are eligible to receive an
-optional repayment of cash fund!! $750,000.00 which has been found in
-the security vault registered in your favor under your email account
-waiting to be dispatch without claims.
-the account is set up under your email address  can only be obtained
-by you (receiver),all  you have to do is to provide
-Your full Name.....................
-Direct Telephone: ..............
-And delivery address........... For immediate shipment
-Thanks and anticipating your urgent respond
-finaccial@citromail.hu
-Yours faithfully,
-Johnson Mike
-Section assistance and   Verification committee
-USAfro-Euro   Debit Reconciliation Office
-ID 4475 UK London
+syzbot has found a reproducer for the following issue on:
+
+HEAD commit:    8395ae05cb5a Merge tag 'scsi-misc' of git://git.kernel.org..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1310a5f8480000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=85327a149d5f50f
+dashboard link: https://syzkaller.appspot.com/bug?extid=90392eaed540afcc8fc3
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16199460480000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1797f274480000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/71f6a8070e91/disk-8395ae05.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/0f742b65488c/vmlinux-8395ae05.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/6e5588eaf267/bzImage-8395ae05.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/4673a4f9cbbb/mount_0.gz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+90392eaed540afcc8fc3@syzkaller.appspotmail.com
+
+BUG: unable to handle page fault for address: fffffffffff81629
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+PGD c48f067 P4D c48f067 PUD c491067 PMD 0 
+Oops: 0000 [#1] PREEMPT SMP KASAN
+CPU: 0 PID: 5251 Comm: syz-executor130 Not tainted 6.1.0-syzkaller-14446-g8395ae05cb5a #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
+RIP: 0010:__lock_acquire+0xd8d/0x56d0 kernel/locking/lockdep.c:4925
+Code: c8 00 00 00 89 05 83 4e 3c 0f e9 bd 00 00 00 48 b8 00 00 00 00 00 fc ff df 4c 89 f2 48 c1 ea 03 80 3c 02 00 0f 85 4e 31 00 00 <49> 81 3e e0 e5 f6 8f 0f 84 4c f3 ff ff 41 83 fc 01 0f 87 54 f3 ff
+RSP: 0018:ffffc90004e0f7e8 EFLAGS: 00010046
+RAX: dffffc0000000000 RBX: 1ffff920009c1f2d RCX: 0000000000000000
+RDX: 1fffffffffff02c5 RSI: 0000000000000000 RDI: 0000000000000001
+RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: fffffbfff1ce5ada R11: 0000000000000000 R12: 0000000000000000
+R13: ffff88802c3a1d40 R14: fffffffffff81629 R15: 0000000000000000
+FS:  00007fab0371d700(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: fffffffffff81629 CR3: 000000006e8d9000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ lock_acquire kernel/locking/lockdep.c:5668 [inline]
+ lock_acquire+0x1e3/0x630 kernel/locking/lockdep.c:5633
+ __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
+ _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
+ spin_lock include/linux/spinlock.h:350 [inline]
+ take_dentry_name_snapshot+0x2b/0x170 fs/dcache.c:315
+ ovl_check_rename_whiteout fs/overlayfs/super.c:1207 [inline]
+ ovl_make_workdir fs/overlayfs/super.c:1329 [inline]
+ ovl_get_workdir fs/overlayfs/super.c:1444 [inline]
+ ovl_fill_super+0x1dd2/0x6330 fs/overlayfs/super.c:2000
+ mount_nodev+0x64/0x120 fs/super.c:1405
+ legacy_get_tree+0x109/0x220 fs/fs_context.c:610
+ vfs_get_tree+0x8d/0x2f0 fs/super.c:1489
+ do_new_mount fs/namespace.c:3145 [inline]
+ path_mount+0x132a/0x1e20 fs/namespace.c:3475
+ do_mount fs/namespace.c:3488 [inline]
+ __do_sys_mount fs/namespace.c:3697 [inline]
+ __se_sys_mount fs/namespace.c:3674 [inline]
+ __x64_sys_mount+0x283/0x300 fs/namespace.c:3674
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fab03f80209
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 31 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fab0371d208 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
+RAX: ffffffffffffffda RBX: 00007fab04005528 RCX: 00007fab03f80209
+RDX: 0000000020000080 RSI: 00000000200000c0 RDI: 0000000000000000
+RBP: 00007fab04005520 R08: 0000000020000480 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007fab0400552c
+R13: 00007ffcd399fc6f R14: 00007fab0371d300 R15: 0000000000022000
+ </TASK>
+Modules linked in:
+CR2: fffffffffff81629
+---[ end trace 0000000000000000 ]---
+RIP: 0010:__lock_acquire+0xd8d/0x56d0 kernel/locking/lockdep.c:4925
+Code: c8 00 00 00 89 05 83 4e 3c 0f e9 bd 00 00 00 48 b8 00 00 00 00 00 fc ff df 4c 89 f2 48 c1 ea 03 80 3c 02 00 0f 85 4e 31 00 00 <49> 81 3e e0 e5 f6 8f 0f 84 4c f3 ff ff 41 83 fc 01 0f 87 54 f3 ff
+RSP: 0018:ffffc90004e0f7e8 EFLAGS: 00010046
+RAX: dffffc0000000000 RBX: 1ffff920009c1f2d RCX: 0000000000000000
+RDX: 1fffffffffff02c5 RSI: 0000000000000000 RDI: 0000000000000001
+RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: fffffbfff1ce5ada R11: 0000000000000000 R12: 0000000000000000
+R13: ffff88802c3a1d40 R14: fffffffffff81629 R15: 0000000000000000
+FS:  00007fab0371d700(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: fffffffffff81629 CR3: 000000006e8d9000 CR4: 0000000000350ef0
+----------------
+Code disassembly (best guess):
+   0:	c8 00 00 00          	enterq $0x0,$0x0
+   4:	89 05 83 4e 3c 0f    	mov    %eax,0xf3c4e83(%rip)        # 0xf3c4e8d
+   a:	e9 bd 00 00 00       	jmpq   0xcc
+   f:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  16:	fc ff df
+  19:	4c 89 f2             	mov    %r14,%rdx
+  1c:	48 c1 ea 03          	shr    $0x3,%rdx
+  20:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
+  24:	0f 85 4e 31 00 00    	jne    0x3178
+* 2a:	49 81 3e e0 e5 f6 8f 	cmpq   $0xffffffff8ff6e5e0,(%r14) <-- trapping instruction
+  31:	0f 84 4c f3 ff ff    	je     0xfffff383
+  37:	41 83 fc 01          	cmp    $0x1,%r12d
+  3b:	0f                   	.byte 0xf
+  3c:	87 54 f3 ff          	xchg   %edx,-0x1(%rbx,%rsi,8)
+
