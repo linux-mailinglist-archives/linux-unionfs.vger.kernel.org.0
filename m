@@ -2,71 +2,50 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B562765D358
-	for <lists+linux-unionfs@lfdr.de>; Wed,  4 Jan 2023 13:56:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 088D965EA72
+	for <lists+linux-unionfs@lfdr.de>; Thu,  5 Jan 2023 13:10:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236983AbjADMzj (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 4 Jan 2023 07:55:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36360 "EHLO
+        id S232771AbjAEMKH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-unionfs@lfdr.de>); Thu, 5 Jan 2023 07:10:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237524AbjADMzF (ORCPT
+        with ESMTP id S231797AbjAEMKG (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 4 Jan 2023 07:55:05 -0500
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3B311E3C6
-        for <linux-unionfs@vger.kernel.org>; Wed,  4 Jan 2023 04:54:53 -0800 (PST)
-Received: by mail-qk1-x72a.google.com with SMTP id k2so16211162qkk.7
-        for <linux-unionfs@vger.kernel.org>; Wed, 04 Jan 2023 04:54:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
-        b=BQfo1+41q2NZR57Q7BFlMODaOza2AgrRvUpAp3daCd4t1w84OEhFtXAM1g7CkVTr/y
-         mvXWkJvXCDM96Iy3cSf9E37Th3uZX5TzmwlIsHFzK3DAyLuSjJ8d3uR9drr/ahkzPGkt
-         iW+sw+gZOJCd7bumtfoM4UR2xOfXz6tdmGq2f+IJJhoSBazdofAm5Gs9PxuweXnk264c
-         knSGf1CtrqZScdeov1GoaGbl2sApMUXYjJGPCObPVA0UTlHx2t6+wdp4VOKHmsqLWM8X
-         lQt15zqigA6uJCG+q37n0r4mLK1MKtsniT1i9jhRA9qlN9E2Mf0sYN4W9Jd0n+39BoCK
-         yzWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
-        b=dfvZ2QO2GfxH8hczabl4Wy+qp3bV1TcjzDyou7BUu5VR8mFuUl3NeVfVICq8jaGZX2
-         G1Pn7jWs21/nb0eoK3BLUO6x/CPM9oxPMw3uUrA9d9MehXVf6BGi/eikCWMIxyeJmBA3
-         hdxR2UrYzSflLnwbNFTG3B6ezI0fCr4HU1O36omwH/dcZ1wO7He08H4Dx/BV9zU9JUuw
-         ARWKEd+XYV01p28h8IIzophxDBj2F20lmgW82cLD0qJTAbKzRpgans8XEJk+iINwC9gl
-         SxHlNg+4eiuHbaGuRieHhEcJLdI2UiopRBS1gBOGdZMfqI+yysFj2/i51Km0YWGeoo6B
-         Oubg==
-X-Gm-Message-State: AFqh2koXblZEKsSg+CNaKElPDY8Qxn178XBMlF9+ovw7TnAdhnTRNcHK
-        an6nOLQWkrUxcbXntgmsLtudXybINWgfzmDpZX66KlNJRf8=
-X-Google-Smtp-Source: AMrXdXuKXTvNK0aSB9vnyjtdhrZfKmRzvU9Jw1W0zhcD7x19AMFVNgTh5oL+8ilZBOfTDf/bL64QVz1mYULxa/ftADs=
-X-Received: by 2002:ac8:568a:0:b0:3a9:688d:fad2 with SMTP id
- h10-20020ac8568a000000b003a9688dfad2mr1976067qta.646.1672836882017; Wed, 04
- Jan 2023 04:54:42 -0800 (PST)
+        Thu, 5 Jan 2023 07:10:06 -0500
+X-Greylist: delayed 3171 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 05 Jan 2023 04:10:02 PST
+Received: from win03-mail.zth.netdesignhost.com (win03-mail.zth.netdesignhost.com [150.95.29.90])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8802E58D08
+        for <linux-unionfs@vger.kernel.org>; Thu,  5 Jan 2023 04:10:02 -0800 (PST)
+Received: from [45.128.234.153] (UnknownHost [45.128.234.153]) by win03-mail.zth.netdesignhost.com with SMTP; Thu, 5 Jan 2023 18:16:59 +0700
+From:   "Ms. Lan  " <welcome@longbeach-chaam.com>
+To:     Recipients <welcome@longbeach-chaam.com>
+Subject: Hi, Happy New Year
+Date:   Thu, 05 Jan 2023 12:16:50 +0100
+Reply-To: nguyenl@hpharm.ml
+Message-ID: <89f436c62f614a70a3417ba66d724a3a@com>
 MIME-Version: 1.0
-Received: by 2002:a05:6200:5d91:b0:4a5:78e9:2012 with HTTP; Wed, 4 Jan 2023
- 04:54:41 -0800 (PST)
-Reply-To: Gregdenzell9@gmail.com
-From:   Greg Denzell <mzsophie@gmail.com>
-Date:   Wed, 4 Jan 2023 12:54:41 +0000
-Message-ID: <CAEoj5=ZpJ15GRz-U33Ocbu5-P3Va+3bNv3476+mmJJ52cwx7tA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+X-Spam-Status: No, score=3.7 required=5.0 tests=BAYES_99,BAYES_999,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,T_SPF_PERMERROR autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Seasons Greetings!
+Hello,
 
-This will remind you again that I have not yet received your reply to
-my last message to you.
+A reputable pharmaceutical company from Vietnam is in need of a reliable individual or corporate entity in your state to act as their Liaison officer; this will not affect your current job or business operations in any way.  If interested, reply for more information.
+
+
+Regards,
+Ms. Lan Nguyen
+
+
+
+
