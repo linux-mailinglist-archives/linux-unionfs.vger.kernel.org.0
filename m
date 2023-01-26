@@ -2,98 +2,175 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A119D676B7B
-	for <lists+linux-unionfs@lfdr.de>; Sun, 22 Jan 2023 08:35:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C0FD67C447
+	for <lists+linux-unionfs@lfdr.de>; Thu, 26 Jan 2023 06:27:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229617AbjAVHfk (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 22 Jan 2023 02:35:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46428 "EHLO
+        id S229510AbjAZF1K (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 26 Jan 2023 00:27:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbjAVHfj (ORCPT
+        with ESMTP id S235880AbjAZF1J (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 22 Jan 2023 02:35:39 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F241E1CD
-        for <linux-unionfs@vger.kernel.org>; Sat, 21 Jan 2023 23:35:38 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id e3so8168501wru.13
-        for <linux-unionfs@vger.kernel.org>; Sat, 21 Jan 2023 23:35:37 -0800 (PST)
+        Thu, 26 Jan 2023 00:27:09 -0500
+Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 737424942F
+        for <linux-unionfs@vger.kernel.org>; Wed, 25 Jan 2023 21:27:02 -0800 (PST)
+Received: by mail-vs1-xe2d.google.com with SMTP id v26so254508vsm.5
+        for <linux-unionfs@vger.kernel.org>; Wed, 25 Jan 2023 21:27:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zrl5cIn9WD1Ah8HbXtLvCSoWdl9XDMhbK2OG2fkX1JU=;
-        b=i7OhI1dFLf7D14D6zrnmHQFlJMZ3/er5pNA2vRvix6npH8HdG0jEJiPNkokuDv/PXB
-         7Bg19qYmoo/JnmpPXsuSrQNTR6E/xECvmdhOPn0p0S+CMmeVFEOqf1bLSf3AUXxlJUKp
-         6YDvp2A/k4GQ2e5lU8DNFCRVYdEbONKqy1j2/6aDl5q2eoE+CCl3695nWR6tApfF5lzy
-         7Eo45ncNOTaH0N2iE1rE6adDMDn6V7Lhf4w4GzK2Q0UN75+3sugrgpF/RDr3HRltZwhP
-         Z0dHu6RTJKD3ebd6sYOFeibsFqtRe4BjcgtUQ3W5wAwJADc/KbvNkAOCk59v1AA1vgyJ
-         wlfg==
+        bh=Ml26pdKrOPwDrY4P7/M/1n9DkzdnH5DzBsV5N6y7asA=;
+        b=pm693VBVMWTN01xH1D5vMqjtVRwRICCGDZSETK8QzxaKGMalHHflvwhk2672Hag5YK
+         9UCRTVudre2QteRWbqabXk5muAu819lSxhFO3Q0rLDFmoQOAxQcWoAr7zGOqO1IybTwI
+         G+bKyE35SUmzsWsmNEndOSqpzgZ4EwD3Mwhc+qBdKL0Nd0Qk1u22AIB0Oxu4D4P+6JNe
+         Is9ljzzBZcvekpRvaLaqfvGDKrQULe7ar33Ck4/Ge5HTfOPt/aIEoQf9t9+/1wDB5lcn
+         LhzbtMwC4scpuVSVklZACEIDXFc4CgDA2HbEe8My0S7XFSzLHwtPx2BwphR7FWBhK1L6
+         c79g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Zrl5cIn9WD1Ah8HbXtLvCSoWdl9XDMhbK2OG2fkX1JU=;
-        b=ffjEkREA2v7QG9o7k1Jm6HqokCWk0k+iNjCEv4fCh6PEnhG0fYeq6VQassYHALsWnQ
-         4xOpg5NivjPV1+HrnoFimSlnmk+lAMmyJdwzC+rClgCHz1qSgvtJsxByCW1987iYDCtZ
-         j9ewOhzV187eJLp4QahdbtuNvyZ0lq8CaHSoFMngI7pgcm5c0cFk4SSd0h/A0FI25zgH
-         rgpM37zjb8QO6CpLJJqoFlx/gOzh1lN+LE116vy/DZDv/YLOuVPBLWYfToYWz4Ysb4ro
-         ZkxqyrE9SpM3vFoSXjjXFb2I6tTh5+I91vnQtvlRytSI6sGKSPbZWJT8xORQrEdNx94M
-         AXVw==
-X-Gm-Message-State: AFqh2kqU+60uj6AUdcCbaw7/sXXKACJvXRsKibBRdbeyptLwtU5lywrw
-        J9cA8I97Fa0UX+YivyzuR/SUqZFurjr/zCEwhiU=
-X-Google-Smtp-Source: AMrXdXvv+woFVdddO4KoOjJgj8VvxJk1bLGWFgKWdJQb24uyfr0nzWyG62KaODYX2vYZZn+172gZ7zFE+SuQ1zIXV2I=
-X-Received: by 2002:a5d:51ca:0:b0:2bb:e7a6:f3c4 with SMTP id
- n10-20020a5d51ca000000b002bbe7a6f3c4mr660203wrv.539.1674372936494; Sat, 21
- Jan 2023 23:35:36 -0800 (PST)
+        bh=Ml26pdKrOPwDrY4P7/M/1n9DkzdnH5DzBsV5N6y7asA=;
+        b=a4CT2ycQkJZXPJAiPhWCMAoxcs3ZYSXJp0FniTzBkkc+EKk0FytDH9zc3ipFdRYN5/
+         du+PcKFI+FgkIvmMufCpiSMrfQViRbwaFE3lNRrwDt8TQ1sg+VujoMjlBX5TNxkiei6S
+         UbaVqwQ77X7y8cXNYrH0Lia4XjlNYhR76s60NxKq9c66Z4u+Fh6mqpyXvReyhIL1t8rt
+         19Dz97dtmjPUDJcpEJYD+swyjmXxfjVre3vpb8IgABblkkyH27Ei7G2jKyZZw1gJt5fp
+         4xGQoGxIlAOPZBzfWyBj2lBHL/O0uatwHuNHQJxvzYAq63YdwrwLV6h4kZSTJNo+jz9R
+         Znjg==
+X-Gm-Message-State: AO0yUKULaJvSgWh/rcPF+EGMOrE4GRBTJT6wxMun0Wx5Wqca58yzZVKg
+        69Uv2OofAzk4DMrig8IHtPJkyisZL8W2k7qLCaE=
+X-Google-Smtp-Source: AK7set9Xmq1wwyxoGSqyATmo4mMjlz+n+SGxoW2Gra2DdmpyWOwJLNoXdyc/hQHBi+0PkAgBPaHq2uNSItX5sH8TIso=
+X-Received: by 2002:a67:e0d8:0:b0:3ea:a853:97c4 with SMTP id
+ m24-20020a67e0d8000000b003eaa85397c4mr184258vsl.36.1674710821405; Wed, 25 Jan
+ 2023 21:27:01 -0800 (PST)
 MIME-Version: 1.0
-Sender: mrumaruzongo.2@gmail.com
-Received: by 2002:adf:fd4f:0:0:0:0:0 with HTTP; Sat, 21 Jan 2023 23:35:36
- -0800 (PST)
-From:   "Mrs.Vanessa Adam" <mrsvanessaadams.7@gmail.com>
-Date:   Sat, 21 Jan 2023 23:35:36 -0800
-X-Google-Sender-Auth: UcLbWG8Y5CewXvFS5XuLM5kkEpk
-Message-ID: <CAMD_TOK53uq-DLcfCynimpyACkMHuOcZxY5e7xer_Jcp7Deo0A@mail.gmail.com>
-Subject: Greetings,
-To:     undisclosed-recipients:;
+References: <cover.1674227308.git.alexl@redhat.com> <CAOQ4uxgGc33_QVBXMbQTnmbpHio4amv=W7ax2vQ1UMet0k_KoA@mail.gmail.com>
+ <1ea88c8d1e666b85342374ed7c0ddf7d661e0ee1.camel@redhat.com>
+ <CAOQ4uxinsBB-LpGh4h44m6Afv0VT5yWRveDG7sNvE2uJyEGOkg@mail.gmail.com>
+ <5fb32a1297821040edd8c19ce796fc0540101653.camel@redhat.com>
+ <CAOQ4uxhGX9NVxwsiBMP0q21ZRot6-UA0nGPp1wGNjgmKBjjBBA@mail.gmail.com>
+ <20230125041835.GD937597@dread.disaster.area> <CAOQ4uxhqdjRbNFs_LohwXdTpE=MaFv-e8J3D2R57FyJxp_f3nA@mail.gmail.com>
+ <87wn5ac2z6.fsf@redhat.com> <CAOQ4uxiPLHHnr2=XH4gN4bAjizH-=4mbZMe_sx99FKuPo-fDMQ@mail.gmail.com>
+ <87o7qmbxv4.fsf@redhat.com> <CAOQ4uximBLqXDtq9vDhqR__1ctiiOMhMd03HCFUR_Bh_JFE-UQ@mail.gmail.com>
+ <87fsbybvzq.fsf@redhat.com> <CAOQ4uxgos8m72icX+u2_6Gh7eMmctTTt6XZ=BRt3VzeOZH+UuQ@mail.gmail.com>
+ <87wn5a9z4m.fsf@redhat.com> <CAOQ4uxi7GHVkaqxsQV6ninD9fhvMAPk1xFRM2aMRFXQZUV-s3Q@mail.gmail.com>
+ <CAOQ4uxiZ4iB82F4i2zMPcyCB8EBFGObdAoBEcar0KE7sA5BoNA@mail.gmail.com>
+In-Reply-To: <CAOQ4uxiZ4iB82F4i2zMPcyCB8EBFGObdAoBEcar0KE7sA5BoNA@mail.gmail.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Thu, 26 Jan 2023 07:26:49 +0200
+Message-ID: <CAOQ4uxi5zpnX1EX3P1Ya4OkRa867NkdtkGcHjTJ9ftvnTL+EhQ@mail.gmail.com>
+Subject: userns mount and metacopy redirects (Was: Re: [PATCH v3 0/6]
+ Composefs: an opportunistically sharing verified image filesystem)
+To:     Giuseppe Scrivano <gscrivan@redhat.com>
+Cc:     Alexander Larsson <alexl@redhat.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Vivek Goyal <vgoyal@redhat.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        overlayfs <linux-unionfs@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_60,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Greetings My Dear Friend, ,
+[spawning overlayfs sub-topic]
 
-How are you? I hope this message will reach you in good fate. I have
-severally tried to reach you in vain. My names are Mrs.Vanessa Adam,
-my age is 68 and I am a citizen of Grenada. I lived in Philippines for
-years where i did my missionary work. Due to my paraplegia stroke
-which developed after the death of my husband i am admitted in a
-specialist hospital in Israel from where i communicate you now.
+On Wed, Jan 25, 2023 at 10:29 PM Amir Goldstein <amir73il@gmail.com> wrote:
+>
+> On Wed, Jan 25, 2023 at 10:23 PM Amir Goldstein <amir73il@gmail.com> wrote:
+> >
+> > On Wed, Jan 25, 2023 at 9:45 PM Giuseppe Scrivano <gscrivan@redhat.com> wrote:
+> > >
+> > > Amir Goldstein <amir73il@gmail.com> writes:
+> > >
+> > > >> >> I previously mentioned my wish of using it from a user namespace, the
+> > > >> >> goal seems more challenging with EROFS or any other block devices.  I
 
-My health is no longer promising and i can no longer afford to migrate
-to your country for the establishment of charity service so i decided
-to contact you. I got your contact through a link to your country=E2=80=99s
-humanitarian event of the year.
+For those who are starting to read here, the context is userns mounting
+of overlayfs with a lower EROFS layer containing metacopy references to
+lower data blobs in another fs (a.k.a the composefs model).
 
-My concern of contacting you is about the establishment of
-humanitarian service in your country.
+IMO, mounting a readonly image of whatever on-disk format
+is a very high risk for userns mount.
+A privileged mount helper that verifies and mounts the EROFS
+layer sounds like a more feasible solution.
 
-I decided to offer my financial aid for this service through you so
-that you will establish a selfless service organization there in your
-country for the sake of less privilege.
+> > > >> >> don't know about the difficulty of getting overlay metacopy working in a
+> > > >> >> user namespace, even though it would be helpful for other use cases as
+> > > >> >> well.
+> > > >> >>
+> > > >> >
+> > > >> > There is no restriction of metacopy in user namespace.
+> > > >> > overlayfs needs to be mounted with -o userxattr and the overlay
+> > > >> > xattrs needs to use user.overlay. prefix.
+> > > >>
+> > > >> if I specify both userxattr and metacopy=on then the mount ends up in
+> > > >> the following check:
+> > > >>
+> > > >> if (config->userxattr) {
+> > > >>         [...]
+> > > >>         if (config->metacopy && metacopy_opt) {
+> > > >>                 pr_err("conflicting options: userxattr,metacopy=on\n");
+> > > >>                 return -EINVAL;
+> > > >>         }
+> > > >> }
+> > > >>
+> > > >
+> > > > Right, my bad.
+> > > >
+> > > >> to me it looks like it was done on purpose to prevent metacopy from a
+> > > >> user namespace, but I don't know the reason for sure.
+> > > >>
+> > > >
+> > > > With hand crafted metacopy, an unpriv user can chmod
+> > > > any files to anything by layering another file with different
+> > > > mode on top of it....
+> > >
+> > > I might be missing something obvious about metacopy, so please correct
+> > > me if I am wrong, but I don't see how it is any different than just
+> > > copying the file and chowning it.  Of course, as long as overlay uses
+> > > the same security model so that a file that wasn't originally possible
+> > > to access must be still blocked, even if referenced through metacopy.
+> > >
+> >
+> > You're right.
+> > The reason for mutual exclusion maybe related to the
+> > comment in ovl_check_metacopy_xattr() about EACCES.
+> > Need to check with Vivek or Miklos.
+> >
+> > But get this - you do not need metacopy=on to follow lower inode.
+> > It should work without metacopy=on.
+> > metacopy=on only instructs overlayfs whether to copy up data
+> > or only metadata when changing metadata of lower object, so it is
+> > not relevant for readonly mount.
+> >
+>
+> However, you do need redirect=follow and that one is only mutually
+> exclusive with userxattr.
+> Again, need to ask Miklos whether that could be relaxed under
+> some conditions.
+>
 
-However, i thank you for taking your time and i expect your quick
-reply so that we can discuss more about it. I am waiting for your
-quick reply.
+I can see some possible problems with userns mount and redirect:
+- referencing same dir inode from different paths
+- referencing same inode from different paths with
+  wrong nlink and inconsistent metadata
 
-Yours faithfully,
-Mrs.Vanessa Adam.
+However, I think a mode that only follows a redirect from a
+lower metacopy file to its data should be safe for userns mount.
+
+In this special case (lower metacopy file) we may also be able to
+implement the lazy lookup of the data file on open to optimize
+'find' performance, but need to figure out what to do with st_blocks
+of stat() in that case.
+
+Thanks,
+Amir.
