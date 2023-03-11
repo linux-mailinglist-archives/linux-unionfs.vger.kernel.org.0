@@ -2,116 +2,69 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E2476B3D94
-	for <lists+linux-unionfs@lfdr.de>; Fri, 10 Mar 2023 12:23:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AA926B5CD0
+	for <lists+linux-unionfs@lfdr.de>; Sat, 11 Mar 2023 15:25:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230052AbjCJLXf (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 10 Mar 2023 06:23:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37480 "EHLO
+        id S230174AbjCKOZG (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 11 Mar 2023 09:25:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229959AbjCJLXf (ORCPT
+        with ESMTP id S229770AbjCKOZF (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 10 Mar 2023 06:23:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 243156EB97
-        for <linux-unionfs@vger.kernel.org>; Fri, 10 Mar 2023 03:22:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1678447366;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dN7k3B6BEud1duRFuYX92Z8qXcuxs3rcZhY8CwxCvGc=;
-        b=N7TDJPvocdeeVRb4T2bVEFCs4rvPMZmqu/mZ1TXvX37UqXKgi7HFBb2YuL/ut2+ZUI9KeN
-        2uIt2iKR4qXQ+ch1y6/rE4iGnFuLXbLwEJUcXjMg2KstfK1m37RjTTVnnkMQCArF5aC7kJ
-        V4mntj1bkJgP9sZHgWHlnNFxMorcbJM=
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
- [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-280-5dLMjYaRP8aCmttnY5ogXw-1; Fri, 10 Mar 2023 06:22:45 -0500
-X-MC-Unique: 5dLMjYaRP8aCmttnY5ogXw-1
-Received: by mail-il1-f198.google.com with SMTP id z8-20020a92cd08000000b00317b27a795aso2472573iln.0
-        for <linux-unionfs@vger.kernel.org>; Fri, 10 Mar 2023 03:22:44 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678447364;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        Sat, 11 Mar 2023 09:25:05 -0500
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7881A2310A
+        for <linux-unionfs@vger.kernel.org>; Sat, 11 Mar 2023 06:25:04 -0800 (PST)
+Received: by mail-yb1-xb2d.google.com with SMTP id p203so705798ybb.13
+        for <linux-unionfs@vger.kernel.org>; Sat, 11 Mar 2023 06:25:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678544703;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dN7k3B6BEud1duRFuYX92Z8qXcuxs3rcZhY8CwxCvGc=;
-        b=T/yWHOy4vh2xDQlVV4M9TEjsfiMiEuWhz8l5Gn8HKB1HC2VcD+dBGF/rcSWX3J4oqs
-         Yx7WYdyccpghGJix5+HOBlDA+nz/gorw1HoeZ4XEbvc40AfaTrsnTCRvh9ygMuybQq3X
-         hKXon5gb7zyssfg+0cZzBvrXz1QYbp8u0qrbiR54xLolN7bi6/5meBHAsU64GMKo3uu5
-         WLIouiE+o4GMR8IlUNpZphW6Fal9cGZfZ6sWJby2W10+YxLB6IZUW0GquFcG54HrJKH0
-         fTvwT7gQ1tA0pTlP8wsao6OnzseOKdm4cADvhBEK2yYw5ikJHdB6MiSN2CAhmJYmzw3j
-         cNkg==
-X-Gm-Message-State: AO0yUKWc24/sFK8JAjkh7ta29XwNEcFGGOBTXiXYxIDBgGhdhTZnYZDh
-        g2ZjYNnyRqQUKrtcifadGSDYplm/reGPjAAG4SBRlq7bHnj44lL7xYhYeJQsD10BsTVNXd7Vz+Q
-        2ye0nJlW55xs3dUVCB346wSCuc7ozZnkQkNfhPzCWp2qFTlhU9Vvs
-X-Received: by 2002:a05:6e02:934:b0:315:9a9a:2cd with SMTP id o20-20020a056e02093400b003159a9a02cdmr12215482ilt.4.1678447364038;
-        Fri, 10 Mar 2023 03:22:44 -0800 (PST)
-X-Google-Smtp-Source: AK7set+KZ6+bfI5eypR0lIdFPqQXXMOqzThHSfVh9eBO8gh3nF07qpSRuTxfruW3zUArP4zZ4RSKwn5+5hXYmFoH5Jk=
-X-Received: by 2002:a05:6e02:934:b0:315:9a9a:2cd with SMTP id
- o20-20020a056e02093400b003159a9a02cdmr12215475ilt.4.1678447363815; Fri, 10
- Mar 2023 03:22:43 -0800 (PST)
+        bh=0WvPIjvJySmeyGBuurh091SczFdPjzfvwwQjXNn6vDw=;
+        b=Gw4L/MA9ul4L9Jz/8P2ZLb3rkCRBYx7PC/ouOq11AhuNafW5MnPQNyCcuQX8gj+Ukt
+         1TodLib0FCPF7GDrifGUmsWE2TzaMIQqdzhzcjTXTwCGiTetjkrFZ4XTXdTAViWoV4Tq
+         aBBp0wbx2AnMo0d3xsDsElXE7skDrFetnDAAEB9vPAgMfS1nfFRyoQr3eg1o3OzmHPTi
+         8/NK828JocoMl938JCX/0C93jxHoyWXC6m3sAIUriCKO+LPjNKnprZfZ/XHJrPpcZVJk
+         ivPn/bG0QbnmMCPsevRH7lzPlb+89+7puT1dmU9AaC19/gSgWr6tzU4Cst+hRIwHC03j
+         QoCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678544703;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0WvPIjvJySmeyGBuurh091SczFdPjzfvwwQjXNn6vDw=;
+        b=QNnOJP3WOtD8wAyKFIXVoBHWNFcgYvFDFqJTaxB09bOHA/rZYDM+f3SAcAzD7yMjBt
+         XjfxuPhsrvSrAVGR1ksLoIrLkulu8Fxt90j5qDKXvR6eEQrII1wqYBQnkOcWPIWOEqOA
+         I2HFb/nfneg/6Yg7w6v+agn/WDAvACjHODKjyvLErWm6ejR/q22StAwD8LrykbdGghM5
+         ZJudeyUlVQBDAzqvYSD6qOhR+nxoNHtS+3Hjk2zuYc/uhsCKv8tLpdvsP5RkOSS6rgxi
+         0IYWDXPJT/nQh6eQM48d7bzWIgtp5/dK/PG4TsX8pjHLQ0+N9QVCgT9cLpLdGZb4oGRm
+         Ajrg==
+X-Gm-Message-State: AO0yUKWPHUnZxyRDlJ2wnYEkuJskg4P5uGVMUH4Bg29gCsPuN3h3mXeH
+        wCo7QFOZHaoLWxAIC7hYQVG+1ZJT47k/Ont+ilE=
+X-Google-Smtp-Source: AK7set8DdnZtKUc30Kgf26+knQCDsnyzMrNytnQeC+kZPv2DC6RB74tIJfZAevMdqeAG8WGziQzmTXe3LBm5QPFci+Y=
+X-Received: by 2002:a5b:d05:0:b0:b27:65ca:f364 with SMTP id
+ y5-20020a5b0d05000000b00b2765caf364mr6028010ybp.2.1678544703740; Sat, 11 Mar
+ 2023 06:25:03 -0800 (PST)
 MIME-Version: 1.0
-References: <CAL7ro1GQcs28kT+_2M5JQZoUN6KHYmA85ouiwjj6JU+1=C-q4g@mail.gmail.com>
-In-Reply-To: <CAL7ro1GQcs28kT+_2M5JQZoUN6KHYmA85ouiwjj6JU+1=C-q4g@mail.gmail.com>
-From:   Alexander Larsson <alexl@redhat.com>
-Date:   Fri, 10 Mar 2023 12:22:32 +0100
-Message-ID: <CAL7ro1F9Zu-m4PvHaeGvYAnFE7VaLp=Ykz8zadUWVPX-qjS7dQ@mail.gmail.com>
-Subject: Re: WIP: verity support for overlayfs
-To:     Amir Goldstein <amir73il@gmail.com>, linux-fsdevel@vger.kernel.org,
-        linux-unionfs@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>
+Received: by 2002:a05:7108:1702:b0:2a3:49cf:c7d2 with HTTP; Sat, 11 Mar 2023
+ 06:25:03 -0800 (PST)
+Reply-To: fionahill.2023@outlook.com
+From:   FIONA HILL <dr.sophia.moore@gmail.com>
+Date:   Sat, 11 Mar 2023 06:25:03 -0800
+Message-ID: <CAJUx1i8cjhgdF4hJDTSpWh_k0p1sUuwq=z=+cuabci0nwn1Zxg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, Mar 8, 2023 at 4:28=E2=80=AFPM Alexander Larsson <alexl@redhat.com>=
- wrote:
->
-> As was recently discussed in the various threads about composefs we
-> want the ability to specify a fs-verity digest for metacopy files,
-> such that the lower file used for the data is guaranteed to have the
-> specified digest.
->
-> I wrote an initial version of this here:
->
->   https://github.com/alexlarsson/linux/tree/overlay-verity
-
-After some discussions with Amir in github I updated the branch. In
-this new version there are four verity modes with this behaviour:
-
-Unless you explicitly disable it ("verity=3Doff") all existing xattrs
-are validated before use. This is all that happens by default
-("verity=3Dvalidate"), but, if you turn on verity ("verity=3Don") then
-during metacopy we generate verity xattr in the upper metacopy file (if
-the source file has verity enabled). This means later accesses can
-guarantee that the correct data is used.
-
-Additionally you can use "verity=3Drequire". In this mode all metacopy
-files must have a valid verity xattr. For this to work metadata
-copy-up must be able to create a verity xattr (so that later accesses
-are validated). Therefore, in this mode, if the lower data file
-doesn't have fs-verity enabled we fall back to a full copy rather than
-a metacopy.
-
-In addition I changed the code so that validation of lowerdata happens
-during lookup. Previously I was trying to do this lazily at use-time,
-but that was only done partially right. Amir is doing some general
-work on making lookups lazy, so the idea is to migrate the verity
-validation to that later.
-
---=20
-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D=
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D
- Alexander Larsson                                Red Hat, Inc
-       alexl@redhat.com         alexander.larsson@gmail.com
-
+-- 
+How are you and your family you receive my message?
