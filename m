@@ -2,124 +2,68 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D77C96BD083
-	for <lists+linux-unionfs@lfdr.de>; Thu, 16 Mar 2023 14:15:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E70776BDF48
+	for <lists+linux-unionfs@lfdr.de>; Fri, 17 Mar 2023 04:08:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230006AbjCPNPK (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 16 Mar 2023 09:15:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54904 "EHLO
+        id S229554AbjCQDIV (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 16 Mar 2023 23:08:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230044AbjCPNPI (ORCPT
+        with ESMTP id S229607AbjCQDHo (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 16 Mar 2023 09:15:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20AD29018
-        for <linux-unionfs@vger.kernel.org>; Thu, 16 Mar 2023 06:14:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1678972458;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=cij1DgoI5i6Ff0Me0upgsjOT5aDaEMgTlpSwTjH71C4=;
-        b=VLpFvuXuGi2Y+kqUmbJlFkeDqjvJvhXEFx03t79g28RCl7PUpK98QOiL0SqC5d1kt5OiL1
-        Bh0CknXUDdOJvMNAXGA6NlWivWbSMclR8pgKo8MhN9DnWZQ5YPRXeaxf8Xhs2EJLnLmsLV
-        SmcYRUwITgilh1cCzUQEraXAwhman74=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-270-XO6vazZ6MRa7bm665tOaDg-1; Thu, 16 Mar 2023 09:14:15 -0400
-X-MC-Unique: XO6vazZ6MRa7bm665tOaDg-1
-Received: by mail-wm1-f69.google.com with SMTP id bd26-20020a05600c1f1a00b003ed23f09060so653277wmb.3
-        for <linux-unionfs@vger.kernel.org>; Thu, 16 Mar 2023 06:14:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678972454;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cij1DgoI5i6Ff0Me0upgsjOT5aDaEMgTlpSwTjH71C4=;
-        b=C5bKuogAmvAh3+qMbleWinLCpYidixSYDGz1nXjvWiAXO+7+zYnjpCsn9sHyGbqnSK
-         A5E2JlzAvW1aFtkW5K2ZaZ79oBO3r0OUG+Vhr4npBlW3xBOjdkn+9yDsEUBnkBVWgIYE
-         hJvvivdtt9CxPTPzIcKAM3oXTA14HSk/a5Dht1cJ1rDcTuT9GIvs+cmzups+0uAWOFBG
-         wG0Lq9z9C11eFmSowkA/KNy8qYZxUfimDLF5EjqAj54W+dMnlRdt6QAl4fcS31oQtzf9
-         KOmE1xupLPXQTfsYYcmOxDIAmJWPPji0O7diWf9tfLVezS+ySLZ+dcGQ/wCuohz3e1rW
-         k+XA==
-X-Gm-Message-State: AO0yUKX91Oz9C6m/b8Mb9byxwSJJ/Ewi2ItXfocWVdXC+xr+rqbkrbCv
-        LkQx72/zODX7BvSDmcJ4Wpn+DNmGJOGEydoyN04ZtSpdVb3RdfaUbg/+PBTITigm6bOgu2ZwANM
-        JqJPgqKp7OHWu1rcvDY0YPfr7LA==
-X-Received: by 2002:a7b:c394:0:b0:3ed:6693:1388 with SMTP id s20-20020a7bc394000000b003ed66931388mr1025910wmj.18.1678972453933;
-        Thu, 16 Mar 2023 06:14:13 -0700 (PDT)
-X-Google-Smtp-Source: AK7set8ZjMO0Y6+7kxovZnLoqzSDbEfVY0ZYumsiTW725vRLK5qi93k9OiMeyFdN6OokIatcXWlIng==
-X-Received: by 2002:a7b:c394:0:b0:3ed:6693:1388 with SMTP id s20-20020a7bc394000000b003ed66931388mr1025892wmj.18.1678972453636;
-        Thu, 16 Mar 2023 06:14:13 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id k18-20020a056000005200b002c71dd1109fsm7318197wrx.47.2023.03.16.06.14.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Mar 2023 06:14:13 -0700 (PDT)
-Message-ID: <f312327e-c11e-60f4-1367-af4e480b2609@redhat.com>
-Date:   Thu, 16 Mar 2023 14:14:12 +0100
+        Thu, 16 Mar 2023 23:07:44 -0400
+Received: from sragenkab.go.id (mail.sragenkab.go.id [103.172.109.4])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 2B5BDB0BA6
+        for <linux-unionfs@vger.kernel.org>; Thu, 16 Mar 2023 20:06:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sragenkab.go.id;
+         h=mime-version:content-type:content-transfer-encoding:date:from
+        :to:subject:reply-to:message-id; q=dns/txt; s=dkim1; bh=QGcIAmD5
+        O/Y9qXzDV8MxyimbsW3+rMaQ/kz75GzBHbk=; b=GumYAzZEGL68eGk2y0y394i/
+        g6f2ebasOkKPDJO0daYHTzk96WIr0NFF169n1/VGUeEa8BS6lfrGcV98+AE+QLVV
+        L6TOP7NAROuHgkOnnr7AwEJZsJIHHuHX/q9FoxCUMbl+CBtI8QpBZgHZ2hYp+8ce
+        6yNXMv7t4hgvYFyIKaCXKN+dXKsSlKShEy5bO+PGv0lr+aoECRE+9GrbfgZN1+A9
+        Yz30YRSsCWyIanMjno/vITjOWhXVU3r6j1kYCkNohTztHHHGye5t23W6fuj3VJKK
+        xDh+82p7S9fwAwnFP670PE32qt0SV9Gwwx6nDXoyWiQE3g/PQKKKXwAxhHQ2OA==
+Received: (qmail 70631 invoked from network); 15 Mar 2023 02:28:26 -0000
+Received: from localhost (HELO mail2.sragenkab.go.id) (127.0.0.1)
+  by localhost with SMTP; 15 Mar 2023 02:28:26 -0000
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v19 04/15] overlayfs: Implement splice-read
-Content-Language: en-US
-To:     David Howells <dhowells@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Christoph Hellwig <hch@infradead.org>
-Cc:     Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-        Jeff Layton <jlayton@kernel.org>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Hillf Danton <hdanton@sina.com>,
-        Christian Brauner <brauner@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Christoph Hellwig <hch@lst.de>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        linux-unionfs@vger.kernel.org
-References: <20230315163549.295454-1-dhowells@redhat.com>
- <20230315163549.295454-5-dhowells@redhat.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230315163549.295454-5-dhowells@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Date:   Tue, 14 Mar 2023 19:28:25 -0700
+From:   Ibrahim Tafa <jurnalsukowati@sragenkab.go.id>
+To:     undisclosed-recipients:;
+Subject: LOAN OPPORTUNITY AT LOW-INTEREST RATE
+Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
+Mail-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
+Message-ID: <e4546e21cb2cd7d6fc888e2bbb59de90@sragenkab.go.id>
+X-Sender: jurnalsukowati@sragenkab.go.id
+User-Agent: Roundcube Webmail/0.8.1
+X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_MONEY,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On 15.03.23 17:35, David Howells wrote:
-> Implement splice-read for overlayfs by passing the request down a layer
-> rather than going through generic_file_splice_read() which is going to be
-> changed to assume that ->read_folio() is present on buffered files.
-> 
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Christoph Hellwig <hch@lst.de>
-> cc: Jens Axboe <axboe@kernel.dk>
-> cc: Al Viro <viro@zeniv.linux.org.uk>
-> cc: John Hubbard <jhubbard@nvidia.com>
-> cc: David Hildenbrand <david@redhat.com>
-> cc: Matthew Wilcox <willy@infradead.org>
-> cc: Miklos Szeredi <miklos@szeredi.hu>
-> cc: linux-unionfs@vger.kernel.org
-> cc: linux-block@vger.kernel.org
-> cc: linux-fsdevel@vger.kernel.org
-> cc: linux-mm@kvack.org
-> ---
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
 
 -- 
-Thanks,
+Greetings,
+   I am contacting you based on the Investment/Loan opportunity for 
+companies in need of financing a project/business, We have developed a 
+new method of financing that doesn't take long to receive financing from 
+our clients.
+    If you are looking for funds to finance your project/Business or if 
+you are willing to work as our agent in your country to find clients in 
+need of financing and earn commissions, then get back to me for more 
+details.
 
-David / dhildenb
-
+Regards,
+Ibrahim Tafa
+ABIENCE INVESTMENT GROUP FZE, United Arab Emirates
