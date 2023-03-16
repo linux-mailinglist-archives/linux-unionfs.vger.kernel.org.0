@@ -2,90 +2,124 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA9276BCEA6
-	for <lists+linux-unionfs@lfdr.de>; Thu, 16 Mar 2023 12:45:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D77C96BD083
+	for <lists+linux-unionfs@lfdr.de>; Thu, 16 Mar 2023 14:15:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229627AbjCPLpk (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 16 Mar 2023 07:45:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44786 "EHLO
+        id S230006AbjCPNPK (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 16 Mar 2023 09:15:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230221AbjCPLpa (ORCPT
+        with ESMTP id S230044AbjCPNPI (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 16 Mar 2023 07:45:30 -0400
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E659A7A99
-        for <linux-unionfs@vger.kernel.org>; Thu, 16 Mar 2023 04:45:28 -0700 (PDT)
-Received: by mail-qv1-xf34.google.com with SMTP id t13so1006948qvn.2
-        for <linux-unionfs@vger.kernel.org>; Thu, 16 Mar 2023 04:45:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678967127;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T7al5tUCjdA9CCQe4odwP1DfME2QXDR1IbbFzP4IEE4=;
-        b=BzFjFJXKk4ABNdgdLtfJHHShX7t3wYw39L+ShibXewF6fjxx2qPSogdQ20Vj54PfdU
-         9rhL5ZIONd4Y0WZhtNw11TE5XR5gRUl5EE7IfM97MqtqobpktwpMm9qClk5eLCmFZGQb
-         qC+a1fOzCP0sGNVMB3CX222WK4oBKzIdG8zV3/ZLj37u4+Gfo2kSoPFKiuGNLWjEqCVY
-         rnBpvpH+p57OOZkjttsWP/X2tplWz2jJH7r3Q4l7qNnHTcNGQxqiPnPb8+V6L6T4hfLf
-         rawKgz4NcYdXc0f3opQ3Y4yjcZGk1d6QXeWUIi44sMsqIGuT0j0nFriGphS/b1a+ZUdj
-         2Bmw==
+        Thu, 16 Mar 2023 09:15:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20AD29018
+        for <linux-unionfs@vger.kernel.org>; Thu, 16 Mar 2023 06:14:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1678972458;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=cij1DgoI5i6Ff0Me0upgsjOT5aDaEMgTlpSwTjH71C4=;
+        b=VLpFvuXuGi2Y+kqUmbJlFkeDqjvJvhXEFx03t79g28RCl7PUpK98QOiL0SqC5d1kt5OiL1
+        Bh0CknXUDdOJvMNAXGA6NlWivWbSMclR8pgKo8MhN9DnWZQ5YPRXeaxf8Xhs2EJLnLmsLV
+        SmcYRUwITgilh1cCzUQEraXAwhman74=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-270-XO6vazZ6MRa7bm665tOaDg-1; Thu, 16 Mar 2023 09:14:15 -0400
+X-MC-Unique: XO6vazZ6MRa7bm665tOaDg-1
+Received: by mail-wm1-f69.google.com with SMTP id bd26-20020a05600c1f1a00b003ed23f09060so653277wmb.3
+        for <linux-unionfs@vger.kernel.org>; Thu, 16 Mar 2023 06:14:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678967127;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T7al5tUCjdA9CCQe4odwP1DfME2QXDR1IbbFzP4IEE4=;
-        b=HdwY0FUrOO8FIwrWSFyuJIov6wC2bbWo1r21qX2Kflqq4u3CvXITZ0Mfhcf4LBfxHA
-         bXLGN2yNICG2yR3/1aWGQkiS+fs4KyrzWr1a8E3eZhBnQdSc9aTfpV+DpE7Oftpdve3U
-         IL/6mXuBuFOepfV/VK/Yh0MhMa2TXgywrqc9O1HRsQPjD7CL/EwwhdmozTqV/agrKRHM
-         7syltj1G4t+kngw5fh7m9kXKT5FirHEz6ozjoPKiYxbCDQ2k5cfrzhp2iwifedCaDhvg
-         vWTihy4Sdrqf2LHVL2qq+sctkUpkm6n0rVyuHuyOhkIIRCDx3fp3bWd0RmAIYFalFpWH
-         cBIg==
-X-Gm-Message-State: AO0yUKVJFsWwLPIK82JLHPu85Q3M54+R4Ns3v6pZKLz3TlV2p5a9f46w
-        1bSxRwPB8RhzgqoDmzCyRzn56SoITb/oD7UwlA==
-X-Google-Smtp-Source: AK7set8YWulpFp78k05O47KmBZiOt93aLH8E5obP3H93mLiz6n+yw1SD8cJoOeFb8P8PaiOSPQn8iKuFrZsN2AUWogs=
-X-Received: by 2002:ad4:4ae3:0:b0:56e:a7d5:7c75 with SMTP id
- cp3-20020ad44ae3000000b0056ea7d57c75mr4813532qvb.3.1678967127223; Thu, 16 Mar
- 2023 04:45:27 -0700 (PDT)
+        d=1e100.net; s=20210112; t=1678972454;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cij1DgoI5i6Ff0Me0upgsjOT5aDaEMgTlpSwTjH71C4=;
+        b=C5bKuogAmvAh3+qMbleWinLCpYidixSYDGz1nXjvWiAXO+7+zYnjpCsn9sHyGbqnSK
+         A5E2JlzAvW1aFtkW5K2ZaZ79oBO3r0OUG+Vhr4npBlW3xBOjdkn+9yDsEUBnkBVWgIYE
+         hJvvivdtt9CxPTPzIcKAM3oXTA14HSk/a5Dht1cJ1rDcTuT9GIvs+cmzups+0uAWOFBG
+         wG0Lq9z9C11eFmSowkA/KNy8qYZxUfimDLF5EjqAj54W+dMnlRdt6QAl4fcS31oQtzf9
+         KOmE1xupLPXQTfsYYcmOxDIAmJWPPji0O7diWf9tfLVezS+ySLZ+dcGQ/wCuohz3e1rW
+         k+XA==
+X-Gm-Message-State: AO0yUKX91Oz9C6m/b8Mb9byxwSJJ/Ewi2ItXfocWVdXC+xr+rqbkrbCv
+        LkQx72/zODX7BvSDmcJ4Wpn+DNmGJOGEydoyN04ZtSpdVb3RdfaUbg/+PBTITigm6bOgu2ZwANM
+        JqJPgqKp7OHWu1rcvDY0YPfr7LA==
+X-Received: by 2002:a7b:c394:0:b0:3ed:6693:1388 with SMTP id s20-20020a7bc394000000b003ed66931388mr1025910wmj.18.1678972453933;
+        Thu, 16 Mar 2023 06:14:13 -0700 (PDT)
+X-Google-Smtp-Source: AK7set8ZjMO0Y6+7kxovZnLoqzSDbEfVY0ZYumsiTW725vRLK5qi93k9OiMeyFdN6OokIatcXWlIng==
+X-Received: by 2002:a7b:c394:0:b0:3ed:6693:1388 with SMTP id s20-20020a7bc394000000b003ed66931388mr1025892wmj.18.1678972453636;
+        Thu, 16 Mar 2023 06:14:13 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id k18-20020a056000005200b002c71dd1109fsm7318197wrx.47.2023.03.16.06.14.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Mar 2023 06:14:13 -0700 (PDT)
+Message-ID: <f312327e-c11e-60f4-1367-af4e480b2609@redhat.com>
+Date:   Thu, 16 Mar 2023 14:14:12 +0100
 MIME-Version: 1.0
-Received: by 2002:a0c:d989:0:b0:5b2:f74:d6f1 with HTTP; Thu, 16 Mar 2023
- 04:45:26 -0700 (PDT)
-Reply-To: fionahill.usa@outlook.com
-From:   Fiona Hill <barr.makpojames.tg@gmail.com>
-Date:   Thu, 16 Mar 2023 04:45:26 -0700
-Message-ID: <CABXrGPddkQ_jym+w8t-04Jo6UF+fBOs3ttsGDhoidJdsv+UYZw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_60,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:f34 listed in]
-        [list.dnswl.org]
-        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.6168]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [barr.makpojames.tg[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v19 04/15] overlayfs: Implement splice-read
+Content-Language: en-US
+To:     David Howells <dhowells@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Christoph Hellwig <hch@infradead.org>
+Cc:     Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+        Jeff Layton <jlayton@kernel.org>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Hillf Danton <hdanton@sina.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        Christoph Hellwig <hch@lst.de>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        linux-unionfs@vger.kernel.org
+References: <20230315163549.295454-1-dhowells@redhat.com>
+ <20230315163549.295454-5-dhowells@redhat.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230315163549.295454-5-dhowells@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
+On 15.03.23 17:35, David Howells wrote:
+> Implement splice-read for overlayfs by passing the request down a layer
+> rather than going through generic_file_splice_read() which is going to be
+> changed to assume that ->read_folio() is present on buffered files.
+> 
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Christoph Hellwig <hch@lst.de>
+> cc: Jens Axboe <axboe@kernel.dk>
+> cc: Al Viro <viro@zeniv.linux.org.uk>
+> cc: John Hubbard <jhubbard@nvidia.com>
+> cc: David Hildenbrand <david@redhat.com>
+> cc: Matthew Wilcox <willy@infradead.org>
+> cc: Miklos Szeredi <miklos@szeredi.hu>
+> cc: linux-unionfs@vger.kernel.org
+> cc: linux-block@vger.kernel.org
+> cc: linux-fsdevel@vger.kernel.org
+> cc: linux-mm@kvack.org
+> ---
+
+Reviewed-by: David Hildenbrand <david@redhat.com>
+
 -- 
-Did you receive my messages?
+Thanks,
+
+David / dhildenb
+
