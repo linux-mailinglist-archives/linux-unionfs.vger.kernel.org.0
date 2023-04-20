@@ -2,64 +2,72 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BEA26E85DF
-	for <lists+linux-unionfs@lfdr.de>; Thu, 20 Apr 2023 01:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B37976E8B9B
+	for <lists+linux-unionfs@lfdr.de>; Thu, 20 Apr 2023 09:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231442AbjDSXZJ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 19 Apr 2023 19:25:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46728 "EHLO
+        id S229749AbjDTHpT (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 20 Apr 2023 03:45:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231144AbjDSXZI (ORCPT
+        with ESMTP id S234078AbjDTHpR (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 19 Apr 2023 19:25:08 -0400
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0850E5E;
-        Wed, 19 Apr 2023 16:25:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1681946706; x=1713482706;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=/cMXZ6FFvFaNe2Gu5yF1TcbBSqpMmsH8LIHWlXhFPtw=;
-  b=GM9lv+NBcG7Vacat0yCHGNenWg522QvC6HzdYshMjYDC6a6xldnas8PU
-   BvNM51Y4gkROlPqQs04kClkqr1HLh7vunYsuXCcZEOUKUsuEFNb5ldpvn
-   yjBoYB1OCrFdGKz+uE/6qWCE/uXy6FGA8dE5mHnLPBfXu1XYetfvDG1Z+
-   A=;
-X-IronPort-AV: E=Sophos;i="5.99,210,1677542400"; 
-   d="scan'208";a="322482122"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-7dc0ecf1.us-east-1.amazon.com) ([10.43.8.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2023 23:25:05 +0000
-Received: from EX19MTAUWB002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
-        by email-inbound-relay-iad-1e-m6i4x-7dc0ecf1.us-east-1.amazon.com (Postfix) with ESMTPS id 91ECB828FF;
-        Wed, 19 Apr 2023 23:25:04 +0000 (UTC)
-Received: from EX19D028UWA002.ant.amazon.com (10.13.138.248) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.25; Wed, 19 Apr 2023 23:24:54 +0000
-Received: from uda95858fd22f53.ant.amazon.com (10.187.171.36) by
- EX19D028UWA002.ant.amazon.com (10.13.138.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 19 Apr 2023 23:24:53 +0000
-From:   Mengchi Cheng <mengcc@amazon.com>
-To:     <casey@schaufler-ca.com>
-CC:     <kamatam@amazon.com>, <linux-security-module@vger.kernel.org>,
-        <linux-unionfs@vger.kernel.org>, <mengcc@amazon.com>,
-        <miklos@szeredi.hu>, <yoonjaeh@amazon.com>,
-        <roberto.sassu@huaweicloud.com>
-Subject: Re: Transmute flag is not inheritted on overlay fs
-Date:   Wed, 19 Apr 2023 16:24:39 -0700
-Message-ID: <20230419232439.883241-1-mengcc@amazon.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <7d5c10b6-68da-dea9-b460-1427b17250b5@schaufler-ca.com>
-References: <7d5c10b6-68da-dea9-b460-1427b17250b5@schaufler-ca.com>
+        Thu, 20 Apr 2023 03:45:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACEFB4200
+        for <linux-unionfs@vger.kernel.org>; Thu, 20 Apr 2023 00:44:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1681976668;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=wlIazMnz9pOTl1ymeBj6LcHkPUdAOxzUMXG5pIjT/Hw=;
+        b=fHnXhNOFwlTKsGtOfymj4FziVnhmxYLrNo6ylrjKFEkSWGvxc8GUYRCYujvvoXV97ypwjd
+        mhnRuE9HuPSh/0uUoB3+7tPdYRMs+LgUjOxgj6+YsJ3if8pWrZIQGbncENRrXhUGmRa8Is
+        DaD0T6Dm4qgNrqs0FRou4slRUW5Lsq4=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-176-xwAa7BemPuyRWJ2N3y6jIQ-1; Thu, 20 Apr 2023 03:44:26 -0400
+X-MC-Unique: xwAa7BemPuyRWJ2N3y6jIQ-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-4edb884cdc3so182361e87.1
+        for <linux-unionfs@vger.kernel.org>; Thu, 20 Apr 2023 00:44:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681976665; x=1684568665;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wlIazMnz9pOTl1ymeBj6LcHkPUdAOxzUMXG5pIjT/Hw=;
+        b=h+2ZzRaeS8p+VNTEisnJlRyx+cPO4+OapgNbqD+7zzTX7arNn98buiggpEvDIUUjaE
+         W3Ofus7WAJRQuweOUFtOHVsPTcsDVYdlv+ytjUntmugQgdm8HWdG5olvlaYCbyBP4kMy
+         zhBhrws/sZHcx0QN3PMQAHqhSuro6Gz1qtGmAUxNybsv6yW8F7PnZxWw10L3tA+0uge8
+         3XTubBfTc+ECyjurcEyCzSUH04Lg91S5DgjK9OstYG3ujTjcyrqiLEvmLU/0FPonSl/N
+         CD1Pd488CgKoBy2EGy4edeS0s9rpbDvdi6WMliCYoXzYLAU7uKjWDuwPOHkhFEGl183a
+         /4MA==
+X-Gm-Message-State: AAQBX9euHpkIh3KSY/Zar96+G/BC7xiHNsjr3RLyqRvTqVQzDglHLKbs
+        2WCjcogEVeUdaM3DAa4e7c4qUKyT31GuIOyUsZYGOU80jNyGDjpRx1xj+4uhP05UmLSP62okg/L
+        RZW42/AM+338m63qKepu4svLCyA==
+X-Received: by 2002:ac2:51b3:0:b0:4ec:8615:303e with SMTP id f19-20020ac251b3000000b004ec8615303emr153859lfk.33.1681976665501;
+        Thu, 20 Apr 2023 00:44:25 -0700 (PDT)
+X-Google-Smtp-Source: AKy350YEziSOqiyA9fM17QB4Y5n27W0I+mAplCATFDWAS0IAwiGx01XZ3yJ3qzZFw6GbH5+krOMaiQ==
+X-Received: by 2002:ac2:51b3:0:b0:4ec:8615:303e with SMTP id f19-20020ac251b3000000b004ec8615303emr153849lfk.33.1681976665187;
+        Thu, 20 Apr 2023 00:44:25 -0700 (PDT)
+Received: from localhost.localdomain (c-e6a5e255.022-110-73746f36.bbcust.telenor.se. [85.226.165.230])
+        by smtp.googlemail.com with ESMTPSA id x24-20020ac24898000000b004edc7247778sm129468lfc.79.2023.04.20.00.44.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Apr 2023 00:44:24 -0700 (PDT)
+From:   Alexander Larsson <alexl@redhat.com>
+To:     miklos@szeredi.hu
+Cc:     linux-unionfs@vger.kernel.org, amir73il@gmail.com,
+        ebiggers@kernel.org, tytso@mit.edu, fsverity@lists.linux.dev,
+        Alexander Larsson <alexl@redhat.com>
+Subject: [PATCH 0/6] ovl: Add support for fs-verity checking of lowerdata
+Date:   Thu, 20 Apr 2023 09:43:59 +0200
+Message-Id: <cover.1681917551.git.alexl@redhat.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.187.171.36]
-X-ClientProxiedBy: EX19D046UWA001.ant.amazon.com (10.13.139.112) To
- EX19D028UWA002.ant.amazon.com (10.13.138.248)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -68,55 +76,45 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Wed, 2023-04-19 02:09:37 +0000, Casey Schaufler wrote:
->
-> On 4/18/2023 5:23 PM, Mengchi Cheng wrote:
-> > Hello,
-> >
-> > On the overlay ext4 file system, we found that transmute flag is not
-> > inherited by newly created sub-directories. The issue can be recreated on
-> > the newest kernel(6.3.0-rc6) on qemux86-64 with following steps.
-> >
-> > /data directory is mounted on /dev/vdb which is a ext4 fs. It is remounted
-> > as an overlay again to upperdir /home/root/data.
-> > # mount -t overlay overlay -o lowerdir=/data,upperdir=/home/root/data,workdir=/home/root/data_work /data
-> > Add a new smack rule and set label and flag to /data directory.
-> > # echo "_ system rwxatl" > /sys/fs/smackfs/load2
-> > # chsmack -a "system" /data
-> > # chsmack -t /data
-> > Create directories under /data.
-> > # mkdir -p /data/dir1/dir2
-> > And then check the smack label of dir1 and dir2.
-> > # chsmack /data/dir1
-> > /data/dir1 access="system"
-> > # chsmack /data/dir1/dir2
-> > /data/dir1/dir2 access="_"
-> > We can see dir1 did not inherit transmute flag from data and dir2 got the
-> > process label.
-> >
-> > The transmute xattr of the inode is set inside the smack_d_instantiate
-> > which depends on SMK_INODE_CHANGED bit of isp->smk_flags. But the bit is
-> > not set in the overlay fs mkdir function call chain. So one simple solution
-> > we have is passing inode ptr into smack_dentry_create_files_as and set the
-> > SMK_INODE_CHANGED bit if parent dir is transmuting. Although it looks
-> > reasonable to me and we did not meet any issue in testing, I am not sure if
-> > there is a better solution to it. It will be great, if experts could take
-> > a look.
-> 
-> I will be happy to look at your solution. Please post a patch.
->
+This patchset adds support for using fs-verity to validate lowerdata
+files by specifying an overlay.verity xattr on the metacopy
+files.
 
-Sorry, it takes me a while to review and send out the patch.
-It contains a few files because it breaks kernel API. But the core is only
-in the change of smack_dentry_create_files_as.
+This is primarily motivated by the Composefs usecase, where there will
+be a read-only EROFS layer that contains redirect into a base data
+layer which has fs-verity enabled on all files. However, it is also
+useful in general if you want to ensure that the lowerdata files
+matches the expected content over time.
 
-If Roberto's patch will work, we can drop it. I posted my concern in that
-thread.
-https://lore.kernel.org/all/20230419192516.757220-1-mengcc@amazon.com/
- 
-> >
-> >
-> > Thanks,
-> > Mengchi Cheng
-> >
-> 
+This patch series is based on the lazy lowerdata patch series by Amir[1].
+
+I have also added some tests for this feature to xfstests[2].
+
+I'm also CC:ing the fsverity list and maintainers because there is one
+(tiny) fsverity change, and there may be interest in this usecase.
+
+[1] https://lore.kernel.org/linux-unionfs/20230412135412.1684197-1-amir73il@gmail.com/T/#m1bc31eb75dc9dd22204b8f0cfc67bad9b6c785a7
+[2] https://github.com/alexlarsson/xfstests/commits/verity-tests
+
+Alexander Larsson (6):
+  fsverity: Export fsverity_get_digest
+  ovl: Break out ovl_entry_path_real() from ovl_i_path_real()
+  ovl: Break out ovl_entry_path_lowerdata() from ovl_path_lowerdata()
+  ovl: Add framework for verity support
+  ovl: Validate verity xattr when resolving lowerdata
+  ovl: Handle verity during copy-up
+
+ Documentation/filesystems/overlayfs.rst |  33 +++++
+ fs/overlayfs/Kconfig                    |  14 ++
+ fs/overlayfs/copy_up.c                  |  27 ++++
+ fs/overlayfs/namei.c                    |  34 +++++
+ fs/overlayfs/overlayfs.h                |  11 ++
+ fs/overlayfs/ovl_entry.h                |   4 +
+ fs/overlayfs/super.c                    |  49 +++++++
+ fs/overlayfs/util.c                     | 167 ++++++++++++++++++++++--
+ fs/verity/measure.c                     |   1 +
+ 9 files changed, 332 insertions(+), 8 deletions(-)
+
+-- 
+2.39.2
+
