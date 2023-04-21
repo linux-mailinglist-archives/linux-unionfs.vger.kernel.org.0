@@ -2,317 +2,227 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58B676EACD4
-	for <lists+linux-unionfs@lfdr.de>; Fri, 21 Apr 2023 16:27:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 600536EAE27
+	for <lists+linux-unionfs@lfdr.de>; Fri, 21 Apr 2023 17:38:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232229AbjDUO1E (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 21 Apr 2023 10:27:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34804 "EHLO
+        id S232577AbjDUPiD (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 21 Apr 2023 11:38:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230076AbjDUO1D (ORCPT
+        with ESMTP id S231910AbjDUPiC (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 21 Apr 2023 10:27:03 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42E53125A8
-        for <linux-unionfs@vger.kernel.org>; Fri, 21 Apr 2023 07:26:52 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-94a39f6e8caso289362966b.0
-        for <linux-unionfs@vger.kernel.org>; Fri, 21 Apr 2023 07:26:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1682087211; x=1684679211;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=W1oaWq3oB7582N+GZbpQzJaSY1l1hDiSvD7AKqVxEKw=;
-        b=kkKD2tdh1K4M/DdXw4sj5VMkrMQhqXZfX5rfo4BDwafNS0bYGKRQeH8CO36mzU24DJ
-         Hm/rW4w3d32NRjU1/UVFTs/ZBxdCwn5JTWAXBuQw8CrB4At001Zs4qLSbXgfJhX88QzW
-         xJ2OjSV7zQgOSs5QMoKtQiZLbP32Uf5vaRcno=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682087211; x=1684679211;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=W1oaWq3oB7582N+GZbpQzJaSY1l1hDiSvD7AKqVxEKw=;
-        b=TQ4wdauEqp19V5+TnqCW/8qncBuxB2Zyv88Apk5igp4HV2QydUFA5QEGQS3bpsJpHm
-         8Um0X4MDUyuk7Drc6cbnPGwa7miOJs/SPXwgCaJdA1YWsy2tSHXdMSUsGKs7AcJ3DY14
-         Sn0GZZE2UlVpMxSPEtyGATTL+hze26QW1G5YBOXwCmBbMWb0aUBxs/Ur+R6IwFgzI2EJ
-         fy+UhPbGTn0q6YwFXB90rcuVKrkcEQhHJIgnaraHKayAF4Uw/8XxMxbgaabiBP8ZNmly
-         xDeTh3yORMBDidDNKMhKVQI/PboIUyMLF2TrxXRQO3wqSiVYyuljS/fYCcOlLb2mMm1p
-         wQdw==
-X-Gm-Message-State: AAQBX9dUGjfe9gsSgl1dlZ+nOISjO9+hcJ163YogqyC4mBltt/x5m66G
-        bY43H7B1E1r/urrH27Szj6Y+fGAXqoZUHsmTDFFgiz/1V9Z8Nza74U8=
-X-Google-Smtp-Source: AKy350b1WpMXjTcPv4Pd6KzOIUEFlar62Yi3AsoISHKLwSKZRusLHHg8SM9ua+wnNI6sRvCcMVJb5vkPVRh2z4EcLFk=
-X-Received: by 2002:a17:906:9144:b0:94e:8431:4767 with SMTP id
- y4-20020a170906914400b0094e84314767mr2549549ejw.38.1682087210745; Fri, 21 Apr
- 2023 07:26:50 -0700 (PDT)
+        Fri, 21 Apr 2023 11:38:02 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A451125AE;
+        Fri, 21 Apr 2023 08:38:00 -0700 (PDT)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33LEgShG006511;
+        Fri, 21 Apr 2023 14:44:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=2Ju8pqGa2m0Pa7C+ibK08Mb+2OAt+YEF09z+pzB+moc=;
+ b=N26po9zJepipAXftwZ9Ksf2SAFtmayQlXTl4fN4SKUX8PCEzpZJ8nOU26gJ9UdfAOREV
+ pGfQpxXppJGcNAEVT//KcDRVXW5e8GuFIf5HDKmtTb11TzYqtW5aeZva67LS/S3CVZhJ
+ RMwHhbQFsB+3ZI6CIkc32HEo89tIhB4XPrYeu1JvAG50ngkjRjgz4deL958l9Q/xj0ps
+ 9DEwoj3R/y3+6qCE60Dwwkr2CyARU3i/b/FNUfl1hKwxUD32WuJIeyQeR8uHE9eaEsVX
+ JR1vzIkNq2o/pIz9/eWGIKiPNQB4InEQQ/MlO8IF9goqNIQIWmACzozTgDtZ4lALjnsv sw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q3v2v94t7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 21 Apr 2023 14:44:11 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 33LEh5EA009609;
+        Fri, 21 Apr 2023 14:44:03 GMT
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q3v2v93x4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 21 Apr 2023 14:44:03 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+        by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33LCikYB027070;
+        Fri, 21 Apr 2023 14:43:50 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([9.208.130.101])
+        by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3pykj79wwc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 21 Apr 2023 14:43:50 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+        by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33LEhn109110270
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 21 Apr 2023 14:43:49 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3C7705805C;
+        Fri, 21 Apr 2023 14:43:49 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D66835805F;
+        Fri, 21 Apr 2023 14:43:47 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.163.8.185])
+        by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+        Fri, 21 Apr 2023 14:43:47 +0000 (GMT)
+Message-ID: <cbffa3dee65ecc0884dd16eb3af95c09a28f4297.camel@linux.ibm.com>
+Subject: Re: [PATCH] overlayfs: Trigger file re-evaluation by IMA / EVM
+ after writes
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Jeff Layton <jlayton@kernel.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Amir Goldstein <amir73il@gmail.com>
+Cc:     Stefan Berger <stefanb@linux.ibm.com>,
+        Paul Moore <paul@paul-moore.com>,
+        linux-integrity@vger.kernel.org, miklos@szeredi.hu,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org
+Date:   Fri, 21 Apr 2023 10:43:46 -0400
+In-Reply-To: <90a25725b4b3c96e84faefdb827b261901022606.camel@kernel.org>
+References: <20230407-trasse-umgearbeitet-d580452b7a9b@brauner>
+         <90a25725b4b3c96e84faefdb827b261901022606.camel@kernel.org>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: CFy9FUIyV3xuItYoC68paE8NPsJ-Yhek
+X-Proofpoint-ORIG-GUID: RgiN1v2180XPGj715m7iNirTDfUGKBQ0
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <4B9D76D5-C794-4A49-A76F-3D4C10385EE0@kohlschutter.com>
- <CAJfpegs1Kta-HcikDGFt4=fa_LDttCeRmffKhUjWLr=DxzXg-A@mail.gmail.com>
- <83A29F9C-1A91-4753-953A-0C98E8A9832C@kohlschutter.com> <CAJfpegv5W0CycWCc2-kcn4=UVqk1hP7KrvBpzXHwW-Nmkjx8zA@mail.gmail.com>
- <FFA26FD1-60EF-457E-B914-E1978CCC7B57@kohlschutter.com> <CAJfpeguDAJpLMABsomBFQ=w6Li0=sBW0bFyALv4EJrAmR2BkpQ@mail.gmail.com>
- <A31096BA-C128-4D0B-B27D-C34560844ED0@kohlschutter.com> <CAJfpegvBSCQwkCv=5LJDx1LRCN_ztTh9VMvrTbCyt0zf7W2trw@mail.gmail.com>
- <CAHk-=wjg+xyBwMpQwLx_QWPY7Qf8gUOVek8rXdQccukDyVmE+w@mail.gmail.com>
- <EE5E5841-3561-4530-8813-95C16A36D94A@kohlschutter.com> <CAHk-=wh5V8tQScw9Bgc8OiD0r5XmfVSCPp2OHPEf0p5T3obuZg@mail.gmail.com>
- <CAJfpeguXB9mAk=jwWQmk3rivYnaWoLrju_hq-LwtYyNXG4JOeg@mail.gmail.com>
- <CAHk-=wg+bpP5cvcaBhnmJKzTmAtgx12UhR4qzFXXb52atn9gDw@mail.gmail.com>
- <56E6CAAE-FF25-4898-8F9D-048164582E7B@kohlschutter.com> <490c5026-27bd-1126-65dd-2ec975aae94c@eitmlabs.org>
- <CAJfpegt7CMMapxD0W41n2SdwiBn8+B08vsov-iOpD=eQEiPN1w@mail.gmail.com>
- <CALKgVmeaPJj4e9sYP7g+v4hZ7XaHKAm6BUNz14gvaBd=sFCs9Q@mail.gmail.com>
- <CALKgVmdqircMjn+iEuta5a7v5rROmYGXmQ0VJtzcCQnZYbJX6w@mail.gmail.com>
- <CALKgVmfZdVnqMAW81T12sD5ZLTO0fp-oADp-WradW5O=PBjp1Q@mail.gmail.com>
- <CAJfpeguKVzCyUraDQPGw6vdQFfPwTCuZv0JkMxNA69AiRib3kg@mail.gmail.com>
- <CALKgVmcC1VUV_gJVq70n--omMJZUb4HSh_FqvLTHgNBc+HCLFQ@mail.gmail.com>
- <CAJfpegt0rduBcSqSR=XmQ8bd_ws7Qy=4pxVF0_iysfc7wFagQQ@mail.gmail.com>
- <CALKgVmdyQwXcwQHBNEzE7XsCYmqQFeNLXZ5-hTPErjYz4PvgaQ@mail.gmail.com> <CALKgVmeohJVEreXdb1OH3x9VS4O5VMpR+82=QFbk0+95y3xyYA@mail.gmail.com>
-In-Reply-To: <CALKgVmeohJVEreXdb1OH3x9VS4O5VMpR+82=QFbk0+95y3xyYA@mail.gmail.com>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Fri, 21 Apr 2023 16:26:39 +0200
-Message-ID: <CAJfpegu1fOwuEs1c_FRdQwYMCiuQMcf-mntJwN9CpTU+J=gr7Q@mail.gmail.com>
-Subject: Re: [PATCH] [REGRESSION] ovl: Handle ENOSYS when fileattr support is
- missing in lower/upper fs
-To:     jonathan@eitm.org
-Cc:     =?UTF-8?Q?Christian_Kohlsch=C3=BCtter?= 
-        <christian@kohlschutter.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>
-Content-Type: multipart/mixed; boundary="000000000000adb47905f9d972bc"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-21_07,2023-04-21_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 phishscore=0 mlxlogscore=999 spamscore=0
+ adultscore=0 bulkscore=0 mlxscore=0 priorityscore=1501 clxscore=1011
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304210127
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
---000000000000adb47905f9d972bc
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Fri, 2023-04-07 at 09:29 -0400, Jeff Layton wrote:
+> > > > > 
+> > > > > I would ditch the original proposal in favor of this 2-line patch shown here:
+> > > > > 
+> > > > > https://lore.kernel.org/linux-integrity/a95f62ed-8b8a-38e5-e468-ecbde3b221af@linux.ibm.com/T/#m3bd047c6e5c8200df1d273c0ad551c645dd43232
+> > 
+> > We should cool it with the quick hacks to fix things. :)
+> > 
+> 
+> Yeah. It might fix this specific testcase, but I think the way it uses
+> the i_version is "gameable" in other situations. Then again, I don't
+> know a lot about IMA in this regard.
+> 
+> When is it expected to remeasure? If it's only expected to remeasure on
+> a close(), then that's one thing. That would be a weird design though.
 
-Hi Jonathan,
+Historical background:
 
-Can you please try out the attached patch?
+Prior to IMA being upstreamed there was a lot of discussion about how
+much/how frequently to measure files.  Re-measuring files after each
+write would impact performance.  Instead of re-measuring files after
+each write, if a file already opened for write was opened for read
+(open writers) or a file already opened for read was opened for write
+(Time of Measure/Time of Use) the IMA meausrement list was invalidated
+by including a violation record in the measurement list.
 
-Thanks,
-Miklos
+Only the BPRM hook prevents a file from being opened for write.
 
+> 
+> > > > > 
+> > > > > 
+> > > > 
+> > > > Ok, I think I get it. IMA is trying to use the i_version from the
+> > > > overlayfs inode.
+> > > > 
+> > > > I suspect that the real problem here is that IMA is just doing a bare
+> > > > inode_query_iversion. Really, we ought to make IMA call
+> > > > vfs_getattr_nosec (or something like it) to query the getattr routine in
+> > > > the upper layer. Then overlayfs could just propagate the results from
+> > > > the upper layer in its response.
+> > > > 
+> > > > That sort of design may also eventually help IMA work properly with more
+> > > > exotic filesystems, like NFS or Ceph.
+> > > > 
+> > > > 
+> > > > 
+> > > 
+> > > Maybe something like this? It builds for me but I haven't tested it. It
+> > > looks like overlayfs already should report the upper layer's i_version
+> > > in getattr, though I haven't tested that either:
+> > > 
+> > > -----------------------8<---------------------------
+> > > 
+> > > [PATCH] IMA: use vfs_getattr_nosec to get the i_version
+> > > 
+> > > IMA currently accesses the i_version out of the inode directly when it
+> > > does a measurement. This is fine for most simple filesystems, but can be
+> > > problematic with more complex setups (e.g. overlayfs).
+> > > 
+> > > Make IMA instead call vfs_getattr_nosec to get this info. This allows
+> > > the filesystem to determine whether and how to report the i_version, and
+> > > should allow IMA to work properly with a broader class of filesystems in
+> > > the future.
+> > > 
+> > > Reported-by: Stefan Berger <stefanb@linux.ibm.com>
+> > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > > ---
+> > 
+> > So, I think we want both; we want the ovl_copyattr() and the
+> > vfs_getattr_nosec() change:
+> > 
+> > (1) overlayfs should copy up the inode version in ovl_copyattr(). That
+> >     is in line what we do with all other inode attributes. IOW, the
+> >     overlayfs inode's i_version counter should aim to mirror the
+> >     relevant layer's i_version counter. I wouldn't know why that
+> >     shouldn't be the case. Asking the other way around there doesn't
+> >     seem to be any use for overlayfs inodes to have an i_version that
+> >     isn't just mirroring the relevant layer's i_version.
+> 
+> It's less than ideal to do this IMO, particularly with an IS_I_VERSION
+> inode.
+> 
+> You can't just copy up the value from the upper. You'll need to call
+> inode_query_iversion(upper_inode), which will flag the upper inode for a
+> logged i_version update on the next write. IOW, this could create some
+> (probably minor) metadata write amplification in the upper layer inode
+> with IS_I_VERSION inodes.
+> 
+> 
+> > (2) Jeff's changes for ima to make it rely on vfs_getattr_nosec().
+> >     Currently, ima assumes that it will get the correct i_version from
+> >     an inode but that just doesn't hold for stacking filesystem.
+> > 
+> > While (1) would likely just fix the immediate bug (2) is correct and
+> > _robust_. If we change how attributes are handled vfs_*() helpers will
+> > get updated and ima with it. Poking at raw inodes without using
+> > appropriate helpers is much more likely to get ima into trouble.
+> 
+> This will fix it the right way, I think (assuming it actually works),
+> and should open the door for IMA to work properly with networked
+> filesystems that support i_version as well.
 
-On Wed, 22 Mar 2023 at 19:42, Jonathan Katz <jkatz@eitmlabs.org> wrote:
->
-> Confirmed bindfs interaction:
->
-> Based on your bindfs comment I redid my configuration as follows:
-> ORIGINAL  (FAILS):
->     FS1 - exports "/Data"  (nfs)
->     FS2 - Mounts "/Data", does a bindfs, does an overlay
->
-> TEST (SUCCEEDS):
->     FS1 - does a bindfs and exports a series of directories:
->               # bindfs -u 5007, -g 5007 /Data /Data-jiajun
->               /etc/exports:
->                     /Data  machine.org(ro,sync,no_subtree_check)
->                     /Data-jiajun machine.org(ro,fsid=3D12,sync,no_subtree=
-_check)
->      FS2 - used to do bindfs to make the lowers, but, now mounts
-> "/Data-jiajun" as the lower
->                FS2 then does the overlay and samba share.
->                 It would not let me do the 2nd export if I did not
-> include the fsid entry....
->
-> WOOT WOOT.
->
->
-> Not an ideal solution as I have to make changes to 2 servers in order
-> to accomplish my goal :/.
->
->
->
->
->
->
->
->
-> On Tue, Mar 14, 2023 at 7:43=E2=80=AFPM Jonathan Katz <jkatz@eitmlabs.org=
-> wrote:
-> >
-> > On Thu, Mar 9, 2023 at 7:31=E2=80=AFAM Miklos Szeredi <miklos@szeredi.h=
-u> wrote:
-> > >
-> > > On Tue, 7 Mar 2023 at 18:14, Jonathan Katz <jkatz@eitmlabs.org> wrote=
-:
-> > > >
-> > > > On Tue, Mar 7, 2023 at 12:38=E2=80=AFAM Miklos Szeredi <miklos@szer=
-edi.hu> wrote:
-> > > > >
-> > > > > On Tue, 7 Mar 2023 at 02:12, Jonathan Katz <jkatz@eitmlabs.org> w=
-rote:
-> > > > > >
-> > > > > > Hi all,
-> > > > > >
-> > > > > > In pursuing this issue, I downloaded the kernel source to see i=
-f I
-> > > > > > could debug it further.  In so doing, it looks like Christian's=
- patch
-> > > > > > was never committed to the main source tree (sorry if my termin=
-ology
-> > > > > > is wrong).  This is up to and including the 6.3-rc1.  I could a=
-lso
-> > > > > > find no mention of the fix in the log.
-> > > > > >
-> > > > > > I am trying to manually apply this patch now, but, I am wonderi=
-ng if
-> > > > > > there was some reason that it was not applied (e.g. it introduc=
-es some
-> > > > > > instability?)?
-> > > > >
-> > > > > It's fixing the bug in the wrong place, i.e. it's checking for an
-> > > > > -ENOSYS return from vfs_fileattr_get(), but that return value is =
-not
-> > > > > valid at that point.
-> > > > >
-> > > > > The right way to fix this bug is to prevent -ENOSYS from being
-> > > > > returned in the first place.
-> > > > >
-> > > > > Commit 02c0cab8e734 ("fuse: ioctl: translate ENOSYS") fixes one o=
-f
-> > > > > those bugs, but of course it's possible that I missed something i=
-n
-> > > > > that fix.
-> > > > >
-> > > > > Can you please first verify that an upstream kernel (>v6.0) can a=
-lso
-> > > > > reproduce this issue?
-> > > >
-> > > > Got ya.  that makes a lot of sense, thank you.
-> > > >
-> > > > I have confirmed that I continue to get the error with 6.2 .
-> > > > quick summary of the lowerdir:
-> > > >    server ---- NFS(ro) ---- > client "/nfs"
-> > > >    client "/nfs" --- bindfs(uidmap) --- > client "/lower"
-> > >
-> > > Can you please run bindfs in debugging mode (-d) and send the
-> > > resulting log after reproducing the issue?
-> > >
-> > > Thanks,
-> > > Miklos
-> >
-> > OUCH -- MY LAST EMAIL WAS REJECTED FOR BEING TOO BIG
-> > I HOPE THAT I AM SUMMARIZING THE RELEVANT INFORMATION HERE:
-> >
-> >
-> > Hi Miklos, thank you.... I am sorry for the delay.
-> >
-> > The log is somewhat long and was sent in a separate email.
-> >
-> > I broke up the log into entries to try to match the chronology of actio=
-ns:
-> >    * ENTRY 1 nfs mount the external drive
-> >    * ENTRY 2 perform the bind fs
-> >    * ENTRY 3 perform the overlay
-> >    * ENTRY 4 restart smb
-> >    * ENTRY 5 mount the filesystem on a windows box
-> >    * ENTRY 6 performing some navigation on the windows file explorer
-> >    * ENTRY 7 attempt to open a data file with the windows application.
-> >
-> > The only place that generated a kernel error in dmesg was at ENTRY 7.
-> >
-> > Because the logs are so big, I tried to parse them, I may have made a
-> > mistake or omitted information -- if you think so, as mentioned, the
-> > full bindfs logs were sent separately
-> >
-> >
-> > Here is my attempt to parse out the errors associated with this dmesg e=
-ntry:
-> >
-> > [ 1925.705908] overlayfs: failed to retrieve lower fileattr (8020
-> > MeOHH2O RecoverySample1-20221216-A-JJL-WebinarHilic10C-TOF-TT54-Neg-163=
-2.d/chromatography-data.sqlite,
-> > err=3D-38)
-> >
-> > --
-> > unique: 1550, opcode: GETXATTR (22), nodeid: 71, insize: 73, pid: 3458
-> > getxattr /eimstims1/deleteme2/8020 MeOHH2O
-> > RecoverySample1-20221216-A-JJL-WebinarHilic10C-TOF-TT54-Neg-1632.d/chro=
-matography-data-pre.sqlite
-> > trusted.overlay.metacopy 0
-> >    unique: 1550, error: -95 (Operation not supported), outsize: 16
-> > --
-> > unique: 3922, opcode: GETXATTR (22), nodeid: 71, insize: 72, pid: 3458
-> > getxattr /eimstims1/deleteme2/8020 MeOHH2O
-> > RecoverySample1-20221216-A-JJL-WebinarHilic10C-TOF-TT54-Neg-1632.d/chro=
-matography-data-pre.sqlite
-> > system.posix_acl_access 132
-> >    unique: 3922, error: -95 (Operation not supported), outsize: 16
-> > --
-> > unique: 3954, opcode: GETXATTR (22), nodeid: 71, insize: 72, pid: 3458
-> > getxattr /eimstims1/deleteme2/8020 MeOHH2O
-> > RecoverySample1-20221216-A-JJL-WebinarHilic10C-TOF-TT54-Neg-1632.d/chro=
-matography-data-pre.sqlite
-> > system.posix_acl_access 132
-> >    unique: 3954, error: -95 (Operation not supported), outsize: 16
-> > --
-> > unique: 3960, opcode: GETXATTR (22), nodeid: 71, insize: 72, pid: 3458
-> > getxattr /eimstims1/deleteme2/8020 MeOHH2O
-> > RecoverySample1-20221216-A-JJL-WebinarHilic10C-TOF-TT54-Neg-1632.d/chro=
-matography-data-pre.sqlite
-> > system.posix_acl_access 132
-> >    unique: 3960, error: -95 (Operation not supported), outsize: 16
-> >
-> >
-> > Thank you again!
-> >
-> > -Jonathan
+On a local filesystem, there are guarantees that the calculated file
+hash is that of the file being used.  Reminder IMA reads a file, page
+size chunk at a time into a single buffer, calculating the file hash. 
+Once the file hash is calculated, the memory is freed.
 
---000000000000adb47905f9d972bc
-Content-Type: application/x-patch; 
-	name="fuse-ioctl-translate-enosys-in-outarg.patch"
-Content-Disposition: attachment; 
-	filename="fuse-ioctl-translate-enosys-in-outarg.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_lgqn4zjn0>
-X-Attachment-Id: f_lgqn4zjn0
+There are no guarantees on a fuse filesystem, for example, that the
+original file read and verified is the same as the one being executed. 
+I'm not sure that the integrity guarantees of a file on a remote
+filesystem will be the same as those on a local file system.
 
-RnJvbTogTWlrbG9zIFN6ZXJlZGkgPG1zemVyZWRpQHJlZGhhdC5jb20+ClN1YmplY3Q6IGZ1c2U6
-IGlvY3RsOiB0cmFuc2xhdGUgRU5PU1lTIGluIG91dGFyZwoKRnVzZSBzaG91bGRuJ3QgcmV0dXJu
-IEVOT1NZUyBmcm9tIGl0cyBpb2N0bCBpbXBsZW1lbnRhdGlvbi4gSWYgdXNlcnNwYWNlCnJlc3Bv
-bmRzIHdpdGggRU5PU1lTIGl0IHNob3VsZCBiZSB0cmFuc2xhdGVkIHRvIEVOT1RUWS4KClRoZXJl
-IGFyZSB0d28gd2F5cyB0byByZXR1cm4gYW4gZXJyb3IgZnJvbSB0aGUgSU9DVEwgcmVxdWVzdDoK
-CiAtIGZ1c2Vfb3V0X2hlYWRlci5lcnJvcgogLSBmdXNlX2lvY3RsX291dC5yZXN1bHQKCkNvbW1p
-dCAwMmMwY2FiOGU3MzQgKCJmdXNlOiBpb2N0bDogdHJhbnNsYXRlIEVOT1NZUyIpIGFscmVhZHkg
-Zml4ZWQgdGhpcwppc3N1ZSBmb3IgdGhlIGZpcnN0IGNhc2UsIGJ1dCBtaXNzZWQgdGhlIHNlY29u
-ZCBjYXNlLiAgVGhpcyBwYXRjaCBmaXhlcyB0aGUKc2Vjb25kIGNhc2UuCgpSZXBvcnRlZC1ieTog
-Sm9uYXRoYW4gS2F0eiA8amthdHpAZWl0bWxhYnMub3JnPgpGaXhlczogMDJjMGNhYjhlNzM0ICgi
-ZnVzZTogaW9jdGw6IHRyYW5zbGF0ZSBFTk9TWVMiKQpDYzogPHN0YWJsZUB2Z2VyLmtlcm5lbC5v
-cmc+ClNpZ25lZC1vZmYtYnk6IE1pa2xvcyBTemVyZWRpIDxtc3plcmVkaUByZWRoYXQuY29tPgot
-LS0KIGZzL2Z1c2UvaW9jdGwuYyB8ICAgMjEgKysrKysrKysrKysrKy0tLS0tLS0tCiAxIGZpbGUg
-Y2hhbmdlZCwgMTMgaW5zZXJ0aW9ucygrKSwgOCBkZWxldGlvbnMoLSkKCi0tLSBhL2ZzL2Z1c2Uv
-aW9jdGwuYworKysgYi9mcy9mdXNlL2lvY3RsLmMKQEAgLTksMTQgKzksMjMgQEAKICNpbmNsdWRl
-IDxsaW51eC9jb21wYXQuaD4KICNpbmNsdWRlIDxsaW51eC9maWxlYXR0ci5oPgogCi1zdGF0aWMg
-c3NpemVfdCBmdXNlX3NlbmRfaW9jdGwoc3RydWN0IGZ1c2VfbW91bnQgKmZtLCBzdHJ1Y3QgZnVz
-ZV9hcmdzICphcmdzKQorc3RhdGljIHNzaXplX3QgZnVzZV9zZW5kX2lvY3RsKHN0cnVjdCBmdXNl
-X21vdW50ICpmbSwgc3RydWN0IGZ1c2VfYXJncyAqYXJncywKKwkJCSAgICAgICBzdHJ1Y3QgZnVz
-ZV9pb2N0bF9vdXQgKm91dGFyZykKIHsKLQlzc2l6ZV90IHJldCA9IGZ1c2Vfc2ltcGxlX3JlcXVl
-c3QoZm0sIGFyZ3MpOworCXNzaXplX3QgcmV0OworCisJYXJncy0+b3V0X2FyZ3NbMF0uc2l6ZSA9
-IHNpemVvZihvdXRhcmcpOworCWFyZ3MtPm91dF9hcmdzWzBdLnZhbHVlID0gJm91dGFyZzsKKwor
-CXJldCA9IGZ1c2Vfc2ltcGxlX3JlcXVlc3QoZm0sIGFyZ3MpOwogCiAJLyogVHJhbnNsYXRlIEVO
-T1NZUywgd2hpY2ggc2hvdWxkbid0IGJlIHJldHVybmVkIGZyb20gZnMgKi8KIAlpZiAocmV0ID09
-IC1FTk9TWVMpCiAJCXJldCA9IC1FTk9UVFk7CiAKKwlpZiAocmV0ID49IDAgJiYgb3V0YXJnLT5y
-ZXN1bHQgPT0gLUVOT1NZUykKKwkJb3V0YXJnLT5yZXN1bHQgPSAtRU5PVFRZOworCiAJcmV0dXJu
-IHJldDsKIH0KIApAQCAtMjY0LDEzICsyNzMsMTEgQEAgbG9uZyBmdXNlX2RvX2lvY3RsKHN0cnVj
-dCBmaWxlICpmaWxlLCB1bgogCX0KIAogCWFwLmFyZ3Mub3V0X251bWFyZ3MgPSAyOwotCWFwLmFy
-Z3Mub3V0X2FyZ3NbMF0uc2l6ZSA9IHNpemVvZihvdXRhcmcpOwotCWFwLmFyZ3Mub3V0X2FyZ3Nb
-MF0udmFsdWUgPSAmb3V0YXJnOwogCWFwLmFyZ3Mub3V0X2FyZ3NbMV0uc2l6ZSA9IG91dF9zaXpl
-OwogCWFwLmFyZ3Mub3V0X3BhZ2VzID0gdHJ1ZTsKIAlhcC5hcmdzLm91dF9hcmd2YXIgPSB0cnVl
-OwogCi0JdHJhbnNmZXJyZWQgPSBmdXNlX3NlbmRfaW9jdGwoZm0sICZhcC5hcmdzKTsKKwl0cmFu
-c2ZlcnJlZCA9IGZ1c2Vfc2VuZF9pb2N0bChmbSwgJmFwLmFyZ3MsICZvdXRhcmcpOwogCWVyciA9
-IHRyYW5zZmVycmVkOwogCWlmICh0cmFuc2ZlcnJlZCA8IDApCiAJCWdvdG8gb3V0OwpAQCAtMzk5
-LDEyICs0MDYsMTAgQEAgc3RhdGljIGludCBmdXNlX3ByaXZfaW9jdGwoc3RydWN0IGlub2RlCiAJ
-YXJncy5pbl9hcmdzWzFdLnNpemUgPSBpbmFyZy5pbl9zaXplOwogCWFyZ3MuaW5fYXJnc1sxXS52
-YWx1ZSA9IHB0cjsKIAlhcmdzLm91dF9udW1hcmdzID0gMjsKLQlhcmdzLm91dF9hcmdzWzBdLnNp
-emUgPSBzaXplb2Yob3V0YXJnKTsKLQlhcmdzLm91dF9hcmdzWzBdLnZhbHVlID0gJm91dGFyZzsK
-IAlhcmdzLm91dF9hcmdzWzFdLnNpemUgPSBpbmFyZy5vdXRfc2l6ZTsKIAlhcmdzLm91dF9hcmdz
-WzFdLnZhbHVlID0gcHRyOwogCi0JZXJyID0gZnVzZV9zZW5kX2lvY3RsKGZtLCAmYXJncyk7CisJ
-ZXJyID0gZnVzZV9zZW5kX2lvY3RsKGZtLCAmYXJncywgJm91dGFyZyk7CiAJaWYgKCFlcnIpIHsK
-IAkJaWYgKG91dGFyZy5yZXN1bHQgPCAwKQogCQkJZXJyID0gb3V0YXJnLnJlc3VsdDsK
---000000000000adb47905f9d972bc--
+> 
+> Note that there Stephen is correct that calling getattr is probably
+> going to be less efficient here since we're going to end up calling
+> generic_fillattr unnecessarily, but I still think it's the right thing
+> to do.
+> 
+> If it turns out to cause measurable performance regressions though,
+> maybe we can look at adding a something that still calls ->getattr if it
+> exists but only returns the change_cookie value.
+
+Sure.  For now,
+
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+
