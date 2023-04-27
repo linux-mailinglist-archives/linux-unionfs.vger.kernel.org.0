@@ -2,60 +2,60 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A45656F065B
-	for <lists+linux-unionfs@lfdr.de>; Thu, 27 Apr 2023 15:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FB456F065D
+	for <lists+linux-unionfs@lfdr.de>; Thu, 27 Apr 2023 15:06:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243521AbjD0NGA (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 27 Apr 2023 09:06:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34892 "EHLO
+        id S243632AbjD0NGC (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 27 Apr 2023 09:06:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243632AbjD0NF7 (ORCPT
+        with ESMTP id S243735AbjD0NGB (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 27 Apr 2023 09:05:59 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB9FC30D6
-        for <linux-unionfs@vger.kernel.org>; Thu, 27 Apr 2023 06:05:57 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3f1728c2a57so87878325e9.0
-        for <linux-unionfs@vger.kernel.org>; Thu, 27 Apr 2023 06:05:57 -0700 (PDT)
+        Thu, 27 Apr 2023 09:06:01 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F40FB30D6
+        for <linux-unionfs@vger.kernel.org>; Thu, 27 Apr 2023 06:05:59 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-2f939bea9ebso7733175f8f.0
+        for <linux-unionfs@vger.kernel.org>; Thu, 27 Apr 2023 06:05:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682600757; x=1685192757;
+        d=gmail.com; s=20221208; t=1682600758; x=1685192758;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=svsZeU0vfsc1yUlI07ImvxFKAslYP3v9p8fS4gEjeIg=;
-        b=k1MQUu/Za3esu0PgD5hwtxsozJ0/EcIAEkXKGaJNOCPSi4366KZVm8LYIyYY2T4WCb
-         n/XcVw0Us4lcUmI2phOwieOWgO/jvQlEvzdNUBL9WlgcNU3KG6/vIt1ThRhqCNLA+pyq
-         YybOWwFzf2qCuYNUMIsvbkz1ac7ItMhy9e0GlJU2HEyptcGBefsOFK9u5q8C1gnnJYRj
-         MfOhdYD/Wu4TOcPBP4Et0RXHKFcudPfbIzDlHEEFlsbZMXxIY0Wida1hrSYymF8L6OXM
-         c1qs1d/TZ7AL3k62y1q9obmCPtETJTp333En9Od3v9tQwsgeum83Q/eXwhdq447969Qx
-         Fseg==
+        bh=/luQ3QHYe1XupncGNeGGbz4DTJveQKvDQBgFx1ly8Jw=;
+        b=ahWdU2LGOZEadJMmkOjED0khcYOEN+p+K1ZO7A64KQXzKGQPC5lsUEZTVzxYnvMRLv
+         K/mjbvojnKKaDtLcsoLT55ILV4anJC2xInDUa11V2+jH7HmAhCpRGIRoaAQCOZUWB0SR
+         AdyYdYZlye+F+4VVEh2y5LXEhM4+s2f2eYSt7AFUZVQ6sXmt+ud31cbxOap639Ii6sum
+         KrecQBnJnBlKo32MAC0xHSI7jlfUucRzqY05MH21Z6WuOnuZojRK4+0APmMFXgWHHi/4
+         uRlomAm2UYteGZivIFtbNf2k/j59eSuPcWZypiYPCjNE3i6lO/8IIiqEpetMjuxwfIXF
+         44tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682600757; x=1685192757;
+        d=1e100.net; s=20221208; t=1682600758; x=1685192758;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=svsZeU0vfsc1yUlI07ImvxFKAslYP3v9p8fS4gEjeIg=;
-        b=S+ifp2fMAOhh4Ab0zHzmC4N5pCqj/fZloM1qdoA8P/7/G8GMWU87SaA6wkrjB/CG02
-         /3HB9GyU9IqchS6b1y2vHK1LEEwsqJd1fmBCn/K2FWhhvyb/qCwPHJYR6ueCB8ZMw2sS
-         I2zMNuzysclSknSN9m88PSXP9SulH6evSfzwvXpyD8mMfivaPcnPkXxCiKCJgm8sPlYL
-         2YmWTfe1c189ImcyfDDtx8Hck9YBf7vUKao+RULHVoZx2kr1eJDgoHnIya0C27sVxXK6
-         ZZfR2xKD6/c8YazYi6PZwSlZQc9kLa3TNZcb3jXT3BEcw4gXK6va/YG18Y0Tam2VfUlw
-         hhNA==
-X-Gm-Message-State: AC+VfDxAf5aPbo2C+IX+OdKwXUkvUcvGRUlhE1UA6gE3oEmLWsNJ3j9j
-        w8HMZrm0sw9c4Zsk+cW6CCihHxHrFuj79w==
-X-Google-Smtp-Source: ACHHUZ4UNsiOFYscE/NCuPd9MFUBa3NMUO1rkzyYYHY55qskXGjU714FQolcYn+73OKOV6FHWJ7zBQ==
-X-Received: by 2002:a1c:f706:0:b0:3f2:5028:a54d with SMTP id v6-20020a1cf706000000b003f25028a54dmr1498650wmh.0.1682600757239;
-        Thu, 27 Apr 2023 06:05:57 -0700 (PDT)
+        bh=/luQ3QHYe1XupncGNeGGbz4DTJveQKvDQBgFx1ly8Jw=;
+        b=FVtkybQj6riYMvR/P58CJPHi4Nv6AZhiGPq0BUdw54VHgpYtFe77bo4I7GyLdldpMc
+         fZmoC6MLkgcr8ZYrDepVh6yU0fcTEObUrkrdTFWsUmf3f+7R3BVDmYhB5seZ1h864jAr
+         tBGCUGJNzzIWlr4PLDJfsAQin3Y4caevtDGXFgnP5n96Fl1moY55QuNvzyIiiE5EW7rR
+         YND6Dd5wqAXRVw2pwEmb8jtHhefbJH43LozM9Aemh85o8xdsEozg45aLZQZ8LgtQHHQS
+         sCxQWj0jguUr5lSX2JGnzyK4sJvHE5rgMWpv4HQ1A+83MnbaCY+m4iSqM6X8X0Gpq+NP
+         BWOQ==
+X-Gm-Message-State: AC+VfDxQCKwe+3y3LHnao+op96q4op7AiGpNx+ISzqr/yBlbK4yinYXR
+        p6k5dyUCMU/ODKIWeYTtvSg=
+X-Google-Smtp-Source: ACHHUZ6GIEIvvT8L5qEYmAOn1Wm7gvnOYINZBsdC+cWHyy2sn2aFPt4n2PMhdCaZkBWued9bXUtb8A==
+X-Received: by 2002:a5d:684f:0:b0:2f8:1ab3:6e18 with SMTP id o15-20020a5d684f000000b002f81ab36e18mr1356038wrw.51.1682600758469;
+        Thu, 27 Apr 2023 06:05:58 -0700 (PDT)
 Received: from amir-ThinkPad-T480.lan ([5.29.249.86])
-        by smtp.gmail.com with ESMTPSA id k17-20020a5d6291000000b002c561805a4csm18533426wru.45.2023.04.27.06.05.56
+        by smtp.gmail.com with ESMTPSA id k17-20020a5d6291000000b002c561805a4csm18533426wru.45.2023.04.27.06.05.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Apr 2023 06:05:56 -0700 (PDT)
+        Thu, 27 Apr 2023 06:05:58 -0700 (PDT)
 From:   Amir Goldstein <amir73il@gmail.com>
 To:     Miklos Szeredi <miklos@szeredi.hu>
 Cc:     Alexander Larsson <alexl@redhat.com>, linux-unionfs@vger.kernel.org
-Subject: [PATCH v2 10/13] ovl: implement lookup in data-only layers
-Date:   Thu, 27 Apr 2023 16:05:36 +0300
-Message-Id: <20230427130539.2798797-11-amir73il@gmail.com>
+Subject: [PATCH v2 11/13] ovl: prepare to store lowerdata redirect for lazy lowerdata lookup
+Date:   Thu, 27 Apr 2023 16:05:37 +0300
+Message-Id: <20230427130539.2798797-12-amir73il@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230427130539.2798797-1-amir73il@gmail.com>
 References: <20230427130539.2798797-1-amir73il@gmail.com>
@@ -71,142 +71,156 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Lookup in data-only layers only for a lower metacopy with an absolute
-redirect xattr.
+Prepare to allow ovl_lookup() to leave the last entry in a non-dir
+lowerstack empty to signify lazy lowerdata lookup.
 
-The metacopy xattr is not checked on files found in the data-only layers
-and redirect xattr are not followed in the data-only layers.
+In this case, ovl_lookup() stores the redirect path from metacopy to
+lowerdata in ovl_inode, which is going to be used later to perform the
+lazy lowerdata lookup.
 
-Reviewed-by: Alexander Larsson <alexl@redhat.com>
 Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 ---
- fs/overlayfs/namei.c | 73 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 72 insertions(+), 1 deletion(-)
+ fs/overlayfs/inode.c     |  2 ++
+ fs/overlayfs/namei.c     |  5 +++++
+ fs/overlayfs/overlayfs.h |  2 ++
+ fs/overlayfs/ovl_entry.h |  3 ++-
+ fs/overlayfs/super.c     |  3 +++
+ fs/overlayfs/util.c      | 13 ++++++++++---
+ 6 files changed, 24 insertions(+), 4 deletions(-)
 
+diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
+index 62027e60a936..a7529b6a86e6 100644
+--- a/fs/overlayfs/inode.c
++++ b/fs/overlayfs/inode.c
+@@ -1006,6 +1006,7 @@ void ovl_inode_init(struct inode *inode, struct ovl_inode_params *oip,
+ 	oi->__upperdentry = oip->upperdentry;
+ 	oi->oe = oip->oe;
+ 	oi->redirect = oip->redirect;
++	oi->lowerdata_redirect = oip->lowerdata_redirect;
+ 
+ 	realinode = ovl_inode_real(inode);
+ 	ovl_copyattr(inode);
+@@ -1366,6 +1367,7 @@ struct inode *ovl_get_inode(struct super_block *sb,
+ 			dput(upperdentry);
+ 			ovl_free_entry(oip->oe);
+ 			kfree(oip->redirect);
++			kfree(oip->lowerdata_redirect);
+ 			goto out;
+ 		}
+ 
 diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
-index 6bb07e1c01ee..1ed64ff129d9 100644
+index 1ed64ff129d9..6df9a349cd04 100644
 --- a/fs/overlayfs/namei.c
 +++ b/fs/overlayfs/namei.c
-@@ -14,6 +14,8 @@
- #include <linux/exportfs.h>
- #include "overlayfs.h"
+@@ -1181,6 +1181,11 @@ struct dentry *ovl_lookup(struct inode *dir, struct dentry *dentry,
+ 			.redirect = upperredirect,
+ 		};
  
-+#include "../internal.h"	/* for vfs_path_lookup */
-+
- struct ovl_lookup_data {
- 	struct super_block *sb;
- 	struct vfsmount *mnt;
-@@ -24,6 +26,8 @@ struct ovl_lookup_data {
- 	bool last;
++		/* Store lowerdata redirect for lazy lookup */
++		if (ctr > 1 && !d.is_dir && !stack[ctr - 1].dentry) {
++			oip.lowerdata_redirect = d.redirect;
++			d.redirect = NULL;
++		}
+ 		inode = ovl_get_inode(dentry->d_sb, &oip);
+ 		err = PTR_ERR(inode);
+ 		if (IS_ERR(inode))
+diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+index 93ebc0edf4ef..cb0135ff6249 100644
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -405,6 +405,7 @@ struct inode *ovl_inode_lower(struct inode *inode);
+ struct inode *ovl_inode_lowerdata(struct inode *inode);
+ struct inode *ovl_inode_real(struct inode *inode);
+ struct inode *ovl_inode_realdata(struct inode *inode);
++const char *ovl_lowerdata_redirect(struct inode *inode);
+ struct ovl_dir_cache *ovl_dir_cache(struct inode *inode);
+ void ovl_set_dir_cache(struct inode *inode, struct ovl_dir_cache *cache);
+ void ovl_dentry_set_flag(unsigned long flag, struct dentry *dentry);
+@@ -656,6 +657,7 @@ struct ovl_inode_params {
+ 	struct ovl_entry *oe;
+ 	bool index;
  	char *redirect;
- 	bool metacopy;
-+	/* Referring to last redirect xattr */
-+	bool absolute_redirect;
++	char *lowerdata_redirect;
  };
- 
- static int ovl_check_redirect(const struct path *path, struct ovl_lookup_data *d,
-@@ -33,11 +37,13 @@ static int ovl_check_redirect(const struct path *path, struct ovl_lookup_data *d
- 	char *buf;
- 	struct ovl_fs *ofs = OVL_FS(d->sb);
- 
-+	d->absolute_redirect = false;
- 	buf = ovl_get_redirect_xattr(ofs, path, prelen + strlen(post));
- 	if (IS_ERR_OR_NULL(buf))
- 		return PTR_ERR(buf);
- 
- 	if (buf[0] == '/') {
-+		d->absolute_redirect = true;
- 		/*
- 		 * One of the ancestor path elements in an absolute path
- 		 * lookup in ovl_lookup_layer() could have been opaque and
-@@ -349,6 +355,61 @@ static int ovl_lookup_layer(struct dentry *base, struct ovl_lookup_data *d,
- 	return 0;
+ void ovl_inode_init(struct inode *inode, struct ovl_inode_params *oip,
+ 		    unsigned long ino, int fsid);
+diff --git a/fs/overlayfs/ovl_entry.h b/fs/overlayfs/ovl_entry.h
+index 93ff299da0dd..513c2c499e41 100644
+--- a/fs/overlayfs/ovl_entry.h
++++ b/fs/overlayfs/ovl_entry.h
+@@ -141,6 +141,7 @@ static inline struct ovl_path *ovl_lowerdata(struct ovl_entry *oe)
+ 	return lowerstack ? &lowerstack[oe->__numlower - 1] : NULL;
  }
  
-+static int ovl_lookup_data_layer(struct dentry *dentry, const char *redirect,
-+				 const struct ovl_layer *layer,
-+				 struct path *datapath)
-+{
-+	int err;
-+
-+	err = vfs_path_lookup(layer->mnt->mnt_root, layer->mnt, redirect,
-+			LOOKUP_BENEATH | LOOKUP_NO_SYMLINKS | LOOKUP_NO_XDEV,
-+			datapath);
-+	pr_debug("lookup lowerdata (%pd2, redirect=\"%s\", layer=%d, err=%i)\n",
-+		 dentry, redirect, layer->idx, err);
-+
-+	if (err)
-+		return err;
-+
-+	err = -EREMOTE;
-+	if (ovl_dentry_weird(datapath->dentry))
-+		goto out_path_put;
-+
-+	err = -ENOENT;
-+	/* Only regular file is acceptable as lower data */
-+	if (!d_is_reg(datapath->dentry))
-+		goto out_path_put;
-+
-+	return 0;
-+
-+out_path_put:
-+	path_put(datapath);
-+
-+	return err;
-+}
-+
-+/* Lookup in data-only layers by absolute redirect to layer root */
-+static int ovl_lookup_data_layers(struct dentry *dentry, const char *redirect,
-+				  struct ovl_path *lowerdata)
-+{
-+	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
-+	const struct ovl_layer *layer;
-+	struct path datapath;
-+	int err = -ENOENT;
-+	int i;
-+
-+	layer = &ofs->layers[ofs->numlayer - ofs->numdatalayer];
-+	for (i = 0; i < ofs->numdatalayer; i++, layer++) {
-+		err = ovl_lookup_data_layer(dentry, redirect, layer, &datapath);
-+		if (!err) {
-+			mntput(datapath.mnt);
-+			lowerdata->dentry = datapath.dentry;
-+			lowerdata->layer = layer;
-+			return 0;
-+		}
-+	}
-+
-+	return err;
-+}
++/* May return NULL if lazy lookup of lowerdata is needed */
+ static inline struct dentry *ovl_lowerdata_dentry(struct ovl_entry *oe)
+ {
+ 	struct ovl_path *lowerdata = ovl_lowerdata(oe);
+@@ -157,7 +158,7 @@ static inline unsigned long *OVL_E_FLAGS(struct dentry *dentry)
+ struct ovl_inode {
+ 	union {
+ 		struct ovl_dir_cache *cache;	/* directory */
+-		/* place holder for non-dir */	/* regular file */
++		const char *lowerdata_redirect;	/* regular file */
+ 	};
+ 	const char *redirect;
+ 	u64 version;
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 988edb9e9d23..b960b9d84b66 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -171,6 +171,7 @@ static struct inode *ovl_alloc_inode(struct super_block *sb)
+ 	oi->version = 0;
+ 	oi->flags = 0;
+ 	oi->__upperdentry = NULL;
++	oi->lowerdata_redirect = NULL;
+ 	oi->oe = NULL;
+ 	mutex_init(&oi->lock);
  
- int ovl_check_origin_fh(struct ovl_fs *ofs, struct ovl_fh *fh, bool connected,
- 			struct dentry *upperdentry, struct ovl_path **stackp)
-@@ -917,7 +978,7 @@ struct dentry *ovl_lookup(struct inode *dir, struct dentry *dentry,
+@@ -194,6 +195,8 @@ static void ovl_destroy_inode(struct inode *inode)
+ 	ovl_free_entry(oi->oe);
+ 	if (S_ISDIR(inode->i_mode))
+ 		ovl_dir_cache_free(inode);
++	else
++		kfree(oi->lowerdata_redirect);
+ }
  
- 		if (!ofs->config.redirect_follow)
- 			d.last = i == ovl_numlower(poe) - 1;
--		else
-+		else if (d.is_dir || !ofs->numdatalayer)
- 			d.last = lower.layer->idx == ovl_numlower(roe);
+ static void ovl_free_fs(struct ovl_fs *ofs)
+diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
+index 7495b4d378b0..ad93a3132495 100644
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -226,10 +226,11 @@ void ovl_path_lowerdata(struct dentry *dentry, struct path *path)
+ {
+ 	struct ovl_entry *oe = OVL_E(dentry);
+ 	struct ovl_path *lowerdata = ovl_lowerdata(oe);
++	struct dentry *lowerdata_dentry = ovl_lowerdata_dentry(oe);
  
- 		d.mnt = lower.layer->mnt;
-@@ -1011,6 +1072,16 @@ struct dentry *ovl_lookup(struct inode *dir, struct dentry *dentry,
- 		}
+-	if (ovl_numlower(oe)) {
++	if (lowerdata_dentry) {
+ 		path->mnt = lowerdata->layer->mnt;
+-		path->dentry = lowerdata->dentry;
++		path->dentry = lowerdata_dentry;
+ 	} else {
+ 		*path = (struct path) { };
  	}
+@@ -356,9 +357,15 @@ struct inode *ovl_inode_realdata(struct inode *inode)
+ 	return ovl_inode_lowerdata(inode);
+ }
  
-+	/* Lookup absolute redirect from lower metacopy in data-only layers */
-+	if (d.metacopy && ctr && ofs->numdatalayer && d.absolute_redirect) {
-+		err = ovl_lookup_data_layers(dentry, d.redirect,
-+					     &stack[ctr]);
-+		if (!err) {
-+			d.metacopy = false;
-+			ctr++;
-+		}
-+	}
++const char *ovl_lowerdata_redirect(struct inode *inode)
++{
++	return inode && S_ISREG(inode->i_mode) ?
++		OVL_I(inode)->lowerdata_redirect : NULL;
++}
 +
- 	/*
- 	 * For regular non-metacopy upper dentries, there is no lower
- 	 * path based lookup, hence ctr will be zero. If a dentry is found
+ struct ovl_dir_cache *ovl_dir_cache(struct inode *inode)
+ {
+-	return OVL_I(inode)->cache;
++	return inode && S_ISDIR(inode->i_mode) ? OVL_I(inode)->cache : NULL;
+ }
+ 
+ void ovl_set_dir_cache(struct inode *inode, struct ovl_dir_cache *cache)
 -- 
 2.34.1
 
