@@ -2,68 +2,64 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A86626F442B
-	for <lists+linux-unionfs@lfdr.de>; Tue,  2 May 2023 14:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 170716F4D8E
+	for <lists+linux-unionfs@lfdr.de>; Wed,  3 May 2023 01:22:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234248AbjEBMsi (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 2 May 2023 08:48:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33240 "EHLO
+        id S229833AbjEBXWS (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 2 May 2023 19:22:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229533AbjEBMsd (ORCPT
+        with ESMTP id S229792AbjEBXWR (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 2 May 2023 08:48:33 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AF091B9;
-        Tue,  2 May 2023 05:48:31 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-3062c1e7df8so1607730f8f.1;
-        Tue, 02 May 2023 05:48:31 -0700 (PDT)
+        Tue, 2 May 2023 19:22:17 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F8632128;
+        Tue,  2 May 2023 16:22:16 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1aaf70676b6so22033025ad.3;
+        Tue, 02 May 2023 16:22:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683031709; x=1685623709;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AeBn/JgpFqZE/TKMjDDbt2tMOlGTFfUTgS2LGEIVV+A=;
-        b=BMBMxugwl4l3D1wY8kMpBLT7AjqGPGCrZ4OoFhPN+V0nKD0/gr5BHZ1M3oSf8nGfpJ
-         gsJqEfBd8KFo8fJGe6ciCIIbIHtSMPn4SFNLDUzebSXff77CYFESFwSz49QE/R09iP/y
-         pA+poYwh+V25PFsAqF6quA951X+pPN4E2XLvn5b8c+IS/mjSCKjwUe1ngNsBxKe103kE
-         b71ZlFFU18LY+XyEbsg4iif7idtwC7KUWRWsi6PvPzsBTZezbacLw9kgo+6VlCe8XjVm
-         JkvnIW1TduZUffmOjGzs5FM8QN9Bv/H6wGW+FFvy5xhGmlpQ6mSa+HBAWR6aJu4ON0CM
-         2xcg==
+        d=gmail.com; s=20221208; t=1683069736; x=1685661736;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lgMQUkd3KBDP4s/1XVkXehFFe7sxYiQlnhryYVxOB2g=;
+        b=LWUbpa+uQUvwwOdRlC0Pk8VuQuXmYewaovZXseTz+3OTIOpNQVPsyFmtKmg+mQflnf
+         6CJjEYFqEU1oQwEprovsS3r+IFbWbUlDL29RCSIiSunLp/6K3ir45sl4ED4kijVHXeJv
+         ynUn6JBn5eM2K9LEL3vEFUuNT4JfDpQoTrzjceyayADfyrbtAc88FdPS5YpmXf4KcKi3
+         0tudcbM5NyucVvb4cmIzW+zaPT0WZVLVSQWDhcoSfqx7YrniVedMp6gFRlxmo6aROglp
+         XAVWn+ogeeQB+3h2xKJROvCpfQMJOenMQla30Nc7GgQIXxsgX5EuzKRjzTyDnGGv9iDH
+         OUVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683031709; x=1685623709;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AeBn/JgpFqZE/TKMjDDbt2tMOlGTFfUTgS2LGEIVV+A=;
-        b=RdyhUkaOIZoXzfIyS/OL8XJIrsdql2+DNrjW11QvFeR83uEOJlYkmOZQ2nFNg+5fX3
-         NgBoVv0mqW0FqxwURmAb9jkMKCkumjnzD6kozltwKW2aLwhTV6aMtM5rGjh03XcyYwPP
-         zeUvigZLJAYPelw/RzBdxyDL3bvpeG0sGy9Hg/IS8IHUaWbTjpnfUpdngKi46eiAFd/G
-         ImfK4bNQQNOyWGyHpD7RiOzBXHX3/HpmUEa/wlvsi4fzu/NSy9aqdDctCBYWba5d8V+U
-         QKPhslnj72q7oNervgqzXS8cyZZxO6D0ngiwUFgUm749TWAWblKBEumzcOzk2OFpZAnU
-         fUEA==
-X-Gm-Message-State: AC+VfDwpRjtONyIm5IAMmPGrWk/cESGbw4rRiQc/5N99ieYW3vOI1bv7
-        Qdt//TsRKBTbqC+apliJKlw=
-X-Google-Smtp-Source: ACHHUZ5PKQMo9PRvFeGHtHlUyI5p/qrVociXaKSKIGuGQpveGTSwcPjTDU/WcEMkZQ2l1L+X8NG63Q==
-X-Received: by 2002:a5d:6a43:0:b0:2fe:80b7:3527 with SMTP id t3-20020a5d6a43000000b002fe80b73527mr11303588wrw.17.1683031709553;
-        Tue, 02 May 2023 05:48:29 -0700 (PDT)
-Received: from amir-ThinkPad-T480.lan ([5.29.249.86])
-        by smtp.gmail.com with ESMTPSA id d9-20020a5d6dc9000000b00304adbeeabbsm14226259wrz.99.2023.05.02.05.48.28
+        d=1e100.net; s=20221208; t=1683069736; x=1685661736;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lgMQUkd3KBDP4s/1XVkXehFFe7sxYiQlnhryYVxOB2g=;
+        b=MnEhx1xswGPUr/oRD19ESR+WVVJjumnt+20v26buUP7fmkZcwV6QdCLd5248NX3Jo3
+         OLz2n17v5xGrfNRzXkx9oFKVxUyzVl3ufvvRqujOp2swkpS+LkTXceRF70uEpIN3k/Bg
+         KSBquRQWpGdn9Z/oghwtbJowDYZ4SWxtox6nPxRM06zqBnavsrXJsOFb6MGB5uhOCEjm
+         2+s0jjxdCA4CcabyEZQSoo5XXCfegpsTRs9GL7mKqYkVxE4Xg9PCdAKf7zUFWvvD+dMt
+         wc/IKeE867SejbFLE548lC6FkH8ybpPOAHmc1h5Rq3MIL1yy3YYWRpyTvILjAcd9vcou
+         jhGQ==
+X-Gm-Message-State: AC+VfDydCTwxQ58mG0BiPmeBJ7t2zo0qUF824HuYaE77sYgQ1N3171JP
+        LPqde25ifx0Nz36Vw8eIaC4=
+X-Google-Smtp-Source: ACHHUZ5DMcJ8Ahx9RqFPEqh7DOK/oauMWI1cqqdWGQgaKPvztWrt/1/A0htAGrVIMuVYpSe559X3TQ==
+X-Received: by 2002:a17:902:b78a:b0:1a6:d4cb:eeb3 with SMTP id e10-20020a170902b78a00b001a6d4cbeeb3mr94494pls.63.1683069735961;
+        Tue, 02 May 2023 16:22:15 -0700 (PDT)
+Received: from ubuntu777.domain.name (36-228-87-104.dynamic-ip.hinet.net. [36.228.87.104])
+        by smtp.gmail.com with ESMTPSA id q16-20020a170902dad000b00194caf3e975sm20261704plx.208.2023.05.02.16.22.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 May 2023 05:48:29 -0700 (PDT)
-From:   Amir Goldstein <amir73il@gmail.com>
-To:     Jan Kara <jack@suse.cz>
-Cc:     Christian Brauner <brauner@kernel.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org,
-        linux-nfs@vger.kernel.org, linux-api@vger.kernel.org
-Subject: [PATCH v2 4/4] fanotify: support reporting non-decodeable file handles
-Date:   Tue,  2 May 2023 15:48:17 +0300
-Message-Id: <20230502124817.3070545-5-amir73il@gmail.com>
+        Tue, 02 May 2023 16:22:15 -0700 (PDT)
+From:   Min-Hua Chen <minhuadotchen@gmail.com>
+To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Miklos Szeredi <miklos@szeredi.hu>
+Cc:     Min-Hua Chen <minhuadotchen@gmail.com>,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-unionfs@vger.kernel.org
+Subject: [PATCH] fs: fix incorrect fmode_t casts
+Date:   Wed,  3 May 2023 07:22:08 +0800
+Message-Id: <20230502232210.119063-1-minhuadotchen@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230502124817.3070545-1-amir73il@gmail.com>
-References: <20230502124817.3070545-1-amir73il@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -76,70 +72,44 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-fanotify users do not always need to decode the file handles reported
-with FAN_REPORT_FID.
+Use __FMODE_NONOTIFY instead of FMODE_NONOTIFY to fixes
+the following sparce warnings:
+fs/overlayfs/file.c:48:37: sparse: warning: restricted fmode_t degrades to integer
+fs/overlayfs/file.c:128:13: sparse: warning: restricted fmode_t degrades to integer
+fs/open.c:1159:21: sparse: warning: restricted fmode_t degrades to integer
 
-Relax the restriction that filesystem needs to support NFS export and
-allow reporting file handles from filesystems that only support ecoding
-unique file handles.
-
-Even filesystems that do not have export_operations at all can fallback
-to use the default FILEID_INO32_GEN encoding, but we use the existence
-of export_operations as an indication that the encoded file handles will
-be sufficiently unique and that user will be able to compare them to
-filesystem objects using AT_HANDLE_FID flag to name_to_handle_at(2).
-
-For filesystems that do not support NFS export, users will have to use
-the AT_HANDLE_FID of name_to_handle_at(2) if they want to compare the
-object in path to the object fid reported in an event.
-
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Min-Hua Chen <minhuadotchen@gmail.com>
 ---
- fs/notify/fanotify/fanotify.c      | 4 ++--
- fs/notify/fanotify/fanotify_user.c | 7 +++----
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ fs/open.c           | 2 +-
+ fs/overlayfs/file.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
-index d1a49f5b6e6d..d2bbf1445a9e 100644
---- a/fs/notify/fanotify/fanotify.c
-+++ b/fs/notify/fanotify/fanotify.c
-@@ -380,7 +380,7 @@ static int fanotify_encode_fh_len(struct inode *inode)
- 	if (!inode)
- 		return 0;
+diff --git a/fs/open.c b/fs/open.c
+index 4478adcc4f3a..9d5edcedcbb7 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -1156,7 +1156,7 @@ inline struct open_how build_open_how(int flags, umode_t mode)
+ inline int build_open_flags(const struct open_how *how, struct open_flags *op)
+ {
+ 	u64 flags = how->flags;
+-	u64 strip = FMODE_NONOTIFY | O_CLOEXEC;
++	u64 strip = __FMODE_NONOTIFY | O_CLOEXEC;
+ 	int lookup_flags = 0;
+ 	int acc_mode = ACC_MODE(flags);
  
--	exportfs_encode_inode_fh(inode, NULL, &dwords, NULL, 0);
-+	exportfs_encode_fid(inode, NULL, &dwords);
- 	fh_len = dwords << 2;
+diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+index 7c04f033aadd..0801917f932e 100644
+--- a/fs/overlayfs/file.c
++++ b/fs/overlayfs/file.c
+@@ -35,7 +35,7 @@ static char ovl_whatisit(struct inode *inode, struct inode *realinode)
+ }
  
- 	/*
-@@ -443,7 +443,7 @@ static int fanotify_encode_fh(struct fanotify_fh *fh, struct inode *inode,
- 	}
+ /* No atime modification nor notify on underlying */
+-#define OVL_OPEN_FLAGS (O_NOATIME | FMODE_NONOTIFY)
++#define OVL_OPEN_FLAGS (O_NOATIME | __FMODE_NONOTIFY)
  
- 	dwords = fh_len >> 2;
--	type = exportfs_encode_inode_fh(inode, buf, &dwords, NULL, 0);
-+	type = exportfs_encode_fid(inode, buf, &dwords);
- 	err = -EINVAL;
- 	if (!type || type == FILEID_INVALID || fh_len != dwords << 2)
- 		goto out_err;
-diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 8f430bfad487..e1936e968abb 100644
---- a/fs/notify/fanotify/fanotify_user.c
-+++ b/fs/notify/fanotify/fanotify_user.c
-@@ -1586,11 +1586,10 @@ static int fanotify_test_fid(struct dentry *dentry)
- 	 * We need to make sure that the file system supports at least
- 	 * encoding a file handle so user can use name_to_handle_at() to
- 	 * compare fid returned with event to the file handle of watched
--	 * objects. However, name_to_handle_at() requires that the
--	 * filesystem also supports decoding file handles.
-+	 * objects. However, even the relaxed AT_HANDLE_FID flag requires
-+	 * at least empty export_operations for ecoding unique file ids.
- 	 */
--	if (!dentry->d_sb->s_export_op ||
--	    !dentry->d_sb->s_export_op->fh_to_dentry)
-+	if (!dentry->d_sb->s_export_op)
- 		return -EOPNOTSUPP;
- 
- 	return 0;
+ static struct file *ovl_open_realfile(const struct file *file,
+ 				      const struct path *realpath)
 -- 
 2.34.1
 
