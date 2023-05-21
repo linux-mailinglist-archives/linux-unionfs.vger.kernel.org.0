@@ -2,119 +2,164 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE74470ACFC
-	for <lists+linux-unionfs@lfdr.de>; Sun, 21 May 2023 10:31:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A769A70B1D5
+	for <lists+linux-unionfs@lfdr.de>; Mon, 22 May 2023 00:50:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbjEUIb3 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 21 May 2023 04:31:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49210 "EHLO
+        id S229571AbjEUWt5 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 21 May 2023 18:49:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230095AbjEUI2Z (ORCPT
+        with ESMTP id S231387AbjEUWt4 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 21 May 2023 04:28:25 -0400
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F359B18D
-        for <linux-unionfs@vger.kernel.org>; Sun, 21 May 2023 01:28:23 -0700 (PDT)
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id D9FFE3F11A
-        for <linux-unionfs@vger.kernel.org>; Sun, 21 May 2023 08:28:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1684657701;
-        bh=JDxwondAh/OUHugni3ivKWRUI1pwMRnCsBuB/co2xpE=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version;
-        b=tzO+lGm3EmaDmI2T9uQaihMGZ1HWlcavGFIOBCKkue/IoMM27TvtI88Yw4deFMmBX
-         bQZw6crI96a7MgemCX6gLeWveU6FZIXfy8kXI/GM1Uk8Zd26axHQnHDwdGrUS/Y2j3
-         dVKYGjmzo1UuWk3w3/4jyCD5v7gMRiValKV3Kk6+KmUNvq1NVJ2JAD0lcHnyvnZlCC
-         w1i6ktxizM1QJIS4jMfgc1h3V6oKW0IW1EkPMZ0lSvay3kBNOqm85rztHjgL6H00kd
-         iN3kgn7NDbuNwsh91y1Toz5lpMLlKWJM3K+ii7yQyrEtZlre1Tbt6kRtAWw7BMyiMu
-         gqlunG9dr9dsw==
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-510b714821fso3139023a12.1
-        for <linux-unionfs@vger.kernel.org>; Sun, 21 May 2023 01:28:21 -0700 (PDT)
+        Sun, 21 May 2023 18:49:56 -0400
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF3A9BA
+        for <linux-unionfs@vger.kernel.org>; Sun, 21 May 2023 15:49:54 -0700 (PDT)
+Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-5208be24dcbso3657459a12.1
+        for <linux-unionfs@vger.kernel.org>; Sun, 21 May 2023 15:49:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20221208.gappssmtp.com; s=20221208; t=1684709394; x=1687301394;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YfaiIW3biZ2nDYazMreEHIKSLRhntSglWJTWt2nlD0A=;
+        b=IP5yZ0MMUZe32WseJQj3R2egNthpjmyvm+ciAk24LX8IEV7id8mpJCFeDWFj0Omm2f
+         GfW41TZ5PxSnakzCNRnqNV5+26u2zf1il0w5TpmJjsm5guGJqcVuzI450S8ezK7xGm53
+         aJ+fCiUOOMUejIoPQNcQOFm0coGehr46kezzbLLHU6Q6EjhrP/LicNOwUetRXPpSn6i5
+         RPkrxmRKW1B0Yhp7ttk/tDuPOX7wOFhQJaeQTyXvqn9eQXqAZzuXWhDS+uGXNL3iUomt
+         VQ6hKc0ZeYG9IesB6W0x2zNu/R+dTIeyCjtaPv6dKj8VfMkra6Sdh0kFoP2Mws2cdHgr
+         mUCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684657698; x=1687249698;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JDxwondAh/OUHugni3ivKWRUI1pwMRnCsBuB/co2xpE=;
-        b=aGVCYkYq1jIH2AA8RXItPeNIcFgckGqfKxyXU4ZGuLpt1hPbKc7SPxZSoyJxFNnOLz
-         ERIo32eo468KviDfTVYYpMm0uIMUKiKPHkj5176fu+a1Ubpy+q45ZZS2VRQEDtMJtuEv
-         wdhIkPZHAXRd0DNFee6vwu5pvmWoeSUN6Nc87mWEigHkMjo4TlJcQOznX58IVHhrDHxV
-         oTi2QWDdEU3cbNKBZ8UB9ZukMzaUHpM585P7q82d8GSx/vW9SyXvmGY4VriGwZ868KiF
-         L+D2QDIn8PI4XlvILA6c3EnF5DKg+6rNFsF9U7ZTXBYA3QeucZrNKTMS51Jq+bLW4pP8
-         fEFw==
-X-Gm-Message-State: AC+VfDw508znh/R3eXRlZnp44QxnIRnj0Xea5KAMkfbdgiU1kOpHXUTI
-        OsKrZET/gTLDU4CXkM7qD8hzA7TuVvPcqFuToSO6QB+p3VXmXlU444FXdlrbt3vTpnIha6C7pPv
-        LpdwRVvTxgZzxMJEWqpADMyE3fl+6OGhYN6VPyJjNXh8=
-X-Received: by 2002:a50:ed09:0:b0:50c:161b:9154 with SMTP id j9-20020a50ed09000000b0050c161b9154mr6988437eds.11.1684657698395;
-        Sun, 21 May 2023 01:28:18 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6ZOrhcJoW7hdR/JwsluZvVPpD3I9c6Xd7IgooNQQzahawcWHebG+MovffeT+18V5hGxmKYpQ==
-X-Received: by 2002:a50:ed09:0:b0:50c:161b:9154 with SMTP id j9-20020a50ed09000000b0050c161b9154mr6988428eds.11.1684657698143;
-        Sun, 21 May 2023 01:28:18 -0700 (PDT)
-Received: from righiandr-XPS-13-7390.homenet.telecomitalia.it (host-87-10-127-160.retail.telecomitalia.it. [87.10.127.160])
-        by smtp.gmail.com with ESMTPSA id z17-20020aa7cf91000000b004c2158e87e6sm1656646edx.97.2023.05.21.01.28.17
+        d=1e100.net; s=20221208; t=1684709394; x=1687301394;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YfaiIW3biZ2nDYazMreEHIKSLRhntSglWJTWt2nlD0A=;
+        b=Myve/Cio4nwaCQDIqEP2f0o+fIDEwL1quaJJVnodu8WQWMOIc71rB6GXitRI204G+H
+         8YqLH8pEILi+l+C+24qYFc5LkHiLuhHXQE3XNKiuaZX5VCIqhNGOPPqnAmqgT0AyWuST
+         bIg3VgroRbdr3vi3Qm2leqWglorkvKSOlH3HCVfrkriKKdC3qHdeoK0KlJ/HIy37KNZS
+         e4FsBIN9yAkhysEsGVRi93QAMO5iynniYGYtI9kDWtdav+VisYGpDFg4bJM3RalsKqwq
+         RIDtI724YAoTdGRvGpgQNdxHYV+29Gtxc5vJ1UiT9QCXAx5enptW1c7QFTLIGXdZ+QjQ
+         lHPQ==
+X-Gm-Message-State: AC+VfDzLa3bEpHm8iEJfaF9iV1seYXFGQjz4oe/aIXVhCKbTqeh1ebD0
+        f7GmVpAggrJIfsJ6t9qftczmTA==
+X-Google-Smtp-Source: ACHHUZ72WQJhhCaeNMhFrQWZeqaQ3D4XEC9Issa3Qxfnr9+ou9y0ZTpJBeGEsgMJX5F+VThTgg1fcw==
+X-Received: by 2002:a17:902:c1c4:b0:1af:b681:5313 with SMTP id c4-20020a170902c1c400b001afb6815313mr820157plc.33.1684709394215;
+        Sun, 21 May 2023 15:49:54 -0700 (PDT)
+Received: from dread.disaster.area (pa49-179-0-188.pa.nsw.optusnet.com.au. [49.179.0.188])
+        by smtp.gmail.com with ESMTPSA id ja15-20020a170902efcf00b001ac55a5e5eesm3425837plb.121.2023.05.21.15.49.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 May 2023 01:28:17 -0700 (PDT)
-From:   Andrea Righi <andrea.righi@canonical.com>
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Amir Goldstein <amir73il@gmail.com>, linux-unionfs@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] ovl: validate superblock in OVL_FS()
-Date:   Sun, 21 May 2023 10:28:13 +0200
-Message-Id: <20230521082813.17025-4-andrea.righi@canonical.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230521082813.17025-1-andrea.righi@canonical.com>
-References: <20230521082813.17025-1-andrea.righi@canonical.com>
+        Sun, 21 May 2023 15:49:53 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.96)
+        (envelope-from <david@fromorbit.com>)
+        id 1q0rs6-002J36-1t;
+        Mon, 22 May 2023 08:49:50 +1000
+Date:   Mon, 22 May 2023 08:49:50 +1000
+From:   Dave Chinner <david@fromorbit.com>
+To:     Christian Brauner <brauner@kernel.org>
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Jeff Layton <jlayton@kernel.org>,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        Paul Moore <paul@paul-moore.com>,
+        linux-integrity@vger.kernel.org, miklos@szeredi.hu,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org,
+        Ignaz Forster <iforster@suse.de>, Petr Vorel <pvorel@suse.cz>
+Subject: Re: [PATCH] overlayfs: Trigger file re-evaluation by IMA / EVM after
+ writes
+Message-ID: <ZGqgDjJqFSlpIkz/@dread.disaster.area>
+References: <20230407-trasse-umgearbeitet-d580452b7a9b@brauner>
+ <078d8c1fd6b6de59cde8aa85f8e59a056cb78614.camel@linux.ibm.com>
+ <20230520-angenehm-orangen-80fdce6f9012@brauner>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230520-angenehm-orangen-80fdce6f9012@brauner>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-When CONFIG_OVERLAY_FS_DEBUG is enabled add an explicit check to make
-sure that OVL_FS() is always used with a valid overlayfs superblock.
-Otherwise trigger a WARN_ON_ONCE().
+On Sat, May 20, 2023 at 11:17:35AM +0200, Christian Brauner wrote:
+> On Fri, May 19, 2023 at 03:42:38PM -0400, Mimi Zohar wrote:
+> > On Fri, 2023-04-07 at 10:31 +0200, Christian Brauner wrote:
+> > > So, I think we want both; we want the ovl_copyattr() and the
+> > > vfs_getattr_nosec() change:
+> > > 
+> > > (1) overlayfs should copy up the inode version in ovl_copyattr(). That
+> > >     is in line what we do with all other inode attributes. IOW, the
+> > >     overlayfs inode's i_version counter should aim to mirror the
+> > >     relevant layer's i_version counter. I wouldn't know why that
+> > >     shouldn't be the case. Asking the other way around there doesn't
+> > >     seem to be any use for overlayfs inodes to have an i_version that
+> > >     isn't just mirroring the relevant layer's i_version.
+> > > (2) Jeff's changes for ima to make it rely on vfs_getattr_nosec().
+> > >     Currently, ima assumes that it will get the correct i_version from
+> > >     an inode but that just doesn't hold for stacking filesystem.
+> > > 
+> > > While (1) would likely just fix the immediate bug (2) is correct and
+> > > _robust_. If we change how attributes are handled vfs_*() helpers will
+> > > get updated and ima with it. Poking at raw inodes without using
+> > > appropriate helpers is much more likely to get ima into trouble.
+> > 
+> > In addition to properly setting the i_version for IMA, EVM has a
+> > similar issue with i_generation and s_uuid. Adding them to
+> > ovl_copyattr() seems to resolve it.   Does that make sense?
+> > 
+> > diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
+> > index 923d66d131c1..cd0aeb828868 100644
+> > --- a/fs/overlayfs/util.c
+> > +++ b/fs/overlayfs/util.c
+> > @@ -1118,5 +1118,8 @@ void ovl_copyattr(struct inode *inode)
+> >  	inode->i_atime = realinode->i_atime;
+> >  	inode->i_mtime = realinode->i_mtime;
+> >  	inode->i_ctime = realinode->i_ctime;
+> > +	inode->i_generation = realinode->i_generation;
+> > +	if (inode->i_sb)
+> > +		uuid_copy(&inode->i_sb->s_uuid, &realinode->i_sb-
+> 
+> Overlayfs can consist of multiple lower layers and each of those lower
+> layers may have a different uuid. So everytime you trigger a
+> ovl_copyattr() on a different layer this patch would alter the uuid of
+> the overlayfs superblock.
+> 
+> In addition the uuid should be set when the filesystem is mounted.
+> Unless the filesystem implements a dedicated ioctl() - like ext4 - to
+> change the uuid.
 
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
----
- fs/overlayfs/ovl_entry.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+IMO, that ext4 functionality is a landmine waiting to be stepped on.
 
-diff --git a/fs/overlayfs/ovl_entry.h b/fs/overlayfs/ovl_entry.h
-index b32c38fdf3c7..e156649d9c71 100644
---- a/fs/overlayfs/ovl_entry.h
-+++ b/fs/overlayfs/ovl_entry.h
-@@ -97,8 +97,20 @@ static inline struct mnt_idmap *ovl_upper_mnt_idmap(struct ovl_fs *ofs)
- 
- extern struct file_system_type ovl_fs_type;
- 
-+static inline bool is_ovl_fs_sb(struct super_block *sb)
-+{
-+	return sb->s_type == &ovl_fs_type;
-+}
-+
-+#ifdef CONFIG_OVERLAY_FS_DEBUG
-+#define OVL_VALIDATE_SB(__sb)	WARN_ON_ONCE(!is_ovl_fs_sb(__sb))
-+#else
-+#define OVL_VALIDATE_SB(__sb)
-+#endif
-+
- static inline struct ovl_fs *OVL_FS(struct super_block *sb)
- {
-+	OVL_VALIDATE_SB(sb);
- 	return (struct ovl_fs *)sb->s_fs_info;
- }
- 
+We should not be changing the sb->s_uuid of filesysetms dynamically.
+The VFS does not guarantee in any way that it is safe to change the
+sb->s_uuid (i.e. no locking, no change notifications, no udev
+events, etc). Various subsystems - both in the kernel and in
+userspace - use the sb->s_uuid as a canonical and/or persistent
+filesystem/device identifier and are unprepared to have it change
+while the filesystem is mounted and active.
+
+I commented on this from an XFS perspective here when it was
+proposed to copy this ext4 mis-feature in XFS:
+
+https://lore.kernel.org/linux-xfs/20230314062847.GQ360264@dread.disaster.area/
+
+Further to this, I also suspect that changing uuids online will
+cause issues with userspace caching of fs uuids (e.g. libblkid and
+anything that uses it) and information that uses uuids to identify
+the filesystem that are set up at mount time (/dev/disk/by-uuid/
+links, etc) by kernel events sent to userspace helpers...
+
+IMO, we shouldn't even be considering dynamic sb->s_uuid changes
+without first working through the full system impacts of having
+persistent userspace-visible filesystem identifiers change
+dynamically...
+
+-Dave.
 -- 
-2.39.2
-
+Dave Chinner
+david@fromorbit.com
