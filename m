@@ -2,85 +2,68 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31DDE714F0F
-	for <lists+linux-unionfs@lfdr.de>; Mon, 29 May 2023 19:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2810A71544D
+	for <lists+linux-unionfs@lfdr.de>; Tue, 30 May 2023 05:58:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229473AbjE2RwW (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 29 May 2023 13:52:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33988 "EHLO
+        id S229514AbjE3D6h (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 29 May 2023 23:58:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjE2RwV (ORCPT
+        with ESMTP id S229478AbjE3D6f (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 29 May 2023 13:52:21 -0400
-X-Greylist: delayed 90 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 29 May 2023 10:52:18 PDT
-Received: from alerce.blitiri.com.ar (alerce.blitiri.com.ar [IPv6:2001:bc8:228b:9000::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2988191
-        for <linux-unionfs@vger.kernel.org>; Mon, 29 May 2023 10:52:17 -0700 (PDT)
-Received: from [IPV6:2a02:8109:aa40:4e0:b5c6:9671:3477:8fde]
-        by sdfg.com.ar (chasquid) with ESMTPSA
-        tls TLS_AES_128_GCM_SHA256
-        (over submission+TLS, TLS-1.3, envelope from "rodrigo@sdfg.com.ar")
-        ; Mon, 29 May 2023 17:50:41 +0000
-Message-ID: <16766416-1176-80d2-241a-ac982fb30ac0@sdfg.com.ar>
-Date:   Mon, 29 May 2023 19:50:41 +0200
+        Mon, 29 May 2023 23:58:35 -0400
+X-Greylist: delayed 2461 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 29 May 2023 20:58:34 PDT
+Received: from fallback16.i.mail.ru (fallback16.i.mail.ru [79.137.243.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09314DE;
+        Mon, 29 May 2023 20:58:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mail.ru; s=mail4;
+        h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From:From:Subject:Content-Type:Content-Transfer-Encoding:To:Cc; bh=N/mtbL55pJKF+R0EMmVz0u7PirGDXhwNr5PDfaUJlZw=;
+        t=1685419114;x=1685509114; 
+        b=UllfkzNUQ1stL5yiHiCsR+jRhPVS0uOzcxqk8NyPIg2sOR6NgiRxsBEbJtndYJsgF8iNFW0UT0Hhsqv+vgWe84l/Rgmf3pu03t25u45+zLdcnYiLNCNfLG9Z+XhVfJguhLNc1dv9NOMyuU5GqYjuhckG0SvTfROAqAYnI/5zIaI7Vx3rsf6VFAJxln4rJf85WNDC/UZ16GJg7k21akjBDe8W5gKoUBwAAxZy/xhyo6ggj2ySPE/B3tfax9farAi1FRtIBWc1MW5G9GaVaNOz5iVi1UeDYl1HpCsRx2Tfys+GjsFiP+aQp8N0TxDbyS4fIvs1ZVPlp1xr2ARGJOSI8w==;
+Received: from [10.12.4.10] (port=55094 helo=smtp34.i.mail.ru)
+        by fallback16.i.mail.ru with esmtp (envelope-from <listdansp@mail.ru>)
+        id 1q3pAW-005wxR-N7; Tue, 30 May 2023 05:33:04 +0300
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mail.ru; s=mail4;
+        h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From:From:Subject:Content-Type:Content-Transfer-Encoding:To:Cc; bh=N/mtbL55pJKF+R0EMmVz0u7PirGDXhwNr5PDfaUJlZw=;
+        t=1685413984;x=1685503984; 
+        b=1cq7nKd4+whU4vOdvIRkCAIb63wHqEx/ob+CUaLpFTu8oJdcDBJBNQVUAIiTh34KKiNCWCo/tumaX7iOEo29ApHsSdkxeuTqq/iaxSZkhW4Obj+NzUoGmSiQ8PbMGn5vRxz0jzmx7AwS059nekr8CSnDGa0rbxYxga8XOg4G8WvCV1QKQJ5/daU5hS04Ry5cU37gLL/369TWxoKZbKcfjYL8ML4/+OC+6XZa7WoUI7sTW3T6R70oHxrs3U53+Ww3xh4fzX2e0bjAT9lYs9bDgR8cKfcVKkKmYLh2K6wVMZ/5VfNOVuzQzMcmVwj7ewLWqhx9KuZAE2+mOI9W7Kvmfw==;
+Received: by smtp34.i.mail.ru with esmtpa (envelope-from <listdansp@mail.ru>)
+        id 1q3pAS-006P3c-JY; Tue, 30 May 2023 05:33:00 +0300
+From:   Danila Chernetsov <listdansp@mail.ru>
+To:     stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Danila Chernetsov <listdansp@mail.ru>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 5.10 0/1] ovl: fail on invalid uid/gid mapping at copy up
+Date:   Tue, 30 May 2023 02:29:16 +0000
+Message-Id: <20230530022917.18574-1-listdansp@mail.ru>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: Detaching lower layers (Was: Lazy Loading Layers)
-To:     Amir Goldstein <amir73il@gmail.com>,
-        Sargun Dhillon <sargun@sargun.me>
-Cc:     overlayfs <linux-unionfs@vger.kernel.org>,
-        Miklos Szeredi <miklos@szeredi.hu>
-References: <20210125194848.GA12389@ircssh-2.c.rugged-nimbus-611.internal>
- <CAOQ4uxg0BHD8OHWk-b6TrE=SqGJTvp8TuHaLCwC5g9ZL=7W0Ew@mail.gmail.com>
-Content-Language: en-US
-From:   Rodrigo Campos <rodrigo@sdfg.com.ar>
-In-Reply-To: <CAOQ4uxg0BHD8OHWk-b6TrE=SqGJTvp8TuHaLCwC5g9ZL=7W0Ew@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Mailru-Src: smtp
+X-7564579A: 78E4E2B564C1792B
+X-77F55803: 4F1203BC0FB41BD9FA9FE7958A526B7720A7778064FAD46CFFAE4421AB0E3E4100894C459B0CD1B9C0B2C06A1FFB7161C03AB56184CCB6AEC09BBED9A7CA5B3118AC86DD68069C2D
+X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE705B093C0FC4B30B9EA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F790063764FE777F378F21448638F802B75D45FF36EB9D2243A4F8B5A6FCA7DBDB1FC311F39EFFDF887939037866D6147AF826D8B78AB5E607A4E02BBF2F15A3D2B86E216F9789CCF6C18C3F8528715B7D10C86878DA827A17800CE7D9442B0B5983000E8941B15DA834481FA18204E546F3947C6633242DC0339950F6B57BC7E64490618DEB871D839B7333395957E7521B51C2DFABB839C843B9C08941B15DA834481F8AA50765F790063738CA231DD84B2BC5389733CBF5DBD5E9B5C8C57E37DE458BD9DD9810294C998ED8FC6C240DEA76428AA50765F7900637F4E2927FE2267820D81D268191BDAD3DBD4B6F7A4D31EC0BEA7A3FFF5B025636D81D268191BDAD3D78DA827A17800CE75A26554B14DCFBBCEC76A7562686271ED91E3A1F190DE8FD2E808ACE2090B5E14AD6D5ED66289B5259CC434672EE63711DD303D21008E298D5E8D9A59859A8B6B372FE9A2E580EFC725E5C173C3A84C3B62F86BFDE33731535872C767BF85DA2F004C90652538430E4A6367B16DE6309
+X-C1DE0DAB: 0D63561A33F958A51D2D2310D2A0B0644D7E3024AE287B0661549223A00EC5C2F87CCE6106E1FC07E67D4AC08A07B9B06A1CB4668A9CA5FA9C5DF10A05D560A950611B66E3DA6D700B0A020F03D25A09D2DCF9CF1F528DBCCB5012B2E24CD356
+X-C8649E89: 1C3962B70DF3F0ADBF74143AD284FC7177DD89D51EBB7742DC8270968E61249B1004E42C50DC4CA955A7F0CF078B5EC49A30900B95165D3450C5E6D685282BA13E41F4D1A7DD05FF078C923A70BD21D2D8E15DDE1F473278F3753A140BDB13DD1D7E09C32AA3244CE5CAC226F57046CB3B0967B16FFF7EF89CA7333006C390A08D5DD81C2BAB7D1D
+X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojjC1ARgSIbgSLvs3oywYgqw==
+X-Mailru-Sender: 4CE1109FD677D2770147F6A9E21DCA7BC7F566A1B8E54524820F4E3C0788D1EDCC1DBAD77A66FE617E3C9C7AF06D9E7B78274A4A9E9E44FD3C3897ABF9FF211DE8284E426C7B2D9A5FEEDEB644C299C0ED14614B50AE0675
+X-Mras: Ok
+X-7564579A: B8F34718100C35BD
+X-77F55803: 6242723A09DB00B4485927362E3B8E42AAA24C10A56A03911FEBDA0C0CF6EE17049FFFDB7839CE9EE822F105BA4D6AE1D23EF48A982D229189B6EF036818F9332558D62C152ECA77
+X-7FA49CB5: 0D63561A33F958A5EA5FAE7B045DB8F1F675EAC1C545B38B221D666B6DBB12C8CACD7DF95DA8FC8BD5E8D9A59859A8B68EAFBCB99A755DA6
+X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5xhPKz0ZEsZ5k6NOOPWz5QAiZSCXKGQRq3/7KxbCLSB2ESzQkaOXqCBFZPLWFrEGlV1shfWe2EVcxl5toh0c/aCGOghz/frdRhzMe95NxDFdZdU6KX1s6V7K1l9KCkRYmA==
+X-Mailru-MI: C000000000000800
+X-Mras: Ok
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_PERMERROR
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On 5/29/23 17:15, Amir Goldstein wrote:
-> On Mon, Jan 25, 2021 at 9:54 PM Sargun Dhillon <sargun@sargun.me> wrote:
->>
->> One of the projects I'm playing with for containers is lazy-loading of layers.
->> We've found that less than 10% of the files on a layer actually get used, which
->> is an unfortunate waste. It also means in some cases downloading ~100s of MB, or
->> ~1s of GB of files before starting a container workload. This is unfortunate.
->>
->> It would be nice if there was a way to start a container workload, and have
->> it so that if it tries to access and unpopulated (not yet downloaded) part
->> of the filesystem block while trying to be accessed. This is trivial to do
->> if the "lowest" layer is FUSE, where one can just stall in userspace on
->> loads. Unfortunately, AFAIK, there's not a good way to swap out the FUSE
->> filesystem with the "real" filesystem once it's done fully populating,
->> and you have to pay for the full FUSE cost on each read / write.
->>
->> I've tossed around:
->> 1. Mutable lowerdirs and having something like this:
->>
->> layer0 --> Writeable space
->> layer1 --> Real XFS filesystem
->> layer2 --> FUSE FS
->>
->> and if there is a "miss" on layer 1, it will then look it up on
->> layer 2 while layer 1 is being populated. Then the FUSE FS can block.
->> This is neat, but it requires the FUSE FS to always be up, and incurs
->> a userspace bounce on every miss.
-
-Interesting.
-
-I haven't checked the patches yet, but does the patchset "FUSE BPF: A 
-Stacked Filesystem Extension for FUSE" help with your use case,  Sargun?
-
-
-
-Best,
-Rodrigo
+This patch is needed to fix CVE-2023-0386
