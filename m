@@ -2,67 +2,82 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61C20723CAD
-	for <lists+linux-unionfs@lfdr.de>; Tue,  6 Jun 2023 11:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2414723CBD
+	for <lists+linux-unionfs@lfdr.de>; Tue,  6 Jun 2023 11:14:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233658AbjFFJMw (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 6 Jun 2023 05:12:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54870 "EHLO
+        id S233057AbjFFJOJ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 6 Jun 2023 05:14:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235675AbjFFJMr (ORCPT
+        with ESMTP id S236016AbjFFJNu (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 6 Jun 2023 05:12:47 -0400
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04DCE10C8
-        for <linux-unionfs@vger.kernel.org>; Tue,  6 Jun 2023 02:12:37 -0700 (PDT)
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-7776b76cc59so499511639f.2
-        for <linux-unionfs@vger.kernel.org>; Tue, 06 Jun 2023 02:12:36 -0700 (PDT)
+        Tue, 6 Jun 2023 05:13:50 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3BE5E7E
+        for <linux-unionfs@vger.kernel.org>; Tue,  6 Jun 2023 02:13:40 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-51492ae66a4so8184096a12.1
+        for <linux-unionfs@vger.kernel.org>; Tue, 06 Jun 2023 02:13:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1686042819; x=1688634819;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=v/09YTa8tEcJwJTMpIH6M+tZT3IBJvAj9v+wpVe650k=;
+        b=ZIYbKwYf4fG/ucLfaj3THNnjwZUxrgo+Srnk+9+rBk0CRFNwAtZw4hjG6K4p7Bbhp8
+         Djs6Noh9VbDKG1qN2s4+ONprYk2kT30Qi2JWKabiVGu7cqXOzgJQbQvi2Xi0cSJfSb7s
+         stnhvpC8tgmsk/SP99zWYcIm9TAX92jxvTLeg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686042756; x=1688634756;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cKjEJ+NhJxp2P/83FzouzrqL0ri1MzUuYoHzC3XIwgQ=;
-        b=e39FKqs7sdYNNNpLq0sbB91cZ8cl+fi346RNPczoJZWVJ0D1g7XnY2cgBVP3Vq4DfY
-         uSNLfkieJCLRh6sKt4gjFWhl3c/WtJslC2RfzT7Mg2OxR+oZT6gt1obdcT+UVNMo+Pkl
-         hQof6qM+7ZnZ3tPLDPkRJvTmxvBYbyvWLH1uRieH2rK8Vy6Clf81TGHcXjGtK+g4rEtZ
-         aQtaeVGFMSVxyccG585ENputw9/3uzU+ijxpc6VFCWGqf9DJY0Gi57urNNMB1q2eM4qv
-         SdWPr2plIDTKpxRg7ZIFC+Ubv8cF5GFsqbqgehO1rP5XQeJCjSL9MB3ALSEhJpogchfS
-         N6EA==
-X-Gm-Message-State: AC+VfDzvIbdwu8cFHYtqRE+j5h6qEo21xeUgGSxuVWslFuurbhwNacWE
-        SZm6vfUJlySapBCvd8AW6eh5K6NM7fK+YPppalmwqGhARNeh
-X-Google-Smtp-Source: ACHHUZ4hPLNKpE1IYP8UTPjo59Z0ZEP2JEaW0grC8Ojb0fa/yI50EDSv8JRCXB1vPNR0sMhFHlh+lv1sqSuhYH9RxbYGnWQNiPFz
+        d=1e100.net; s=20221208; t=1686042819; x=1688634819;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v/09YTa8tEcJwJTMpIH6M+tZT3IBJvAj9v+wpVe650k=;
+        b=LtjEvEZaZANXSRqm/unTogFuLWSvrEPgTNetcZIK4LChSlfLZQKsfrIRHc4XWWErd1
+         WC8cJ50FmgKV6PMql3QnJkn8gMP0dj3AEffp6dyMVzbY+2n2RmQ5duHuqNjzSxgqKiXi
+         AXGtNK07sgY2FtNdVygsADVxk23dX8Un38Ss3lGPRsZXznf/GC+sizx2w6dTPyN0Zl4L
+         wT5MI6XvKLDvoY1vRjMGU1p/wEQ2iFmwIf1ACwZVQ+uPgqOMzoT+srcG/YvPFesHCUFa
+         lUokAMogQYjpWgi4ATvwU3R53NbYZBNd7AtY3tjN+Y9wuTni8vuryWXAWX55RvXSgrzh
+         5taw==
+X-Gm-Message-State: AC+VfDzHm01nY91gS8Q4PXXD/EwTD6OQJVnZE95EWHuXFf1kHjRfA8DO
+        jy3eCxpII60bXGTn4jKEyVdo0Vsu3H4hsoajFHRqBg==
+X-Google-Smtp-Source: ACHHUZ4vPzst/oCRoU4YoFhlm/1DWVKqEkFpcNkc6lS7e2xnXC1wXYrpZDXM97TMUEU9m7Y2OTbiyc0y1qBLlGN+UvM=
+X-Received: by 2002:a17:907:60d4:b0:96f:5747:a0de with SMTP id
+ hv20-20020a17090760d400b0096f5747a0demr1545860ejc.6.1686042819365; Tue, 06
+ Jun 2023 02:13:39 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a02:b0c6:0:b0:41c:feac:7a9c with SMTP id
- w6-20020a02b0c6000000b0041cfeac7a9cmr587850jah.6.1686042756304; Tue, 06 Jun
- 2023 02:12:36 -0700 (PDT)
-Date:   Tue, 06 Jun 2023 02:12:36 -0700
-In-Reply-To: <CAJfpegtzZnzW506AHyw_5Bqn-thhrd3-_t-qJ5OJBzP-z3O6Fg@mail.gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000090dbc405fd726b57@google.com>
+References: <CAJfpegtzZnzW506AHyw_5Bqn-thhrd3-_t-qJ5OJBzP-z3O6Fg@mail.gmail.com>
+ <00000000000090dbc405fd726b57@google.com>
+In-Reply-To: <00000000000090dbc405fd726b57@google.com>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Tue, 6 Jun 2023 11:13:27 +0200
+Message-ID: <CAJfpegtFrY9oq9ZSB_ZJenDcVLoOqVKxZY71gi+1f295zsmzyQ@mail.gmail.com>
 Subject: Re: [syzbot] possible deadlock in mnt_want_write (2)
-From:   syzbot <syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com>
-To:     miklos@szeredi.hu
+To:     syzbot <syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com>
 Cc:     linux-integrity@vger.kernel.org, linux-unionfs@vger.kernel.org,
-        miklos@szeredi.hu, syzkaller-bugs@googlegroups.com
+        syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-> #syz set subsystems: intergrity, overlayfs
+#syz set subsystems: integrity, overlayfs
 
-The specified label value is incorrect.
-"intergrity" is not among the allowed values.
-Please use one of the supported label values.
 
-The following labels are suported:
-missing-backport, no-reminders, prio: {low, normal, high}, subsystems: {.. see below ..}
-The list of subsystems: https://syzkaller.appspot.com/upstream/subsystems?all=true
-
+On Tue, 6 Jun 2023 at 11:12, syzbot
+<syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com> wrote:
+>
+> > #syz set subsystems: intergrity, overlayfs
+>
+> The specified label value is incorrect.
+> "intergrity" is not among the allowed values.
+> Please use one of the supported label values.
+>
+> The following labels are suported:
+> missing-backport, no-reminders, prio: {low, normal, high}, subsystems: {.. see below ..}
+> The list of subsystems: https://syzkaller.appspot.com/upstream/subsystems?all=true
+>
