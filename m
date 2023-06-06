@@ -2,90 +2,67 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACD84723C72
-	for <lists+linux-unionfs@lfdr.de>; Tue,  6 Jun 2023 11:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63BB4723CB0
+	for <lists+linux-unionfs@lfdr.de>; Tue,  6 Jun 2023 11:12:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236305AbjFFJBP (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 6 Jun 2023 05:01:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48860 "EHLO
+        id S232921AbjFFJMx (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 6 Jun 2023 05:12:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237384AbjFFJBN (ORCPT
+        with ESMTP id S233058AbjFFJMr (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 6 Jun 2023 05:01:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D476FE40
-        for <linux-unionfs@vger.kernel.org>; Tue,  6 Jun 2023 02:00:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686042029;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=lukpN6V3bZQwkW/hRkozUz4ZlKrQD2UWjx9TfhoM1xY=;
-        b=Y1FqX1Ag1VuvTu1HjsEKcolEcvqjzntjxK6pzzl+PZIMfSH3wShAxf53OPCzm7FrlgjHvl
-        4vRDbj9+0gJh8Gus5WfiloMKyogEE58fKqC8l1N8m+S6ql3PbkijqEJw4ZsljRZo2nKWKV
-        PeiISOVuw5k7rSKnZtmxYB6yzn0PPns=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-557-JRIkDfArOyGzHLeE5P9-lQ-1; Tue, 06 Jun 2023 05:00:25 -0400
-X-MC-Unique: JRIkDfArOyGzHLeE5P9-lQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6197F1C0A585;
-        Tue,  6 Jun 2023 09:00:24 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.182])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0A28D40CFD46;
-        Tue,  6 Jun 2023 09:00:13 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <202306061226.7564fc39-oliver.sang@intel.com>
-References: <202306061226.7564fc39-oliver.sang@intel.com>
-To:     kernel test robot <oliver.sang@intel.com>
-Cc:     dhowells@redhat.com, oe-lkp@lists.linux.dev, lkp@intel.com,
-        Christian Brauner <brauner@kernel.org>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        John Hubbard <jhubbard@nvidia.com>,
-        David Hildenbrand <david@redhat.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Amir Goldstein <amir73il@gmail.com>,
-        linux-unionfs@vger.kernel.org, ying.huang@intel.com,
-        feng.tang@intel.com, fengwei.yin@intel.com
-Subject: Re: [dhowells-fs:iov-old-dio] [overlayfs] 05b2c21a37: phoronix-test-suite.stress-ng.SENDFILE.bogo_ops_s 370.2% improvement
+        Tue, 6 Jun 2023 05:12:47 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3920F10CA
+        for <linux-unionfs@vger.kernel.org>; Tue,  6 Jun 2023 02:12:37 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-9745c5fed21so707989466b.3
+        for <linux-unionfs@vger.kernel.org>; Tue, 06 Jun 2023 02:12:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1686042755; x=1688634755;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=cd0puSMqIBnhqCDdBMeqs3uo/UOm2Rr3r287QJHa4os=;
+        b=FMOCRrERqzse/IzaoCSnx+eGw2gnoo2gyFcYkWvXtjS7ounh4quaNsB5ecNovlLdpK
+         tVBf6h21bygdH0jf0IGZZlVatl+XObh/Rv3/FNXsfJOGfIUgNEp01LkohEUc98TLIZQi
+         JKmSAlKiWpeV/cKFcryh2ZRjJH1vmcAzgE1jY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686042755; x=1688634755;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cd0puSMqIBnhqCDdBMeqs3uo/UOm2Rr3r287QJHa4os=;
+        b=MSmm4Fpa66hFPprO+ROhqmZ5DYG+vuSfQ1hIt5lu9i4CbMy5fsvSigLJvfGZ3Xe9SB
+         PSEsGDhieHPPO4VtxTkIqsi18wyCB+KJ+RaQALLsCHz01hrFE32DChPDL95S9DSDG73t
+         xmnpWJOO+KeI+e7uvJHNVVH9owcoci0yJEn54sBgAVqP7s8ixfUrivZph3jo0ATtTCCM
+         RgIBtWEEJ3zxdS1cRjYSjbKk0VNUY60yS5Q7v0VNeZDmip169tspuxa2f/nGFw4f8HSC
+         MfstGKc74m8w0JrTD6nN+V2Ekv+O3/2RoSLzAwSwY5yI+3wF//OyhmTMa/pj/JbHXoDu
+         MwPw==
+X-Gm-Message-State: AC+VfDyZA4gbhr+VNmBjkt6QVujQHZspyN6vN2sMbbNrvZcuuy2Iud49
+        xSUlp0wqn421157zXI+vCQVhcX028y3DF0Rn6QHK5ERgFffCjY+yBEQ=
+X-Google-Smtp-Source: ACHHUZ6p1EVeeLBmJYSALHLxFdOefIDa9KSQ52ngGFmwhYwMAncXcfqmlUy8I7cTs/LosZJfyPCrEqMIm3mFP3+FNXE=
+X-Received: by 2002:a17:907:d29:b0:973:ea73:b883 with SMTP id
+ gn41-20020a1709070d2900b00973ea73b883mr2490656ejc.66.1686042755597; Tue, 06
+ Jun 2023 02:12:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1844120.1686042013.1@warthog.procyon.org.uk>
-Date:   Tue, 06 Jun 2023 10:00:13 +0100
-Message-ID: <1844121.1686042013@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <00000000000067d24205c4d0e599@google.com>
+In-Reply-To: <00000000000067d24205c4d0e599@google.com>
+From:   Miklos Szeredi <miklos@szeredi.hu>
+Date:   Tue, 6 Jun 2023 11:12:24 +0200
+Message-ID: <CAJfpegtzZnzW506AHyw_5Bqn-thhrd3-_t-qJ5OJBzP-z3O6Fg@mail.gmail.com>
+Subject: Re: [syzbot] possible deadlock in mnt_want_write (2)
+To:     syzbot <syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com>
+Cc:     syzkaller-bugs@googlegroups.com,
+        linux-integrity <linux-integrity@vger.kernel.org>,
+        overlayfs <linux-unionfs@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-kernel test robot <oliver.sang@intel.com> wrote:
-
-> commit: 
->   83e79d429d ("shmem: Implement splice-read")
->   05b2c21a37 ("overlayfs: Implement splice-read")
-
-An improvement is certainly feasible, though a 3.7x improvement would be quite
-a surprise.
-
-shmem_file_splice_read() and filemap_splice_read() have a shorter call chain
-than using ->read_iter() with ITER_PIPE.
-
-overlayfs now delegates the splice directly to the lower filesystem.
-
-David
-
+#syz set subsystems: intergrity, overlayfs
