@@ -2,67 +2,67 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DFBD72BF68
-	for <lists+linux-unionfs@lfdr.de>; Mon, 12 Jun 2023 12:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E25A672BF84
+	for <lists+linux-unionfs@lfdr.de>; Mon, 12 Jun 2023 12:45:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232075AbjFLKoD (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 12 Jun 2023 06:44:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49794 "EHLO
+        id S229736AbjFLKpG (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 12 Jun 2023 06:45:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229736AbjFLKnr (ORCPT
+        with ESMTP id S232559AbjFLKo3 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 12 Jun 2023 06:43:47 -0400
+        Mon, 12 Jun 2023 06:44:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72AD5524C
-        for <linux-unionfs@vger.kernel.org>; Mon, 12 Jun 2023 03:27:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F6AE5583
+        for <linux-unionfs@vger.kernel.org>; Mon, 12 Jun 2023 03:28:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686565659;
+        s=mimecast20190719; t=1686565711;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
         bh=0mp6ds2De26/2K//5O82azy6nRH4SyaQ6cCRG30Yw5w=;
-        b=eWEQX3ng8neNs+y2Qykjk3AO6nfiD0EVivEhBLTAlU1qHzrV77baHflPDOnJldBRxGS0JD
-        bx+zmUR90MYks85RC86Fb2Qa3XD+kBD0b1zDguxfGoJ52ZvOEb4Mc54mkapOzCMqQdWIfF
-        8MV5KAXSvEkqy8ZFkfGn8erkpv400Ag=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+        b=NhU9wbO3IlqMuqKjnikTfFa+5BRFKfRv2JGShDuuX39XbZlwVlso6oxAWs5F2igOwIUFHQ
+        m9sCoVcM318PsvZ79Y/mPTWedkDVGfomJ+tOSrer0nnhYo9xABprBrlOEGKtpBNhU5clOs
+        L+qZuWDu3+xLMu4ulKPWJD5pfploYZM=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-qABTHoi3NF2dupi_cnK_EA-1; Mon, 12 Jun 2023 06:27:37 -0400
-X-MC-Unique: qABTHoi3NF2dupi_cnK_EA-1
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2b1c9bb99a9so25248061fa.3
-        for <linux-unionfs@vger.kernel.org>; Mon, 12 Jun 2023 03:27:37 -0700 (PDT)
+ us-mta-577-y6FCCFNWM-S5UEbLYwX2Uw-1; Mon, 12 Jun 2023 06:28:30 -0400
+X-MC-Unique: y6FCCFNWM-S5UEbLYwX2Uw-1
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2b202263703so25283161fa.2
+        for <linux-unionfs@vger.kernel.org>; Mon, 12 Jun 2023 03:28:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686565656; x=1689157656;
+        d=1e100.net; s=20221208; t=1686565709; x=1689157709;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
         bh=0mp6ds2De26/2K//5O82azy6nRH4SyaQ6cCRG30Yw5w=;
-        b=Amce3KhhiNtLxtYfaCFbgFUYAXUaQF4o2bWL0Ys/Ac8XMTmI13+4avIuZEGTXxRRVu
-         LmIvyROyPMTyPw/B7wqNDXCGOLU25pkTPu7MlUsms3GnoGjh9QK/sjd19RmnS5LJs2nB
-         sSVlvQQONazcdVKnNgANEvBxcA+rZBnGG/c6EjFDe8gZtTETT/zx/4zqcSfj1yN8BXLO
-         QEjSIR1KPrMmITmsGB2LbWgBOCRUAUa/EJumeOt4+URWlC9SoiknzuHWk96vpqkJkJ8W
-         7JmdHjy1EQdykWLiMQEMbrh2jGQF6uQKPpR/uDPLwoGAEiLsvj3ng9GrfbFBVE2LLRzh
-         akaw==
-X-Gm-Message-State: AC+VfDyl2O2XllSqfbwAKIK+ulqH93xeG7dgg3LdKdemULPrQuq9WN1N
-        cPfPU1pA/Lf+TE0l62izsJXe4hVcuyXriuoN705ZPzrR+/a13AefRGZNmp0H/tTaILT+ffORRMf
-        T+Q//WH5qk6rNKG3afeHQtN51yQ==
-X-Received: by 2002:a2e:87c3:0:b0:2b1:a8e9:df4a with SMTP id v3-20020a2e87c3000000b002b1a8e9df4amr2739898ljj.6.1686565656353;
-        Mon, 12 Jun 2023 03:27:36 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7sIlSkVV2glWnfs1x/iEP+4Z4IjLWRyhFyHtbwoOW5ab9KZZQoYD8Th3/jhXkXlWtMaqa1SQ==
-X-Received: by 2002:a2e:87c3:0:b0:2b1:a8e9:df4a with SMTP id v3-20020a2e87c3000000b002b1a8e9df4amr2739887ljj.6.1686565656074;
-        Mon, 12 Jun 2023 03:27:36 -0700 (PDT)
+        b=H8fIAdnNNPoRIJRZqDZfiRyx8EzctR2X+vu85RNUDKNk2HEeO1komWz6u/nBvqsQDA
+         wHcMvMmoJW26cLYY5yBHk8248FPLhVKpNzPtxhRm1Isc0+5EUPz/qu7FkCxVAdeaUg1q
+         jN2yfmKCdc7oeNIsTyKF17n2+jdlk73RFa3myHIT3fKF0Pw+Wx+kuQUKGL0ZeiYFXE25
+         D+gKV9QzmrD7q8hTDTls4Rkc3cqkuZIBWYMqYsibt7mAW7EjSG4wTvhncoPXy/Dcpj3v
+         irQUc/cFCQ7ix0O90vIn44xgMJ6cSjytyllh/wJtBu9CD6sgzlXDIvT3HGX+OgIqWA3b
+         BBwg==
+X-Gm-Message-State: AC+VfDyynoTuXSejWlNGMCm7HnTZITxj710ITVNpJPdq3nkquY7Z3r69
+        2x6Z2W2M1skOw4A6nyX9gdi4IgmNZ+QnGpaNJoJKwYt/Fwys3EQ3Isx9JNNZvESgbWq2AroOzqP
+        HveH9Rv9GgCGtlopy9xAkaydjYw==
+X-Received: by 2002:a2e:9692:0:b0:2b1:ba3d:605d with SMTP id q18-20020a2e9692000000b002b1ba3d605dmr2928284lji.41.1686565708583;
+        Mon, 12 Jun 2023 03:28:28 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5UjqjewWZC0SH23Bex+vP6eikPifygSrJfl8IFpD9LTnLbHEXDZOFsYAhDMBISqaSDghVHCA==
+X-Received: by 2002:a2e:9692:0:b0:2b1:ba3d:605d with SMTP id q18-20020a2e9692000000b002b1ba3d605dmr2928274lji.41.1686565708303;
+        Mon, 12 Jun 2023 03:28:28 -0700 (PDT)
 Received: from localhost.localdomain (c-e6a5e255.022-110-73746f36.bbcust.telenor.se. [85.226.165.230])
-        by smtp.googlemail.com with ESMTPSA id m25-20020a2e8719000000b002b1fc6e70a1sm1709095lji.21.2023.06.12.03.27.35
+        by smtp.googlemail.com with ESMTPSA id v2-20020a2ea442000000b002a7899eaf9csm1649156ljn.63.2023.06.12.03.28.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jun 2023 03:27:35 -0700 (PDT)
+        Mon, 12 Jun 2023 03:28:27 -0700 (PDT)
 From:   Alexander Larsson <alexl@redhat.com>
 To:     miklos@szeredi.hu
 Cc:     linux-unionfs@vger.kernel.org, amir73il@gmail.com,
         ebiggers@kernel.org, tytso@mit.edu, fsverity@lists.linux.dev,
         Alexander Larsson <alexl@redhat.com>
 Subject: [PATCH v3 3/4] ovl: Validate verity xattr when resolving lowerdata
-Date:   Mon, 12 Jun 2023 12:27:18 +0200
+Date:   Mon, 12 Jun 2023 12:28:17 +0200
 Message-Id: <dd294a44e8f401e6b5140029d8355f88748cd8fd.1686565330.git.alexl@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <cover.1686565330.git.alexl@redhat.com>
