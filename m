@@ -2,152 +2,285 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 040D472B9BF
-	for <lists+linux-unionfs@lfdr.de>; Mon, 12 Jun 2023 10:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A789C72B958
+	for <lists+linux-unionfs@lfdr.de>; Mon, 12 Jun 2023 09:57:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234079AbjFLIGZ (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 12 Jun 2023 04:06:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42736 "EHLO
+        id S236196AbjFLH5C (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 12 Jun 2023 03:57:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232526AbjFLIGB (ORCPT
+        with ESMTP id S236200AbjFLH4i (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 12 Jun 2023 04:06:01 -0400
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0501830CD;
-        Mon, 12 Jun 2023 01:05:21 -0700 (PDT)
-Received: by mail-yb1-xb35.google.com with SMTP id 3f1490d57ef6-bc4e167c4b2so2051008276.3;
-        Mon, 12 Jun 2023 01:05:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686557120; x=1689149120;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F4exatAjzA6+D9Buih0I3sDbrZV0bAmcGM6sRCZZP0s=;
-        b=cT6rdEQT00fiZ35VoilxxrjDLm+iSTFVqgNKddM4pgcIoLZh+MWjLraQp0HLlYSmuM
-         tK1FSb62+By2+8zffuozV5Fj0P6idUxM9eGvPdu+4UojI09Fhn9UlP1bUBZXb34L/rXR
-         W74t6E0EKsXP7A/ZJKlcFMUBhDiXEO8J1yzEq1l7RS7IXAUEuuvFO4Mn/kOqtAXMSClL
-         6BFE02R4AfHxPJ+qKRtNzwZA1S9Fv38uWeFNjLjpJm2DAG6RtHOo/09O/wDz41gv3qxS
-         6S1rEANOfpbYkErIvgsdyuSUgHR2PkgxaQ52ifcxE8ddfzHnybB17JKEwBUvPGiPQ9qE
-         fm+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686557120; x=1689149120;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F4exatAjzA6+D9Buih0I3sDbrZV0bAmcGM6sRCZZP0s=;
-        b=hkL1gqJUgu2EzFbE/LMAdSE+ki14uiZUXCS7mstzQ4da5N0kxJspGe7ixVQIrn7EbU
-         ntfX5sBzPblFJsf0pDDVd5ofyPpb0Hr6HUrELV3Q8pXlZXEd9KXnkq3AAHugvqKVLgKe
-         wOMiUyCwVEhAPMT8C6y9gMg1kuPKv+YzkYlz74g+79PpNV6Pzxd4TMcGGL0SvozZb4Ge
-         w3hw4uJEPtpHnufGbPptkxIiaFo/VmMs8CWlKsxqhB/OWYN/2KIRTUNzZNYgIcAtAIxU
-         uGou4grbn6tcfBzhCf3HpFltB0+B8egEDu8bsy7wfQaFrH3fauyacvG6esPveRi609zp
-         VmBg==
-X-Gm-Message-State: AC+VfDwjl5xBVdO6DXy+WfW8Q52HD4xx8L/LbNQbPJzHkm1mRYVaxHTx
-        oFOXS8RdZ52YKBQ3WoQCap124ykhlccr5yiMcMbTEHGCQDI=
-X-Google-Smtp-Source: ACHHUZ5MqUvpUdY0rwaAId/Ti6yvLpoO7CSrnFVfnXENtwlYP8lB028tL69I1eya+xT8fE0v2bTS85eKcRtR4b1md8M=
-X-Received: by 2002:a05:6358:c122:b0:129:b96d:1b0d with SMTP id
- fh34-20020a056358c12200b00129b96d1b0dmr3266805rwb.1.1686551882745; Sun, 11
- Jun 2023 23:38:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230611194706.1583818-1-amir73il@gmail.com> <20230611194706.1583818-2-amir73il@gmail.com>
- <ZIai+UWrU9o2UVcJ@infradead.org>
-In-Reply-To: <ZIai+UWrU9o2UVcJ@infradead.org>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Mon, 12 Jun 2023 09:37:51 +0300
-Message-ID: <CAOQ4uxj0WjQHNN6qHEnXfijYSoiaZkCucvNQYTL4LH0TPLt28A@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] fs: use fake_file container for internal files
- with fake f_path
-To:     Christoph Hellwig <hch@infradead.org>
+        Mon, 12 Jun 2023 03:56:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C89461BC1;
+        Mon, 12 Jun 2023 00:55:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCC6C612B2;
+        Mon, 12 Jun 2023 07:55:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C1DC433D2;
+        Mon, 12 Jun 2023 07:55:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686556546;
+        bh=2gPnJ150vj4k57eQRP9j48Yi0jmTwxujXueuKrnqsz4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rb5fmTJkshXqhyuEJDJWsQHdNARr+xD1ws5jUkbTiCH/KhTwVWbFvE4pRQdW4vsBQ
+         KvNUp/q5tg4IS91TxSIAEFf7v/KhDdOLuk/avhb7gfzIv/FhLONBy4E8ejlsCq3Mo+
+         HXLf0gYjJvFGMRWxrnaSLx7/8kPlxItzxnWUJyf7z37qB+JkP0kiyT4F2jgp/Ibt6r
+         dUe8I4UzuRWakp2zj0AdTroErS6qjrpueb8C7C8YTtvJSASlRMvBqGmecdYHqCr9BT
+         Itf2jDu7BRLf7eOqZKNSQ8zv1B8k7DBn2Wt+E5Zt51UIRuf7EnZCNK5lF4QeZkUe/8
+         VD/vey1au5oBQ==
+Date:   Mon, 12 Jun 2023 09:55:41 +0200
+From:   Christian Brauner <brauner@kernel.org>
+To:     Amir Goldstein <amir73il@gmail.com>
 Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        Christian Brauner <brauner@kernel.org>,
         Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+        Paul Moore <paul@paul-moore.com>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
         linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 1/3] fs: use fake_file container for internal files with
+ fake f_path
+Message-ID: <20230612-fotoalben-drohung-914d38334dcf@brauner>
+References: <20230609073239.957184-1-amir73il@gmail.com>
+ <20230609073239.957184-2-amir73il@gmail.com>
+ <20230609-umwandeln-zuhalten-dc8b985a7ad1@brauner>
+ <CAOQ4uxgR5z3yGqJ7jna=r45_Gru5LePU57XG++Ew_9pGWKcwCQ@mail.gmail.com>
+ <20230609-fakten-bildt-4bda22b203f8@brauner>
+ <CAOQ4uxi0q1AawSbxC0Fo3+bifjW0EGSk0m-iBA54Nq+36_70wg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOQ4uxi0q1AawSbxC0Fo3+bifjW0EGSk0m-iBA54Nq+36_70wg@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 7:45=E2=80=AFAM Christoph Hellwig <hch@infradead.or=
-g> wrote:
->
-> On Sun, Jun 11, 2023 at 10:47:05PM +0300, Amir Goldstein wrote:
-> > Overlayfs and cachefiles use open_with_fake_path() to allocate internal
-> > files, where overlayfs also puts a "fake" path in f_path - a path which
-> > is not on the same fs as f_inode.
->
-> But cachefs doesn't, so this needs a better explanation / documentation.
->
-> > Allocate a container struct file_fake for those internal files, that
-> > is used to hold the fake path along with an optional real path.
->
-> The idea looks sensible, but fake a is a really weird term here.
-> I know open_with_fake_path also uses it, but we really need to
-> come up with a better name, and also good documentation of the
-> concept here.
->
-> > +/* Returns the real_path field that could be empty */
-> > +struct path *__f_real_path(struct file *f)
-> > +{
-> > +     struct file_fake *ff =3D file_fake(f);
-> > +
-> > +     if (f->f_mode & FMODE_FAKE_PATH)
-> > +             return &ff->real_path;
-> > +     else
-> > +             return &f->f_path;
-> > +}
->
-> two of the three callers always have FMODE_FAKE_PATH set, so please
-> just drop this helper and open code it in the three callers.
->
+On Sun, Jun 11, 2023 at 10:11:29PM +0300, Amir Goldstein wrote:
+> On Fri, Jun 9, 2023 at 3:12 PM Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > On Fri, Jun 09, 2023 at 02:57:20PM +0300, Amir Goldstein wrote:
+> > > On Fri, Jun 9, 2023 at 2:32 PM Christian Brauner <brauner@kernel.org> wrote:
+> > > >
+> > > > On Fri, Jun 09, 2023 at 10:32:37AM +0300, Amir Goldstein wrote:
+> > > > > Overlayfs and cachefiles use open_with_fake_path() to allocate internal
+> > > > > files, where overlayfs also puts a "fake" path in f_path - a path which
+> > > > > is not on the same fs as f_inode.
+> > > > >
+> > > > > Allocate a container struct file_fake for those internal files, that
+> > > > > will be used to hold the fake path qlong with the real path.
+> > > > >
+> > > > > This commit does not populate the extra fake_path field and leaves the
+> > > > > overlayfs internal file's f_path fake.
+> > > > >
+> > > > > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> > > > > ---
+> > > > >  fs/cachefiles/namei.c |  2 +-
+> > > > >  fs/file_table.c       | 85 +++++++++++++++++++++++++++++++++++--------
+> > > > >  fs/internal.h         |  5 ++-
+> > > > >  fs/namei.c            |  2 +-
+> > > > >  fs/open.c             | 11 +++---
+> > > > >  fs/overlayfs/file.c   |  2 +-
+> > > > >  include/linux/fs.h    | 13 ++++---
+> > > > >  7 files changed, 90 insertions(+), 30 deletions(-)
+> > > > >
+> > > > > diff --git a/fs/cachefiles/namei.c b/fs/cachefiles/namei.c
+> > > > > index 82219a8f6084..a71bdf2d03ba 100644
+> > > > > --- a/fs/cachefiles/namei.c
+> > > > > +++ b/fs/cachefiles/namei.c
+> > > > > @@ -561,7 +561,7 @@ static bool cachefiles_open_file(struct cachefiles_object *object,
+> > > > >       path.mnt = cache->mnt;
+> > > > >       path.dentry = dentry;
+> > > > >       file = open_with_fake_path(&path, O_RDWR | O_LARGEFILE | O_DIRECT,
+> > > > > -                                d_backing_inode(dentry), cache->cache_cred);
+> > > > > +                                &path, cache->cache_cred);
+> > > > >       if (IS_ERR(file)) {
+> > > > >               trace_cachefiles_vfs_error(object, d_backing_inode(dentry),
+> > > > >                                          PTR_ERR(file),
+> > > > > diff --git a/fs/file_table.c b/fs/file_table.c
+> > > > > index 372653b92617..adc2a92faa52 100644
+> > > > > --- a/fs/file_table.c
+> > > > > +++ b/fs/file_table.c
+> > > > > @@ -44,18 +44,48 @@ static struct kmem_cache *filp_cachep __read_mostly;
+> > > > >
+> > > > >  static struct percpu_counter nr_files __cacheline_aligned_in_smp;
+> > > > >
+> > > > > +/* Container for file with optional fake path to display in /proc files */
+> > > > > +struct file_fake {
+> > > > > +     struct file file;
+> > > > > +     struct path fake_path;
+> > > > > +};
+> > > > > +
+> > > > > +static inline struct file_fake *file_fake(struct file *f)
+> > > > > +{
+> > > > > +     return container_of(f, struct file_fake, file);
+> > > > > +}
+> > > > > +
+> > > > > +/* Returns fake_path if one exists, f_path otherwise */
+> > > > > +const struct path *file_fake_path(struct file *f)
+> > > > > +{
+> > > > > +     struct file_fake *ff = file_fake(f);
+> > > > > +
+> > > > > +     if (!(f->f_mode & FMODE_FAKE_PATH) || !ff->fake_path.dentry)
+> > > > > +             return &f->f_path;
+> > > > > +
+> > > > > +     return &ff->fake_path;
+> > > > > +}
+> > > > > +EXPORT_SYMBOL(file_fake_path);
+> > > > > +
+> > > > >  static void file_free_rcu(struct rcu_head *head)
+> > > > >  {
+> > > > >       struct file *f = container_of(head, struct file, f_rcuhead);
+> > > > >
+> > > > >       put_cred(f->f_cred);
+> > > > > -     kmem_cache_free(filp_cachep, f);
+> > > > > +     if (f->f_mode & FMODE_FAKE_PATH)
+> > > > > +             kfree(file_fake(f));
+> > > > > +     else
+> > > > > +             kmem_cache_free(filp_cachep, f);
+> > > > >  }
+> > > > >
+> > > > >  static inline void file_free(struct file *f)
+> > > > >  {
+> > > > > +     struct file_fake *ff = file_fake(f);
+> > > > > +
+> > > > >       security_file_free(f);
+> > > > > -     if (!(f->f_mode & FMODE_NOACCOUNT))
+> > > > > +     if (f->f_mode & FMODE_FAKE_PATH)
+> > > > > +             path_put(&ff->fake_path);
+> > > > > +     else
+> > > > >               percpu_counter_dec(&nr_files);
+> > > > >       call_rcu(&f->f_rcuhead, file_free_rcu);
+> > > > >  }
+> > > > > @@ -131,20 +161,15 @@ static int __init init_fs_stat_sysctls(void)
+> > > > >  fs_initcall(init_fs_stat_sysctls);
+> > > > >  #endif
+> > > > >
+> > > > > -static struct file *__alloc_file(int flags, const struct cred *cred)
+> > > > > +static int init_file(struct file *f, int flags, const struct cred *cred)
+> > > > >  {
+> > > > > -     struct file *f;
+> > > > >       int error;
+> > > > >
+> > > > > -     f = kmem_cache_zalloc(filp_cachep, GFP_KERNEL);
+> > > > > -     if (unlikely(!f))
+> > > > > -             return ERR_PTR(-ENOMEM);
+> > > > > -
+> > > > >       f->f_cred = get_cred(cred);
+> > > > >       error = security_file_alloc(f);
+> > > > >       if (unlikely(error)) {
+> > > > >               file_free_rcu(&f->f_rcuhead);
+> > > > > -             return ERR_PTR(error);
+> > > > > +             return error;
+> > > > >       }
+> > > > >
+> > > > >       atomic_long_set(&f->f_count, 1);
+> > > > > @@ -155,6 +180,22 @@ static struct file *__alloc_file(int flags, const struct cred *cred)
+> > > > >       f->f_mode = OPEN_FMODE(flags);
+> > > > >       /* f->f_version: 0 */
+> > > > >
+> > > > > +     return 0;
+> > > > > +}
+> > > > > +
+> > > > > +static struct file *__alloc_file(int flags, const struct cred *cred)
+> > > > > +{
+> > > > > +     struct file *f;
+> > > > > +     int error;
+> > > > > +
+> > > > > +     f = kmem_cache_zalloc(filp_cachep, GFP_KERNEL);
+> > > > > +     if (unlikely(!f))
+> > > > > +             return ERR_PTR(-ENOMEM);
+> > > > > +
+> > > > > +     error = init_file(f, flags, cred);
+> > > > > +     if (unlikely(error))
+> > > > > +             return ERR_PTR(error);
+> > > > > +
+> > > > >       return f;
+> > > > >  }
+> > > > >
+> > > > > @@ -201,18 +242,32 @@ struct file *alloc_empty_file(int flags, const struct cred *cred)
+> > > > >  }
+> > > > >
+> > > > >  /*
+> > > > > - * Variant of alloc_empty_file() that doesn't check and modify nr_files.
+> > > > > + * Variant of alloc_empty_file() that allocates a file_fake container
+> > > > > + * and doesn't check and modify nr_files.
+> > > > >   *
+> > > > >   * Should not be used unless there's a very good reason to do so.
+> > > > >   */
+> > > > > -struct file *alloc_empty_file_noaccount(int flags, const struct cred *cred)
+> > > > > +struct file *alloc_empty_file_fake(const struct path *fake_path, int flags,
+> > > > > +                                const struct cred *cred)
+> > > > >  {
+> > > > > -     struct file *f = __alloc_file(flags, cred);
+> > > > > +     struct file_fake *ff;
+> > > > > +     int error;
+> > > > >
+> > > > > -     if (!IS_ERR(f))
+> > > > > -             f->f_mode |= FMODE_NOACCOUNT;
+> > > > > +     ff = kzalloc(sizeof(struct file_fake), GFP_KERNEL);
+> > > > > +     if (unlikely(!ff))
+> > > > > +             return ERR_PTR(-ENOMEM);
+> > > > >
+> > > > > -     return f;
+> > > > > +     error = init_file(&ff->file, flags, cred);
+> > > > > +     if (unlikely(error))
+> > > > > +             return ERR_PTR(error);
+> > > > > +
+> > > > > +     ff->file.f_mode |= FMODE_FAKE_PATH;
+> > > > > +     if (fake_path) {
+> > > > > +             path_get(fake_path);
+> > > > > +             ff->fake_path = *fake_path;
+> > > > > +     }
+> > > >
+> > > > Hm, I see that this check is mostly done for vfs_tmpfile_open() which
+> > > > only fills in file->f_path in vfs_tmpfile() but leaves ff->fake_path
+> > > > NULL.
+> > > >
+> > > > So really I think having FMODE_FAKE_PATH set but ff->fake_path be NULL
+> > > > is an invitation for NULL derefs sooner or later. I would simply
+> > > > document that it's required to set ff->fake_path. For callers such as
+> > > > vfs_tmpfile_open() it can just be path itself. IOW, vfs_tmpfile_open()
+> > > > should set ff->fake_path to file->f_path.
+> > >
+> > > Makes sense.
+> > > I also took the liberty to re-arrange vfs_tmpfile_open() without the
+> > > unneeded if (!error) { nesting depth.
+> >
+> > Yes, please. I had a rough sketch just for my own amusement...
+> >
+> > fs/namei.c
+> >   struct file *vfs_tmpfile_open(struct mnt_idmap *idmap,
+> >                                 const struct path *parentpath, umode_t mode,
+> >                                 int open_flag, const struct cred *cred)
+> >   {
+> >           struct file *file;
+> >           int error;
+> >
+> >           file = alloc_empty_file_fake(open_flag, cred);
+> >           if (IS_ERR(file))
+> >                   return file;
+> >
+> >           error = vfs_tmpfile(idmap, parentpath, file, mode);
+> >           if (error) {
+> >                   fput(file);
+> >                   return ERR_PTR(error);
+> >           }
+> >
+> >           return file_set_fake_path(file, &file->f_path);
+> 
+> FYI, this is not enough to guarantee that the fake_path cannot
+> be empty, for example in fput() above.
+> So I did keep the real_path empty in this case in v3 and
+> I have an accessor that verifies that real_path is not empty
+> before returning it.
 
-I wanted to keep the container opaque
-I can make __f_real_path not check the flag at all
-and only f_real_path will check the flag
-
-> > +
-> > +/* Returns the real_path if not empty or f_path */
-> > +const struct path *f_real_path(struct file *f)
-> > +{
-> > +     const struct path *path =3D __f_real_path(f);
-> > +
-> > +     return path->dentry ? path : &f->f_path;
-> > +}
-> > +EXPORT_SYMBOL(f_real_path);
->
-> This is only needed by the few places like nfsd or btrfs send
-> that directlycall fsnotify and should at very least be
-> EXPORT_SYMBOL_GPL.  But I suspect with all the exta code, fsnotify_file
-> really should move out of line and have an EXORT_SYMBOL_GPL instead.
->
-
-fsnotify_file() inline is expected to avoid to call to fsnotify()
-due to the optimization of zero s_fsnotify_connector
-in fsnotify_parents() - this was observed as needed by some benchmarks.
-
-> > +
-> > +const struct path *f_fake_path(struct file *f)
-> > +{
-> > +     return &f->f_path;
-> > +}
-> > +EXPORT_SYMBOL(f_fake_path);
->
-> .. and this helper is completely pointless.
->
-> > +extern struct file *alloc_empty_file(int flags, const struct cred *cre=
-d);
-> > +extern struct file *alloc_empty_file_fake(int flags, const struct cred=
- *cred);
-> > +extern struct path *__f_real_path(struct file *f);
->
-> Please drop all the pointless externs while you're at it.
-
-sure,
-
-Thanks,
-Amir.
+Ok, I'm just making it to v3 now.
