@@ -2,59 +2,73 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C539972BABB
-	for <lists+linux-unionfs@lfdr.de>; Mon, 12 Jun 2023 10:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C9EB72BF71
+	for <lists+linux-unionfs@lfdr.de>; Mon, 12 Jun 2023 12:44:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233115AbjFLIci (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 12 Jun 2023 04:32:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41078 "EHLO
+        id S234830AbjFLKoI (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Mon, 12 Jun 2023 06:44:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233145AbjFLIcJ (ORCPT
+        with ESMTP id S234808AbjFLKnv (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 12 Jun 2023 04:32:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CF21186;
-        Mon, 12 Jun 2023 01:31:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 18BDD62133;
-        Mon, 12 Jun 2023 08:31:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B75C433EF;
-        Mon, 12 Jun 2023 08:31:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686558685;
-        bh=Qzj5qrWg7Q0xE/xizm8XgmY0Hk2e0pRBJ2VHc+oHCxY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ai6Kvltr7dW+lbrF6sn1yAmTnTCT1W1N9IHnT6zaN/qrOST29U3udc040S/wQcjTz
-         L8Wq3QTU0EJ47uJdme7Jt9wLDcCPGSvVkoEbky3dAbyx9ExsWDTNX9rpeok3AYtXtE
-         ODewMPcJfVRkSoIcWcuxGcjzHf1/0LF+2sSoqyDZJyKrSdH4AfiGxevBKB1vqqMgTh
-         OuDF/SAFnqQMKxd8TVEUE30DZNuUvLiEIHKCeE9+y4Xuq2p7o1j9k7xJzsue7b8s2L
-         4dqaW3yJbGlQdlGbXLpLd0ToQN6QeCXEutTqEyeEMl50iWBrcvS2zywUj9aPKdYrBz
-         4+Km8LVgrCm4w==
-Date:   Mon, 12 Jun 2023 10:31:20 +0200
-From:   Christian Brauner <brauner@kernel.org>
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-        linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] fs: use fake_file container for internal files
- with fake f_path
-Message-ID: <20230612-auffahren-episoden-4e35b8d1e71c@brauner>
-References: <20230611194706.1583818-1-amir73il@gmail.com>
- <20230611194706.1583818-2-amir73il@gmail.com>
- <ZIai+UWrU9o2UVcJ@infradead.org>
- <20230612-erwarben-pflaumen-1916e266edf7@brauner>
- <CAOQ4uxi0o+OgVT_GSHQwkDtHBf+QoeAycb7pmhOq+2e9-cx+3g@mail.gmail.com>
+        Mon, 12 Jun 2023 06:43:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3F34A86C
+        for <linux-unionfs@vger.kernel.org>; Mon, 12 Jun 2023 03:27:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686565654;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=nIopUTyQC6au4qt8cPbc4MGLTADYeT6LypbQFqATEMA=;
+        b=FVG8XOrYWHonEvRMQNxUbGXArvwB77smxteEcb0usSOjHy5JQh5R3O/a+Q+EC/kbMq7HxU
+        txY8ELH/RQR0rPvMRHCUxPycOUyIidiuXOcRJvzXg5rdXnRuDrpXFLfAcykUwl7I4igt03
+        PRfFxf13SbdhG0YoDdlkrUK2q6mqe3k=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-633--qWJFKOjO2eWSPxolB2-GQ-1; Mon, 12 Jun 2023 06:27:33 -0400
+X-MC-Unique: -qWJFKOjO2eWSPxolB2-GQ-1
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2b1d8fa45a6so29698231fa.0
+        for <linux-unionfs@vger.kernel.org>; Mon, 12 Jun 2023 03:27:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686565651; x=1689157651;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nIopUTyQC6au4qt8cPbc4MGLTADYeT6LypbQFqATEMA=;
+        b=VOOBP6vNY6wU3LxZgzKOh/0RJEl06mdD/n3Q0cGaUopTF/GazWrM+gip/y6bfjtJrW
+         K9xjDG+sSMcChJoStUkvQv3dT/Wa2egRySYjbfnWSvMktySLIFWQsSHW/17b17vU9XG/
+         xEzvotckxP28FiJ2/l8FF89SzKHVJ5VL11ey11m8QZ5Zf9lPM5w5C7+WZqCvsR6xzAZX
+         0acQSuwvPAYUu3Cmb1fVAI0z4LZJN7ATV3FrG0O8ZXYY956Q2NiywTofoqU4nO82nWag
+         VTS0NrnJw+wqklTMe2z9PfYhbYjLCq5TUcmvYMY9NaimsNB3LIUd1xko5fgZuqitrnEp
+         errg==
+X-Gm-Message-State: AC+VfDw8bTWvS7YIloF2SYX8xLwmIARCqJ4x/XBg6lua5aH/xBR7VmjT
+        hUY9VS1oZyUXyUKFy415jB0Jb/RwGgNvy/W8+RypPx1fUCyhRdIf1cLlxWM3o+iAEaANkgJ5a6A
+        jqzdTe4GKQsdYoGP+rad/7ZFC5Q==
+X-Received: by 2002:a2e:a0d6:0:b0:2b2:5d2:ce63 with SMTP id f22-20020a2ea0d6000000b002b205d2ce63mr2284402ljm.35.1686565651463;
+        Mon, 12 Jun 2023 03:27:31 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4nQkV7krvCUS5noWSCi/+YY7Mpv3aM8Bw9QBw1jPHWqpiUiKRpBdNmLX5+v5jh05Zn0VTOPQ==
+X-Received: by 2002:a2e:a0d6:0:b0:2b2:5d2:ce63 with SMTP id f22-20020a2ea0d6000000b002b205d2ce63mr2284389ljm.35.1686565651045;
+        Mon, 12 Jun 2023 03:27:31 -0700 (PDT)
+Received: from localhost.localdomain (c-e6a5e255.022-110-73746f36.bbcust.telenor.se. [85.226.165.230])
+        by smtp.googlemail.com with ESMTPSA id m25-20020a2e8719000000b002b1fc6e70a1sm1709095lji.21.2023.06.12.03.27.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jun 2023 03:27:30 -0700 (PDT)
+From:   Alexander Larsson <alexl@redhat.com>
+To:     miklos@szeredi.hu
+Cc:     linux-unionfs@vger.kernel.org, amir73il@gmail.com,
+        ebiggers@kernel.org, tytso@mit.edu, fsverity@lists.linux.dev,
+        Alexander Larsson <alexl@redhat.com>
+Subject: [PATCH v3 0/4] ovl: Add support for fs-verity checking of lowerdata
+Date:   Mon, 12 Jun 2023 12:27:15 +0200
+Message-Id: <cover.1686565330.git.alexl@redhat.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOQ4uxi0o+OgVT_GSHQwkDtHBf+QoeAycb7pmhOq+2e9-cx+3g@mail.gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,35 +76,59 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 11:28:23AM +0300, Amir Goldstein wrote:
-> On Mon, Jun 12, 2023 at 11:07 AM Christian Brauner <brauner@kernel.org> wrote:
-> >
-> > On Sun, Jun 11, 2023 at 09:45:45PM -0700, Christoph Hellwig wrote:
-> > > On Sun, Jun 11, 2023 at 10:47:05PM +0300, Amir Goldstein wrote:
-> > > > Overlayfs and cachefiles use open_with_fake_path() to allocate internal
-> > > > files, where overlayfs also puts a "fake" path in f_path - a path which
-> > > > is not on the same fs as f_inode.
-> > >
-> > > But cachefs doesn't, so this needs a better explanation / documentation.
-> > >
-> > > > Allocate a container struct file_fake for those internal files, that
-> > > > is used to hold the fake path along with an optional real path.
-> > >
-> > > The idea looks sensible, but fake a is a really weird term here.
-> > > I know open_with_fake_path also uses it, but we really need to
-> > > come up with a better name, and also good documentation of the
-> > > concept here.
-> >
-> > It's basically a stack so I'd either use struct file_stack or
-> > struct file_proxy; with a preference for the latter.
-> 
-> Let the bikeshedding begin :)
-> 
-> file_proxy too generic to my taste
-> 
-> How about:
-> 
-> /* File is embedded in backing_file object */
-> #define FMODE_BACKING           ((__force fmode_t)0x2000000)
+This patchset adds support for using fs-verity to validate lowerdata
+files by specifying an overlay.verity xattr on the metacopy
+files.
 
-Yeah, that'd be ok with me.
+This is primarily motivated by the Composefs usecase, where there will
+be a read-only EROFS layer that contains redirect into a base data
+layer which has fs-verity enabled on all files. However, it is also
+useful in general if you want to ensure that the lowerdata files
+matches the expected content over time.
+
+I have also added some tests for this feature to xfstests[1].
+
+I'm also CC:ing the fsverity list and maintainers because there is one
+(tiny) fsverity change, and there may be interest in this usecase.
+
+Changes since v2:
+ * Rebased on top of overlayfs-next
+ * We now alway do verity verification the first time the file content
+   is used, rather than doing it at lookup time for the non-lazy lookup
+   case.
+
+Changes since v1:
+ * Rebased on v2 lazy lowerdata series
+ * Dropped the "validate" mount option variant. We now only support
+   "off", "on" and "require", where "off" is the default.
+ * We now store the digest algorithm used in the overlay.verity xattr.
+ * Dropped ability to configure default verity options, as this could
+   cause problems moving layers between machines.
+ * We now properly resolve dependent mount options by automatically
+   enabling metacopy and redirect_dir if verity is on, or failing
+   if the specified options conflict.
+ * Streamlined and fixed the handling of creds in ovl_ensure_verity_loaded().
+ * Renamed new helpers from ovl_entry_path_ to ovl_e_path_
+
+[1] https://github.com/alexlarsson/xfstests/commits/verity-tests
+
+Alexander Larsson (4):
+  fsverity: Export fsverity_get_digest
+  ovl: Add framework for verity support
+  ovl: Validate verity xattr when resolving lowerdata
+  ovl: Handle verity during copy-up
+
+ Documentation/filesystems/overlayfs.rst |  27 +++++
+ fs/overlayfs/copy_up.c                  |  33 +++++-
+ fs/overlayfs/file.c                     |   8 +-
+ fs/overlayfs/namei.c                    |  54 +++++++++-
+ fs/overlayfs/overlayfs.h                |  12 ++-
+ fs/overlayfs/ovl_entry.h                |   3 +
+ fs/overlayfs/super.c                    |  79 +++++++++++++-
+ fs/overlayfs/util.c                     | 133 ++++++++++++++++++++++++
+ fs/verity/measure.c                     |   1 +
+ 9 files changed, 340 insertions(+), 10 deletions(-)
+
+-- 
+2.40.1
+
