@@ -2,93 +2,98 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AFC97498BB
-	for <lists+linux-unionfs@lfdr.de>; Thu,  6 Jul 2023 11:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27C707498BE
+	for <lists+linux-unionfs@lfdr.de>; Thu,  6 Jul 2023 11:52:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232160AbjGFJwH (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 6 Jul 2023 05:52:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48938 "EHLO
+        id S232217AbjGFJwT (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 6 Jul 2023 05:52:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjGFJwG (ORCPT
+        with ESMTP id S232225AbjGFJwS (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 6 Jul 2023 05:52:06 -0400
+        Thu, 6 Jul 2023 05:52:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B3BF1990
-        for <linux-unionfs@vger.kernel.org>; Thu,  6 Jul 2023 02:51:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85AE3199E
+        for <linux-unionfs@vger.kernel.org>; Thu,  6 Jul 2023 02:51:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688637079;
+        s=mimecast20190719; t=1688637084;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=lMaP9YAr9PiYqF//CZv5LxvRtkcDEaEjQmroPJR9T9o=;
-        b=MIvjmQRaufNGMEkC3gwUK/vJmMqTRWpNtfaEOuk/JUzv8peC2UIQ3PR+T45w9eJ5mxdqq7
-        PTK2CMEWNklLOvoIIydgPpR1YoACr0axYi1W9EAAXVBk1Qw8MyGJAf2igrSZve8UOxRDft
-        uEAujVgURqiNS9CQDzk8vcijVpfG1qM=
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=xR6FYz9KiyHMY7f5n4bMn5lrZ5rRrOAX+WF4meDMBGA=;
+        b=CVmwtrWzZF5CmkOtMtY+XBmwerX0lLLm3gm2EZp7Jl9tmTYjmx9eKFz2ydO9soHGz2a4OB
+        BUrQ4N+XFDSn8PfOyXoo81Sfy9VpTUkgUfM4/i/eIKies4QT2NbI55hCI8aHAlzxklPAj3
+        MFUkO62/rVAc9J1DHXbmFCFtIpIBiuo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-658-mYGhocKxPz2Li-wSzzuNwQ-1; Thu, 06 Jul 2023 05:51:16 -0400
-X-MC-Unique: mYGhocKxPz2Li-wSzzuNwQ-1
+ us-mta-596-qR2NdBzXNlacRybXfv1Gig-1; Thu, 06 Jul 2023 05:51:21 -0400
+X-MC-Unique: qR2NdBzXNlacRybXfv1Gig-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 44C591039439;
-        Thu,  6 Jul 2023 09:51:16 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4CC7E88D4E1;
+        Thu,  6 Jul 2023 09:51:21 +0000 (UTC)
 Received: from greebo.redhat.com (unknown [10.39.193.57])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 840D4492C13;
-        Thu,  6 Jul 2023 09:51:15 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A5C994CD0CE;
+        Thu,  6 Jul 2023 09:51:20 +0000 (UTC)
 From:   alexl@redhat.com
 To:     fstests@vger.kernel.org
-Cc:     linux-unionfs@vger.kernel.org, amir73il@gmail.com,
-        Alexander Larsson <alexl@redhat.com>
-Subject: [PATCH 0/4] overlayfs: Test data-only upperdirs and fs-verity
-Date:   Thu,  6 Jul 2023 11:50:57 +0200
-Message-Id: <cover.1688633251.git.alexl@redhat.com>
+Cc:     linux-unionfs@vger.kernel.org, amir73il@gmail.com
+Subject: [PATCH 1/4] overlay: add helper for mounting rdonly overlay
+Date:   Thu,  6 Jul 2023 11:50:58 +0200
+Message-Id: <76c983397d13212ff3105ae05fe4240d830440a9.1688634271.git.alexl@redhat.com>
+In-Reply-To: <cover.1688634271.git.alexl@redhat.com>
+References: <cover.1688634271.git.alexl@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-From: Alexander Larsson <alexl@redhat.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-This adds support for testing the new data-only upperdir feature which is
-currently in master and will be in 6.5-rc1. It also adds tests for the
-fs-verity validation feature which is queued in overlayfs-next for 6.6.
+Allow passing empty upperdir to _overlay_mount_dirs().
 
-All new tests check for the required features before running, so
-having it in early will be nice for testers of linux-next.
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+---
+ common/overlay | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Alexander Larsson (1):
-  overlay: Add test coverage for fs-verity support
-
-Amir Goldstein (3):
-  overlay: add helper for mounting rdonly overlay
-  overlay/060: add test cases of follow to lowerdata
-  overlay: Add test for follow of lowerdata in data-only layers
-
- common/overlay        |  35 ++++-
- common/verity         |  10 +-
- tests/overlay/060     |  43 +++++-
- tests/overlay/060.out |  18 +++
- tests/overlay/079     | 325 +++++++++++++++++++++++++++++++++++++++++
- tests/overlay/079.out |  42 ++++++
- tests/overlay/080     | 327 ++++++++++++++++++++++++++++++++++++++++++
- tests/overlay/080.out |   7 +
- 8 files changed, 798 insertions(+), 9 deletions(-)
- create mode 100755 tests/overlay/079
- create mode 100644 tests/overlay/079.out
- create mode 100755 tests/overlay/080
- create mode 100644 tests/overlay/080.out
-
+diff --git a/common/overlay b/common/overlay
+index 20cafeb1..452b3b09 100644
+--- a/common/overlay
++++ b/common/overlay
+@@ -17,15 +17,19 @@ if [ -n "$OVL_BASE_FSTYP" ];then
+ fi
+ 
+ # helper function to do the actual overlayfs mount operation
++# accepts "-" as upperdir for non-upper overlayfs
+ _overlay_mount_dirs()
+ {
+ 	local lowerdir=$1
+ 	local upperdir=$2
+ 	local workdir=$3
+ 	shift 3
++	local diropts="-olowerdir=$lowerdir"
+ 
+-	$MOUNT_PROG -t overlay -o lowerdir=$lowerdir -o upperdir=$upperdir \
+-		    -o workdir=$workdir `_common_dev_mount_options $*`
++	[ -n "$upperdir" ] && [ "$upperdir" != "-" ] && \
++		diropts+=",upperdir=$upperdir,workdir=$workdir"
++
++	$MOUNT_PROG -t overlay $diropts `_common_dev_mount_options $*`
+ }
+ 
+ # Mount with same options/mnt/dev of scratch mount, but optionally
 -- 
 2.40.1
 
