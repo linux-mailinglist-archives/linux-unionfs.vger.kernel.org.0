@@ -2,74 +2,69 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8904774EB33
-	for <lists+linux-unionfs@lfdr.de>; Tue, 11 Jul 2023 11:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E7BF750C8F
+	for <lists+linux-unionfs@lfdr.de>; Wed, 12 Jul 2023 17:33:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229468AbjGKJzb (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 11 Jul 2023 05:55:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41674 "EHLO
+        id S233686AbjGLPdC (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 12 Jul 2023 11:33:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230017AbjGKJz3 (ORCPT
+        with ESMTP id S232884AbjGLPc6 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 11 Jul 2023 05:55:29 -0400
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCC47DD
-        for <linux-unionfs@vger.kernel.org>; Tue, 11 Jul 2023 02:55:26 -0700 (PDT)
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-6b7431b77ffso4318897a34.0
-        for <linux-unionfs@vger.kernel.org>; Tue, 11 Jul 2023 02:55:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689069326; x=1691661326;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZcloSHs79l9WLtw5wCq7rljrtMphumU2bij75yt+08U=;
-        b=akMMsAC8P8ncgdTr5OxyB3wRUFFDqFRcVoCoOmacpYboy1Rp5PdAAZBLD6DL8XcIzl
-         wQ/zRn+2cTylIJfpGx7BhpERztxB+motZxpVQzyhofOJxmIQRvZ9k3oM9YSDKZ7KfPl6
-         DC//Ms1O+bBbQPaDL4EI0M5LxEFiMC2QHoQUbqBOgFKRl1XBPGEgtyNtcpG1X/VHRizx
-         aRkwr0ptiZSYem6ChwBEejxSpzrDbHRZnGCVzz5BOTLPpO17uw2AsbB+S6krjtvzIH34
-         KZItRrtdRrCiUvRmcvXa67i6UE+yW7gnzF33zLv1hHrLPiNh2SyA0ngBcTL5RuVHv9h3
-         ICGg==
-X-Gm-Message-State: ABy/qLYpgPXcg60lAhM+8JuYK9EcKuukoK6vPfk7dzGKqhncwqJjm08t
-        4TzdPlgiIN4CWJS30uCtelbhStuD+AxsIF+4UkgDH3ri240k
-X-Google-Smtp-Source: APBJJlG+Y2stJI6lo+xrfpFL0vzaKSDOn/mZxf8Cf2lChooL8gNyzSBg1zJaCt6wJiO6k1leSV57zO96Wz6zgVVABI47EAn4TrM5
+        Wed, 12 Jul 2023 11:32:58 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70720C2;
+        Wed, 12 Jul 2023 08:32:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+        Message-ID:Sender:Reply-To:Cc:Content-ID:Content-Description;
+        bh=689SEK0ciFY8KgDlRHFBreHHAC2z+cvH0wQ011Q2aMI=; b=df/VKiT91ZqRa0x7ofoJaXGlph
+        PM7CRP4KkwoXZKNJlvYdkig+/LLrQ9LVGVf40H6Qaywx20JwTqHlizlUxF15FF/hdi7QMcfJ88rOM
+        Tk9o3z44pMTcermnTCrLWAF39fzqRsD0ms+1lMmZtzToJzTD0SUcPG6eXBFgIigvbDeEBrSIYXiW/
+        GnykGmmqxl8DWPpBQb6tfrtLGgdO7lnddHDuy7SXW0bC9E1PhpCLadB/V3QSWJPX+bNFvOifeRdsy
+        3Vg5gSGOgGr74Cyg+9z9dxsezgnvq5bViTggfgF6K6g7cj7jT1ssxpJXUEt4gBcr4IJbEN74vqTce
+        EZsIkLBg==;
+Received: from [2601:1c2:980:9ec0::2764]
+        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qJboy-000MRl-20;
+        Wed, 12 Jul 2023 15:32:04 +0000
+Message-ID: <03e153ce-328b-f279-2a40-4074bea2bc8f@infradead.org>
+Date:   Wed, 12 Jul 2023 08:31:55 -0700
 MIME-Version: 1.0
-X-Received: by 2002:a05:6870:d8ae:b0:1b4:71b0:749 with SMTP id
- dv46-20020a056870d8ae00b001b471b00749mr1062532oab.3.1689069326128; Tue, 11
- Jul 2023 02:55:26 -0700 (PDT)
-Date:   Tue, 11 Jul 2023 02:55:26 -0700
-In-Reply-To: <CAOQ4uxgQodMoCLvO6TGPiR3dKOhbtYKrDHzmu-gkaRAO8iSLTQ@mail.gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000002f59ee06003319ec@google.com>
-Subject: Re: [syzbot] [overlayfs?] general protection fault in ovl_init_uuid_xattr
-From:   syzbot <syzbot+b592c1f562f0da80ce2c@syzkaller.appspotmail.com>
-To:     amir73il@gmail.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org,
-        miklos@szeredi.hu, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 01/79] fs: add ctime accessors infrastructure
+Content-Language: en-US
+To:     Jeff Layton <jlayton@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+        linux-um <linux-um@lists.infradead.org>
+References: <20230621144507.55591-1-jlayton@kernel.org>
+ <20230621144507.55591-2-jlayton@kernel.org>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20230621144507.55591-2-jlayton@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Hello,
+Hi Jeff,
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+On arch/um/, (subarch i386 or x86_64), hostfs build fails with:
 
-Reported-and-tested-by: syzbot+b592c1f562f0da80ce2c@syzkaller.appspotmail.com
+../fs/hostfs/hostfs_kern.c:520:36: error: incompatible type for arg
+ument 2 of 'inode_set_ctime_to_ts'
+../include/linux/fs.h:1499:73: note: expected 'struct timespec64' b
+ut argument is of type 'const struct hostfs_timespec *'
 
-Tested on:
 
-commit:         0a3bf81d ovl: auto generate uuid for new overlay files..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/overlayfs/vfs.git overlayfs-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=16079b6ca80000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=150188feee7071a7
-dashboard link: https://syzkaller.appspot.com/bug?extid=b592c1f562f0da80ce2c
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-
-Note: no patches were applied.
-Note: testing is done by a robot and is best-effort only.
+-- 
+~Randy
