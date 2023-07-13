@@ -2,124 +2,108 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75F5475275C
-	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Jul 2023 17:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BCF675281D
+	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Jul 2023 18:15:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232456AbjGMPhB convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 13 Jul 2023 11:37:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39966 "EHLO
+        id S232003AbjGMQPb (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 13 Jul 2023 12:15:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjGMPg6 (ORCPT
+        with ESMTP id S230439AbjGMQPb (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 13 Jul 2023 11:36:58 -0400
-X-Greylist: delayed 65 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 13 Jul 2023 08:36:56 PDT
-Received: from de-smtp-delivery-104.mimecast.com (de-smtp-delivery-104.mimecast.com [194.104.111.104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C96CD1FC9
-        for <linux-unionfs@vger.kernel.org>; Thu, 13 Jul 2023 08:36:56 -0700 (PDT)
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com
- (mail-vi1eur05lp2169.outbound.protection.outlook.com [104.47.17.169]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- de-mta-22-ytWuP4sCNQ67XMapWip4Yw-1; Thu, 13 Jul 2023 17:35:39 +0200
-X-MC-Unique: ytWuP4sCNQ67XMapWip4Yw-1
-Received: from AS9PR05CA0261.eurprd05.prod.outlook.com (2603:10a6:20b:493::32)
- by AM8PR06MB7474.eurprd06.prod.outlook.com (2603:10a6:20b:365::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.30; Thu, 13 Jul
- 2023 15:35:35 +0000
-Received: from VI1EUR02FT025.eop-EUR02.prod.protection.outlook.com
- (2603:10a6:20b:493:cafe::54) by AS9PR05CA0261.outlook.office365.com
- (2603:10a6:20b:493::32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.32 via Frontend
- Transport; Thu, 13 Jul 2023 15:35:35 +0000
-X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
- 194.34.82.153) smtp.mailfrom=gmail.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=gmail.com
-Received: from astrazenecatst.com (194.34.82.153) by
- VI1EUR02FT025.mail.protection.outlook.com (10.13.61.10) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6588.22 via Frontend Transport; Thu, 13 Jul 2023 15:35:35 +0000
-Received: from SGKCWEXCAPTT01.aztst.net (156.71.153.171) by
- SESKWEXCAPTT02.aztst.net (157.96.18.128) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 13 Jul 2023 17:35:25 +0200
-Received: from SGKCWEXCAPTT02.aztst.net (156.71.153.172) by
- SGKCWEXCAPTT01.aztst.net (156.71.153.171) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 13 Jul 2023 23:35:12 +0800
-Received: from [45.90.222.39] (156.71.153.243) by SGKCWEXCAPTT02.aztst.net
- (156.71.153.172) with Microsoft SMTP Server id 15.2.1118.26 via Frontend
- Transport; Thu, 13 Jul 2023 23:35:08 +0800
+        Thu, 13 Jul 2023 12:15:31 -0400
+Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E09E26B2;
+        Thu, 13 Jul 2023 09:15:29 -0700 (PDT)
+Received: by mail-vs1-xe32.google.com with SMTP id ada2fe7eead31-440ad576d87so378724137.1;
+        Thu, 13 Jul 2023 09:15:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689264929; x=1691856929;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qAzbOQIDfQaaRF2mNdJO7AZIHFfzQ6Xj8bCSW7+ay68=;
+        b=sAlmlEhoIXTNcfzulXTg/0+qeYpkt9g8tAxc74oaiVDRwKPmUMTSAmQaYtuHD640rY
+         oeL+gxRNkd41KADYLcPJJt0uQhY5fEFIQYD1ogc6TvKlVzT1WtF+vaTiXbJUMLwd2/T2
+         6/yZuy/0Eg/sqaG/SfVpZJQHRGO0GNAJGR8UuNvN7QoVAPdD9BSxPdcnlMNy0KK1Ae73
+         nKwcDG6IY2F2i5k+zosDixDFZJfTru11CTAyZUQRKO4xxy9lNysRhJ8KlsF8DKKzPlPf
+         g6+k9V4Y5Fcbpxxm4evYLcx9dAULeT+PywlIig2lAFgIaUmThh3LEEPfRzlX7WccIe2S
+         S5dA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689264929; x=1691856929;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qAzbOQIDfQaaRF2mNdJO7AZIHFfzQ6Xj8bCSW7+ay68=;
+        b=R6e459rNx1fZBo9RsTYdko+XqqyxdXfIEbzGAQ5+Jn7GZNpRU+yrRIq98mj++WxiJ9
+         NTP49vjUd3VBObm4EOo74n7J2rpqHzG0+Ym0ufjh2FKWXSjLJzZ9wWC2FfUzWTQRNPx0
+         v2v0nAdJiVoOf/u7lp0TpVHbSbheeGMDieFASt+6ScePUjbtRNvuKg80u/EvzUBYblKO
+         cJ5szikpHMjq0hQJu3kAyQ/Xggsf0nzamroX3o9WhuvWbcNwAyzJl2+NrjFvmIqtXOXF
+         GM+/RBW3quu5iTGwsd4ob2evZzSBf8eCej2cctFNdYMe7I9zFEEh1fBaFSgA1yWwtaLs
+         mVlw==
+X-Gm-Message-State: ABy/qLZ1hh5mLOJ++N8JO3T9RUNaUOiy/cvbNhixNpc5SchRGqag8eVS
+        PbIi8eB8PXPkKPQp50WnMxlzUCQlmNUf1Zp+YENedFTu
+X-Google-Smtp-Source: APBJJlE7UaE0SChJN8jYw51pleDWarGr3Jg541dTzlfDtByVh4Sk4Gzt3lQCG3c6HsLmEbwVzVTIXaIKeTmVHjAyWx8=
+X-Received: by 2002:a67:f7c7:0:b0:443:664f:f15 with SMTP id
+ a7-20020a67f7c7000000b00443664f0f15mr1515226vsp.5.1689264928844; Thu, 13 Jul
+ 2023 09:15:28 -0700 (PDT)
 MIME-Version: 1.0
-Subject: For Your Urgent Processing
-To:     Recipients <mrnathanielch5@gmail.com>
-From:   Payment Dest information <mrnathanielch5@gmail.com>
-Date:   Thu, 13 Jul 2023 08:35:01 -0700
-Reply-To: <PaymentDesk@pinnaclebcorponline.com>
-Message-ID: <5fa76971-1eeb-46aa-ad37-5ba7ed524921@SGKCWEXCAPTT02.aztst.net>
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1EUR02FT025:EE_|AM8PR06MB7474:EE_
-X-MS-Office365-Filtering-Correlation-Id: e6626fbf-313e-4b9e-eaa2-08db83b6cd46
-X-MS-Exchange-SenderADCheck: 2
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?OZPxpsQme1+8jnqdFnLqvAeDL2QSnnGAY3il7A5ssmvBb2R58bigWb1ey0?=
- =?iso-8859-1?Q?IwAe7dkXDt2aAG6I/qQYJKo3pPtriBUQLWqe8YP5mV38UjfxswhTb9g2n3?=
- =?iso-8859-1?Q?ZUqfjHKBQcobHvgJZOrcEAJgDIGc9F1MSHOKhcdwxh94/N23f/PynoSbYc?=
- =?iso-8859-1?Q?EtaqfoV7QWYwxypA3yty6NTvDLPVKu0IANS7gO/qY2sQgRYdeMtO67s1th?=
- =?iso-8859-1?Q?4sjHTgp0s0JMLljjsE4iPuHHoZnItQF2NvQ+RTvkc848q0W/XBV64bjbPY?=
- =?iso-8859-1?Q?oOtPfsvhB6Bm2hhmZbL02YZLEK8zrU6qU3c5tpvGsDLaRzgFH+oHNZzUqv?=
- =?iso-8859-1?Q?8FwMBy2/KYXsKPybxsfezQTBdJYv8sHmcQ/cQ7nUQCUxdkFzqB2eCPEQiH?=
- =?iso-8859-1?Q?h/fP4q3cT0wJwHC1JZrPXKXknGBTTHgxIANHRGI2oM21BgU9leGjYepjMu?=
- =?iso-8859-1?Q?ri9RjpXAu1Tm8AmaERvulII42kbuE0013Dt2zjnYhTKSFGknuM313pvFTN?=
- =?iso-8859-1?Q?mgk7703MHCVEcMVmRyjdwlmJapUxxxnV4P3M9CdZ4qFVt4KgbrYG1PdJaC?=
- =?iso-8859-1?Q?FZHy8+cxlO8PZmhorVsdtgxeuVHYOCJGEILwMcFxWNbl7G5ikT1ir8Jcds?=
- =?iso-8859-1?Q?+LeLES5S4Rr0DZwKXlsY0Vv82XFPpBRmg0NxUhHy/MHhxJHp15MdL6R98Q?=
- =?iso-8859-1?Q?DqxtqmYlWoMKlKFs2yaTd+MLP0dXvKknPccIY8Z0ZhMuqVFh4BOPOhHySK?=
- =?iso-8859-1?Q?BAbYImaWqmNL0TEjIq/LLXg6phjJvWanZqQ1YK1ng6D4EGYo51gu2ywww2?=
- =?iso-8859-1?Q?fw0JhjvTZ895je6r9cUWZ81dM62mjNHFlY92vEWCRuT9QV/xb1Ap8Gjgcu?=
- =?iso-8859-1?Q?/g6hj0PjCF5mZMg7LyygTJfII2fKsYcknrQQwA5d8BOmpmkzE8DRYv+lUA?=
- =?iso-8859-1?Q?Hr/FMrk0rgy4OAtkrbdU9Tpd7YrfcEHttbyGist9NXw+bl/uadIHGYJlqw?=
- =?iso-8859-1?Q?61/mOePYzpQX22lc6+0xv8e5lIlRUhEdgyQHkjcwagU62ixHIcDAh9umjf?=
- =?iso-8859-1?Q?qOj6ul4rtH4aZUtJjAmtB+qN+2JFLRDgX4iWg5Nx5Rr9Or/4QmEdj63Jxc?=
- =?iso-8859-1?Q?1gmM3+ZoxUKYbdwdl7y66WQJUuv9lwP/lBRnRhrGE5QxBRCKG697jXpjWF?=
- =?iso-8859-1?Q?BmAL5rOW4NE98w=3D=3D?=
-X-Forefront-Antispam-Report: CIP:194.34.82.153;CTRY:SE;LANG:en;SCL:5;SRV:;IPV:NLI;SFV:SPM;H:astrazenecatst.com;PTR:InfoDomainNonexistent;CAT:OSPM;SFS:(13230028)(4636009)(346002)(136003)(39860400002)(396003)(376002)(84050400002)(451199021)(40470700004)(46966006)(40460700003)(26005)(956004)(2906002)(73392003)(3480700007)(9686003)(508600001)(83380400001)(6706004)(47076005)(4300700001)(82202003)(35950700001)(41300700001)(336012)(7416002)(5660300002)(316002)(8676002)(8936002)(6862004)(76482006)(16576012)(70206006)(558084003)(6666004)(70586007)(6200100001)(40480700001)(4743002)(81166007)(82960400001)(82740400003)(86362001)(82310400005)(31696002)(356005)(31686004)(62346015);DIR:OUT;SFP:1501
-X-OriginatorOrg: AZCollaborationTST.onmicrosoft.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2023 15:35:35.3383
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6626fbf-313e-4b9e-eaa2-08db83b6cd46
-X-MS-Exchange-CrossTenant-Id: 018bdb4e-8280-4a61-a267-c21b54eb9f58
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=018bdb4e-8280-4a61-a267-c21b54eb9f58;Ip=[194.34.82.153];Helo=[astrazenecatst.com]
-X-MS-Exchange-CrossTenant-AuthSource: VI1EUR02FT025.eop-EUR02.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR06MB7474
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: gmail.com
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-X-Spam-Status: No, score=2.5 required=5.0 tests=BAYES_50,DKIM_ADSP_CUSTOM_MED,
-        FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NML_ADSP_CUSTOM_MED,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_FAIL,SPF_HELO_NONE,
-        TO_EQ_FM_DOM_SPF_FAIL,TO_EQ_FM_SPF_FAIL,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+References: <cover.1688979643.git.alexl@redhat.com> <20230713153457.5723wtjidhvlxfyz@zlang-mailbox>
+In-Reply-To: <20230713153457.5723wtjidhvlxfyz@zlang-mailbox>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Thu, 13 Jul 2023 19:15:17 +0300
+Message-ID: <CAOQ4uxhdn=e-k=K7cCWbuaA4nPVnWrAwqKH+mTdRDaTKQhUp+A@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] overlayfs: Test data-only upperdirs and fs-verity
+To:     Zorro Lang <zlang@redhat.com>
+Cc:     alexl@redhat.com, fstests@vger.kernel.org,
+        linux-unionfs@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Attn:Sir/Ma
+On Thu, Jul 13, 2023 at 6:35=E2=80=AFPM Zorro Lang <zlang@redhat.com> wrote=
+:
+>
+> On Mon, Jul 10, 2023 at 11:07:09AM +0200, alexl@redhat.com wrote:
+> > From: Alexander Larsson <alexl@redhat.com>
+> >
+> > This adds support for testing the new data-only upperdir feature which =
+is
+> > currently in master and will be in 6.5-rc1. It also adds tests for the
+> > fs-verity validation feature which is queued in overlayfs-next for 6.6.
+> >
+> > All new tests check for the required features before running, so
+> > having it in early will be nice for testers of linux-next.
+> >
+> > Changes since v1:
+> >  * Consistently use $fstyp and $scratch_mnt in _require_scratch_verity
+> >    (Pointed out by Eric Biggers)
+> >  * Added Signed-off-by to patches from Amir
+> >
+> > Alexander Larsson (1):
+> >   overlay: Add test coverage for fs-verity support
+> >
+> > Amir Goldstein (3):
+> >   overlay: add helper for mounting rdonly overlay
+> >   overlay/060: add test cases of follow to lowerdata
+> >   overlay: Add test for follow of lowerdata in data-only layers
+>
+> This patchset looks good to me, and I didn't regression from it. So if th=
+ere's
+> not more review points from overlayfs side, I'll merge this patchset in n=
+ext
+> fstests release.
+>
 
-Further to our earlier information, we wish to remind you of the urgent need to reconfirm your payment account receiving details for the payment of your full contract sum.
-We look forward to an early reply.
-Yours Faithfully,
+That would be great.
 
-Daniel Kiv.
-
+Thanks,
+Amir.
