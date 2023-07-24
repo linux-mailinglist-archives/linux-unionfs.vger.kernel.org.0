@@ -2,58 +2,58 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62C8575E6D2
-	for <lists+linux-unionfs@lfdr.de>; Mon, 24 Jul 2023 03:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B69975E93B
+	for <lists+linux-unionfs@lfdr.de>; Mon, 24 Jul 2023 03:49:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230235AbjGXBXY (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sun, 23 Jul 2023 21:23:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52904 "EHLO
+        id S232813AbjGXBth (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sun, 23 Jul 2023 21:49:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230474AbjGXBWw (ORCPT
+        with ESMTP id S232797AbjGXBr5 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sun, 23 Jul 2023 21:22:52 -0400
+        Sun, 23 Jul 2023 21:47:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65DC51737;
-        Sun, 23 Jul 2023 18:22:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 894454EC8;
+        Sun, 23 Jul 2023 18:40:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4431A60F1D;
-        Mon, 24 Jul 2023 01:20:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B19C433C7;
-        Mon, 24 Jul 2023 01:20:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D95160F0B;
+        Mon, 24 Jul 2023 01:23:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEF2C433CB;
+        Mon, 24 Jul 2023 01:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690161648;
-        bh=p62JdF+2MEhQfOERPRBStL6d3PjNgVIJpUiixC9DnRA=;
+        s=k20201202; t=1690161797;
+        bh=TUIGnMRQyP3Tbk6uTBFpwvFdEI75vkiy6WmBX3JOVoA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i9YN0AAkY4FUtum8GSwkZeCG9qJsegh/RsU3X5eM3UX1zMpmdEPkEcIiog0Ud43yx
-         TKxzk/bXGEUY3FRU1ifi33Sp9bI8Z67WXhI+UQV1z0TKKUPXQNsmiGC0DRzHKt/fFo
-         1TFQaSand8oSJ87oXNSTJj4UP0HKKryAYn3k7VKEKbsyovDi03gpIJgQ6oO53WEhOd
-         zxLHt8uncOICKbyGjwsbElDYBIWOVTpQbV1X4cbYNCaY+Gm1ecRetgrg1+ZyqDhMgm
-         ZVsFE1Y51F5W55jqBQpyUpxIsl9M503zuoHrLj5s48Ptgs+xHTY28n9iuYAJA31z0/
-         4r5OER2eatnYw==
+        b=AUcwXdTRiq6kqo9BCz7lvH4GTcnAiT+cDSJqnywBNzOUqzXsXS5NWSQ6SCzSOle53
+         0SolF/RtjEJsFOS7hx9nkGMAj8zAEz6c5qNiKkMnTerNFAA45NwVAYCnYAJDX76soo
+         10wqA/c+inzXbjKdzHEpA6SpxMkngU2Yrs4aO3veJJadbzl2H/KOyVAIHfxzCgSb2X
+         +dYLoPLGmsYOvfKqWbDrfAJjJ1iR07TH7uiIGLNYCmzCLOJECx4veTjb3yiFij9jjm
+         1ogB4h+mYon4EqjP5R5pPaiHjJ/776q93hLqtQfzU5id2kyhALB5ILlIB2YKuvcfgj
+         g1W8zkOCrwaqA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Christian Brauner <brauner@kernel.org>,
         Amir Goldstein <amir73il@gmail.com>,
         Sasha Levin <sashal@kernel.org>, miklos@szeredi.hu,
         linux-unionfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.4 51/58] ovl: check type and offset of struct vfsmount in ovl_entry
-Date:   Sun, 23 Jul 2023 21:13:19 -0400
-Message-Id: <20230724011338.2298062-51-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 34/41] ovl: check type and offset of struct vfsmount in ovl_entry
+Date:   Sun, 23 Jul 2023 21:21:07 -0400
+Message-Id: <20230724012118.2316073-34-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230724011338.2298062-1-sashal@kernel.org>
-References: <20230724011338.2298062-1-sashal@kernel.org>
+In-Reply-To: <20230724012118.2316073-1-sashal@kernel.org>
+References: <20230724012118.2316073-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.4.5
+X-stable-base: Linux 6.1.40
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -87,7 +87,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+)
 
 diff --git a/fs/overlayfs/ovl_entry.h b/fs/overlayfs/ovl_entry.h
-index fd11fe6d6d45f..6b9f7917fc1bb 100644
+index e1af8f6606984..a479680a5ccd8 100644
 --- a/fs/overlayfs/ovl_entry.h
 +++ b/fs/overlayfs/ovl_entry.h
 @@ -32,6 +32,7 @@ struct ovl_sb {
