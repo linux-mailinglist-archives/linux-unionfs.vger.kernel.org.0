@@ -2,34 +2,33 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53141775680
-	for <lists+linux-unionfs@lfdr.de>; Wed,  9 Aug 2023 11:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B643077571B
+	for <lists+linux-unionfs@lfdr.de>; Wed,  9 Aug 2023 12:30:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232055AbjHIJfj (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 9 Aug 2023 05:35:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54128 "EHLO
+        id S231645AbjHIKak (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 9 Aug 2023 06:30:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbjHIJfi (ORCPT
+        with ESMTP id S232186AbjHIKai (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 9 Aug 2023 05:35:38 -0400
-X-Greylist: delayed 300 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 09 Aug 2023 02:35:37 PDT
+        Wed, 9 Aug 2023 06:30:38 -0400
 Received: from mail.parknet.co.jp (mail.parknet.co.jp [210.171.160.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 86A6210D4;
-        Wed,  9 Aug 2023 02:35:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C6B981FEB;
+        Wed,  9 Aug 2023 03:30:37 -0700 (PDT)
 Received: from ibmpc.myhome.or.jp (server.parknet.ne.jp [210.171.168.39])
-        by mail.parknet.co.jp (Postfix) with ESMTPSA id 2BF732055FA1;
-        Wed,  9 Aug 2023 17:41:12 +0900 (JST)
+        by mail.parknet.co.jp (Postfix) with ESMTPSA id 5F6A22055F9C;
+        Wed,  9 Aug 2023 17:37:57 +0900 (JST)
 Received: from devron.myhome.or.jp (foobar@devron.myhome.or.jp [192.168.0.3])
-        by ibmpc.myhome.or.jp (8.17.2/8.17.2/Debian-1) with ESMTPS id 3798fAMk208573
+        by ibmpc.myhome.or.jp (8.17.2/8.17.2/Debian-1) with ESMTPS id 3798btR4208465
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Wed, 9 Aug 2023 17:41:11 +0900
+        Wed, 9 Aug 2023 17:37:56 +0900
 Received: from devron.myhome.or.jp (foobar@localhost [127.0.0.1])
-        by devron.myhome.or.jp (8.17.2/8.17.2/Debian-1) with ESMTPS id 3798fAiA140744
+        by devron.myhome.or.jp (8.17.2/8.17.2/Debian-1) with ESMTPS id 3798btTt140448
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Wed, 9 Aug 2023 17:41:10 +0900
+        Wed, 9 Aug 2023 17:37:55 +0900
 Received: (from hirofumi@localhost)
-        by devron.myhome.or.jp (8.17.2/8.17.2/Submit) id 3798f9uW140743;
-        Wed, 9 Aug 2023 17:41:09 +0900
+        by devron.myhome.or.jp (8.17.2/8.17.2/Submit) id 3798biDW140435;
+        Wed, 9 Aug 2023 17:37:44 +0900
 From:   OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
 To:     Jeff Layton <jlayton@kernel.org>
 Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -94,40 +93,63 @@ Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
         linux-mtd@lists.infradead.org, linux-mm@kvack.org,
         linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org
 Subject: Re: [PATCH v7 05/13] fat: make fat_update_time get its own timestamp
-In-Reply-To: <87msz08vc7.fsf@mail.parknet.co.jp> (OGAWA Hirofumi's message of
-        "Wed, 09 Aug 2023 17:37:44 +0900")
+In-Reply-To: <20230807-mgctime-v7-5-d1dec143a704@kernel.org> (Jeff Layton's
+        message of "Mon, 07 Aug 2023 15:38:36 -0400")
 References: <20230807-mgctime-v7-0-d1dec143a704@kernel.org>
         <20230807-mgctime-v7-5-d1dec143a704@kernel.org>
-        <87msz08vc7.fsf@mail.parknet.co.jp>
-Date:   Wed, 09 Aug 2023 17:41:09 +0900
-Message-ID: <87il9o8v6i.fsf@mail.parknet.co.jp>
+Date:   Wed, 09 Aug 2023 17:37:44 +0900
+Message-ID: <87msz08vc7.fsf@mail.parknet.co.jp>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-OGAWA Hirofumi <hirofumi@mail.parknet.co.jp> writes:
+Jeff Layton <jlayton@kernel.org> writes:
 
-> Jeff Layton <jlayton@kernel.org> writes:
->
->> Also, it may be that things have changed by the time we get to calling
->> fat_update_time after checking inode_needs_update_time. Ensure that we
->> attempt the i_version bump if any of the S_* flags besides S_ATIME are
->> set.
->
-> I'm not sure what it meaning though, this is from
-> generic_update_time(). Are you going to change generic_update_time()
-> too? If so, it doesn't break lazytime feature?
->
-> Thanks.
+> Also, it may be that things have changed by the time we get to calling
+> fat_update_time after checking inode_needs_update_time. Ensure that we
+> attempt the i_version bump if any of the S_* flags besides S_ATIME are
+> set.
 
-BTW, fat is not implementing lazytime now, but it is for future.
+I'm not sure what it meaning though, this is from
+generic_update_time(). Are you going to change generic_update_time()
+too? If so, it doesn't break lazytime feature?
+
+Thanks.
+
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> ---
+>  fs/fat/misc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/fs/fat/misc.c b/fs/fat/misc.c
+> index 67006ea08db6..8cab87145d63 100644
+> --- a/fs/fat/misc.c
+> +++ b/fs/fat/misc.c
+> @@ -347,14 +347,14 @@ int fat_update_time(struct inode *inode, struct timespec64 *now, int flags)
+>  		return 0;
+>  
+>  	if (flags & (S_ATIME | S_CTIME | S_MTIME)) {
+> -		fat_truncate_time(inode, now, flags);
+> +		fat_truncate_time(inode, NULL, flags);
+>  		if (inode->i_sb->s_flags & SB_LAZYTIME)
+>  			dirty_flags |= I_DIRTY_TIME;
+>  		else
+>  			dirty_flags |= I_DIRTY_SYNC;
+>  	}
+>  
+> -	if ((flags & S_VERSION) && inode_maybe_inc_iversion(inode, false))
+> +	if ((flags & (S_VERSION|S_CTIME|S_MTIME)) && inode_maybe_inc_iversion(inode, false))
+>  		dirty_flags |= I_DIRTY_SYNC;
+>  
+>  	__mark_inode_dirty(inode, dirty_flags);
+
 -- 
 OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
