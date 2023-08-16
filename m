@@ -2,69 +2,65 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A88877E493
-	for <lists+linux-unionfs@lfdr.de>; Wed, 16 Aug 2023 17:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E19AE77E511
+	for <lists+linux-unionfs@lfdr.de>; Wed, 16 Aug 2023 17:24:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343933AbjHPPDY (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Wed, 16 Aug 2023 11:03:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47264 "EHLO
+        id S232982AbjHPPYW (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Wed, 16 Aug 2023 11:24:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343970AbjHPPDB (ORCPT
+        with ESMTP id S1344188AbjHPPYE (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Wed, 16 Aug 2023 11:03:01 -0400
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC1101B2
-        for <linux-unionfs@vger.kernel.org>; Wed, 16 Aug 2023 08:02:59 -0700 (PDT)
-Received: by mail-qt1-x831.google.com with SMTP id d75a77b69052e-40fc670197aso34207971cf.1
-        for <linux-unionfs@vger.kernel.org>; Wed, 16 Aug 2023 08:02:59 -0700 (PDT)
+        Wed, 16 Aug 2023 11:24:04 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94B7E30C8
+        for <linux-unionfs@vger.kernel.org>; Wed, 16 Aug 2023 08:23:40 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-319559fd67dso5049026f8f.3
+        for <linux-unionfs@vger.kernel.org>; Wed, 16 Aug 2023 08:23:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692198178; x=1692802978;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=df9dQ7gPtVVoUo8GbiTxHmDTRJhf4wa9hfSclurXFPY=;
-        b=LSNP4Sr22be/xUG2Kt+OzZGZGgiSWotxzPa5SlSaI471XXO0/p00nzUG+lMoPnVUyv
-         Y/juuYnZtEj3ZZgl1TDxLaxI0tOKZFrXuG2Cmf+WE/9OOE+0Qh7dWLjjF2BYBhufYACe
-         /G2BnmwNINjcTlwVEyl4SasakMlaUEpC+lmb+hSznD+4R6y8VG+365DW3tVWIInoENa7
-         K3By3g3fAUHo6flNaOr8omb30YMABUzmCb7kwcRZU4JeL7dgoc5zCKVl6FV7uAbymhsH
-         WArHh0a9eDha6AdF/cfHq6ehjovJu422auM/mREeSM4Mjjk5fi4Fdy78QTEUFDTuah1r
-         55qw==
+        d=gmail.com; s=20221208; t=1692199419; x=1692804219;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2vRcvqoglDAInVQTFSv3mT+AQSO384XAMX6heNEsjTA=;
+        b=AiFYAsKMcP2SNDla9fh3mE7+zJL9OAAJdqVvsCOqCYq8CnIzN6zuxLO3qv1lPBbCDL
+         N9Jo4Tj+B9aSWvy8hoWTcY9v4sG9hmUHdQDCtssx9vrA+2gY8DcRSI1WWpg4O0HAfDWn
+         k4Y3EOXCpLiTv2Www7r+h/mSQE8gjzez9n9c7/OR78lwo1ciUON08ciUQqFpKcFrSaRU
+         m6VhkHlVoAXwGCFxRWwLXnWDMT8xyDKgaE+6bFBChSBGy+QDVpq4zgGeriiMYpk12/jw
+         ZNFYMvH57MaVIrJbwoUTWn2JKxi3ppQxxc97KZbNXJW3IS9kJ/kVPok+MGuxWn9f8E+G
+         aGnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692198178; x=1692802978;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=df9dQ7gPtVVoUo8GbiTxHmDTRJhf4wa9hfSclurXFPY=;
-        b=hgzOoluaEgHuJHDderVWgGrq4zBo4K0jBEkcaN5rxoxDncLcBQGBbva18pyt9jvbaC
-         jhkVEYffCCH0vA8MRh+XT1YnniharmWhggrDjrhNpLWP85vfsVXs4u3CyQE6Si79WO23
-         yEsVjzdxbbm4q6rsYqevoVATBYw8C4XM9IOAsRztLQ+ybLF7MGpdQ+lp6Iztze5o7wGP
-         UVqN3IKMe+SGQXoCxBIvCIM1hFnufMzPfLvhBrOdgYlv+HCxQhPgC+zPNCZc70NZR6ba
-         3Q/yZYl3SY69lZzo4gqXoQxu3v8AzAS4koAcXGSdeskMew+iOSnM+QvVsDYRs7F7az23
-         Ya7w==
-X-Gm-Message-State: AOJu0Yy7ajGnMCQSCtTI32wCQhsXqLvqONwtmhsP7Uto9nWxpazraL7v
-        uVBBlp4XcHA8zbN6WkiEK7x9OJduk20krScmVRo=
-X-Google-Smtp-Source: AGHT+IFP88zmmKK+6YW9T0TmtlDE0FXwAuDLe1flGYw/qlZ6NIUS07FLbbBEyO3ZRMOBZVmkAwQ/AF6BPgUx+8jm+tQ=
-X-Received: by 2002:a05:620a:2907:b0:760:76c1:9689 with SMTP id
- m7-20020a05620a290700b0076076c19689mr6805991qkp.16.1692198178552; Wed, 16 Aug
- 2023 08:02:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230814140518.763674-1-amir73il@gmail.com> <20230814140518.763674-3-amir73il@gmail.com>
- <CAJfpegu=-+jA1026KoqrFBX9dsfvQbcjHbkNunkZ6A794mZ1TQ@mail.gmail.com>
- <CAOQ4uxiTtraLVdsKJdty6z89=Lm52DGHFf1i_aL9jQz3L80V9Q@mail.gmail.com> <CAJfpegudye=2e2BWtk+fmaKMN_vUnwsKM8fi-GPcEX5n_vEizQ@mail.gmail.com>
-In-Reply-To: <CAJfpegudye=2e2BWtk+fmaKMN_vUnwsKM8fi-GPcEX5n_vEizQ@mail.gmail.com>
+        d=1e100.net; s=20221208; t=1692199419; x=1692804219;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2vRcvqoglDAInVQTFSv3mT+AQSO384XAMX6heNEsjTA=;
+        b=BOUWnyFRhDgQG8aVczCCQpxIGA0/4f66x9higENjY/5HLiv4kJIdrlmhCCeJH7+erf
+         WroJnDcF0HftymiZd8OYM/D5dc8sZbNEkJUX1IgFYM4NS1rP6agVIjx+h4JQb9P94Xki
+         RGufxaE86tyG+eB2RAXqDSTIQxHpooHaJHgvy655XHUG97y/FspN9gzzX9vhLDiI7OcW
+         HnbbAHks7L4Wc80nMxiEAvySBoAe5NeDyJDFQWatC1NN8xDsM1py/gip9hsZ8Puoo/db
+         Mvh04iLfzhaW33y0oGb63PEMWMjEejF9Kp/sLi0HPraKcaSGTKozdRhsjVC3vfgE9k85
+         0Xsg==
+X-Gm-Message-State: AOJu0Yy+aRmlTm7Ugme1W9KgW+bI3CM7ltL8XhONtxZLqVwdQjJkULwb
+        7PzaFxLuPD7GKwaIr5jZJrwM4kc8NgI=
+X-Google-Smtp-Source: AGHT+IH5eQ4B98mN2Fk+s6L8xX+c4KPUueij3ekVx3KPL/ZsGzKC3Szc8VKUWLZtZbzka9Lq7XvUxA==
+X-Received: by 2002:a5d:5507:0:b0:315:a1d5:a3d5 with SMTP id b7-20020a5d5507000000b00315a1d5a3d5mr1973022wrv.22.1692199418640;
+        Wed, 16 Aug 2023 08:23:38 -0700 (PDT)
+Received: from amir-ThinkPad-T480.lan ([5.29.249.86])
+        by smtp.gmail.com with ESMTPSA id k7-20020adfe3c7000000b003176c6e87b1sm21701988wrm.81.2023.08.16.08.23.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Aug 2023 08:23:38 -0700 (PDT)
 From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Wed, 16 Aug 2023 18:02:47 +0300
-Message-ID: <CAOQ4uxj+RAFeaqErOdE7xymUShawJka7L0noCopjzaeFY8ZQ-w@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] ovl: do not open/llseek lower file with upper
- sb_writers held
 To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     Jan Kara <jack@suse.cz>, linux-unionfs@vger.kernel.org,
-        Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc:     linux-unionfs@vger.kernel.org
+Subject: [PATCH v3 0/4] overlayfs lock ordering changes
+Date:   Wed, 16 Aug 2023 18:23:30 +0300
+Message-Id: <20230816152334.924960-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,57 +68,39 @@ Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Tue, Aug 15, 2023 at 10:07=E2=80=AFPM Miklos Szeredi <miklos@szeredi.hu>=
- wrote:
->
-> On Tue, 15 Aug 2023 at 17:59, Amir Goldstein <amir73il@gmail.com> wrote:
->
-> > > What occurs to me is why are we bothering with getting write access o=
-n
-> > > the internal upper mnt each time.  Seems to me it's a historical thin=
-g
-> > > without a good reason.  Upper mnt is never changed from R/W to R/O.
-> > >
-> > > So the only thing we need to do is grab the upper mount write access
-> > > on superblock creation and do the sb_start_write/end_write() thing
-> > > which can't fail.  If upper mnt is read-only, we effectively have a
-> > > read-only filesystem, and can handle it that way (sb->s_flags |=3D
-> > > SB_RDONLY).
-> > >
-> > > There's still the possibility that we do some changes to upper even
-> > > for non-modify operations.  But with careful review we can remove a
-> > > most (possibly all) error handling cases from ovl_want_write()
-> > > callsites when we do know that we have write access on upper.  And
-> > > WARN_ON(__mnt_is_readonly(ovl_upper_mnt(ofs))) should ensure that we
-> > > catch any mistakes.
-> > >
-> > > Hmm?
-> > >
-> >
-> > I was thinking the same thing myself, before I went on this journey.
-> > I reached the conclusion that doing only sb_start_write() would not be
-> > safe against emergency remount rdonly of the upper sb.
-> >
-> > I guess if upper sb is emergency mounted rdonly, then overlayfs
-> > sb would also be emergency remounted rdonly, but for example
-> > ext4 sb can become rdonly on internal errors.
-> > But maybe that is not the responsibility of vfs or ovl to care about?
->
-> Consider the case of a writable open file: the mount write access is
-> only checked on open.  So not having fine grained mnt write access
-> checks is not without precedent.
->
-> I'm not sure, but the number of added lines in this particular patch
-> makes me think that at least during copy-up we could separate the mnt
-> and the sb write locks.
->
+Hi Miklos,
 
-The patch with separate locks during copy-up is not much smaller
-but it is a lot nicer IMO:
-
-https://github.com/amir73il/linux/commits/ovl_want_write-v3
-
-I shall post these shortly after tests are complete.
+I went for the less intrusive approach of holding mnt_writers
+only throughout copy up instead of a long lived elevated refcount.
+We could reconsider the long lived reference in the future.
 
 Thanks,
 Amir.
+
+Changes since v2:
+- Separate mnt_writers and sb_writers locks during copy up
+- Fixs error handling bugs found by Miklos
+
+Changes since v1:
+- Breakup the large ovl_want_write() transaction in copy up
+- Add fix to possible deadlock with encode lower ovl fh
+
+Amir Goldstein (4):
+  ovl: reorder ovl_want_write() after ovl_inode_lock()
+  ovl: split ovl_want_write() into two helpers
+  ovl: do not open/llseek lower file with upper sb_writers held
+  ovl: do not encode lower fh with upper sb_writers held
+
+ fs/overlayfs/copy_up.c   | 141 +++++++++++++++++++++++++--------------
+ fs/overlayfs/dir.c       |  60 ++++++++---------
+ fs/overlayfs/export.c    |   7 +-
+ fs/overlayfs/inode.c     |  57 ++++++++--------
+ fs/overlayfs/namei.c     |  37 +++++++---
+ fs/overlayfs/overlayfs.h |  30 +++++++--
+ fs/overlayfs/super.c     |  20 ++++--
+ fs/overlayfs/util.c      |  73 ++++++++++++++++++--
+ 8 files changed, 275 insertions(+), 150 deletions(-)
+
+-- 
+2.34.1
+
