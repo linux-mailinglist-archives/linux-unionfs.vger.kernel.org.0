@@ -2,120 +2,121 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17C7B783E89
-	for <lists+linux-unionfs@lfdr.de>; Tue, 22 Aug 2023 13:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 718287841EC
+	for <lists+linux-unionfs@lfdr.de>; Tue, 22 Aug 2023 15:22:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234378AbjHVLEC (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 22 Aug 2023 07:04:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37992 "EHLO
+        id S236081AbjHVNW7 (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 22 Aug 2023 09:22:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233459AbjHVLEC (ORCPT
+        with ESMTP id S234984AbjHVNW7 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 22 Aug 2023 07:04:02 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 527FBCCA
-        for <linux-unionfs@vger.kernel.org>; Tue, 22 Aug 2023 04:04:00 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2bcb89b476bso36622121fa.1
-        for <linux-unionfs@vger.kernel.org>; Tue, 22 Aug 2023 04:04:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1692702238; x=1693307038;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=trVN3CuZ4Zhp9Ue7PGXCyXAOehB2OZABgpBxkBylf84=;
-        b=ecHGyCPQo8H5x40ZFNHOeRj5+kqZ1P4F7rr69u8S7Pw9CydrEsm0/pwYtwLuzS81nO
-         S1Ig/gpZ8l1nFgbosUBJG5HQlBrJ4H1dwp2GodBlDwKFmYjEf7VXK7oS4oW0GPEdGWk4
-         shnVVb8iP8RPJ9UBotomQ9DlD1tGHLyrEaWrY=
+        Tue, 22 Aug 2023 09:22:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57B98CD4
+        for <linux-unionfs@vger.kernel.org>; Tue, 22 Aug 2023 06:22:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1692710534;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=FP04C/3+AW7mEu+K4tolPkw509XByebnbKRbF8ZPnSg=;
+        b=G0aRv3O5/BvbkylCncGmUrLU910JrOVMGU/d9UHVwG3fc/BZm2DRxuwbKiBn11EFSzYz1r
+        e7cQQ2/r4rqddB+Lb6cfa3F4hFubcbmLHMh2PIcX493V5ZgflwZnCbFkPFeSsmhJsOoWS6
+        9mKUlS/6aMhxNqlr1HO7tk9jQfZGrRc=
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com
+ [209.85.166.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-394-_FM6C8VhPbqJzGNTJBQMeQ-1; Tue, 22 Aug 2023 09:22:13 -0400
+X-MC-Unique: _FM6C8VhPbqJzGNTJBQMeQ-1
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-34bbc4b957dso37536945ab.2
+        for <linux-unionfs@vger.kernel.org>; Tue, 22 Aug 2023 06:22:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692702238; x=1693307038;
+        d=1e100.net; s=20221208; t=1692710532; x=1693315332;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=trVN3CuZ4Zhp9Ue7PGXCyXAOehB2OZABgpBxkBylf84=;
-        b=ACH5Qar7sLaHgYMskEDTDgEc46R+OrFMwA85EUYS7vJrDV6apKMbfwZi3Icis8TJNN
-         DmGmi2GTZR5lMEqoDkcu3NJOUjenYK1mnmZPTo+JXwgc8MZsXvNG8t2EjdK1R4qcyrD4
-         qlJd5vmz1KZI0UeoXtUXgbhIBwNmH/DD3hpqPLW+6Sh0EkQih/83U4affkdws/Td+Cq8
-         XLqg/+BfZ01d8MK2QrjsvjNNglzmj0OEo9SkcfC76In9qkP1jy6iGfiXg2ogGGYlEhet
-         sQId5AGxxCFJ2VJBhTtN0nMKruwzIvICHQRuqd0TyFVRCUYQJayU/qhETHBnui30ne/y
-         vp0Q==
-X-Gm-Message-State: AOJu0Yzrbyk6iZodPhFoR+tiKbv/l4zDID9b8a9I3Zr7czdoHsXhHi6N
-        P0/st2fU9JRDgecCkD1h56ysycekrH/JocCSsMPIZQ==
-X-Google-Smtp-Source: AGHT+IEjlewioVEmIve9ohhJ00v79UX4XU1Bu1tNq5wyCv6Oj2EB7s9xjSHgBX9SsM8lUufy0Q0T9b+1h6bBcZsrmnw=
-X-Received: by 2002:ac2:4db9:0:b0:500:8723:e457 with SMTP id
- h25-20020ac24db9000000b005008723e457mr2005827lfe.30.1692702238292; Tue, 22
- Aug 2023 04:03:58 -0700 (PDT)
+        bh=FP04C/3+AW7mEu+K4tolPkw509XByebnbKRbF8ZPnSg=;
+        b=HYHYS9BEhR6g5siYeAqfF/zOpxtC3xH5tMjMWqbazs5QP1ENjhd2//wGNZhN128CDr
+         9UQmYaeWnLpap2IwJDApwA/KfJkgQ/ZKoRXqsYz9vfU7DDCw7Me9KJFxCVysBMnVcxp8
+         U8Z7XXds4CNsgvKgCbAtbK/MIj0woXO1jTdAxuUJpZkJ50oUOS63FzC1XAXbLv20GSTs
+         vrdnIqxGnkl5Mv0DqJBUmKuhcisZO3bB1BskLpzY55+nPmtUIpCMBgQh25kZsOrEkp64
+         6G3apXz889cnP61K2xexffqzBAhKi6LPjocKbpBvcWxiMuVg2pytVWT4XSwkDyTuuxuu
+         WTJw==
+X-Gm-Message-State: AOJu0Yw+ezAui9wiVCGvN3mAMTHtwgD9tUGkoUoK2Y0HfBk/HFSNUEwn
+        WgsMgHtD+iYHlA55QJEssMogD+Dbr1oTU8iq/6ipP4TjVnWzdij80TCC9xs0JU6xIGJLqWTxetY
+        nWMGiad3VoCL23JK7Uga3UoNjooqw7Htl0iaTcaKTJWFNKz6o2TOB
+X-Received: by 2002:a05:6e02:1069:b0:348:987a:fd8c with SMTP id q9-20020a056e02106900b00348987afd8cmr10440688ilj.31.1692710532166;
+        Tue, 22 Aug 2023 06:22:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IESp9R+OhHIR3lgt3Td0oLKij5y+VwK24P8+kcjHQ96xkDlWTWsawshBjd6SEK2/VeaNz8gkUD5/l00F3ygH9s=
+X-Received: by 2002:a05:6e02:1069:b0:348:987a:fd8c with SMTP id
+ q9-20020a056e02106900b00348987afd8cmr10440671ilj.31.1692710531965; Tue, 22
+ Aug 2023 06:22:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230519125705.598234-1-amir73il@gmail.com> <20230519125705.598234-6-amir73il@gmail.com>
- <CAJfpeguhmZbjP3JLqtUy0AdWaHOkAPWeP827BBWwRFEAUgnUcQ@mail.gmail.com>
- <CAOQ4uxhYZqe0-r9knvdW_BWNvfeKapiwReTv4FWr_Px+CB+ENw@mail.gmail.com>
- <CAOQ4uxhBeFSV7TFuWXBgJZuu-eJBjKcsshDdxCz-fie0MqwVcw@mail.gmail.com> <CAOQ4uxirdrsaHPyctxRgSMxb2mBHJCJqB12Eof02CnouExKgzQ@mail.gmail.com>
-In-Reply-To: <CAOQ4uxirdrsaHPyctxRgSMxb2mBHJCJqB12Eof02CnouExKgzQ@mail.gmail.com>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Tue, 22 Aug 2023 13:03:46 +0200
-Message-ID: <CAJfpegth3TASZKvc_HrhGLOAFSGiAriiqO6iCN2OzT2bu62aDA@mail.gmail.com>
-Subject: Re: [PATCH v13 05/10] fuse: Handle asynchronous read and write in passthrough
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Daniel Rosenberg <drosen@google.com>,
-        Paul Lawrence <paullawrence@google.com>,
-        Alessio Balsini <balsini@android.com>,
-        fuse-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
-        overlayfs <linux-unionfs@vger.kernel.org>
+References: <cover.1692270188.git.alexl@redhat.com> <f140fd46c2f61e69630c14a6b3fb8ed5e3c62307.1692270188.git.alexl@redhat.com>
+ <CAJfpeguHCVFpcGVWdP5-j+7-+4cqjvd+-40UM=+vL1OFwS7rZA@mail.gmail.com>
+In-Reply-To: <CAJfpeguHCVFpcGVWdP5-j+7-+4cqjvd+-40UM=+vL1OFwS7rZA@mail.gmail.com>
+From:   Alexander Larsson <alexl@redhat.com>
+Date:   Tue, 22 Aug 2023 15:22:00 +0200
+Message-ID: <CAL7ro1HMZxXZDyJG9yikx+KCd3HsYPZdgk7SJBLAGWBKVrYD6g@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] ovl: Support creation of whiteout files on overlayfs
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     linux-unionfs@vger.kernel.org, amir73il@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Tue, 22 Aug 2023 at 12:18, Amir Goldstein <amir73il@gmail.com> wrote:
+On Mon, Aug 21, 2023 at 1:00=E2=80=AFPM Miklos Szeredi <miklos@szeredi.hu> =
+wrote:
 >
-> On Mon, Aug 21, 2023 at 6:27=E2=80=AFPM Amir Goldstein <amir73il@gmail.co=
-m> wrote:
-
-> > Getting back to this.
-> > Did you mean something like that? (only compile tested)
+> On Thu, 17 Aug 2023 at 13:05, Alexander Larsson <alexl@redhat.com> wrote:
 > >
-> > https://github.com/amir73il/linux/commits/backing_fs
+> > This is needed to properly stack overlay filesystems, I.E, being able
+> > to create a whiteout file on an overlay mount and then use that as
+> > part of the lowerdir in another overlay mount.
 > >
-> > If yes, then I wonder:
-> > 1. Is the difference between FUSE_IOCB_MASK and OVL_IOCB_MASK
-> >     (i.e. the APPEND flag) intentional?
-
-Setting IOCB_APPEND on the backing file doesn't make a difference as
-long as the backing file is not modified during the write.
-
-In overlayfs the case of the backing file being modified is not
-defined, so I guess that's the reason to omit it.  However I don't see
-a problem with setting it on the backing file either, the file
-size/position is synchronized after the write, so nothing bad should
-happen if the backing file was modified.
-
-> > 2. What would be the right way to do ovl_copyattr() on io completion?
-> >     Pass another completion handler to read/write helpers?
-> >     This seems a bit ugly. Do you have a nicer idea?
+> > The way this works is that we create a regular whiteout, but set the
+> > `overlay.nowhiteout` xattr on it. Whenever we check if a file is a
+> > whiteout we check this xattr and don't treat it as a whiteout if it is
+> > set. The xattr itself is then stripped and when viewed as part of the
+> > overlayfs mount it looks like a regular whiteout.
 > >
-
-Ugh, I missed that little detail.   I don't have a better idea than to
-use a callback function.
-
 >
-> Hmm. Looking closer, ovl_copyattr() in ovl_aio_cleanup_handler()
-> seems a bit racy as it is not done under inode_lock().
+> I understand the motivation, but don't have good feelings about the
+> implementation.  Like the xattr escaping this should also have the
+> property that when fed to an old kernel version, it shouldn't
+> interpret this object as a whiteout.  Whether it remains hidden like
+> the escaped xattrs or if it shows up as something else is
+> uninteresting.
 >
-> I wonder if it is enough to fix that by adding the lock or if we need
-> to resort to a more complicated scheme like FUSE_I_SIZE_UNSTABLE
-> for overlayfs aio?
+> It could just be a zero sized regular file with "overlay.whiteout".
 
-Quite recently rename didn't take inode lock on source, so
-ovl_aio_cleanup_handler() wasn't the only unlocked instance.
+So, I started doing this, where a whiteout is just a regular file with
+the xattr set. Initially I thought I only needed to check the xattr
+during lookup and convert the inode mode from S_IFREG to S_IFCHR.
+However, I also need to hook up readdir and convert DT_REG to DT_CHR,
+otherwise readdir will report the wrong d_type. To make it worse,
+overlayfs itself looks for DT_CHR to handle whiteouts when listing
+files, so nesting is not working without that.
 
-I don't see a strong reason to always lock the inode before
-ovl_copyattr(), but I could be wrong.
+The only way I see to implement that conversion is to call getxattr()
+on every DT_REG file during readdir(), and while a single getxattr()
+on lookup is fine, I don't think that is.
 
-Thanks,
-Miklos
+Any other ideas?
+
+--=20
+=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D=
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D
+ Alexander Larsson                                Red Hat, Inc
+       alexl@redhat.com         alexander.larsson@gmail.com
+
