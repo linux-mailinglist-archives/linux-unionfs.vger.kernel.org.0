@@ -2,415 +2,419 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D78DC7885CA
-	for <lists+linux-unionfs@lfdr.de>; Fri, 25 Aug 2023 13:33:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C00E5788944
+	for <lists+linux-unionfs@lfdr.de>; Fri, 25 Aug 2023 15:57:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230301AbjHYLcr (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Fri, 25 Aug 2023 07:32:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52590 "EHLO
+        id S245368AbjHYN4b (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Fri, 25 Aug 2023 09:56:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244446AbjHYLc0 (ORCPT
+        with ESMTP id S245404AbjHYNz7 (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Fri, 25 Aug 2023 07:32:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E81EB2105
-        for <linux-unionfs@vger.kernel.org>; Fri, 25 Aug 2023 04:31:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1692963010;
+        Fri, 25 Aug 2023 09:55:59 -0400
+X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 25 Aug 2023 06:55:55 PDT
+Received: from out-253.mta1.migadu.com (out-253.mta1.migadu.com [IPv6:2001:41d0:203:375::fd])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D2E42684;
+        Fri, 25 Aug 2023 06:55:55 -0700 (PDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1692971751;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=w2MyxYWmYRsFj8hYNJUpA0wVrhONlk9GbLr0nHm9kYQ=;
-        b=e8rYnBT/1MrBTglEJUXERn6fnSSCVbP+8VfprHHvCPPQA5Nxg+eNoLT5Vh8dqp3VzLXPUv
-        ui3fDULDGrzwzjHkfeLBXPekG3+GmCAT4Pqk+GiBhHmCUAxihiNkXGq/h5VOvobRp7ykdF
-        we0Glgx0xWQtA4rmGmfsqrmlL3vykh0=
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
- [209.85.166.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-459-7n2BLIv_NWeHlUwARHI3Tg-1; Fri, 25 Aug 2023 07:30:09 -0400
-X-MC-Unique: 7n2BLIv_NWeHlUwARHI3Tg-1
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-34cafcf0c57so4739395ab.3
-        for <linux-unionfs@vger.kernel.org>; Fri, 25 Aug 2023 04:30:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692963009; x=1693567809;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w2MyxYWmYRsFj8hYNJUpA0wVrhONlk9GbLr0nHm9kYQ=;
-        b=eIWqrfKiWzNDxxITDJqG0I6hkiHJHKCe5lDYtI8CwU15v0+qIZ1DOIxZW6Cmhlcytf
-         IjEYVY7QIuCHE4YgrDwbR1xsM2YriO57bsYijcQKQnqZSgBrzA3mI7/LvdAL1MzjJMiM
-         IeBL9OMZa4YPVylZ6QCuUoPooysItcze/e7V2GRfKtnOqTX2P5zcML/JdsZmkSS3ZheS
-         CpOJ/iTTY/rq6JoDdQo5dxp/f5xCDo4ExqpFGDNH31PLsZUeFYLUh+APo5NmI247RB9Y
-         DWtCJgk/Hozh2DO0eQ88IO/KCpKy0s7/GtFK/TbLkY8TRvVHWLeQFpLIOs6jhYQl6iaP
-         /a2g==
-X-Gm-Message-State: AOJu0Yxh2sjOLixRkkF+Vig2QTn/Z0HfOsHGixZsVDbY75gmm7wX9HSk
-        /dLDXpnl0ESfV+stqL6K1zzCgO9pHGT5Q6SP19q9RURIRjhN0oqEZQRqYaD1nKfYFmj4bp/cj44
-        EC9KKb+Li9Ynd3tQQOsSbPhI2v9Df4Iu9NH0+K/vZ5g==
-X-Received: by 2002:a05:6e02:178b:b0:34b:aa34:a5c4 with SMTP id y11-20020a056e02178b00b0034baa34a5c4mr9132134ilu.30.1692963008625;
-        Fri, 25 Aug 2023 04:30:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFr0vC28QEIvdXCDeG9wkQk3fE7UoiU+d0EWeuLjn3MZmfni+IqAyIgD7/65lrmaAHPdQCKbMv2cZFfRNHZRjA=
-X-Received: by 2002:a05:6e02:178b:b0:34b:aa34:a5c4 with SMTP id
- y11-20020a056e02178b00b0034baa34a5c4mr9132115ilu.30.1692963008213; Fri, 25
- Aug 2023 04:30:08 -0700 (PDT)
+        bh=dKms4PZoKLZJkif6yJQKB9u00tda86+mJb3olx59XCE=;
+        b=Ps5x6ZR/FlKh3oFYzUaxLaQsK0eDYLRFP4rP89FE5SIUJSvSK2X/nU4/R8/vQchrN50SmT
+        nh9mhZ3xwtQmH1h7Q1ucMo2yK2m687xZlecx7xXVwuB1LD400LJfmeJoMNsvONLS4gvGH+
+        34YxaU+QFsda1snLti+SvGkuVNK9mlo=
+From:   Hao Xu <hao.xu@linux.dev>
+To:     io-uring@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+Cc:     Dominique Martinet <asmadeus@codewreck.org>,
+        Pavel Begunkov <asml.silence@gmail.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Stefan Roesch <shr@fb.com>, Clay Harris <bugs@claycon.org>,
+        Dave Chinner <david@fromorbit.com>,
+        "Darrick J . Wong" <djwong@kernel.org>,
+        linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-cachefs@redhat.com,
+        ecryptfs@vger.kernel.org, linux-nfs@vger.kernel.org,
+        linux-unionfs@vger.kernel.org, bpf@vger.kernel.org,
+        netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, codalist@coda.cs.cmu.edu,
+        linux-f2fs-devel@lists.sourceforge.net, cluster-devel@redhat.com,
+        linux-mm@kvack.org, linux-nilfs@vger.kernel.org,
+        devel@lists.orangefs.org, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org, linux-mtd@lists.infradead.org,
+        Wanpeng Li <wanpengli@tencent.com>
+Subject: [PATCH 03/29] xfs: add NOWAIT semantics for readdir
+Date:   Fri, 25 Aug 2023 21:54:05 +0800
+Message-Id: <20230825135431.1317785-4-hao.xu@linux.dev>
+In-Reply-To: <20230825135431.1317785-1-hao.xu@linux.dev>
+References: <20230825135431.1317785-1-hao.xu@linux.dev>
 MIME-Version: 1.0
-References: <cover.1692270188.git.alexl@redhat.com> <f140fd46c2f61e69630c14a6b3fb8ed5e3c62307.1692270188.git.alexl@redhat.com>
- <CAJfpeguHCVFpcGVWdP5-j+7-+4cqjvd+-40UM=+vL1OFwS7rZA@mail.gmail.com>
- <CAL7ro1HMZxXZDyJG9yikx+KCd3HsYPZdgk7SJBLAGWBKVrYD6g@mail.gmail.com>
- <CAJfpeguerGOWAELyd7oY=z8Y-1sGG6OY9MurhCB7-kegxZ-wmQ@mail.gmail.com>
- <CAL7ro1Hr43u7CoyHwVOzxp+pcN2MHEf18B7+CZk=HFw=viGz8A@mail.gmail.com>
- <CAL7ro1FagGOZZg9yeWvWDov6L3prrjJE-+Yre1CJuViT7idNYw@mail.gmail.com>
- <CAOQ4uxhVXrNfhWc-EsunfyWyrJDFCjYu8GeAtvN0__QTfjtV5A@mail.gmail.com>
- <CAL7ro1GS9ieN=ZuDLE9mreiiYH4KUK6xWxp40hS-7ZTzf+r6Gg@mail.gmail.com>
- <CAOQ4uxhYH1SH5TbYfARDkep5p+xspUX2gq1HgMyLnv7J4=1emg@mail.gmail.com>
- <CAJfpegsv3fHwutkEq7S8PV9fYWC07BRUE8GMEpsnK1XkE2hb5w@mail.gmail.com>
- <CAOQ4uxhZySm0rNamtv3GNu8TFOZ66TdSzPVwwda16MQfWNKAQQ@mail.gmail.com>
- <CAL7ro1EJy-Mx=y=CLfnjgFxwey5jjH0qXbMyAKx0OyqAG-wcZw@mail.gmail.com>
- <CAOQ4uxhSecqp0zrBU=zuxAx9dJuZYJh4p7ePAodj4Ue8ryDR1Q@mail.gmail.com>
- <CAL7ro1ETE+OgBtokNN3jbTqoBpCRaeWSsvbFj-axV=5CZFeEyw@mail.gmail.com> <CAOQ4uxh8b6_yiyXSVpWv6Pz=-fg7qkAxMPY-vDZ0uws+_KTRMA@mail.gmail.com>
-In-Reply-To: <CAOQ4uxh8b6_yiyXSVpWv6Pz=-fg7qkAxMPY-vDZ0uws+_KTRMA@mail.gmail.com>
-From:   Alexander Larsson <alexl@redhat.com>
-Date:   Fri, 25 Aug 2023 13:29:57 +0200
-Message-ID: <CAL7ro1FPLE97S=UXePg90ntE2vcM+FuDFPVPzB6nCQdRCvMGWA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] ovl: Support creation of whiteout files on overlayfs
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Fri, Aug 25, 2023 at 10:41=E2=80=AFAM Amir Goldstein <amir73il@gmail.com=
-> wrote:
->
-> On Thu, Aug 24, 2023 at 5:23=E2=80=AFPM Alexander Larsson <alexl@redhat.c=
-om> wrote:
-> >
-> > On Thu, Aug 24, 2023 at 1:43=E2=80=AFPM Amir Goldstein <amir73il@gmail.=
-com> wrote:
-> > >
-> > > On Thu, Aug 24, 2023 at 12:56=E2=80=AFPM Alexander Larsson <alexl@red=
-hat.com> wrote:
-> > > >
-> > > > On Wed, Aug 23, 2023 at 5:50=E2=80=AFPM Amir Goldstein <amir73il@gm=
-ail.com> wrote:
-> > > > >
-> > > > > On Wed, Aug 23, 2023 at 5:52=E2=80=AFPM Miklos Szeredi <miklos@sz=
-eredi.hu> wrote:
-> > > > > >
-> > > > > > On Wed, 23 Aug 2023 at 16:43, Amir Goldstein <amir73il@gmail.co=
-m> wrote:
-> > > > > >
-> > > > > > > If we do this, then both overlay.whiteout and overlay.xattr_w=
-hiteouts
-> > > > > > > xattrs will be xattrs that the overlayfs driver never sets.
-> > > > > > > It's a precedent, but as long as it is properly documented an=
-d encoded
-> > > > > > > in fstests, I will be fine with it. Not sure about Miklos.
-> > > > > >
-> > > > > > Firstly I need to properly understand the proposal.  At this po=
-int I'm
-> > > > > > not sure what overlay.whiteout is supposed to mean.   Does it m=
-ean the
-> > > > > > same as a whiteout (chrdev(0,0))?  Or does it mean that overlay=
-fs
-> > > > > > should not treat it as a whiteout, but instead transform that i=
-nto a
-> > > > > > chrdev(0,0) for the top overlay to interpret as a whiteout?  Or
-> > > > > > something else?
-> > > > > >
-> > > > >
-> > > > > My proposal does not involve any transformation.
-> > > > > It is "just" to support another format for a whiteout.
-> > > > > Transforming a REG or FIFO real object to CHR ovl object
-> > > > > will be a pain IMO and I don't see why it is needed.
-> > > > >
-> > > > > Let me try again from the top:
-> > > > > 1. ovl_path_is_whiteout() checks if either ovl_is_whiteout() (cha=
-rdev(0,0))
-> > > > >     or regular file with "overlay.whiteout" xattr, so ovl_lookup(=
-)
-> > > > > will result in
-> > > > >     a negative dentry if either whiteout format is found at topmo=
-st layer
-> > > > > 2. To optimize unneeded getxattr, "overlay.whiteout" xattr could =
-be checked
-> > > > >     only in case the parent dir has xattr "overlay.xattr_whiteout=
-s"
-> > > > > 3. mkfs.composefs is responsible of creating the non-chardev whit=
-eouts
-> > > > >     as well as the marking the dirs that contains them with
-> > > > >     "overlay.xattr_whiteouts" - overlayfs itself never does that
-> > > > > 4. ovl_calc_d_ino() (from readdir on a merge dir) returns true if=
- the
-> > > > >     the iterated dir has "overlay.xattr_whiteouts" xattr
-> > > > > 5. That will cause ovl_cache_update_ino() to lookup the
-> > > > >     *overlay dentry* that will be negative (as per rule 1 above)
-> > > > >     if either whiteout format is found at topmost layer and that
-> > > > >     will cause the readdir dirent to be marked is_whiteout and
-> > > > >     filtered out of readdir results
-> > > > >
-> > > > > * The trick for readdir is that the the per dirent DT_CHR optimiz=
-ation
-> > > > >   is traded off for a per parent dir optimization, but even the w=
-orst case
-> > > > >   where all directories have xattr_whiteouts, readdir is not more
-> > > > >   expensive than readdir with xino enabled, which is the default =
-for
-> > > > >   several Linux distros
-> > > > >
-> > > > > Hope this is more clear?
-> > > >
-> > > > Ok, so I implemented this, both using the transforming-to-whiteout =
-and
-> > > > the alternative-whiteout approach.
-> > > >
-> > > > Here is the transform-to-whiteout approach:
-> > > >   https://github.com/alexlarsson/linux/tree/ovl-nesting-transform
-> > > >
-> > > > In it, if you have a lower dir with these files/xattrs:
-> > > >  * lowerdir/foo - directory
-> > > >      trusted.overlay.whiteouts
-> > > >  * lowerdir/foo/hide_file - regular file
-> > > >      trusted.overlay.whiteout
-> > > >
-> > > > Then you will get an overlay no-userxattr mount like this:
-> > > >  * lowerdir/foo - directory
-> > > >  * lowerdir/foo/hide_file - chardev(0,0) file
-> > > >
-> > > > This can be used as a lower in any overlayfs mount you want, userxa=
-ttr or no.
-> > > >
-> > > > Here is the alternative-whiteout approach:
-> > > >  https://github.com/alexlarsson/linux/tree/ovl-nesting-alternative
-> > > >
-> > > > In it, if you have a lower dir with these files/xattrs:
-> > > >  * lowerdir/foo - directory
-> > > >      trusted.overlay.overlay.whiteouts
-> > > >      user.overlay.whiteouts
-> > > >   * lowerdir/foo/hide_file - regular file
-> > > >      trusted.overlay.overlay.whiteout
-> > > >      user.overlay.whiteout
-> > > >
-> > > > Then you will get an overlay no-userxattr mount like this:
-> > > >  * lowerdir/foo - directory
-> > > >      trusted.overlay.whiteouts
-> > > >      user.overlay.whiteouts
-> > > >   * lowerdir/foo/hide_file - regular file
-> > > >      trusted.overlay.whiteout
-> > > >      user.overlay.whiteout
-> > > >
-> > > > This can be used as a lower in any overlayfs mount you want, userxa=
-ttr or no.
-> > > >
-> > > > I prefer the transform-to-whiteout approach for a two reasons:
-> > > >
-> > > > Given an existing image (say an OCI image) we can construct an
-> > > > overlayfs mount that is not just functionally identical, but also
-> > > > indistinguible from the expected one. I.e. if the original OCI imag=
-e
-> > > > had a chardev(0,0) we will still have one in the mount.
-> > > >
-> > >
-> > > I thought that OCI image format is using a different without format
-> > > which is converted to ovl whiteout format anyway:
-> > > https://github.com/opencontainers/image-spec/blob/main/layer.md#white=
-outs
-> >
-> > Yeah, but those whiteouts are not the target of this work. An OCI
-> > image is a set of tarballs, and one tarball can contain magically
-> > marked ".wh." prefixed files for whiteouts. These are converted to
-> > real whiteouts by docker. However, suppose the image itself contains
-> > an overlayfs lower directory, which the app in the container wants to
-> > use. This would look like a chardev(0,0) (not a .wh.*) in the tarball.
-> > If this is naively extracted to disk (without escaping) then those
-> > whiteouts will not be visible to the container app when it runs in the
-> > container, because the outer overlayfs ate them.
-> >
-> > Such whiteouts in OCI containers don't currently work, so you won't
-> > find any such OCI containers in the wild. But with escapes it seems
-> > useful. Something similar that you *will* find in the wild however, is
-> > ostree images with whiteouts in them, and we want to keep supporting
-> > these. See more below.
-> >
-> > > Also, IIUC, you want this feature for mkfs.composefs, which doesn't
-> > > have backward compat requirements and doesn't need to create
-> > > ovl images identical to existing ones. Please correct me if I am wron=
-g.
-> >
-> > One of the goals is to use composefs as a backend for ostree (instead
-> > of hardlinked trees). And ostree images with whiteouts in them are
-> > pretty common (typically from os images with preinstalled container
-> > images).
-> >
-> > If mkfs.composefs converted these to xattr whiteouts it may work when
-> > you run the containers in the image. But its not ideal if the content
-> > of the rootfs depends on the ostree backend, and its quite possible
-> > that some existing tooling will be confused by the new whiteouts.
-> >
->
-> I think I understand. I will try to remember how all those pieces
-> work together...
->
-> > > > When creating multiple lower dirs (e.g. from a multi-layered OCI
-> > > > image) you have to carry forward xattrs on directories from the low=
-er
-> > > > layers to the upper, otherwise a merged directory from a higher lay=
-er
-> > > > will overwrite the "overlay.whiteouts" xattr. This makes an otherwi=
-se
-> > > > local operation (just escape the files in this layer) to a global o=
-ne
-> > > > that depends on all layers.
-> > >
-> > > I don't understand this claim. In you implementation:
-> > > rdd->in_xwhiteouts_dir =3D
-> > >    ovl_path_check_xwhiteouts_xattr(OVL_FS(rdd->dentry->d_sb), realpat=
-h);
-> > > checks the "overlay.whiteouts" xattr on every layer.
-> > >
-> > > Checking if an entry is a whiteout only matters in the uppermost laye=
-r
-> > > that this named entry is found.
-> >
-> > Yeah, that is true for the whiteouts, but not the escaped whiteouts.
-> > It's a bit confusing, so let me give an example:
-> >
-> > Suppose I have this file structure with a 2 layer overlayfs with an xwh=
-iteout.
-> >
-> > =E2=94=9C=E2=94=80=E2=94=80 layer1
-> > =E2=94=82   =E2=94=94=E2=94=80=E2=94=80 dir
-> > =E2=94=82       =E2=94=94=E2=94=80=E2=94=80 file
-> > =E2=94=94=E2=94=80=E2=94=80 layer2
-> >     =E2=94=94=E2=94=80=E2=94=80 dir - overlay.whiteouts
-> >         =E2=94=94=E2=94=80=E2=94=80 file - overlay.whiteout
-> >
-> > (At this point, it is true what you say. If a layer3/dir existed
-> > without "overlay.whiteouts", things would still work.)
-> >
-> > Now I want to store this structure as the first layer inside another
-> > overlayfs by escaping the xattrs, it would look like this:
-> >
-> > layerA
-> > =E2=94=9C=E2=94=80=E2=94=80 layer1
-> > =E2=94=82   =E2=94=94=E2=94=80=E2=94=80 dir
-> > =E2=94=82       =E2=94=94=E2=94=80=E2=94=80 file
-> > =E2=94=94=E2=94=80=E2=94=80 layer2
-> >     =E2=94=94=E2=94=80=E2=94=80 dir - overlay.overlay.whiteouts
-> >         =E2=94=94=E2=94=80=E2=94=80 file - overlay.overlay.whiteout
-> > layerB
-> > =E2=94=94=E2=94=80=E2=94=80 layer2
-> >     =E2=94=94=E2=94=80=E2=94=80 dir
-> >         =E2=94=94=E2=94=80=E2=94=80 new-file
-> >
-> > You'd use it like this:
-> >  mount -t overlay -o lowerdir=3DlayerB:layerA overlay mntAB
-> >  mount -t overlay -o lowerdir=3DmntAB/layer2:mntAB/layer1 overlay mnt12
->
-> Painful example.
-> Next time please draw the top most layers on top and
-> not on bottom. I think it will be clearer this way.
->
-> >
-> > However, if you try this, you'll notice that It doesn't work, due to a
-> > missing "overlay.whiteouts" xattr on mntAB/layer2/dir.
-> > This is caused by the file that got added to layer2/dir in layerB.
-> > Since we got a new merged directory (layerB/layer2/dir) it overrides
-> > the escaped xattrs from layerA/layer2/dir.
-> >
-> > This is not an absolute showstopper, but it would be a nice property
-> > if escaping a layer was an isolated operation independent of the other
-> > layers.
-> >
->
-> I see your point.
+From: Hao Xu <howeyxu@tencent.com>
 
-I updated the ovl-nesting-alternative branch with an addition that
-makes reading escaped whiteout dir markers take into account all
-layers. With that I got the example above to work.
+Implement NOWAIT semantics for readdir. Return EAGAIN error to the
+caller if it would block, like failing to get locks, or going to
+do IO.
 
-Those that look sane to you?
+Co-developed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Hao Xu <howeyxu@tencent.com>
+[fixes deadlock issue, tweak code style]
+---
+ fs/xfs/libxfs/xfs_da_btree.c   | 16 +++++++++++
+ fs/xfs/libxfs/xfs_da_btree.h   |  1 +
+ fs/xfs/libxfs/xfs_dir2_block.c |  7 ++---
+ fs/xfs/libxfs/xfs_dir2_priv.h  |  2 +-
+ fs/xfs/scrub/dir.c             |  2 +-
+ fs/xfs/scrub/readdir.c         |  2 +-
+ fs/xfs/xfs_dir2_readdir.c      | 49 ++++++++++++++++++++++++++--------
+ fs/xfs/xfs_inode.c             | 27 +++++++++++++++++++
+ fs/xfs/xfs_inode.h             | 17 +++++++-----
+ 9 files changed, 99 insertions(+), 24 deletions(-)
 
-I also updated the composefs escape PR:
- https://github.com/containers/composefs/pull/175
-
-With this I am able to take a directory containing a set of normal
-overlayfs layers (including metacopy files and regular whiteouts), run
-mkcomposefs on it, mount the composefs, and then mount an overlayfs
-from the layer dirs in the composefs mount.
-
-> > > My understanding is that is mkfs.composefs creates a xwhiteout file,
-> > > it ONLY needs to locally set the overlay.whiteouts xattr on its paren=
-t
-> > > dir. I don't understand how multi layers matter.
-> > >
-> > > >
-> > > > In terms of implementation complexity I think they are very similar=
-.
-> > > >
-> > >
-> > > Sorry. I disagree. The two implementations may be on par wrt
-> > > lines of code, but I perceive the transform-to-whiteout patch as
-> > > harder to maintain.
-> > >
-> > > The fact that an xattr changes the file type seems terrifying to me.
-> > > Imagine that upper layer has a non-empty regular file with
-> > > overlay.whiteout xattr - this is exposed as a regular file and then
-> > > user truncates this regular file - BOOM (turn to whiteout?).
-> >
-> > Nod.
-> >
-> > > I need to understand your concerns about my proposal because
-> > > I did not get them.
-> >
-> > Hopefully I explained it above, so we can come up with a solution.
-> >
->
-> I think that the first thing to do would be to minimize the requirements.
-> I have lost track of the use cases and possible combinations of ostree
-> containers and unprivileged users.
->
-> Perhaps narrowing the requirement can simplify the design?
->
-> One option that we should consider - it may simplify the design a bit -
-> use an opt-in mount option to support interpreting escaping xattrs.
-> It may be wise to opt-in to this feature anyway - less chance for
-> regressions we did not think about.
-
-That is not really helpful to me, I need to support a composefs mount
-that contains
-files with overlay xattrs (to support e.g. container layers with
-metacopy) as well as whiteout files (to support container layers with
-whiteouts).
-
-> This means you can use xwhiteouts with no need of marking the
-> containing directories. ovl_calc_d_ino() would just blindly check for
-> ofs->config.<something>.
->
-> Would the opt-in mount option be a problem to your use cases?
-
-The only option I see that could potentially useful for the composefs
-usecase is to *disable* regular whiteout processing, and just expose
-chardev(0,0) files as they are. Then we can use xwhiteouts for the
-composefs layers and expose the chardev(0,0) files in the image as is.
-Not sure this is worth it though?
-
-At the end of the day, being able to nest overlayfs with whiteouts in
-them Is a clear improvement on what we had. Then we just have to make
-userspace handle the fact that the whiteout files change types when in
-a composefs image.
-
---=20
-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D=
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D
- Alexander Larsson                                Red Hat, Inc
-       alexl@redhat.com         alexander.larsson@gmail.com
+diff --git a/fs/xfs/libxfs/xfs_da_btree.c b/fs/xfs/libxfs/xfs_da_btree.c
+index e576560b46e9..2638eb37bc77 100644
+--- a/fs/xfs/libxfs/xfs_da_btree.c
++++ b/fs/xfs/libxfs/xfs_da_btree.c
+@@ -2643,16 +2643,32 @@ xfs_da_read_buf(
+ 	struct xfs_buf_map	map, *mapp = &map;
+ 	int			nmap = 1;
+ 	int			error;
++	int			buf_flags = 0;
+ 
+ 	*bpp = NULL;
+ 	error = xfs_dabuf_map(dp, bno, flags, whichfork, &mapp, &nmap);
+ 	if (error || !nmap)
+ 		goto out_free;
+ 
++	/*
++	 * NOWAIT semantics mean we don't wait on the buffer lock nor do we
++	 * issue IO for this buffer if it is not already in memory. Caller will
++	 * retry. This will return -EAGAIN if the buffer is in memory and cannot
++	 * be locked, and no buffer and no error if it isn't in memory.  We
++	 * translate both of those into a return state of -EAGAIN and *bpp =
++	 * NULL.
++	 */
++	if (flags & XFS_DABUF_NOWAIT)
++		buf_flags |= XBF_NOWAIT | XBF_INCORE;
+ 	error = xfs_trans_read_buf_map(mp, tp, mp->m_ddev_targp, mapp, nmap, 0,
+ 			&bp, ops);
+ 	if (error)
+ 		goto out_free;
++	if (!bp) {
++		ASSERT(flags & XFS_DABUF_NOWAIT);
++		error = -EAGAIN;
++		goto out_free;
++	}
+ 
+ 	if (whichfork == XFS_ATTR_FORK)
+ 		xfs_buf_set_ref(bp, XFS_ATTR_BTREE_REF);
+diff --git a/fs/xfs/libxfs/xfs_da_btree.h b/fs/xfs/libxfs/xfs_da_btree.h
+index ffa3df5b2893..32e7b1cca402 100644
+--- a/fs/xfs/libxfs/xfs_da_btree.h
++++ b/fs/xfs/libxfs/xfs_da_btree.h
+@@ -205,6 +205,7 @@ int	xfs_da3_node_read_mapped(struct xfs_trans *tp, struct xfs_inode *dp,
+  */
+ 
+ #define XFS_DABUF_MAP_HOLE_OK	(1u << 0)
++#define XFS_DABUF_NOWAIT	(1u << 1)
+ 
+ int	xfs_da_grow_inode(xfs_da_args_t *args, xfs_dablk_t *new_blkno);
+ int	xfs_da_grow_inode_int(struct xfs_da_args *args, xfs_fileoff_t *bno,
+diff --git a/fs/xfs/libxfs/xfs_dir2_block.c b/fs/xfs/libxfs/xfs_dir2_block.c
+index 00f960a703b2..59b24a594add 100644
+--- a/fs/xfs/libxfs/xfs_dir2_block.c
++++ b/fs/xfs/libxfs/xfs_dir2_block.c
+@@ -135,13 +135,14 @@ int
+ xfs_dir3_block_read(
+ 	struct xfs_trans	*tp,
+ 	struct xfs_inode	*dp,
++	unsigned int		flags,
+ 	struct xfs_buf		**bpp)
+ {
+ 	struct xfs_mount	*mp = dp->i_mount;
+ 	xfs_failaddr_t		fa;
+ 	int			err;
+ 
+-	err = xfs_da_read_buf(tp, dp, mp->m_dir_geo->datablk, 0, bpp,
++	err = xfs_da_read_buf(tp, dp, mp->m_dir_geo->datablk, flags, bpp,
+ 				XFS_DATA_FORK, &xfs_dir3_block_buf_ops);
+ 	if (err || !*bpp)
+ 		return err;
+@@ -380,7 +381,7 @@ xfs_dir2_block_addname(
+ 	tp = args->trans;
+ 
+ 	/* Read the (one and only) directory block into bp. */
+-	error = xfs_dir3_block_read(tp, dp, &bp);
++	error = xfs_dir3_block_read(tp, dp, 0, &bp);
+ 	if (error)
+ 		return error;
+ 
+@@ -695,7 +696,7 @@ xfs_dir2_block_lookup_int(
+ 	dp = args->dp;
+ 	tp = args->trans;
+ 
+-	error = xfs_dir3_block_read(tp, dp, &bp);
++	error = xfs_dir3_block_read(tp, dp, 0, &bp);
+ 	if (error)
+ 		return error;
+ 
+diff --git a/fs/xfs/libxfs/xfs_dir2_priv.h b/fs/xfs/libxfs/xfs_dir2_priv.h
+index 7404a9ff1a92..7d4cf8a0f15b 100644
+--- a/fs/xfs/libxfs/xfs_dir2_priv.h
++++ b/fs/xfs/libxfs/xfs_dir2_priv.h
+@@ -51,7 +51,7 @@ extern int xfs_dir_cilookup_result(struct xfs_da_args *args,
+ 
+ /* xfs_dir2_block.c */
+ extern int xfs_dir3_block_read(struct xfs_trans *tp, struct xfs_inode *dp,
+-			       struct xfs_buf **bpp);
++			       unsigned int flags, struct xfs_buf **bpp);
+ extern int xfs_dir2_block_addname(struct xfs_da_args *args);
+ extern int xfs_dir2_block_lookup(struct xfs_da_args *args);
+ extern int xfs_dir2_block_removename(struct xfs_da_args *args);
+diff --git a/fs/xfs/scrub/dir.c b/fs/xfs/scrub/dir.c
+index 0b491784b759..5cc51f201bd7 100644
+--- a/fs/xfs/scrub/dir.c
++++ b/fs/xfs/scrub/dir.c
+@@ -313,7 +313,7 @@ xchk_directory_data_bestfree(
+ 		/* dir block format */
+ 		if (lblk != XFS_B_TO_FSBT(mp, XFS_DIR2_DATA_OFFSET))
+ 			xchk_fblock_set_corrupt(sc, XFS_DATA_FORK, lblk);
+-		error = xfs_dir3_block_read(sc->tp, sc->ip, &bp);
++		error = xfs_dir3_block_read(sc->tp, sc->ip, 0, &bp);
+ 	} else {
+ 		/* dir data format */
+ 		error = xfs_dir3_data_read(sc->tp, sc->ip, lblk, 0, &bp);
+diff --git a/fs/xfs/scrub/readdir.c b/fs/xfs/scrub/readdir.c
+index e51c1544be63..f0a727311632 100644
+--- a/fs/xfs/scrub/readdir.c
++++ b/fs/xfs/scrub/readdir.c
+@@ -101,7 +101,7 @@ xchk_dir_walk_block(
+ 	unsigned int		off, next_off, end;
+ 	int			error;
+ 
+-	error = xfs_dir3_block_read(sc->tp, dp, &bp);
++	error = xfs_dir3_block_read(sc->tp, dp, 0, &bp);
+ 	if (error)
+ 		return error;
+ 
+diff --git a/fs/xfs/xfs_dir2_readdir.c b/fs/xfs/xfs_dir2_readdir.c
+index 9f3ceb461515..dcdbd26e0402 100644
+--- a/fs/xfs/xfs_dir2_readdir.c
++++ b/fs/xfs/xfs_dir2_readdir.c
+@@ -149,6 +149,7 @@ xfs_dir2_block_getdents(
+ 	struct xfs_da_geometry	*geo = args->geo;
+ 	unsigned int		offset, next_offset;
+ 	unsigned int		end;
++	unsigned int		flags = 0;
+ 
+ 	/*
+ 	 * If the block number in the offset is out of range, we're done.
+@@ -156,7 +157,9 @@ xfs_dir2_block_getdents(
+ 	if (xfs_dir2_dataptr_to_db(geo, ctx->pos) > geo->datablk)
+ 		return 0;
+ 
+-	error = xfs_dir3_block_read(args->trans, dp, &bp);
++	if (ctx->flags & DIR_CONTEXT_F_NOWAIT)
++		flags |= XFS_DABUF_NOWAIT;
++	error = xfs_dir3_block_read(args->trans, dp, flags, &bp);
+ 	if (error)
+ 		return error;
+ 
+@@ -240,6 +243,7 @@ xfs_dir2_block_getdents(
+ STATIC int
+ xfs_dir2_leaf_readbuf(
+ 	struct xfs_da_args	*args,
++	struct dir_context	*ctx,
+ 	size_t			bufsize,
+ 	xfs_dir2_off_t		*cur_off,
+ 	xfs_dablk_t		*ra_blk,
+@@ -258,10 +262,15 @@ xfs_dir2_leaf_readbuf(
+ 	struct xfs_iext_cursor	icur;
+ 	int			ra_want;
+ 	int			error = 0;
+-
+-	error = xfs_iread_extents(args->trans, dp, XFS_DATA_FORK);
+-	if (error)
+-		goto out;
++	unsigned int		flags = 0;
++
++	if (ctx->flags & DIR_CONTEXT_F_NOWAIT) {
++		flags |= XFS_DABUF_NOWAIT;
++	} else {
++		error = xfs_iread_extents(args->trans, dp, XFS_DATA_FORK);
++		if (error)
++			goto out;
++	}
+ 
+ 	/*
+ 	 * Look for mapped directory blocks at or above the current offset.
+@@ -280,7 +289,7 @@ xfs_dir2_leaf_readbuf(
+ 	new_off = xfs_dir2_da_to_byte(geo, map.br_startoff);
+ 	if (new_off > *cur_off)
+ 		*cur_off = new_off;
+-	error = xfs_dir3_data_read(args->trans, dp, map.br_startoff, 0, &bp);
++	error = xfs_dir3_data_read(args->trans, dp, map.br_startoff, flags, &bp);
+ 	if (error)
+ 		goto out;
+ 
+@@ -360,6 +369,7 @@ xfs_dir2_leaf_getdents(
+ 	int			byteoff;	/* offset in current block */
+ 	unsigned int		offset = 0;
+ 	int			error = 0;	/* error return value */
++	int			written = 0;
+ 
+ 	/*
+ 	 * If the offset is at or past the largest allowed value,
+@@ -391,10 +401,17 @@ xfs_dir2_leaf_getdents(
+ 				bp = NULL;
+ 			}
+ 
+-			if (*lock_mode == 0)
+-				*lock_mode = xfs_ilock_data_map_shared(dp);
+-			error = xfs_dir2_leaf_readbuf(args, bufsize, &curoff,
+-					&rablk, &bp);
++			if (*lock_mode == 0) {
++				*lock_mode =
++					xfs_ilock_data_map_shared_generic(dp,
++					ctx->flags & DIR_CONTEXT_F_NOWAIT);
++				if (!*lock_mode) {
++					error = -EAGAIN;
++					break;
++				}
++			}
++			error = xfs_dir2_leaf_readbuf(args, ctx, bufsize,
++					&curoff, &rablk, &bp);
+ 			if (error || !bp)
+ 				break;
+ 
+@@ -479,6 +496,7 @@ xfs_dir2_leaf_getdents(
+ 		 */
+ 		offset += length;
+ 		curoff += length;
++		written += length;
+ 		/* bufsize may have just been a guess; don't go negative */
+ 		bufsize = bufsize > length ? bufsize - length : 0;
+ 	}
+@@ -492,6 +510,8 @@ xfs_dir2_leaf_getdents(
+ 		ctx->pos = xfs_dir2_byte_to_dataptr(curoff) & 0x7fffffff;
+ 	if (bp)
+ 		xfs_trans_brelse(args->trans, bp);
++	if (error == -EAGAIN && written > 0)
++		error = 0;
+ 	return error;
+ }
+ 
+@@ -514,6 +534,7 @@ xfs_readdir(
+ 	unsigned int		lock_mode;
+ 	bool			isblock;
+ 	int			error;
++	bool			nowait;
+ 
+ 	trace_xfs_readdir(dp);
+ 
+@@ -531,7 +552,11 @@ xfs_readdir(
+ 	if (dp->i_df.if_format == XFS_DINODE_FMT_LOCAL)
+ 		return xfs_dir2_sf_getdents(&args, ctx);
+ 
+-	lock_mode = xfs_ilock_data_map_shared(dp);
++	nowait = ctx->flags & DIR_CONTEXT_F_NOWAIT;
++	lock_mode = xfs_ilock_data_map_shared_generic(dp, nowait);
++	if (!lock_mode)
++		return -EAGAIN;
++
+ 	error = xfs_dir2_isblock(&args, &isblock);
+ 	if (error)
+ 		goto out_unlock;
+@@ -546,5 +571,7 @@ xfs_readdir(
+ out_unlock:
+ 	if (lock_mode)
+ 		xfs_iunlock(dp, lock_mode);
++	if (error == -EAGAIN)
++		ASSERT(nowait);
+ 	return error;
+ }
+diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+index 9e62cc500140..d088f7d0c23a 100644
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -120,6 +120,33 @@ xfs_ilock_data_map_shared(
+ 	return lock_mode;
+ }
+ 
++/*
++ * Similar to xfs_ilock_data_map_shared(), except that it will only try to lock
++ * the inode in shared mode if the extents are already in memory. If it fails to
++ * get the lock or has to do IO to read the extent list, fail the operation by
++ * returning 0 as the lock mode.
++ */
++uint
++xfs_ilock_data_map_shared_nowait(
++	struct xfs_inode	*ip)
++{
++	if (xfs_need_iread_extents(&ip->i_df))
++		return 0;
++	if (!xfs_ilock_nowait(ip, XFS_ILOCK_SHARED))
++		return 0;
++	return XFS_ILOCK_SHARED;
++}
++
++int
++xfs_ilock_data_map_shared_generic(
++	struct xfs_inode	*dp,
++	bool			nowait)
++{
++	if (nowait)
++		return xfs_ilock_data_map_shared_nowait(dp);
++	return xfs_ilock_data_map_shared(dp);
++}
++
+ uint
+ xfs_ilock_attr_map_shared(
+ 	struct xfs_inode	*ip)
+diff --git a/fs/xfs/xfs_inode.h b/fs/xfs/xfs_inode.h
+index 7547caf2f2ab..ea206a5a27df 100644
+--- a/fs/xfs/xfs_inode.h
++++ b/fs/xfs/xfs_inode.h
+@@ -490,13 +490,16 @@ int		xfs_rename(struct mnt_idmap *idmap,
+ 			   struct xfs_name *target_name,
+ 			   struct xfs_inode *target_ip, unsigned int flags);
+ 
+-void		xfs_ilock(xfs_inode_t *, uint);
+-int		xfs_ilock_nowait(xfs_inode_t *, uint);
+-void		xfs_iunlock(xfs_inode_t *, uint);
+-void		xfs_ilock_demote(xfs_inode_t *, uint);
+-bool		xfs_isilocked(struct xfs_inode *, uint);
+-uint		xfs_ilock_data_map_shared(struct xfs_inode *);
+-uint		xfs_ilock_attr_map_shared(struct xfs_inode *);
++void		xfs_ilock(struct xfs_inode *ip, uint lockmode);
++int		xfs_ilock_nowait(struct xfs_inode *ip, uint lockmode);
++void		xfs_iunlock(struct xfs_inode *ip, uint lockmode);
++void		xfs_ilock_demote(struct xfs_inode *ip, uint lockmode);
++bool		xfs_isilocked(struct xfs_inode *ip, uint lockmode);
++uint		xfs_ilock_data_map_shared(struct xfs_inode *ip);
++uint		xfs_ilock_data_map_shared_nowait(struct xfs_inode *ip);
++int		xfs_ilock_data_map_shared_generic(struct xfs_inode *ip,
++						  bool nowait);
++uint		xfs_ilock_attr_map_shared(struct xfs_inode *ip);
+ 
+ uint		xfs_ip2xflags(struct xfs_inode *);
+ int		xfs_ifree(struct xfs_trans *, struct xfs_inode *);
+-- 
+2.25.1
 
