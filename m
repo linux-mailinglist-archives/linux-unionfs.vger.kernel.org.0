@@ -2,199 +2,134 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F13B67979B2
-	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Sep 2023 19:18:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 477FD79789D
+	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Sep 2023 18:50:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237306AbjIGRSr (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 7 Sep 2023 13:18:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50636 "EHLO
+        id S243704AbjIGQuF (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 7 Sep 2023 12:50:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243012AbjIGRSn (ORCPT
+        with ESMTP id S238763AbjIGQuE (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 7 Sep 2023 13:18:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D77B6CC
-        for <linux-unionfs@vger.kernel.org>; Thu,  7 Sep 2023 10:17:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694106987;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=psIW52QgXH2AOvjLjUwb12+BmCd7MyaF4hBr2i6SMLI=;
-        b=W2/XYsd8iIPMjVstgldUFYudk+pkt1KV32Yq+2WFSHRDVj3WBcZlRIssx2HpFhy6xKZJQx
-        UORoGf1YOIM7QAT0MFhmKVBowBcyIxoSufp1eQiSdumNMznC+OqTSR2qVCypY9PXXmImXX
-        rlXIs04b+q5gQUY35OD+cJY/xtwuF08=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-298-T-fuRr9CM2WvufSMX-KWWQ-1; Thu, 07 Sep 2023 04:44:22 -0400
-X-MC-Unique: T-fuRr9CM2WvufSMX-KWWQ-1
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2bcb2990ba0so8511311fa.3
-        for <linux-unionfs@vger.kernel.org>; Thu, 07 Sep 2023 01:44:21 -0700 (PDT)
+        Thu, 7 Sep 2023 12:50:04 -0400
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 778371FEB
+        for <linux-unionfs@vger.kernel.org>; Thu,  7 Sep 2023 09:49:38 -0700 (PDT)
+Received: by mail-yb1-xb35.google.com with SMTP id 3f1490d57ef6-d7b79a4899bso1012800276.2
+        for <linux-unionfs@vger.kernel.org>; Thu, 07 Sep 2023 09:49:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694105320; x=1694710120; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MaxZdmgmCvo5Fw9so0MXWCFgHVG6G03XSCfi5PqSeDE=;
+        b=UbIbxNCgbTlcoeuNhu4IB+nM/6Ct5CEklCZ5uE5Nfw+UFLFkRFnKdgejGr++cS04G/
+         OfrlVfyo/k6PPm3ZFn5qbD2o+6PzLfarbdm0DMpoo9JzUirfXuBg7myuMqB25qX3/CWk
+         geEo6jwBmRHrFdkhv2l7qLmWOW/erFLXVeTDm+Sk1zLNT6YZoomXE3DMtenrkUpHc1H8
+         0C9CVE4U0XmC3rRYZuOMgxebAFri6xsdYa2gShjS9pwbIiP6CKZOOC2s4pTcm5Rzb//2
+         mt3+hu01eqBcLUCIe27/XDejIc86qVgTw5BiCAlBYmI6OjoGRkQXWgSVbDO8tO/lehIC
+         pDVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694076260; x=1694681060;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1694105320; x=1694710120;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=psIW52QgXH2AOvjLjUwb12+BmCd7MyaF4hBr2i6SMLI=;
-        b=GAa4f7V45AHvY0lzdh74ztaeT+Jvsv6rK/aRDGIOmyP4WHOmU99uh++KkTOMjaWsO3
-         fjjlh5cGjw1owyLJos7imgIGgOf2sITRrmRlaspxHLfJaIAQTzkGChsQkqMKNMbqVe4E
-         1t9/56wAxyKdZzuyoaQWywe8zVocnKDARzsTgY5AY/jlaDFLP06iO3PR2616sMSAnKN3
-         Hp0iATWbdoLekYz2j6IuLr3dgzeY1IFfo3WxAwDHfOAf5PXTJfyl8AJbaZ07+W8CPQUG
-         i8hw8LYG9KcxG308WOI27i/PDuWMWCXxBjPJKxR0WqMpgxMWiDhmCtXrXL5TbtpuVRDy
-         JZKA==
-X-Gm-Message-State: AOJu0YxVGd9h8eURNAz7g+WIZv5KF0x5JmkC+5SEJH3yMKrAQ5jZbbpU
-        cX/RHZP8lurN7gbf9PiazzHkX7Ta8N3cXO/WUcAL1R1qUIsMNJCNOPR7QQJxZnk1z+c6yY3P9J/
-        Sz4h3YEoMR6KnV+87lMjAeFf7nw==
-X-Received: by 2002:a2e:818b:0:b0:2bc:e827:a4ff with SMTP id e11-20020a2e818b000000b002bce827a4ffmr4464543ljg.9.1694076260695;
-        Thu, 07 Sep 2023 01:44:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5WC4lQoIY349YNO2FZSRCRm/FZXX8Nk6ubluSxgJmkyhqxvGEK66WOLg/KllNkzpbNulDig==
-X-Received: by 2002:a2e:818b:0:b0:2bc:e827:a4ff with SMTP id e11-20020a2e818b000000b002bce827a4ffmr4464534ljg.9.1694076260505;
-        Thu, 07 Sep 2023 01:44:20 -0700 (PDT)
-Received: from greebo.redhat.com (c-e6a5e255.022-110-73746f36.bbcust.telenor.se. [85.226.165.230])
-        by smtp.googlemail.com with ESMTPSA id o6-20020a2e9b46000000b002b70a64d4desm3812828ljj.46.2023.09.07.01.44.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Sep 2023 01:44:20 -0700 (PDT)
-From:   Alexander Larsson <alexl@redhat.com>
-To:     miklos@szeredi.hu
-Cc:     linux-unionfs@vger.kernel.org, amir73il@gmail.com,
-        Alexander Larsson <alexl@redhat.com>
-Subject: [PATCH v3 5/6] ovl: Handle escaped xwhiteouts across layers
-Date:   Thu,  7 Sep 2023 10:44:10 +0200
-Message-ID: <acb6243943171a353091fa92cf1ffbf92bcb26ba.1694075674.git.alexl@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <cover.1694075674.git.alexl@redhat.com>
-References: <cover.1694075674.git.alexl@redhat.com>
+        bh=MaxZdmgmCvo5Fw9so0MXWCFgHVG6G03XSCfi5PqSeDE=;
+        b=F/9YiN2L+1FAagUMM3M1GFHgOFrwb3UNitXHDy1eFwCiQ2XsSQ7Di/8PwX1Au8Uqei
+         yl9llMY82e9ynIXjwFm7uklH5fyRtzraSQJakeYuM7xmYzz3VTazH1g04T63lT2ij+9M
+         Z+l4uIDDjKq7/29+EZI9rfude2eDy4QVH4TFmUie6Toi4QhT1rnPZeP4Ov7gkTGORjpw
+         VFpbGPL700DrHe4x+YrhSn1f2j57Yc/U6MASAsXXscmvgbQgVEiyJMAzBM8jNTOCrzZE
+         U6EeVQVkYr+94lBYxVO/xHQMxFBX1thyCvIgtbl81U9pCX3UZrq0n7fS+Lp0xunpAdeh
+         gcWQ==
+X-Gm-Message-State: AOJu0YyGapsWOhUZrDTSMhfuGxRGi9i4GdwbZ5TbaGD5Zt0MPOwZNpOg
+        4Zgyei2sCQj9OF1D/v/TxHv90Z0Qp5UerCCrNXZrQ9Usg7k=
+X-Google-Smtp-Source: AGHT+IERtb+FUHbAkqZ89sg7kpOBH9RTIQH8NKHsHWGX+vsBUT9+Emamq/zhQuRqlrTJIlWDkQ0VHvlt22XvrPb9nT0=
+X-Received: by 2002:a05:6102:3a7a:b0:44e:8353:e86a with SMTP id
+ bf26-20020a0561023a7a00b0044e8353e86amr4831469vsb.24.1694084236934; Thu, 07
+ Sep 2023 03:57:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <cover.1694075674.git.alexl@redhat.com> <261be2df5093dda05aaffe10a6c8831439232574.1694075674.git.alexl@redhat.com>
+In-Reply-To: <261be2df5093dda05aaffe10a6c8831439232574.1694075674.git.alexl@redhat.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Thu, 7 Sep 2023 13:57:05 +0300
+Message-ID: <CAOQ4uxiGiv_5VP6NcnouLWV_QDi==Mt6LtiD_A+EY9gMNxn3tw@mail.gmail.com>
+Subject: Re: [PATCH v3 6/6] ovl: Add documentation on nesting of overlayfs mounts
+To:     Alexander Larsson <alexl@redhat.com>
+Cc:     miklos@szeredi.hu, linux-unionfs@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-We use the "overlay.whiteouts" to mark any directory in a lower dir that may
-contain "overlay.whiteout" files (xwhiteouts). This works even if other layers
-overlap that directory in a mount.
+On Thu, Sep 7, 2023 at 11:44=E2=80=AFAM Alexander Larsson <alexl@redhat.com=
+> wrote:
+>
+> Signed-off-by: Alexander Larsson <alexl@redhat.com>
 
-For example, take these files in three layers:
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
 
- layer2/dir/ - overlay.whiteouts
- layer2/dir/file - overlay.whiteout
- layer1/dir/
- layer1/dir/file
-
-An overlayfs mount with -o lowerdir=layer2:layer1 would have a whiteout in
-layer2.
-
-However, suppose you wanted to put this inside an overlayfs layer (say
-"layerA"). I.e. you want to escape the whiteouts above so that when the new
-layer is mounted using overlayfs the mount shows the above content. The natural
-approach is to just take each layer and escape it:
-
- layerA/layer2/dir/ - overlay.overlay.whiteouts
- layerA/layer2/dir/file - overlay.overlay.whiteout
- layerA/layer1/dir/
- layerA/layer1/dir/file
-
-This initially seems to work, however if there is another lowerdir (say
-"layerB") that overlaps the xwhiteouts dir, then this runs into problem:
-
- layerB/layer2/dir/ - **NO overlay.overlay.whiteouts **
- layerA/layer2/dir/ - overlay.overlay.whiteouts
- layerA/layer2/dir/file - overlay.overlay.whiteout
- layerA/layer1/dir/
- layerA/layer1/dir/file
-
-If you mount this with -o lowerdir=layerB:layerA, then in the final mount,
-there will be no overlay.whiteouts xattrs on the "layer2/dir" merged
-directory, because the topmost lower dir xattrs win.
-
-We would like this to work as is, to avoid having layer escaping depend on other
-layers. So, to fix this up we special case the reading of escaped
-"overlay.whiteouts" xattrs by looking in all layers for the first hit.
-
-Signed-off-by: Alexander Larsson <alexl@redhat.com>
----
- fs/overlayfs/xattrs.c | 46 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 45 insertions(+), 1 deletion(-)
-
-diff --git a/fs/overlayfs/xattrs.c b/fs/overlayfs/xattrs.c
-index 27b31f812eb1..9e5f50ba333d 100644
---- a/fs/overlayfs/xattrs.c
-+++ b/fs/overlayfs/xattrs.c
-@@ -92,6 +92,25 @@ static int ovl_xattr_get(struct dentry *dentry, struct inode *inode, const char
- 	return res;
- }
- 
-+static int ovl_xattr_get_first(struct dentry *dentry, struct inode *inode, const char *name,
-+			       void *value, size_t size)
-+{
-+	const struct cred *old_cred;
-+	struct path realpath;
-+	int idx, next;
-+	int res = -ENODATA;
-+
-+	old_cred = ovl_override_creds(dentry->d_sb);
-+	for (idx = 0; idx != -1; idx = next) {
-+		next = ovl_path_next(idx, dentry, &realpath);
-+		res = vfs_getxattr(mnt_idmap(realpath.mnt), realpath.dentry, name, value, size);
-+		if (res != -ENODATA && res != -EOPNOTSUPP)
-+			break;
-+	}
-+	revert_creds(old_cred);
-+	return res;
-+}
-+
- static bool ovl_can_list(struct super_block *sb, const char *s)
- {
- 	/* Never list non-escaped private (.overlay) */
-@@ -176,6 +195,18 @@ static char *ovl_xattr_escape_name(const char *prefix, const char *name)
- 	return escaped;
- }
- 
-+
-+static int str_ends_with(const char *s, const char *sub)
-+{
-+	int slen = strlen(s);
-+	int sublen = strlen(sub);
-+
-+	if (sublen > slen)
-+		return 0;
-+
-+	return !memcmp(s + slen - sublen, sub, sublen);
-+}
-+
- static int ovl_own_xattr_get(const struct xattr_handler *handler,
- 			     struct dentry *dentry, struct inode *inode,
- 			     const char *name, void *buffer, size_t size)
-@@ -187,7 +218,20 @@ static int ovl_own_xattr_get(const struct xattr_handler *handler,
- 	if (IS_ERR(escaped))
- 		return PTR_ERR(escaped);
- 
--	r = ovl_xattr_get(dentry, inode, escaped, buffer, size);
-+	/*
-+	 * Escaped "overlay.whiteouts" directories need to be combined across layers.
-+	 * For example, if a lower layer contains an escaped "overlay.whiteout"
-+	 * its parent directory will be marked with an escaped "overlay.whiteouts".
-+	 * The merged directory will contain a (now non-escaped) whiteout, and its
-+	 * parent should therefore be marked too. However, if a layer above the marked
-+	 * one has covers the same directory but without whiteouts the covering directory
-+	 * would not be marged, and thus the merged directory would not be marked.
-+	 */
-+	if (d_is_dir(dentry) &&
-+	    str_ends_with(escaped, "overlay.whiteouts"))
-+		r = ovl_xattr_get_first(dentry, inode, escaped, buffer, size);
-+	else
-+		r = ovl_xattr_get(dentry, inode, escaped, buffer, size);
- 
- 	kfree(escaped);
- 
--- 
-2.41.0
-
+> ---
+>  Documentation/filesystems/overlayfs.rst | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+>
+> diff --git a/Documentation/filesystems/overlayfs.rst b/Documentation/file=
+systems/overlayfs.rst
+> index cdefbe73d85c..ae194543dbda 100644
+> --- a/Documentation/filesystems/overlayfs.rst
+> +++ b/Documentation/filesystems/overlayfs.rst
+> @@ -492,6 +492,29 @@ directory tree on the same or different underlying f=
+ilesystem, and even
+>  to a different machine.  With the "inodes index" feature, trying to moun=
+t
+>  the copied layers will fail the verification of the lower root file hand=
+le.
+>
+> +Nesting overlayfs mounts
+> +------------------------
+> +
+> +It is possible to use a lower directory that is stored on an overlayfs
+> +mount. For regular files this does not need any special care. However, f=
+iles
+> +that have overlayfs attributes, such as whiteouts or "overlay.*" xattrs =
+will be
+> +interpreted by the underlying overlayfs mount and stripped out. In order=
+ to
+> +allow the second overlayfs mount to see the attributes they must be esca=
+ped.
+> +
+> +Overlayfs specific xattrs are escaped by using a special prefix of
+> +"overlay.overlay.". So, a file with a "trusted.overlay.overlay.metacopy"=
+ xattr
+> +in the lower dir will be exposed as a regular file with a
+> +"trusted.overlay.metacopy" xattr in the overlayfs mount. This can be nes=
+ted by
+> +repeating the prefix multiple time, as each instance only removes one pr=
+efix.
+> +
+> +A lower dir with a regular whiteout will always be handled by the overla=
+yfs
+> +mount, so to support storing an effective whiteout file in an overlayfs =
+mount an
+> +alternative form of whiteout is supported. This form is a regular, zero-=
+size
+> +file with the "overlay.whiteout" xattr set, inside a directory with the
+> +"overlay.whiteouts" xattr set. Such whiteouts are never created by overl=
+ayfs,
+> +but can be used by userspace tools (like containers) that generate lower=
+ layers.
+> +These alternative whiteouts can be escaped using the standard xattr esca=
+pe
+> +mechanism in order to properly nest to any depth.
+>
+>  Non-standard behavior
+>  ---------------------
+> --
+> 2.41.0
+>
