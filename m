@@ -2,115 +2,132 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 943EE79A56D
-	for <lists+linux-unionfs@lfdr.de>; Mon, 11 Sep 2023 10:06:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0612B79CC87
+	for <lists+linux-unionfs@lfdr.de>; Tue, 12 Sep 2023 11:56:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233217AbjIKIGX (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Mon, 11 Sep 2023 04:06:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52732 "EHLO
+        id S233065AbjILJ4y (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 12 Sep 2023 05:56:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230389AbjIKIGX (ORCPT
+        with ESMTP id S230345AbjILJ4y (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Mon, 11 Sep 2023 04:06:23 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03FF1CD7;
-        Mon, 11 Sep 2023 01:06:08 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-31f4a286ae1so3811835f8f.3;
-        Mon, 11 Sep 2023 01:06:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694419566; x=1695024366; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XDXBfh7oY4pmFmGSF4PND0R5OaSxpWXbzV+EwmN9Pdw=;
-        b=Exth6Ca9CLd3UXafGJSXVaY+v1jFTIAeKdkbwOksZM3AuyBL46VowEeo3FV6t3M9jI
-         BgbTaL6rRGGB9Q1IOuA63qBo5FJlOQqnw+sXZ6lU1hAlv7U8q0Dq4DDgRXlzxXQosd/r
-         0/u2xSghQEvN7IY9is/P8vc5700qZ5WvFgMwM41SVf+HyOIY9orMrskQgf/1xaV0tlb7
-         7SeKFv9t0w7iwFvYJPi8GbPDwvrrj+GHSa1saBlLJ1+KGMcADtraRe86IN+CpGcFb9bl
-         HvTA3dgNovmmvFWby64FiKch+5AaX0AFsTV/zfq4K9jJoD5SuMGDh55A0eC+mbJkawd2
-         fMWg==
+        Tue, 12 Sep 2023 05:56:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CEE8510DF
+        for <linux-unionfs@vger.kernel.org>; Tue, 12 Sep 2023 02:56:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694512565;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=21+5Tv3wnoJkl/6e3ut9/P+hjFMML4aVkno1i0U9K+g=;
+        b=AtFTyXg09AzBeQHPT7SOFDD39RYK+q14nEvWx1AqsYCm9VOlaFkUrf4tNUYs/ctacm8zKT
+        5C1DZkLxd3UemOaQszzRxzgqXJfiFSKnz05VN5Z+IbMKGic0gooqehnrFXRXkHXi0EKRUI
+        07QCn5pReALepZE9TZWY3Nnf5O86xZ4=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-530--CLHmBCjMXO_TR70uv6vSA-1; Tue, 12 Sep 2023 05:56:04 -0400
+X-MC-Unique: -CLHmBCjMXO_TR70uv6vSA-1
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5029c5f4285so4648841e87.3
+        for <linux-unionfs@vger.kernel.org>; Tue, 12 Sep 2023 02:56:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694419566; x=1695024366;
+        d=1e100.net; s=20230601; t=1694512562; x=1695117362;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=XDXBfh7oY4pmFmGSF4PND0R5OaSxpWXbzV+EwmN9Pdw=;
-        b=xAzmHjZAsSdHt+4HlzvKgQmSmgZFlHlbQ33yhIAqolcEhhHKoSWtPKz/ixVsAZKQXX
-         jZufGOQg5gSwrCs1x/MWzxskK1r6HiVNGRPlTAPUOmDdiAUafBDZ1Yh6EEMlmFBTcfXd
-         b83Cb3vQNU8enG15hOUewl6ZakdYmemgC2YFvZ6i5zsiw8f6wQp086P8LZGfkUJhX9DQ
-         pzGSUjO49HcOKEj2nTnbhBL2QXfh2pT0lG+6qbrwByNFKIOyKzHkk/LnDDXX8aMFE3ZR
-         3LxKAiA+obBPtMCYbsQ9VYXQruMi2c16iF9fUZCxprwLvqz8wSYZ7OttZHrm3iRfyroK
-         FMLg==
-X-Gm-Message-State: AOJu0YxJto23nNfdw4IKtcMKgdMkFIB4lgF2of5fXNh/hwt8XOUtmlh/
-        jmlMVNvOQAfgX671B8CIVn4=
-X-Google-Smtp-Source: AGHT+IFdax2hVRIOrZsTiUvyn39s51JCtfiYuOHBeWdbv0V7Ww7JkD8FS7pTk1aCIKgGSX/58mOh7Q==
-X-Received: by 2002:a05:6000:137b:b0:314:1b36:f440 with SMTP id q27-20020a056000137b00b003141b36f440mr6505126wrz.70.1694419566094;
-        Mon, 11 Sep 2023 01:06:06 -0700 (PDT)
-Received: from amir-ThinkPad-T480.ctera.local (bzq-166-168-31-246.red.bezeqint.net. [31.168.166.246])
-        by smtp.gmail.com with ESMTPSA id i9-20020a5d5589000000b003141e629cb6sm9216396wrv.101.2023.09.11.01.06.04
+        bh=21+5Tv3wnoJkl/6e3ut9/P+hjFMML4aVkno1i0U9K+g=;
+        b=OuCjI8VoxA9inmjfBnSD+It0gk149DX1mbgN5t51sb/1IC2+GpUyw3MS4QlPduaeS0
+         w0+Ca/Cu6YuqlS2MG/7kiATIrPTkaVSz+t9hyurb1aUNH6pn2UXy3EEosT11SYPg+vrT
+         StMuTrQEGLn2KYwjZ6uOjVQP+nTynSbw5+3UvFHHYv3/Oj0PpyPamKhY0XOnwDKHlBwW
+         u6rmUqeYzTEuHR/vLSM2DbVAvD8eRJUfrnEqwv029VFRUrWkIyabMN0t50Q9kZe90pqQ
+         WCHhTHAm8zawlnIKFtP4mm766eqSF+hTJxVUrZuMUCT8YRldL1yjxhjCgjXV1zlf0xHE
+         cHCw==
+X-Gm-Message-State: AOJu0YyBFJ4jc2iQk7ZabUMeuzKOn/qa5p3AGrSNnZ/JTVbDI32Skv5U
+        MjnzAqacOLgW+rte0IGjmPmsu7qsUcxrPfLJIsr8PSIEKPCdBxBL1iJxQ4veTKXs7YR1q77TyNR
+        519lJDu/81mn5ZC8CBKfEsTyUtw==
+X-Received: by 2002:a19:8c10:0:b0:4ff:87f2:2236 with SMTP id o16-20020a198c10000000b004ff87f22236mr8499338lfd.37.1694512562564;
+        Tue, 12 Sep 2023 02:56:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE0Rn1iQkzFgn8zoNZwBkaQPR1cHxuFsX9/BXwwLF85vqT6PRNn/HDXkh5UAsbIwuxLGexuOw==
+X-Received: by 2002:a19:8c10:0:b0:4ff:87f2:2236 with SMTP id o16-20020a198c10000000b004ff87f22236mr8499329lfd.37.1694512562250;
+        Tue, 12 Sep 2023 02:56:02 -0700 (PDT)
+Received: from greebo.redhat.com (c-e6a5e255.022-110-73746f36.bbcust.telenor.se. [85.226.165.230])
+        by smtp.googlemail.com with ESMTPSA id t15-20020ac243af000000b004fdba93b92asm1691766lfl.252.2023.09.12.02.56.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Sep 2023 01:06:05 -0700 (PDT)
-From:   Amir Goldstein <amir73il@gmail.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        Christian Brauner <brauner@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-unionfs@vger.kernel.org
-Subject: [GIT PULL] overlayfs fixes for 6.6-rc2
-Date:   Mon, 11 Sep 2023 11:06:01 +0300
-Message-Id: <20230911080601.3145430-1-amir73il@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Tue, 12 Sep 2023 02:56:01 -0700 (PDT)
+From:   Alexander Larsson <alexl@redhat.com>
+To:     miklos@szeredi.hu
+Cc:     linux-unionfs@vger.kernel.org, amir73il@gmail.com,
+        Alexander Larsson <alexl@redhat.com>
+Subject: [PATCH v4 0/5] Support nested overlayfs mounts with xattrs and whiteous
+Date:   Tue, 12 Sep 2023 11:55:54 +0200
+Message-ID: <cover.1694512044.git.alexl@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Hi Linus,
+There are cases where you want to use an overlayfs mount as a lowerdir for
+another overlayfs mount. For example, if the system rootfs is on overlayfs due
+to composefs, or to make it volatile (via tmpfs), then you cannot currently store
+a lowerdir on the rootfs, because the inner overlayfs will eat all the whiteouts
+and overlay xattrs. This means you can't e.g. store on the rootfs a prepared
+container image for use with overlayfs.
 
-Please pull these two fixes for pretty old regressions.
-They have no relation to the ovl updates in 6.6-rc1, except for
-the timing. They were reported late in the merge window.
+This patch series adds support for nesting of overlayfs mounts by escaping the
+problematic features and unescaping them when exposing to the overlayfs user.
 
-I could have sent the fixes last week, during the merge window,
-but they are not so urgent, so I preferred to test them against rc1.
+This series is also available here:
+  https://github.com/alexlarsson/linux/tree/ovl-nesting
 
-This branch has been sitting in linux-next for over a week and
-it has gone through all the usual overlayfs test routines.
+And xfstest to test it is available here:
+  https://github.com/alexlarsson/xfstests/tree/overlayfs-nesting
 
-The branch merges cleanly with master branch of the moment
-and I even signed it this time ;)
+The overlay/083 test checks both xattr escaping, the new whiteouts as well as
+actual nesting of overlayfs.
 
-Thanks,
-Amir.
+Note that this series breaks the overlay/026 test which validates that
+writing overlay.* xattrs is not supported, but it now is. I'm not sure
+if we should fix this test to not fail, or if we should make this an
+opt-in mount feature.
 
-----------------------------------------------------------------
+Changes since v3:
+ * Dropped the handling of whiteout xattrs across layers.
+ * Copy-up escaped overlayfs xattrs.
+ * Minor code cleanups.
+ 
+Changes since v2:
+ * Uses a new approach for escaping whiteouts with a regular file with an
+   overlay.whiteout xattr in a lower directory with an overlay.whiteouts
+   xattr.
 
-The following changes since commit 92901222f83d988617aee37680cb29e1a743b5e4:
+Changes since v1:
 
-  Merge tag 'f2fs-for-6-6-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs (2023-09-02 15:37:59 -0700)
+ * Moved all xattr handling to xattr.c
+ * Made creation of escaped whiteouts atomic
 
-are available in the Git repository at:
+Alexander Larsson (5):
+  ovl: Move xattr support to new xattrs.c file
+  ovl: Add OVL_XATTR_TRUSTED/USER_PREFIX_LEN macros
+  ovl: Support escaped overlay.* xattrs
+  ovl: Add an alternative type of whiteout
+  ovl: Add documentation on nesting of overlayfs mounts
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/overlayfs/vfs.git tags/ovl-fixes-6.6-rc2
+ Documentation/filesystems/overlayfs.rst |  23 ++
+ fs/overlayfs/Makefile                   |   2 +-
+ fs/overlayfs/dir.c                      |   4 +-
+ fs/overlayfs/inode.c                    | 124 -----------
+ fs/overlayfs/namei.c                    |  15 +-
+ fs/overlayfs/overlayfs.h                |  42 +++-
+ fs/overlayfs/readdir.c                  |  27 ++-
+ fs/overlayfs/super.c                    |  67 +-----
+ fs/overlayfs/util.c                     |  40 ++++
+ fs/overlayfs/xattrs.c                   | 273 ++++++++++++++++++++++++
+ 10 files changed, 404 insertions(+), 213 deletions(-)
+ create mode 100644 fs/overlayfs/xattrs.c
 
-for you to fetch changes up to 724768a39374d35b70eaeae8dd87048a2ec7ae8e:
+-- 
+2.41.0
 
-  ovl: fix incorrect fdput() on aio completion (2023-09-04 18:27:38 +0300)
-
-----------------------------------------------------------------
-overlayfs fixes for 6.6-rc2
-
-----------------------------------------------------------------
-Amir Goldstein (2):
-      ovl: fix failed copyup of fileattr on a symlink
-      ovl: fix incorrect fdput() on aio completion
-
- fs/overlayfs/copy_up.c | 3 ++-
- fs/overlayfs/file.c    | 9 +++------
- 2 files changed, 5 insertions(+), 7 deletions(-)
