@@ -2,116 +2,289 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC07F79CC8A
-	for <lists+linux-unionfs@lfdr.de>; Tue, 12 Sep 2023 11:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7EC379D0A9
+	for <lists+linux-unionfs@lfdr.de>; Tue, 12 Sep 2023 14:05:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230345AbjILJ5D (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Tue, 12 Sep 2023 05:57:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43052 "EHLO
+        id S233436AbjILMFY (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Tue, 12 Sep 2023 08:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233074AbjILJ5A (ORCPT
+        with ESMTP id S234493AbjILMFX (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Tue, 12 Sep 2023 05:57:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 450F410D1
-        for <linux-unionfs@vger.kernel.org>; Tue, 12 Sep 2023 02:56:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694512571;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=MXK46K3xAsRxJhrgzkjxNZ1nb6duYFD0FjXpxyzNEUs=;
-        b=ZZK5jaeB+ojT5RW4QTTxJlqscZdF+7N2peE00XnhOXg8w+hRQgGUOEbozhYObpEYW11OmF
-        WzHNDP40yTU0YIuZOdv6aOcxTdwKxVWmGa67JvrY8gting0RowUPaETmIXIrtR88ve8A/9
-        WDoFUQxDWB3AH4FisMdE3Lx9nkV6Ug8=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-44-CK_-B0a5MAOGwDBxLWsgUA-1; Tue, 12 Sep 2023 05:56:08 -0400
-X-MC-Unique: CK_-B0a5MAOGwDBxLWsgUA-1
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2bcec24e8f8so60451921fa.1
-        for <linux-unionfs@vger.kernel.org>; Tue, 12 Sep 2023 02:56:08 -0700 (PDT)
+        Tue, 12 Sep 2023 08:05:23 -0400
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAF2010D2
+        for <linux-unionfs@vger.kernel.org>; Tue, 12 Sep 2023 05:05:19 -0700 (PDT)
+Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-3a7e68f4214so4205941b6e.1
+        for <linux-unionfs@vger.kernel.org>; Tue, 12 Sep 2023 05:05:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694520319; x=1695125119; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+6c2JhTji0Suck65jPMHLrMvvWMOIR1EHUZt6PSI0bQ=;
+        b=l7f1XqJTjkxWDXjP8mBShdpfbdGF5k/JGYTHbUq3i2twwqTp1DD7SG6TiAns6wVRIX
+         xiinFk628McPGFeuAOkfMJyvODWnMHsf6jiJQRG2J8d3X5KYqE29SkEE96blFdD1wmr4
+         O6BqNHTnlB5kkAXK3Uk3u7tH2XlY1SMuUo+lt+VLnoIdtPOgNfBDXpwouJZseF/RWKsH
+         4OcS4sYI117sgjiUH888qzv0KB3TD39bid4Sa8uPMKoJ5MFPATuh9q/OVPvbZbHpokXd
+         zuZNSKppCmnWSpd5jMaUM3cl9Ba/DFZW3AWZjj+WYrzAr6eNXgDZsZV1VoLaSqG25A8U
+         eVNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694512567; x=1695117367;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1694520319; x=1695125119;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MXK46K3xAsRxJhrgzkjxNZ1nb6duYFD0FjXpxyzNEUs=;
-        b=LCP4t/hB5tHypdzcLtqFmGrc9U7c1jv9RiAHT8Mlj90cnL5m77hYIAXu3ABCMgGgks
-         1qiKX0SRZUmg3wFV4Ka0GH6NmvOb5bX6IOAmcJ1OarAyjCq0+p0rlmGsF2HprdKo118x
-         /HGoX1CotXuo+8QFUbj6de/82bfBWh1vZB/ZHRrxbmkuuKIWx9nIASlg142kGmzYI/3Q
-         vVI+9KOn+GJpqhEMxda01Lmsf/4uN4vevGIIy3ccg8lk4SMxY0Dv5y7fmQFVbuJqC9Ss
-         u8CpB3HcBIcB7xyZPSxDGnaU61/AFE4Wx7e0yn4HRRF7bV4/dXGwBHQs0hFAaC2YPlac
-         sldA==
-X-Gm-Message-State: AOJu0Yx3XRJFG1reOgyApQb5Pi6EQP75AulVZM7jm2E0/wtDBbLEG7ug
-        H17p8luy3ljQ9aPcpBFvzrJ3ZF4JMabkLPGs9+HsdLd66Dzmvz7buhtusNmxB2O8MJj3TdR3Zrr
-        OfXBukvOp6vIGN+lUsOZ9hkjoqg==
-X-Received: by 2002:a05:6512:159d:b0:4f8:6dfd:faa0 with SMTP id bp29-20020a056512159d00b004f86dfdfaa0mr11285353lfb.2.1694512567445;
-        Tue, 12 Sep 2023 02:56:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IERtRK24AfjhEJZbfJUsuAtzeJLGndjbNEvjv3uj1bFohQ5yT8UNMPlh9B+8Jl+qn6JzpwkQQ==
-X-Received: by 2002:a05:6512:159d:b0:4f8:6dfd:faa0 with SMTP id bp29-20020a056512159d00b004f86dfdfaa0mr11285337lfb.2.1694512567169;
-        Tue, 12 Sep 2023 02:56:07 -0700 (PDT)
-Received: from greebo.redhat.com (c-e6a5e255.022-110-73746f36.bbcust.telenor.se. [85.226.165.230])
-        by smtp.googlemail.com with ESMTPSA id t15-20020ac243af000000b004fdba93b92asm1691766lfl.252.2023.09.12.02.56.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 02:56:06 -0700 (PDT)
-From:   Alexander Larsson <alexl@redhat.com>
-To:     miklos@szeredi.hu
-Cc:     linux-unionfs@vger.kernel.org, amir73il@gmail.com,
-        Alexander Larsson <alexl@redhat.com>
-Subject: [PATCH v4 5/5] ovl: Add documentation on nesting of overlayfs mounts
-Date:   Tue, 12 Sep 2023 11:55:59 +0200
-Message-ID: <c4888e90391d48c03f4822859f2fe8cae307defa.1694512044.git.alexl@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <cover.1694512044.git.alexl@redhat.com>
-References: <cover.1694512044.git.alexl@redhat.com>
+        bh=+6c2JhTji0Suck65jPMHLrMvvWMOIR1EHUZt6PSI0bQ=;
+        b=eHyoYkAN4CY7aPYnbeFiX0ruBbJ/IGGgBzACo8BVT8mdqhMoYYqtzz2gkWKf9bLHxg
+         ojSCJw4gJt46i+pPtHjf+bHin9CtRmAlVaD0Rgr7IpCvkIn0G336gLGIH2KJEryJu/RD
+         huaEW9Pvk5dc713YPIcBJbjZxjSJSM+uBc3oEGrfyv5VPuEJx3o9DTeYvV5Pgld055Eu
+         2j7iCGiYdhNjTtDsQ/Qm+CBvgcaffgEn098polLHDDwIcbinoRrbb5qRw3NULxuol239
+         7Lw0dUDYhj25BfNyftvcnAczkL5jwpN72AMWfIefmyY3T+ryiuS9mJStlnJNnBxCbS4J
+         0lNA==
+X-Gm-Message-State: AOJu0YyqQnoiByMvCIzNQ8CGUKx+YS+pXwKXn+t3E+Wizlgm7U8jVgzQ
+        pDLDkA+7PajH7tGMIXKfhmBYn+H5XBDUYB/4nJZiOXN8uew=
+X-Google-Smtp-Source: AGHT+IGhLqLIe1s0yymL58Q5OKH5Rq9K6sUYABCC8bjUVvJw5RHEaaNJOrzgWb2ol102JMi3GPFoui4OoTEuUfsMcNU=
+X-Received: by 2002:a05:6808:490:b0:3a8:4f87:f92c with SMTP id
+ z16-20020a056808049000b003a84f87f92cmr13442418oid.44.1694520319068; Tue, 12
+ Sep 2023 05:05:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1694512044.git.alexl@redhat.com> <852732d9ae04ed940957a9fd2194af7a55d81c82.1694512044.git.alexl@redhat.com>
+In-Reply-To: <852732d9ae04ed940957a9fd2194af7a55d81c82.1694512044.git.alexl@redhat.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Tue, 12 Sep 2023 15:05:07 +0300
+Message-ID: <CAOQ4uxjh1Ar-qjLGJJDaCPJq9sxJUZqvGUsks=id=byKO-G0Jg@mail.gmail.com>
+Subject: Re: [PATCH v4 3/5] ovl: Support escaped overlay.* xattrs
+To:     Alexander Larsson <alexl@redhat.com>
+Cc:     miklos@szeredi.hu, linux-unionfs@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-Signed-off-by: Alexander Larsson <alexl@redhat.com>
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
----
- Documentation/filesystems/overlayfs.rst | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+On Tue, Sep 12, 2023 at 12:56=E2=80=AFPM Alexander Larsson <alexl@redhat.co=
+m> wrote:
+>
+> There are cases where you want to use an overlayfs mount as a lowerdir
+> for another overlayfs mount. For example, if the system rootfs is on
+> overlayfs due to composefs, or to make it volatile (via tmps), then
+> you cannot currently store a lowerdir on the rootfs. This means you
+> can't e.g. store on the rootfs a prepared container image for use
+> using overlayfs.
+>
+> To work around this, we introduce an escapment mechanism for overlayfs
+> xattrs. Whenever the lower/upper dir has a xattr named
+> "overlay.overlay.XYZ", we list it as "overlay.XYZ" in listxattrs, and
+> when the user calls getxattr or setxattr on "overlay.XYZ", we apply to
+> "overlay.overlay.XYZ" in the backing directories.
+>
+> This allows storing any kind of overlay xattrs in a overlayfs mount
+> that can be used as a lowerdir in another mount. It is possible to
+> stack this mechanism multiple times, such that
+> "overlay.overlay.overlay.XYZ" will survive two levels of overlay mounts,
+> however this is not all that useful in practice because of stack depth
+> limitations of overlayfs mounts.
+>
+> Note: These escaped xattrs are copied to upper during copy-up.
+>
+> Signed-off-by: Alexander Larsson <alexl@redhat.com>
+> Reviewed-by: Amir Goldstein <amir73il@gmail.com>
 
-diff --git a/Documentation/filesystems/overlayfs.rst b/Documentation/filesystems/overlayfs.rst
-index cdefbe73d85c..ae194543dbda 100644
---- a/Documentation/filesystems/overlayfs.rst
-+++ b/Documentation/filesystems/overlayfs.rst
-@@ -492,6 +492,29 @@ directory tree on the same or different underlying filesystem, and even
- to a different machine.  With the "inodes index" feature, trying to mount
- the copied layers will fail the verification of the lower root file handle.
- 
-+Nesting overlayfs mounts
-+------------------------
-+
-+It is possible to use a lower directory that is stored on an overlayfs
-+mount. For regular files this does not need any special care. However, files
-+that have overlayfs attributes, such as whiteouts or "overlay.*" xattrs will be
-+interpreted by the underlying overlayfs mount and stripped out. In order to
-+allow the second overlayfs mount to see the attributes they must be escaped.
-+
-+Overlayfs specific xattrs are escaped by using a special prefix of
-+"overlay.overlay.". So, a file with a "trusted.overlay.overlay.metacopy" xattr
-+in the lower dir will be exposed as a regular file with a
-+"trusted.overlay.metacopy" xattr in the overlayfs mount. This can be nested by
-+repeating the prefix multiple time, as each instance only removes one prefix.
-+
-+A lower dir with a regular whiteout will always be handled by the overlayfs
-+mount, so to support storing an effective whiteout file in an overlayfs mount an
-+alternative form of whiteout is supported. This form is a regular, zero-size
-+file with the "overlay.whiteout" xattr set, inside a directory with the
-+"overlay.whiteouts" xattr set. Such whiteouts are never created by overlayfs,
-+but can be used by userspace tools (like containers) that generate lower layers.
-+These alternative whiteouts can be escaped using the standard xattr escape
-+mechanism in order to properly nest to any depth.
- 
- Non-standard behavior
- ---------------------
--- 
-2.41.0
+Now I really reviewed ;-)
+I like this patch - it is much smaller.
 
+I'd rename the helper s/ovl_is_prefixed_xattr/ovl_is_own_xattr
+to match ovl_own_xattr_{get,set}, but don't worry about it,
+I can rename on commit.
+
+Thanks,
+Amir.
+
+> ---
+>  fs/overlayfs/overlayfs.h |  7 ++++
+>  fs/overlayfs/xattrs.c    | 81 ++++++++++++++++++++++++++++++++++++++--
+>  2 files changed, 85 insertions(+), 3 deletions(-)
+>
+> diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+> index dff7232b7bf5..736d7f952a8e 100644
+> --- a/fs/overlayfs/overlayfs.h
+> +++ b/fs/overlayfs/overlayfs.h
+> @@ -32,6 +32,13 @@ enum ovl_path_type {
+>  #define OVL_XATTR_USER_PREFIX XATTR_USER_PREFIX OVL_XATTR_NAMESPACE
+>  #define OVL_XATTR_USER_PREFIX_LEN (sizeof(OVL_XATTR_USER_PREFIX) - 1)
+>
+> +#define OVL_XATTR_ESCAPE_PREFIX OVL_XATTR_NAMESPACE
+> +#define OVL_XATTR_ESCAPE_PREFIX_LEN (sizeof(OVL_XATTR_ESCAPE_PREFIX) - 1=
+)
+> +#define OVL_XATTR_ESCAPE_TRUSTED_PREFIX OVL_XATTR_TRUSTED_PREFIX OVL_XAT=
+TR_ESCAPE_PREFIX
+> +#define OVL_XATTR_ESCAPE_TRUSTED_PREFIX_LEN (sizeof(OVL_XATTR_ESCAPE_TRU=
+STED_PREFIX) - 1)
+> +#define OVL_XATTR_ESCAPE_USER_PREFIX OVL_XATTR_USER_PREFIX OVL_XATTR_ESC=
+APE_PREFIX
+> +#define OVL_XATTR_ESCAPE_USER_PREFIX_LEN (sizeof(OVL_XATTR_ESCAPE_USER_P=
+REFIX) - 1)
+> +
+>  enum ovl_xattr {
+>         OVL_XATTR_OPAQUE,
+>         OVL_XATTR_REDIRECT,
+> diff --git a/fs/overlayfs/xattrs.c b/fs/overlayfs/xattrs.c
+> index b8ea96606ea8..55ab56e982ea 100644
+> --- a/fs/overlayfs/xattrs.c
+> +++ b/fs/overlayfs/xattrs.c
+> @@ -4,7 +4,19 @@
+>  #include <linux/xattr.h>
+>  #include "overlayfs.h"
+>
+> -bool ovl_is_private_xattr(struct super_block *sb, const char *name)
+> +static bool ovl_is_escaped_xattr(struct super_block *sb, const char *nam=
+e)
+> +{
+> +       struct ovl_fs *ofs =3D sb->s_fs_info;
+> +
+> +       if (ofs->config.userxattr)
+> +               return strncmp(name, OVL_XATTR_ESCAPE_USER_PREFIX,
+> +                              OVL_XATTR_ESCAPE_USER_PREFIX_LEN) =3D=3D 0=
+;
+> +       else
+> +               return strncmp(name, OVL_XATTR_ESCAPE_TRUSTED_PREFIX,
+> +                              OVL_XATTR_ESCAPE_TRUSTED_PREFIX_LEN - 1) =
+=3D=3D 0;
+> +}
+> +
+> +static bool ovl_is_prefixed_xattr(struct super_block *sb, const char *na=
+me)
+>  {
+>         struct ovl_fs *ofs =3D OVL_FS(sb);
+>
+> @@ -16,6 +28,11 @@ bool ovl_is_private_xattr(struct super_block *sb, cons=
+t char *name)
+>                                OVL_XATTR_TRUSTED_PREFIX_LEN) =3D=3D 0;
+>  }
+>
+> +bool ovl_is_private_xattr(struct super_block *sb, const char *name)
+> +{
+> +       return ovl_is_prefixed_xattr(sb, name) && !ovl_is_escaped_xattr(s=
+b, name);
+> +}
+> +
+>  static int ovl_xattr_set(struct dentry *dentry, struct inode *inode, con=
+st char *name,
+>                          const void *value, size_t size, int flags)
+>  {
+> @@ -97,10 +114,12 @@ static bool ovl_can_list(struct super_block *sb, con=
+st char *s)
+>  ssize_t ovl_listxattr(struct dentry *dentry, char *list, size_t size)
+>  {
+>         struct dentry *realdentry =3D ovl_dentry_real(dentry);
+> +       struct ovl_fs *ofs =3D OVL_FS(dentry->d_sb);
+>         ssize_t res;
+>         size_t len;
+>         char *s;
+>         const struct cred *old_cred;
+> +       size_t prefix_len, name_len;
+>
+>         old_cred =3D ovl_override_creds(dentry->d_sb);
+>         res =3D vfs_listxattr(realdentry, list, size);
+> @@ -108,6 +127,9 @@ ssize_t ovl_listxattr(struct dentry *dentry, char *li=
+st, size_t size)
+>         if (res <=3D 0 || size =3D=3D 0)
+>                 return res;
+>
+> +       prefix_len =3D ofs->config.userxattr ?
+> +               OVL_XATTR_USER_PREFIX_LEN : OVL_XATTR_TRUSTED_PREFIX_LEN;
+> +
+>         /* filter out private xattrs */
+>         for (s =3D list, len =3D res; len;) {
+>                 size_t slen =3D strnlen(s, len) + 1;
+> @@ -120,6 +142,12 @@ ssize_t ovl_listxattr(struct dentry *dentry, char *l=
+ist, size_t size)
+>                 if (!ovl_can_list(dentry->d_sb, s)) {
+>                         res -=3D slen;
+>                         memmove(s, s + slen, len);
+> +               } else if (ovl_is_escaped_xattr(dentry->d_sb, s)) {
+> +                       res -=3D OVL_XATTR_ESCAPE_PREFIX_LEN;
+> +                       name_len =3D slen - prefix_len - OVL_XATTR_ESCAPE=
+_PREFIX_LEN;
+> +                       s +=3D prefix_len;
+> +                       memmove(s, s + OVL_XATTR_ESCAPE_PREFIX_LEN, name_=
+len + len);
+> +                       s +=3D name_len;
+>                 } else {
+>                         s +=3D slen;
+>                 }
+> @@ -128,11 +156,47 @@ ssize_t ovl_listxattr(struct dentry *dentry, char *=
+list, size_t size)
+>         return res;
+>  }
+>
+> +static char *ovl_xattr_escape_name(const char *prefix, const char *name)
+> +{
+> +       size_t prefix_len =3D strlen(prefix);
+> +       size_t name_len =3D strlen(name);
+> +       size_t escaped_len;
+> +       char *escaped, *s;
+> +
+> +       escaped_len =3D prefix_len + OVL_XATTR_ESCAPE_PREFIX_LEN + name_l=
+en;
+> +       if (escaped_len > XATTR_NAME_MAX)
+> +               return ERR_PTR(-EOPNOTSUPP);
+> +
+> +       escaped =3D kmalloc(escaped_len + 1, GFP_KERNEL);
+> +       if (escaped =3D=3D NULL)
+> +               return ERR_PTR(-ENOMEM);
+> +
+> +       s =3D escaped;
+> +       memcpy(s, prefix, prefix_len);
+> +       s +=3D prefix_len;
+> +       memcpy(s, OVL_XATTR_ESCAPE_PREFIX, OVL_XATTR_ESCAPE_PREFIX_LEN);
+> +       s +=3D OVL_XATTR_ESCAPE_PREFIX_LEN;
+> +       memcpy(s, name, name_len + 1);
+> +
+> +       return escaped;
+> +}
+> +
+>  static int ovl_own_xattr_get(const struct xattr_handler *handler,
+>                              struct dentry *dentry, struct inode *inode,
+>                              const char *name, void *buffer, size_t size)
+>  {
+> -       return -EOPNOTSUPP;
+> +       char *escaped;
+> +       int r;
+> +
+> +       escaped =3D ovl_xattr_escape_name(handler->prefix, name);
+> +       if (IS_ERR(escaped))
+> +               return PTR_ERR(escaped);
+> +
+> +       r =3D ovl_xattr_get(dentry, inode, escaped, buffer, size);
+> +
+> +       kfree(escaped);
+> +
+> +       return r;
+>  }
+>
+>  static int ovl_own_xattr_set(const struct xattr_handler *handler,
+> @@ -141,7 +205,18 @@ static int ovl_own_xattr_set(const struct xattr_hand=
+ler *handler,
+>                              const char *name, const void *value,
+>                              size_t size, int flags)
+>  {
+> -       return -EOPNOTSUPP;
+> +       char *escaped;
+> +       int r;
+> +
+> +       escaped =3D ovl_xattr_escape_name(handler->prefix, name);
+> +       if (IS_ERR(escaped))
+> +               return PTR_ERR(escaped);
+> +
+> +       r =3D ovl_xattr_set(dentry, inode, escaped, value, size, flags);
+> +
+> +       kfree(escaped);
+> +
+> +       return r;
+>  }
+>
+>  static int ovl_other_xattr_get(const struct xattr_handler *handler,
+> --
+> 2.41.0
+>
