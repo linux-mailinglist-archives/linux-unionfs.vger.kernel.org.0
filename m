@@ -2,140 +2,111 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E52307BA067
-	for <lists+linux-unionfs@lfdr.de>; Thu,  5 Oct 2023 16:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 381B67BA546
+	for <lists+linux-unionfs@lfdr.de>; Thu,  5 Oct 2023 18:16:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236597AbjJEOgn (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Thu, 5 Oct 2023 10:36:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46282 "EHLO
+        id S241002AbjJEQPl (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Thu, 5 Oct 2023 12:15:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236118AbjJEOej (ORCPT
+        with ESMTP id S241112AbjJEQNk (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Thu, 5 Oct 2023 10:34:39 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D16527A;
-        Thu,  5 Oct 2023 06:52:38 -0700 (PDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 395DQhjE031548;
-        Thu, 5 Oct 2023 13:41:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=R/QTM1fzVv6cm+wswFVzDr/m9+FgX0LQuY8/jeKmhko=;
- b=cuCVAU6kZBORw4kNzQM8QhKATzaQYQx9sq9VyXtyAcbUjSJlu2csv9UKwRsMdWToW/kZ
- 0C0RhlLfSx4clzeAM9kri0/U0zoNlTG8RblVDlrVkUr8EElTobyZsMXrLACmhgSCyeNj
- mwc7IV+kj/e+X5u63Eo6l2E8JPclAG8R1FP1Mai2lrKjyos0n24UwIr+NGmFo5l/dmCQ
- dGyPtibDLCjR17Zb0bp+IBJPg1LpSIU+tL/CMmv8D5xPmvorNRdNYuKpBMJSXVYh1+lJ
- yx7r7YcPGH6+f/EQTT0ey3+nrJjVS9Dgplu6YZos1rGIOPl3jrrD8md/aNUQm4O8WJSh nw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3thq9k02u9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 05 Oct 2023 13:41:49 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 395DR6nD000477;
-        Thu, 5 Oct 2023 13:36:47 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3thq9jywwj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 05 Oct 2023 13:36:47 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 395BKrDl017644;
-        Thu, 5 Oct 2023 13:35:43 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-        by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tey0nuqkf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 05 Oct 2023 13:35:43 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-        by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 395DZgnd64356738
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 5 Oct 2023 13:35:42 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id F204A58051;
-        Thu,  5 Oct 2023 13:35:41 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4CBCF5805C;
-        Thu,  5 Oct 2023 13:35:41 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.90.188])
-        by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Thu,  5 Oct 2023 13:35:41 +0000 (GMT)
-Message-ID: <97be76d94fdacf369a324b6122d5f5bc19a3838c.camel@linux.ibm.com>
+        Thu, 5 Oct 2023 12:13:40 -0400
+Received: from mail-ua1-x935.google.com (mail-ua1-x935.google.com [IPv6:2607:f8b0:4864:20::935])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32CADAD17;
+        Thu,  5 Oct 2023 02:36:16 -0700 (PDT)
+Received: by mail-ua1-x935.google.com with SMTP id a1e0cc1a2514c-7b07c3eaf9bso291393241.3;
+        Thu, 05 Oct 2023 02:36:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696498575; x=1697103375; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=miaHJCTsklS6Zbf74LdxRTHsnukEGfuauknHlldmnMc=;
+        b=N4af9kbi6Y+6dW9LsItj5fS5+DyE6zDpoaXlRE63hcUqzTAjlFVy++6BlgMNLc7eoc
+         9aEa02NdBFigDUFax26K4zjqVc1R9QevHORZNCEceZgUNfBD1PoKFZXlmUsuKvcLJB2z
+         Wzq25anMl7eXz6LpGSIH0XC1N/yUmNm0EjsFMP+KHLm7UWHZRh9zSI0p3N9zEQZ5T2pR
+         jH1t6eglUTla2oo0U+yFQhjcilqGxdoULd5rEZUjwZ4FX+CfYcsYszoomCu0204u545P
+         Qb/9Kwa9NQ6OpKIeEhQ8uk5o6pzGL3Q4OAVhpR88DQEJOju8mPcHgkmd00fDwrjBGC1S
+         gpEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696498575; x=1697103375;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=miaHJCTsklS6Zbf74LdxRTHsnukEGfuauknHlldmnMc=;
+        b=QFvdY/FyxkbAHDFTe1d61HEPBpvKjezRu16VHZ1FP1fyDKMAWt83XyBW9xdUAkDVMj
+         ucMPRNA+c3b6g2G37Yd6WOGa0fnzrs80dP1WOPrxzb+dZ7x7zPDDWSa6yIx9joVLJ/QK
+         i4g00/bNMTce7wD4UbcH068mTjj+CppEbfVleN9x3P+H+zshm9b2EOLRSDvOZhrVvbKF
+         xMNcM3ZBckOF8jrS6J4qMLGqjOA298urN61hUZ5d98tb7i2iHI6Vrqb6xbh7pIw3R5q7
+         KiNcTC7MCaYHwdwGx4HQZ0OOsTYld6EKj/F/nd4CtRIlq/nofxCN7OUVGiCNTj5krigO
+         Yerw==
+X-Gm-Message-State: AOJu0YyLqGrprqjZuIxtUDycFcIjMJ0drgO0UZTB6ivbyzVEi4eo+C3i
+        IgxweggwkHEHPOg5r2ppndtAk2CBYx7YCtTLmSw=
+X-Google-Smtp-Source: AGHT+IHEmB4hPkLYLPKiUKYdFA8EWWzm/1bKRsSKow5Ph7YiXuo2ENvDu/sgoJxWbdjYFoZ5NkuSiVgyiunS+gZFpDQ=
+X-Received: by 2002:a67:f4c9:0:b0:44d:3aba:b03d with SMTP id
+ s9-20020a67f4c9000000b0044d3abab03dmr4641256vsn.17.1696498575187; Thu, 05 Oct
+ 2023 02:36:15 -0700 (PDT)
+MIME-Version: 1.0
+References: <00000000000067d24205c4d0e599@google.com> <000000000000accfd30606e6bcd0@google.com>
+In-Reply-To: <000000000000accfd30606e6bcd0@google.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Thu, 5 Oct 2023 12:36:04 +0300
+Message-ID: <CAOQ4uxhbNyDzf0_fFh1Yy5Kz2Coz=gTrfOtsmteE0=ncibBnpw@mail.gmail.com>
 Subject: Re: [syzbot] [integrity] [overlayfs] possible deadlock in
  mnt_want_write (2)
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Amir Goldstein <amir73il@gmail.com>
+To:     syzbot <syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com>
 Cc:     hdanton@sina.com, linux-fsdevel@vger.kernel.org,
         linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mm@kvack.org, linux-unionfs@vger.kernel.org,
         miklos@szeredi.hu, mszeredi@redhat.com,
         syzbot@syzkalhler.appspotmail.com, syzkaller-bugs@googlegroups.com,
-        viro@zeniv.linux.org.uk
-Date:   Thu, 05 Oct 2023 09:35:40 -0400
-In-Reply-To: <CAOQ4uxgfJ4owqzh99t65MyT5A99BbwkLQ-sHumCUWyqSw-Rd5g@mail.gmail.com>
-References: <CAOQ4uxhbNyDzf0_fFh1Yy5Kz2Coz=gTrfOtsmteE0=ncibBnpw@mail.gmail.com>
-         <0000000000001081fc0606f52ed9@google.com>
-         <CAOQ4uxjw_XztGxrhR9LWtz_SszdURkM+Add2q8A9BAt0z901kA@mail.gmail.com>
-         <25f6950a67be079e32ad5b4139b1e89e367a91ba.camel@linux.ibm.com>
-         <CAOQ4uxgfJ4owqzh99t65MyT5A99BbwkLQ-sHumCUWyqSw-Rd5g@mail.gmail.com>
+        viro@zeniv.linux.org.uk, zohar@linux.ibm.com, zohar@us.ibm.com
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SRYz0AUECWsolMMPvJe_2XVNQ0vgpjPQ
-X-Proofpoint-ORIG-GUID: 2cgjxh7a4g6A1IxuXODZIVABZC_A6upp
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-05_08,2023-10-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0 adultscore=0
- lowpriorityscore=0 phishscore=0 mlxlogscore=642 priorityscore=1501
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310050107
-X-Spam-Status: No, score=0.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-unionfs.vger.kernel.org>
 X-Mailing-List: linux-unionfs@vger.kernel.org
 
-On Thu, 2023-10-05 at 16:22 +0300, Amir Goldstein wrote:
-> On Thu, Oct 5, 2023 at 4:14 PM Mimi Zohar <zohar@linux.ibm.com> wrote:
-> >
-> > On Thu, 2023-10-05 at 13:26 +0300, Amir Goldstein wrote:
-> > > On Thu, Oct 5, 2023 at 12:59 PM syzbot
-> > > <syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com> wrote:
-> > > >
-> > > > Hello,
-> > > >
-> > > > syzbot tried to test the proposed patch but the build/boot failed:
-> > >
-> > > My mistake. Please try again:
-> > >
-> > > #syz test: https://github.com/amir73il/linux ima-ovl-fix
-> >
-> > Thanks, Amir.   "mutext_init(&iint->mutex); moved, but the status
-> > initialization lines 161-166 were dropped.   They're needed by IMA-
-> > appraisal for signature verification.
-> >
-> >         iint->ima_file_status = INTEGRITY_UNKNOWN;
-> >         iint->ima_mmap_status = INTEGRITY_UNKNOWN;
-> >         iint->ima_bprm_status = INTEGRITY_UNKNOWN;
-> >         iint->ima_read_status = INTEGRITY_UNKNOWN;
-> >         iint->ima_creds_status = INTEGRITY_UNKNOWN;
-> >         iint->evm_status = INTEGRITY_UNKNOWN;
-> >
-> 
-> They are dropped from iint_init_once()
-> They are not needed there because there are now set
-> in every iint allocation in iint_init_always()
-> instead of being set in iint_free()
+On Wed, Oct 4, 2023 at 7:45=E2=80=AFPM syzbot
+<syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com> wrote:
+>
+> syzbot has bisected this issue to:
+>
+> commit 708fa01597fa002599756bf56a96d0de1677375c
+> Author: Miklos Szeredi <mszeredi@redhat.com>
+> Date:   Mon Apr 12 10:00:37 2021 +0000
+>
+>     ovl: allow upperdir inside lowerdir
+>
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=3D17ad11b268=
+0000
+> start commit:   3aba70aed91f Merge tag 'gpio-fixes-for-v6.6-rc3' of git:/=
+/..
+> git tree:       upstream
+> final oops:     https://syzkaller.appspot.com/x/report.txt?x=3D146d11b268=
+0000
+> console output: https://syzkaller.appspot.com/x/log.txt?x=3D106d11b268000=
+0
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=3De4ca82a1bedd3=
+7e4
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3Db42fe626038981f=
+b7bfa
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D1304fba6680=
+000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D13cec0dc68000=
+0
+>
+> Reported-by: syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com
+> Fixes: 708fa01597fa ("ovl: allow upperdir inside lowerdir")
+>
+> For information about bisection process see: https://goo.gl/tpsmEJ#bisect=
+ion
 
-I was only looking at the patch and noticed the removal.  Thanks, this
-looks good.
-
-Mimi
-
+#syz test: https://github.com/amir73il/linux ima-ovl-fix
