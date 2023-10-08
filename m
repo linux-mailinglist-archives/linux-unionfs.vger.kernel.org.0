@@ -2,31 +2,31 @@ Return-Path: <linux-unionfs-owner@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3019E7BCB03
-	for <lists+linux-unionfs@lfdr.de>; Sun,  8 Oct 2023 02:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC9847BCB4B
+	for <lists+linux-unionfs@lfdr.de>; Sun,  8 Oct 2023 02:54:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234263AbjJHAvI (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
-        Sat, 7 Oct 2023 20:51:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40746 "EHLO
+        id S1344283AbjJHAyp (ORCPT <rfc822;lists+linux-unionfs@lfdr.de>);
+        Sat, 7 Oct 2023 20:54:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234394AbjJHAuq (ORCPT
+        with ESMTP id S1344295AbjJHAym (ORCPT
         <rfc822;linux-unionfs@vger.kernel.org>);
-        Sat, 7 Oct 2023 20:50:46 -0400
+        Sat, 7 Oct 2023 20:54:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4A551BD9;
-        Sat,  7 Oct 2023 17:50:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B69C433C9;
-        Sun,  8 Oct 2023 00:50:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F09C210E;
+        Sat,  7 Oct 2023 17:50:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82030C433B9;
+        Sun,  8 Oct 2023 00:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696726201;
-        bh=5CwVZAprqMAHt36bb1iWl6vNcu+FXuLW8vxIBzwycW0=;
+        s=k20201202; t=1696726218;
+        bh=dmx/fIZqCuqESvHzCODQvga4XzmD9Zi20ZHCqNThOjo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fP157bCoZEcPgcZkKfY8sLLRsruUcnh7REtRMbc1eyelXHBVnjbB9SkSJK+2QEJSi
-         O3hERCnpeFxQBMra7x54hcFHR19Of1Wy753YWfYqlBe4M8Lpj6NoUOD3rMESIZj/So
-         cnBYzOgt6Zuqr2Uot80SIB0t3jJoMj8aJDWZfVc/Rm1ZzWsyrjv1rgyLeGITFGezO7
-         1ggeIdUoEfMbuwEMmIS3+jaimhcKHEuz/OhcAV76jGFZ/8n0YrKaSRzKfX+zTqViJU
-         6OsBoBROO2BrC71FZOSC+8ujGI8V8KpBHtmeGdZTxIcseVLynef7wJ1is1xbzPombV
-         cFui0M6bUJFAQ==
+        b=QBbTLRUnWzDT9NCl1ZCCLL4QsIvJfxuHJHJw0Ke8Fnb0XI0OI68UNfGEylocnFPoG
+         ml8we88U0+sCgFGKZoRyEXjpNtqC3bemt7vyaxo0cadFGng73rUMunEm3aFA4fw5uW
+         JxPbj/488OgetoN4VLa9/KP8Lsd6PL0KXZ1py0BPxHDra2+XmtOE6cFJQNtGCSpU7S
+         qsiwIEAjpO7me5dDzM6YUsUWW2Hg4qBoR9G50ofnKgIrHePJ7VX6rcprDoEOBdbhxq
+         NycbvmvmonXesoTTSLCkI4r/uQ1groAwTg23sdpSkqvcpvtegeNDCQu+pbFH9mVRoc
+         L6VdX6jMBQk6A==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jeff Layton <jlayton@kernel.org>,
@@ -35,16 +35,16 @@ Cc:     Jeff Layton <jlayton@kernel.org>,
         Amir Goldstein <amir73il@gmail.com>,
         Sasha Levin <sashal@kernel.org>, miklos@szeredi.hu,
         linux-unionfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 06/10] overlayfs: set ctime when setting mtime and atime
-Date:   Sat,  7 Oct 2023 20:49:45 -0400
-Message-Id: <20231008004950.3768189-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 5/8] overlayfs: set ctime when setting mtime and atime
+Date:   Sat,  7 Oct 2023 20:50:06 -0400
+Message-Id: <20231008005009.3768314-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231008004950.3768189-1-sashal@kernel.org>
-References: <20231008004950.3768189-1-sashal@kernel.org>
+In-Reply-To: <20231008005009.3768314-1-sashal@kernel.org>
+References: <20231008005009.3768314-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.134
+X-stable-base: Linux 5.10.197
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -83,10 +83,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index 864e821c3910b..0ed70eff9cb9e 100644
+index 7ef3c87f8a23d..65ac504595ba4 100644
 --- a/fs/overlayfs/copy_up.c
 +++ b/fs/overlayfs/copy_up.c
-@@ -306,7 +306,7 @@ static int ovl_set_timestamps(struct dentry *upperdentry, struct kstat *stat)
+@@ -243,7 +243,7 @@ static int ovl_set_timestamps(struct dentry *upperdentry, struct kstat *stat)
  {
  	struct iattr attr = {
  		.ia_valid =
