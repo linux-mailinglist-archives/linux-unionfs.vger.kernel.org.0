@@ -1,128 +1,163 @@
-Return-Path: <linux-unionfs+bounces-14-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-16-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70EF7FC393
-	for <lists+linux-unionfs@lfdr.de>; Tue, 28 Nov 2023 19:40:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC11B7FE257
+	for <lists+linux-unionfs@lfdr.de>; Wed, 29 Nov 2023 22:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93358281F84
-	for <lists+linux-unionfs@lfdr.de>; Tue, 28 Nov 2023 18:40:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6679AB210BA
+	for <lists+linux-unionfs@lfdr.de>; Wed, 29 Nov 2023 21:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C633D0D2;
-	Tue, 28 Nov 2023 18:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E7261FAD;
+	Wed, 29 Nov 2023 21:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RYNTvA70"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W4BAlXK0"
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2EFCDE
-	for <linux-unionfs@vger.kernel.org>; Tue, 28 Nov 2023 10:40:30 -0800 (PST)
-Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-77d90497b86so182851685a.0
-        for <linux-unionfs@vger.kernel.org>; Tue, 28 Nov 2023 10:40:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701196830; x=1701801630; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FStUrpaqYx+yJrAjYizTMoKJoTj2/dVt84vrYBAnCOs=;
-        b=RYNTvA70pxkvedE7ioYQyvRTfuIPCO1q3XOFs67gr8d5u81u+ew2jcqNvaIF9P0tUa
-         Z3yBlcZrYTLN/ucD81QPRN+I+sBZMvpIs9xdwS3IZOFWucrZABK9Ftf248CsADcCCxO1
-         qcusohBV48cEpLBge37QZYTu22GOVF2F3zc4CbOH9bZOs8LrptR7u0Ew5XaKA8Xy72H9
-         pOHsMfpbagdC62lJEo4aGhB0TzgGzaF26F1ulGLQ8nfdrPn6VjKrBz2xc5v0SaQQosW/
-         ocH2vRRhYuM5FzYRCmq3bqQu/kd+1SjL5m1GrS6hyv+OgkkFSm1fl2rG/o/GiD+Bji7H
-         CSyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701196830; x=1701801630;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FStUrpaqYx+yJrAjYizTMoKJoTj2/dVt84vrYBAnCOs=;
-        b=KQc3Nexi4kZfqUloFZTagwLGfMDgidcx07vEa5fk1Zjrjh6WXC6TLvuPSwieywzld8
-         DkAknoYM8AzYb5KUhnxvVsu3Mbc5LpUAUJaR7vTOe6qKg5fkTzjTDwavFscknmALGN3l
-         ruldL6r29sz9OewDcpS72MZBgbJwkZMQZuyhOB1gEjRlj+TKSJNb0U6OQX5vP+1aHgO7
-         gsjaBlPeGGtg3+Kdp9jwUjFaZBllPJc35wAnls35euhQ5IY8EtDIeT7d5x53e6DZw23/
-         L8+xzob83UmVOAYZe1HM9Yndj8h9fVB0P0ETsza7di+7LlRyrj/JliiQh1GnMa0/1W9B
-         duXA==
-X-Gm-Message-State: AOJu0Yzx5kXHSmwAeFf7miEmDjENckxNtMdVp+vF569lTID8NN3yr8ed
-	/orE30SQABoL2tHJBtF8O5otTm7w+8+PeRxqk0E5z9leDBs=
-X-Google-Smtp-Source: AGHT+IF5Pj49+laMsAov/PY5jXXObJWkHGugjEiNsB47gzdWLPfAD7f7fWCMjjTOBISyBQowAekGylRQbiO6OIwjQ2Y=
-X-Received: by 2002:a05:6214:29e9:b0:67a:1ed1:ced4 with SMTP id
- jv9-20020a05621429e900b0067a1ed1ced4mr17689779qvb.45.1701196829929; Tue, 28
- Nov 2023 10:40:29 -0800 (PST)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2462F6166B;
+	Wed, 29 Nov 2023 21:50:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A015EC433C8;
+	Wed, 29 Nov 2023 21:50:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701294657;
+	bh=e1bNk2Y02IUrvPq3JW/J0kW9YOkEkHQ2aztr89JaGE4=;
+	h=From:Subject:Date:To:Cc:From;
+	b=W4BAlXK08iPXH0COup9QFgLk6G49L7sRK2PXOO21jAo/qR2LGnWJrnXkK8VDY82PV
+	 IGoz3DawT/VmzsKrAVoiNQKe9MISc/2hm0kl3HDLbS1UN57/HT08KwuIqFzf4uMkHx
+	 aZnITikONFuj8yXduittb0f3Agj2gJpYJ8NriikUxNJs6/7pwgUWPiTDGffiDWOneP
+	 y335tOEMg7FQIU5JlNaSXWePyt5cBg6G8TkpHQs1OL++xMhydITncxPBUbsIPWQGQi
+	 DYTR3Md2Nr9P8HglHsiqUUXTCL7giFDx3G8qK2SLXiSUOgDQdDpgluvX9RllvHid6h
+	 zYUGf1GaisjMw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86865C07CB1;
+	Wed, 29 Nov 2023 21:50:57 +0000 (UTC)
+From: "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>
+Subject: [PATCH 00/16] fs: use type-safe uid representation for filesystem
+ capabilities
+Date: Wed, 29 Nov 2023 15:50:18 -0600
+Message-Id: <20231129-idmap-fscap-refactor-v1-0-da5a26058a5b@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAJfpegsexQsNVMOZw+0byzj2wTbU_Tg6p0ATgwBAwmTaDmNbLA@mail.gmail.com>
- <CAOQ4uxjYGckJA=raAW8wyVmDaK-FXfFDRS0RCpZYcLucPqMi3w@mail.gmail.com>
- <CAJfpegt5COamxm-ZN+A9ub_Te-CPM0xMd-Rrzwv7OHBkvHS3yg@mail.gmail.com>
- <CAOQ4uxic3NDtEt9EiP+RYKGEB=6b_PCaudQA=cXK6mWY4Cmeqg@mail.gmail.com>
- <CAJfpegsr3A4YgF2YBevWa6n3=AcP7hNndG6EPMu3ncvV-AM71A@mail.gmail.com>
- <CAJfpegt7VC94KkRtb1dfHG8+4OzwPBLYqhtc8=QFUxpFJE+=RQ@mail.gmail.com>
- <CAOQ4uxhg+0_S1tQv9vUpv7Yu-VRLv7U7cnxLmxig+9LmS_qW+A@mail.gmail.com>
- <CAJfpegu6cESPijvO51zjVeXA=wcw7nMaNkkNJ7+my07wq8k9FA@mail.gmail.com>
- <CAOQ4uxicurA4nNeDkUarkTMujtsaOvwQ8HEMpz97N2SejBRx9Q@mail.gmail.com>
- <CAJfpegv=UXqYQzvH6+py76MV7+5L6=3a+_J7LpHQ0VK5YYrAUA@mail.gmail.com> <20231128151123.3cnde47qum52vrxt@ws.net.home>
-In-Reply-To: <20231128151123.3cnde47qum52vrxt@ws.net.home>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Tue, 28 Nov 2023 20:40:18 +0200
-Message-ID: <CAOQ4uxgaib8GW8-5U-XXVyvJWNUYtjaZpHpXieBqJkKW0i3StQ@mail.gmail.com>
-Subject: Re: [PATCH] ovl: fix regression in showing lowerdir mount option
-To: Karel Zak <kzak@redhat.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, Christian Brauner <brauner@kernel.org>, linux-unionfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABqyZ2UC/x2NSwrDMAxErxK0rsEf6kWvUrqQXbkRpE6Q2hAwu
+ XtFNwNvmMcMUBImhds0QGhn5bUbhMsEdcb+IsdPY4g+Jn8N0fCNm2taLYUa1s8qLqeSQ0OPKTc
+ wtaCSK4K9zib377JYudmcj//X/XGeP3LapMJ7AAAA
+To: Christian Brauner <brauner@kernel.org>, Serge Hallyn <serge@hallyn.com>, 
+ Paul Moore <paul@paul-moore.com>, Eric Paris <eparis@redhat.com>, 
+ James Morris <jmorris@namei.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-security-module@vger.kernel.org, audit@vger.kernel.org, 
+ linux-unionfs@vger.kernel.org, 
+ "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3944; i=sforshee@kernel.org;
+ h=from:subject:message-id; bh=e1bNk2Y02IUrvPq3JW/J0kW9YOkEkHQ2aztr89JaGE4=; 
+ =?utf-8?q?b=3DowEBbQGS/pANAwAKAVMDma7l9DHJAcsmYgBlZ7IvK9HzszM2i/QraAFHa/VAD?=
+ =?utf-8?q?mqY0TX3S+lGLdmx_3rXykB2JATMEAAEKAB0WIQSQnt+rKAvnETy4Hc9TA5mu5fQxy?=
+ =?utf-8?q?QUCZWeyLwAKCRBTA5mu5fQxybUeB/_9SuaWrirztZmjFyIZj0l9JjtT/BlFqVDMNE?=
+ =?utf-8?q?Q9u0K8av0oIJB6M4C+/RxW2HovO6Ze3et6gPlXNVVM+_EyGFKVn7W875FYmmGCEKw?=
+ =?utf-8?q?dZ5VTyO8dFom9t8Upy/gl3rgVv3iFFG80ZtQ72B70/tsyKRSYzuyxsdDR_ey1cN6W?=
+ =?utf-8?q?7S85ZBKF84pbR/CEiAhHNjFRYjh5iPJbyGtjvx32qKGcgDYtKJYP3csznkYGd+lEb?=
+ =?utf-8?q?9aF5T1_dzpudoFlnW4B3oA67kMhTd5ptj+WVZwhfHNdslqbEBFad389VfZho7Y38Q?=
+ =?utf-8?q?05t8pxDSg+hFsHv9OvKa?= iAd8bRVxTYQ7QQByaZ4+SebYPCa48r
+X-Developer-Key: i=sforshee@kernel.org; a=openpgp;
+ fpr=2ABCA7498D83E1D32D51D3B5AB4800A62DB9F73A
+X-Endpoint-Received:
+ by B4 Relay for sforshee@kernel.org/default with auth_id=103
 
-On Tue, Nov 28, 2023 at 5:11=E2=80=AFPM Karel Zak <kzak@redhat.com> wrote:
->
-> On Mon, Oct 16, 2023 at 03:10:33PM +0200, Miklos Szeredi wrote:
-> > Ah, but it's not a regression after all, since the kernel un-split the
-> > same commas until 6.5, so there was no way the libmount devs would
-> > have observed any regression in overlayfs mount.   But arguing about
-> > which component is the cause of the regression is not very productive.
-> > Indeed libmount can be fixed parse overlayfs options the same way as
-> > the kernel parsed them before 6.5, which is probably a much better
-> > fix, than a kernel one.
-> >
-> > Karel, is doing such filesystem specific option handling feasible?
-> >
-> > If so, then for overlayfs please please pass an un-escaped (\char ->
-> > char) string to fsconfig for "upperdir=3D" and "workdir=3D" options.
->
-> Committed to the libmount:
-> https://github.com/util-linux/util-linux/commit/f6c29efa929cb8c741591ab38=
-061e7921d53a997
->
-> will be in util-linux v2.40 and in v2.39.3
->
-> It's implemented for all filesystems, not exception for overlayfs.
+This series converts filesystem capabilities from passing around raw
+xattr data to using a kernel-internal representation with type safe
+uids, similar to the conversion done previously for posix ACLs.
+Currently fscaps representations in the kernel have two different
+instances of unclear or confused types:
 
-Nice!
+ - fscaps are generally passed around in the raw xattr form, with the
+   rootid sometimes containing the user uid value and at other times
+   containing the filesystem value.
 
-Note that this code:
+ - The existing kernel-internal representation of fscaps,
+   cpu_vfs_cap_data, uses the kuid_t type, but the value stored is
+   actually a vfsuid.
 
-if (*p =3D=3D ',' && (p =3D=3D optstr0 || *(p - 1) !=3D '\\'))
-        stop =3D p; /* terminate the option item */
+This series eliminates this confusion by converting the xattr data to
+the kernel representation near the userspace and filesystem boundaries,
+using the kernel representation within the vfs and commoncap code. The
+internal representation is renamed to vfs_caps to reflect this broader
+use, and the rootid is changed to a vfsuid_t to correctly identify the
+type of uid which it contains.
 
-...
-        strrem(p, '\\');
-        value =3D p;
+New vfs interfaces are added to allow for getting and setting fscaps
+using the kernel representation. This requires the addition of new inode
+operations to allow overlayfs to handle fscaps properly; all other
+filesystems fall back to a generic implementation. The top-level vfs
+xattr interfaces will now reject fscaps xattrs, though the lower-level
+interfaces continue to accept them for reading and writing the raw xattr
+data.
 
-Will not split either of the following:
-b\,a\,r
-b\\,a\,r
+The existing xattr security hooks can continue to be used for fscaps.
+There is some awkwardness here, as EVM requires the on-disk fscaps data
+to compare with any existing on-disk value. Security checks need to
+happen before calling into filesystem inode operations, when the fscaps
+are still in the kernel-internal format, so an extra conversion to the
+on-disk format is necessary for EVM's setxattr checks.
 
-while legacy overlayfs does split the , when followed by \\
+The remainder of the changes are preparatory work and addition of
+helpers for converting between the xattr and kernel fscaps
+representation. 
 
-IMO what you did is good enough for all practical cases
-and there is no need to go down the rabbit hole of proper escaping
-(unless bugs are reported).
+I have tested this code with xfstests, ltp, libcap2, and libcap-ng with
+no regressions found.
 
-Just wanted to point out the difference.
+Signed-off-by: Seth Forshee (DigitalOcean) <sforshee@kernel.org>
+---
+Seth Forshee (DigitalOcean) (16):
+      mnt_idmapping: split out core vfs[ug]id_t definitions into vfsid.h
+      mnt_idmapping: include cred.h
+      capability: rename cpu_vfs_cap_data to vfs_caps
+      capability: use vfsuid_t for vfs_caps rootids
+      capability: provide helpers for converting between xattrs and vfs_caps
+      capability: provide a helper for converting vfs_caps to xattr for userspace
+      fs: add inode operations to get/set/remove fscaps
+      fs: add vfs_get_fscaps()
+      fs: add vfs_set_fscaps()
+      fs: add vfs_remove_fscaps()
+      ovl: add fscaps handlers
+      ovl: use vfs_{get,set}_fscaps() for copy-up
+      fs: use vfs interfaces for capabilities xattrs
+      commoncap: remove cap_inode_getsecurity()
+      commoncap: use vfs fscaps interfaces for killpriv checks
+      vfs: return -EOPNOTSUPP for fscaps from vfs_*xattr()
 
-Thanks,
-Amir.
+ MAINTAINERS                   |   1 +
+ fs/overlayfs/copy_up.c        |  72 +++---
+ fs/overlayfs/dir.c            |   3 +
+ fs/overlayfs/inode.c          |  84 +++++++
+ fs/overlayfs/overlayfs.h      |   6 +
+ fs/xattr.c                    | 286 ++++++++++++++++++++++-
+ include/linux/capability.h    |  23 +-
+ include/linux/fs.h            |  13 ++
+ include/linux/mnt_idmapping.h |  67 +-----
+ include/linux/security.h      |   5 +-
+ include/linux/vfsid.h         |  74 ++++++
+ kernel/auditsc.c              |   9 +-
+ security/commoncap.c          | 519 ++++++++++++++++++++++--------------------
+ 13 files changed, 802 insertions(+), 360 deletions(-)
+---
+base-commit: 2cc14f52aeb78ce3f29677c2de1f06c0e91471ab
+change-id: 20230512-idmap-fscap-refactor-63b61fa0a36f
+
+Best regards,
+-- 
+Seth Forshee (DigitalOcean) <sforshee@kernel.org>
+
 
