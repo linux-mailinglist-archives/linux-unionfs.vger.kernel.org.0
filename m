@@ -1,144 +1,99 @@
-Return-Path: <linux-unionfs+bounces-72-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-74-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6048E808AE1
-	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Dec 2023 15:43:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E642F8094C6
+	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Dec 2023 22:39:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A546B214E5
-	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Dec 2023 14:43:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CE991F2111D
+	for <lists+linux-unionfs@lfdr.de>; Thu,  7 Dec 2023 21:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B5D40C1A;
-	Thu,  7 Dec 2023 14:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D4D57311;
+	Thu,  7 Dec 2023 21:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aLxoBSw/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UiYCYvpf"
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9676237D2D;
-	Thu,  7 Dec 2023 14:43:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1F1C433C7;
-	Thu,  7 Dec 2023 14:42:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701960180;
-	bh=cQep9CNYbdGvrYQCRNGMIqjTSZXsMZr211akzg6LsV0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aLxoBSw/8zR9WkDXX1UNVxvj/L8lU6ROUUegSoGsptHGsdpbda3X7LdvyjbRvF8C6
-	 MUHZ01pUD6HrpHGczZTYrgDolAPVc3C6TJLMi/AgRRuR/PJIKRgbA4+znthKyKoEnd
-	 mhIkF5hTjXB9R7BNHY0pMyjRDTKuKsbQy5uFSzLlUisLTZIqE1zlCzj/lJecRDJP9k
-	 DiTpRJskSwHQmOeGSlvmF/6OEqmANZHTVoI0sf3ICeuHIn6EJvfjE12wPlFO9AmiVm
-	 rVmTpGAU5SyYQD9/rmI1In0D4CY6F53P9z5kA9uEarFC59qJcNjG890sgSlJ5XI543
-	 YZ9/r7DenQi3Q==
-Date: Thu, 7 Dec 2023 08:42:58 -0600
-From: "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Serge Hallyn <serge@hallyn.com>, Paul Moore <paul@paul-moore.com>,
-	Eric Paris <eparis@redhat.com>, James Morris <jmorris@namei.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Mimi Zohar <zohar@linux.ibm.com>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org, audit@vger.kernel.org,
-	linux-unionfs@vger.kernel.org
-Subject: Re: [PATCH 09/16] fs: add vfs_set_fscaps()
-Message-ID: <ZXHZ8uNEg1IK5WMW@do-x1extreme>
-References: <20231129-idmap-fscap-refactor-v1-0-da5a26058a5b@kernel.org>
- <20231129-idmap-fscap-refactor-v1-9-da5a26058a5b@kernel.org>
- <20231201-reintreten-gehalt-435a960f80ed@brauner>
- <ZWojWE7/HRnByRb+@do-x1extreme>
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6FD11728;
+	Thu,  7 Dec 2023 13:37:14 -0800 (PST)
+Received: by mail-pj1-x102c.google.com with SMTP id 98e67ed59e1d1-286d8f3a08bso1439757a91.1;
+        Thu, 07 Dec 2023 13:37:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701985034; x=1702589834; darn=vger.kernel.org;
+        h=message-id:date:content-id:mime-version:references:in-reply-to:cc
+         :to:subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gBBC3+RnZ4D0MUX3ZqGqN8vGIaNXSQk0kKGYcAtYiDo=;
+        b=UiYCYvpfwi+ZDuDgeWWqfiWfuyIBG3Zejdzhpiemxzoau9Sfq7LNJTEvXJ559eoWJh
+         341lGCMfdchI3H4pR9KxwpR569zw/Jw8wMwOWQ0rC1D64CTU2oGSn3yTX3bk621o0ZoE
+         SlhaMaPOkv3/Wgs2oN3LIqdALTEhs0fbzVWYL8LD5MXUQlZbautjNakULGWfORsdCSkL
+         iUMA+lYW6tWlrNPkSqLphx9iHJ/ajeciLnv8GU8vzGMWDW9H3YW6/Xfo9i1XBbwfHVUH
+         FMmW/m4fHC/tf21Yu44IjazXW2vcOeDckkea4ChS/Olclhe7TFy4ka7RoV4h7GqXI0Tv
+         YoHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701985034; x=1702589834;
+        h=message-id:date:content-id:mime-version:references:in-reply-to:cc
+         :to:subject:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gBBC3+RnZ4D0MUX3ZqGqN8vGIaNXSQk0kKGYcAtYiDo=;
+        b=on1lqLftS+Ag1pwHJ6h8YN9kU5QwUKte39Sdk+/vMf5F4SSUWL0F8lkjeOMOTmc+l3
+         bktE/Gwj3pj8U1inpJgvsHWBwkQ+xakGuwk6NhJrS8v5e0WTwAsfbFzKj4T12usEDYWP
+         K2uKVx3HDLUnb6f0w0qI2WP6ofQC/U0puxaoYX1cjhAvZmZ7hybC3v9AAe7XNMTyEYcx
+         jyHO9+Cg/Vejba+Z0WF9pXZLSDLLi2zjLJR9C3jnVi1CcJrph1P4uQXM8Dwt7tbq3lux
+         XQ1I82EhSlvin7/Mgj3O8qeGOZ3ng7xz3Zg3qWgLFF7prEISXE9C/xEalUv/HEcSmeTC
+         xhDA==
+X-Gm-Message-State: AOJu0YwpPsR1EhL1bbInTEmb8r3ZvT6p5htSF6KK7rQxsNpOLZailbwc
+	p4dDcR4vW4JDZSsLcMcFwVk=
+X-Google-Smtp-Source: AGHT+IElIp+cAHpNT5XZVbCct1KDG8EC2BtuKUTXw+pmvU+3AvJNfTkTV1K9c+dUQKpO/5jVtUv7hA==
+X-Received: by 2002:a17:90b:4b44:b0:286:d242:2629 with SMTP id mi4-20020a17090b4b4400b00286d2422629mr3189271pjb.3.1701985034008;
+        Thu, 07 Dec 2023 13:37:14 -0800 (PST)
+Received: from jromail.nowhere (h219-110-241-048.catv02.itscom.jp. [219.110.241.48])
+        by smtp.gmail.com with ESMTPSA id j18-20020a170902c3d200b001cc3a6813f8sm273891plj.154.2023.12.07.13.37.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Dec 2023 13:37:13 -0800 (PST)
+Received: from jro by jrotkm2 id 1rBLdS-0000Rz-2M ;
+	Fri, 08 Dec 2023 06:10:18 +0900
+From: "J. R. Okajima" <hooanon05g@gmail.com>
+Subject: Re: [PATCH] fs: Pass AT_GETATTR_NOSEC flag to getattr interface function
+To: Stefan Berger <stefanb@linux.vnet.ibm.com>
+Cc: amir73il@gmail.com, linux-integrity@vger.kernel.org,
+    linux-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org,
+    miklos@szeredi.hu, Stefan Berger <stefanb@linux.ibm.com>,
+    syzbot+a67fc5321ffb4b311c98@syzkaller.appspotmail.com,
+    Alexander Viro <viro@zeniv.linux.org.uk>,
+    linux-fsdevel@vger.kernel.org, Tyler Hicks <code@tyhicks.com>,
+    Mimi Zohar <zohar@linux.ibm.com>,
+    Christian Brauner <brauner@kernel.org>
+In-Reply-To: <20231002125733.1251467-1-stefanb@linux.vnet.ibm.com>
+References: <20231002125733.1251467-1-stefanb@linux.vnet.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZWojWE7/HRnByRb+@do-x1extreme>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1733.1701983418.1@jrotkm2>
+Date: Fri, 08 Dec 2023 06:10:18 +0900
+Message-ID: <1734.1701983418@jrotkm2>
 
-[Adding Mimi for insights on EVM questions]
+Stefan Berger:
+> When vfs_getattr_nosec() calls a filesystem's getattr interface function
+> then the 'nosec' should propagate into this function so that
+> vfs_getattr_nosec() can again be called from the filesystem's gettattr
+> rather than vfs_getattr(). The latter would add unnecessary security
+> checks that the initial vfs_getattr_nosec() call wanted to avoid.
+> Therefore, introduce the getattr flag GETATTR_NOSEC and allow to pass
+> with the new getattr_flags parameter to the getattr interface function.
+> In overlayfs and ecryptfs use this flag to determine which one of the
+> two functions to call.
 
-On Fri, Dec 01, 2023 at 12:18:00PM -0600, Seth Forshee (DigitalOcean) wrote:
-> On Fri, Dec 01, 2023 at 06:39:18PM +0100, Christian Brauner wrote:
-> > > +/**
-> > > + * vfs_set_fscaps - set filesystem capabilities
-> > > + * @idmap: idmap of the mount the inode was found from
-> > > + * @dentry: the dentry on which to set filesystem capabilities
-> > > + * @caps: the filesystem capabilities to be written
-> > > + * @flags: setxattr flags to use when writing the capabilities xattr
-> > > + *
-> > > + * This function writes the supplied filesystem capabilities to the dentry.
-> > > + *
-> > > + * Return: 0 on success, a negative errno on error.
-> > > + */
-> > > +int vfs_set_fscaps(struct mnt_idmap *idmap, struct dentry *dentry,
-> > > +		   const struct vfs_caps *caps, int flags)
-> > > +{
-> > > +	struct inode *inode = d_inode(dentry);
-> > > +	struct inode *delegated_inode = NULL;
-> > > +	struct vfs_ns_cap_data nscaps;
-> > > +	int size, error;
-> > > +
-> > > +	/*
-> > > +	 * Unfortunately EVM wants to have the raw xattr value to compare to
-> > > +	 * the on-disk version, so we need to pass the raw xattr to the
-> > > +	 * security hooks. But we also want to do security checks before
-> > > +	 * breaking leases, so that means a conversion to the raw xattr here
-> > > +	 * which will usually be reduntant with the conversion we do for
-> > > +	 * writing the xattr to disk.
-> > > +	 */
-> > > +	size = vfs_caps_to_xattr(idmap, i_user_ns(inode), caps, &nscaps,
-> > > +				 sizeof(nscaps));
-> > > +	if (size < 0)
-> > > +		return size;
-> > 
-> > Oh right, I remember that. Slight eyeroll. See below though...
-> > 
-> > > +
-> > > +retry_deleg:
-> > > +	inode_lock(inode);
-> > > +
-> > > +	error = xattr_permission(idmap, inode, XATTR_NAME_CAPS, MAY_WRITE);
-> > > +	if (error)
-> > > +		goto out_inode_unlock;
-> > > +	error = security_inode_setxattr(idmap, dentry, XATTR_NAME_CAPS, &nscaps,
-> > > +					size, flags);
-> > > +	if (error)
-> > > +		goto out_inode_unlock;
-> > 
-> > For posix acls I added dedicated security hooks that take the struct
-> > posix_acl stuff and then plumb that down into the security modules. You
-> > could do the same thing here and then just force EVM and others to do
-> > their own conversion from in-kernel to xattr format, instead of forcing
-> > the VFS to do this.
-> > 
-> > Because right now we make everyone pay the price all the time when
-> > really EVM should pay that price and this whole unpleasantness.
-> 
-> Good point, I'll do that.
+You are introducing two perfectly identical functions.
+ecryptfs_do_getattr() and ovl_do_getattr().
+Why don't you provide one in a common place, such like
+include/linux/fs_stack.h?
 
-I've been reconsidering various approaches here. One thing I noticed is
-that for the non-generic case (iow overlayfs) I missed calling
-security_inode_post_setxattr(), where EVM also wants the raw xattr, so
-that would require another conversion. That got me wondering whether the
-setxattr security hooks really matter when writing fscaps to overlayfs.
-And it seems like they might not: the LSMs only look for their own
-xattrs, and IMA doesn't do anything with fscaps xattrs. EVM does, but
-what it does for a xattr write to an overlayfs indoe seems at least
-partially if not completely redundant with what it will do when the
-xattr is written to the upper filesystem.
 
-So could we push these security calls down to the generic fscaps
-implementations just before/after writing the raw xattr data and just
-skip them for overlayfs? If so we can get away with doing the vfs_caps
-to xattr conversion only once.
-
-The trade offs are that filesystems which implement fscaps inode
-operations become responsible for calling the security hooks if needed,
-and if something changes such that we need to call those security hooks
-for fscaps on overlayfs this solution would no longer work.
+J. R. Okajima
 
