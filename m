@@ -1,303 +1,252 @@
-Return-Path: <linux-unionfs+bounces-249-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-251-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 581D083D10C
-	for <lists+linux-unionfs@lfdr.de>; Fri, 26 Jan 2024 00:59:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 221E283D97D
+	for <lists+linux-unionfs@lfdr.de>; Fri, 26 Jan 2024 12:41:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 706D0B268E1
-	for <lists+linux-unionfs@lfdr.de>; Thu, 25 Jan 2024 23:59:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8649291B94
+	for <lists+linux-unionfs@lfdr.de>; Fri, 26 Jan 2024 11:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DA41B810;
-	Thu, 25 Jan 2024 23:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4974C14A8F;
+	Fri, 26 Jan 2024 11:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rg6zDdom"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZUbZBaOy"
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49961B59A;
-	Thu, 25 Jan 2024 23:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F24D1427F;
+	Fri, 26 Jan 2024 11:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706227061; cv=none; b=hw6tyITyJuZdixd6k3mhaGYCovw500s47eMdh11J8jHPCjiVIfhi+k/HGD0a+uCKt2G8y2KCndy8soEQPaMZ6BDrDep3PH/zZfRbBLp1hH1MHnypFrVbiqToVHjQc2t7igbpb/wb2F2olJ7qUtujJNwKVvM3e4IjE9bYhHLaOCw=
+	t=1706269254; cv=none; b=FfFlhtKwtzeEdpdpWRuqqiLkKLk0YAZkQANJBDcy+5VTX6ElW8t1hQmHKxmIZQoksH7UESL8PdDTx9mNJktAsgwDQ7Nm0ZsxkWwnLcYmA3MjCd+FwC/7t+m2JVmGKbqgoDW0jACGzO0yU9SvP0yazNkPrnDRv6g4gQiMuPsiPR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706227061; c=relaxed/simple;
-	bh=FKBREtj8gYP8EY7HfUrJK9Zp1Jdp/dowThfEAGkB4+4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0fpifCzue4hGDGr4o3fduWoYEDAzvrersN9EYyCtZdZZo+WVLwgItNFIwhkV9xLsANUAPxfGCPmLuTHrtEBkqqwN0F7sBo7qM85WhkLgooH5cSvoA16+b2m1EVWW7jmLrxPRiGzhafaVvPG1aQqLRcFFyF6yb342UOsiV/cMP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rg6zDdom; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706227059; x=1737763059;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=FKBREtj8gYP8EY7HfUrJK9Zp1Jdp/dowThfEAGkB4+4=;
-  b=Rg6zDdomHb701a52Ibx9TbYZRCiwRVHbp67jgaYQks4Ig5lW0yVTqj0P
-   8CfqWC/bPJ/PIhMrTYjqaYqqE2x4l8lSnSK9UySwegQTiL+mFGAskFeTJ
-   6dUQGlVNSs3WPBPuGGv66qE4ZQ7OJ1400S4DLrFBNakHum3U2oBS9IhMl
-   kqbp+sEzQEn4fhMCprQqnQ+/oxzRUdUsYQ00IxOHZcmVKW/r6awtEov6m
-   4nIOROjEo2Tf0OdwSBW8W+PylP807uOAi+XjPmdKrJyqizhAgPj20FoFb
-   V8wNv33LiV34pVi90EfxtYLFlQCaqYfDSiuxnRCZtjGqaYbYkiBeIu+or
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="15867575"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="15867575"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2024 15:57:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="930191107"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="930191107"
-Received: from vcostago-mobl3.jf.intel.com ([10.24.14.99])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2024 15:57:36 -0800
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-To: brauner@kernel.org,
-	amir73il@gmail.com,
-	hu1.chen@intel.com
-Cc: miklos@szeredi.hu,
-	malini.bhandaru@intel.com,
-	tim.c.chen@intel.com,
-	mikko.ylinen@intel.com,
-	lizhen.you@intel.com,
-	linux-unionfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Subject: [RFC v2 4/4] fs: Optimize credentials reference count for backing file ops
-Date: Thu, 25 Jan 2024 15:57:23 -0800
-Message-ID: <20240125235723.39507-5-vinicius.gomes@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240125235723.39507-1-vinicius.gomes@intel.com>
-References: <20240125235723.39507-1-vinicius.gomes@intel.com>
+	s=arc-20240116; t=1706269254; c=relaxed/simple;
+	bh=/3o8LMDYZa891pv/+7XoRHQ8MeuE5NNlBKlJHMHcXUA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bVzHz7+r4x7njvR6thmCO9dnAjidVLgnGkqOwEwidGG/WhCNgr82ayCWPrA45FqL1fPutOuth+k6Edwt0D9mQlD3XRRu8XPzOwpOheTYHPExg6xigA63Li2kEPgIoVf6cRZ1FdT8H3Acjh0Y+Xc2jEAV71P9tafX9haeM5KxL7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZUbZBaOy; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-783cd27aef4so20777385a.2;
+        Fri, 26 Jan 2024 03:40:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706269251; x=1706874051; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WywnUEa8/PFBaA7RrQ/d7DELIRLf0x0WvxBTi+4gRBQ=;
+        b=ZUbZBaOy7QZxxRup9uNFUxF7hr5mjZ2PBcet9JwfpYfSYt8IrFCe+7OxoI7+N5tsu5
+         wbStgixfg+LLB1Lm5ygoYkoYx56TtIOMgUpSpT0LpHa5ve+jZ/1KEZt1RA8/+Ka9Q/Nx
+         0Z8Ht5u0avaT5T7lEgbQiEOhGPxyjFEfnZ/coEk8M6yOkj1IDE5OwIvNKtxLCC1WNtau
+         zNY1ibv9/xNSzqk6u0nPhCbjRG57mbdBoR45nDmbOdbuKPci3DqYkJXpjdn4/z8d1F3T
+         nSYied7ARIgsOX1aI5L1bzqlV7Vitg7dYTkNnjIDxCKf1fVI7FwDmmwnbPvy0lzg6++7
+         yt3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706269251; x=1706874051;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WywnUEa8/PFBaA7RrQ/d7DELIRLf0x0WvxBTi+4gRBQ=;
+        b=OUV6CmmWnFtqB4yHR3nxGxyMw+fgMbGfgJIumY7gIz7xuyiy3mE49DoyT4oOCJyfAO
+         FL9c5Tsd7ZDsz+v3nK4W79oBV7nyoNl8lFH1ma8gkLxF58/JmGsCDAQ5jr0AKvIg9Z+o
+         woIh64vdb2tmnaunE4XSEUNVni4gRaKs4f0VyzX/6yiAb57N90Krk8tIbD/1zsLKslb9
+         lWPtCtQmGszfnH5yukyxtMR1qGJPqf9vOy7MwOYz7YICRjnpuhITrOxj+Goe8Vy6mvqq
+         RqxGvM08CnO07irtKHrteSdk3r+y2h1r0EsrfTLqvqM6enr/V8hXlrO92lAWepofLj66
+         hFGw==
+X-Gm-Message-State: AOJu0Yyj7X14PwOfZtXQXJXjQUBTf+PgPJ0TKs5YLrTtiajccTLiP8u3
+	iLt3fSLrfgou0qrCAqMzHAKk8rKPXhy/KwSUVgEPW5KFJvgPRASU5Yr8DL+r/V//lv9kvSWN43L
+	1ZjibzEmjrG1I9Xqe54iISt5+6AY=
+X-Google-Smtp-Source: AGHT+IFx/lFm2tRr6Yg+XpQcdPkpnwCm+YkwiTOsK+mYBjfNsOAEQUFhryN+xS0O6eyKCR0BRNUzOOfv34eLa8oKr+0=
+X-Received: by 2002:ad4:5f0c:0:b0:680:b7fd:e3c0 with SMTP id
+ fo12-20020ad45f0c000000b00680b7fde3c0mr1354002qvb.130.1706269251403; Fri, 26
+ Jan 2024 03:40:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240125235723.39507-1-vinicius.gomes@intel.com>
+In-Reply-To: <20240125235723.39507-1-vinicius.gomes@intel.com>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Fri, 26 Jan 2024 13:40:40 +0200
+Message-ID: <CAOQ4uxgA8OAp5Htv9qBtW7S9J-YhyJeatiXTtzyw-1maraRZrA@mail.gmail.com>
+Subject: Re: [RFC v2 0/4] overlayfs: Optimize override/revert creds
+To: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Cc: brauner@kernel.org, hu1.chen@intel.com, miklos@szeredi.hu, 
+	malini.bhandaru@intel.com, tim.c.chen@intel.com, mikko.ylinen@intel.com, 
+	lizhen.you@intel.com, linux-unionfs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel <linux-fsdevel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-For backing file operations, users are expected to pass credentials
-that will outlive the backing file common operations.
+cc: fsdevel
 
-Use the specialized guard statements to override/revert the
-credentials.
+On Fri, Jan 26, 2024 at 1:57=E2=80=AFAM Vinicius Costa Gomes
+<vinicius.gomes@intel.com> wrote:
+>
+> Hi,
+>
 
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
----
- fs/backing-file.c | 124 ++++++++++++++++++++++------------------------
- 1 file changed, 60 insertions(+), 64 deletions(-)
+Hi Vinicius,
 
-diff --git a/fs/backing-file.c b/fs/backing-file.c
-index a681f38d84d8..9874f09f860f 100644
---- a/fs/backing-file.c
-+++ b/fs/backing-file.c
-@@ -140,7 +140,7 @@ ssize_t backing_file_read_iter(struct file *file, struct iov_iter *iter,
- 			       struct backing_file_ctx *ctx)
- {
- 	struct backing_aio *aio = NULL;
--	const struct cred *old_cred;
-+	const struct cred *old_cred = ctx->cred;
- 	ssize_t ret;
- 
- 	if (WARN_ON_ONCE(!(file->f_mode & FMODE_BACKING)))
-@@ -153,29 +153,28 @@ ssize_t backing_file_read_iter(struct file *file, struct iov_iter *iter,
- 	    !(file->f_mode & FMODE_CAN_ODIRECT))
- 		return -EINVAL;
- 
--	old_cred = override_creds(ctx->cred);
--	if (is_sync_kiocb(iocb)) {
--		rwf_t rwf = iocb_to_rw_flags(flags);
-+	scoped_guard(cred, old_cred) {
-+		if (is_sync_kiocb(iocb)) {
-+			rwf_t rwf = iocb_to_rw_flags(flags);
- 
--		ret = vfs_iter_read(file, iter, &iocb->ki_pos, rwf);
--	} else {
--		ret = -ENOMEM;
--		aio = kmem_cache_zalloc(backing_aio_cachep, GFP_KERNEL);
--		if (!aio)
--			goto out;
-+			ret = vfs_iter_read(file, iter, &iocb->ki_pos, rwf);
-+		} else {
-+			ret = -ENOMEM;
-+			aio = kmem_cache_zalloc(backing_aio_cachep, GFP_KERNEL);
-+			if (!aio)
-+				goto out;
- 
--		aio->orig_iocb = iocb;
--		kiocb_clone(&aio->iocb, iocb, get_file(file));
--		aio->iocb.ki_complete = backing_aio_rw_complete;
--		refcount_set(&aio->ref, 2);
--		ret = vfs_iocb_iter_read(file, &aio->iocb, iter);
--		backing_aio_put(aio);
--		if (ret != -EIOCBQUEUED)
--			backing_aio_cleanup(aio, ret);
-+			aio->orig_iocb = iocb;
-+			kiocb_clone(&aio->iocb, iocb, get_file(file));
-+			aio->iocb.ki_complete = backing_aio_rw_complete;
-+			refcount_set(&aio->ref, 2);
-+			ret = vfs_iocb_iter_read(file, &aio->iocb, iter);
-+			backing_aio_put(aio);
-+			if (ret != -EIOCBQUEUED)
-+				backing_aio_cleanup(aio, ret);
-+		}
- 	}
- out:
--	revert_creds(old_cred);
--
- 	if (ctx->accessed)
- 		ctx->accessed(ctx->user_file);
- 
-@@ -187,7 +186,7 @@ ssize_t backing_file_write_iter(struct file *file, struct iov_iter *iter,
- 				struct kiocb *iocb, int flags,
- 				struct backing_file_ctx *ctx)
- {
--	const struct cred *old_cred;
-+	const struct cred *old_cred = ctx->cred;
- 	ssize_t ret;
- 
- 	if (WARN_ON_ONCE(!(file->f_mode & FMODE_BACKING)))
-@@ -210,39 +209,37 @@ ssize_t backing_file_write_iter(struct file *file, struct iov_iter *iter,
- 	 */
- 	flags &= ~IOCB_DIO_CALLER_COMP;
- 
--	old_cred = override_creds(ctx->cred);
--	if (is_sync_kiocb(iocb)) {
--		rwf_t rwf = iocb_to_rw_flags(flags);
-+	scoped_guard(cred, old_cred) {
-+		if (is_sync_kiocb(iocb)) {
-+			rwf_t rwf = iocb_to_rw_flags(flags);
- 
--		ret = vfs_iter_write(file, iter, &iocb->ki_pos, rwf);
--		if (ctx->end_write)
--			ctx->end_write(ctx->user_file);
--	} else {
--		struct backing_aio *aio;
-+			ret = vfs_iter_write(file, iter, &iocb->ki_pos, rwf);
-+			if (ctx->end_write)
-+				ctx->end_write(ctx->user_file);
-+		} else {
-+			struct backing_aio *aio;
- 
--		ret = backing_aio_init_wq(iocb);
--		if (ret)
--			goto out;
-+			ret = backing_aio_init_wq(iocb);
-+			if (ret)
-+				return ret;
- 
--		ret = -ENOMEM;
--		aio = kmem_cache_zalloc(backing_aio_cachep, GFP_KERNEL);
--		if (!aio)
--			goto out;
-+			ret = -ENOMEM;
-+			aio = kmem_cache_zalloc(backing_aio_cachep, GFP_KERNEL);
-+			if (!aio)
-+				return ret;
- 
--		aio->orig_iocb = iocb;
--		aio->end_write = ctx->end_write;
--		kiocb_clone(&aio->iocb, iocb, get_file(file));
--		aio->iocb.ki_flags = flags;
--		aio->iocb.ki_complete = backing_aio_queue_completion;
--		refcount_set(&aio->ref, 2);
--		ret = vfs_iocb_iter_write(file, &aio->iocb, iter);
--		backing_aio_put(aio);
--		if (ret != -EIOCBQUEUED)
--			backing_aio_cleanup(aio, ret);
-+			aio->orig_iocb = iocb;
-+			aio->end_write = ctx->end_write;
-+			kiocb_clone(&aio->iocb, iocb, get_file(file));
-+			aio->iocb.ki_flags = flags;
-+			aio->iocb.ki_complete = backing_aio_queue_completion;
-+			refcount_set(&aio->ref, 2);
-+			ret = vfs_iocb_iter_write(file, &aio->iocb, iter);
-+			backing_aio_put(aio);
-+			if (ret != -EIOCBQUEUED)
-+				backing_aio_cleanup(aio, ret);
-+		}
- 	}
--out:
--	revert_creds(old_cred);
--
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(backing_file_write_iter);
-@@ -252,15 +249,15 @@ ssize_t backing_file_splice_read(struct file *in, loff_t *ppos,
- 				 unsigned int flags,
- 				 struct backing_file_ctx *ctx)
- {
--	const struct cred *old_cred;
-+	const struct cred *old_cred = ctx->cred;
- 	ssize_t ret;
- 
- 	if (WARN_ON_ONCE(!(in->f_mode & FMODE_BACKING)))
- 		return -EIO;
- 
--	old_cred = override_creds(ctx->cred);
--	ret = vfs_splice_read(in, ppos, pipe, len, flags);
--	revert_creds(old_cred);
-+	scoped_guard(cred, old_cred) {
-+		ret = vfs_splice_read(in, ppos, pipe, len, flags);
-+	}
- 
- 	if (ctx->accessed)
- 		ctx->accessed(ctx->user_file);
-@@ -274,7 +271,7 @@ ssize_t backing_file_splice_write(struct pipe_inode_info *pipe,
- 				  unsigned int flags,
- 				  struct backing_file_ctx *ctx)
- {
--	const struct cred *old_cred;
-+	const struct cred *old_cred = ctx->cred;
- 	ssize_t ret;
- 
- 	if (WARN_ON_ONCE(!(out->f_mode & FMODE_BACKING)))
-@@ -284,12 +281,11 @@ ssize_t backing_file_splice_write(struct pipe_inode_info *pipe,
- 	if (ret)
- 		return ret;
- 
--	old_cred = override_creds(ctx->cred);
--	file_start_write(out);
--	ret = iter_file_splice_write(pipe, out, ppos, len, flags);
--	file_end_write(out);
--	revert_creds(old_cred);
--
-+	scoped_guard(cred, old_cred) {
-+		file_start_write(out);
-+		ret = iter_file_splice_write(pipe, out, ppos, len, flags);
-+		file_end_write(out);
-+	}
- 	if (ctx->end_write)
- 		ctx->end_write(ctx->user_file);
- 
-@@ -300,7 +296,7 @@ EXPORT_SYMBOL_GPL(backing_file_splice_write);
- int backing_file_mmap(struct file *file, struct vm_area_struct *vma,
- 		      struct backing_file_ctx *ctx)
- {
--	const struct cred *old_cred;
-+	const struct cred *old_cred = ctx->cred;
- 	int ret;
- 
- 	if (WARN_ON_ONCE(!(file->f_mode & FMODE_BACKING)) ||
-@@ -312,9 +308,9 @@ int backing_file_mmap(struct file *file, struct vm_area_struct *vma,
- 
- 	vma_set_file(vma, file);
- 
--	old_cred = override_creds(ctx->cred);
--	ret = call_mmap(vma->vm_file, vma);
--	revert_creds(old_cred);
-+	scoped_guard(cred, old_cred) {
-+		ret = call_mmap(vma->vm_file, vma);
-+	}
- 
- 	if (ctx->accessed)
- 		ctx->accessed(ctx->user_file);
--- 
-2.43.0
+I have some specific comments about the overlayfs patch,
+but first I prefer to provide higher level feedback on the series.
 
+> It was noticed that some workloads suffer from contention on
+> increasing/decrementing the ->usage counter in their credentials,
+> those refcount operations are associated with overriding/reverting the
+> current task credentials. (the linked thread adds more context)
+>
+> In some specialized cases, overlayfs is one of them, the credentials
+> in question have a longer lifetime than the override/revert "critical
+> section". In the overlayfs case, the credentials are created when the
+> fs is mounted and destroyed when it's unmounted. In this case of long
+> lived credentials, the usage counter doesn't need to be
+> incremented/decremented.
+>
+> Add a lighter version of credentials override/revert to be used in
+> these specialized cases. To make sure that the override/revert calls
+> are paired, add a cleanup guard macro. This was suggested here:
+>
+> https://lore.kernel.org/all/20231219-marken-pochen-26d888fb9bb9@brauner/
+>
+> With a small number of tweaks:
+>  - Used inline functions instead of macros;
+>  - A small change to store the credentials into the passed argument,
+>    the guard is now defined as (note the added '_T =3D'):
+>
+>       DEFINE_GUARD(cred, const struct cred *, _T =3D override_creds_light=
+(_T),
+>                   revert_creds_light(_T));
+>
+>  - Allow "const" arguments to be used with these kind of guards;
+>
+> Some comments:
+>  - If patch 1/4 is not a good idea (adding the cast), the alternative
+>    I can see is using some kind of container for the credentials;
+>  - The only user for the backing file ops is overlayfs, so these
+>    changes make sense, but may not make sense in the most general
+>    case;
+>
+> For the numbers, some from 'perf c2c', before this series:
+> (edited to fit)
+>
+> #
+> #        ----- HITM -----                                        Shared
+> #   Num  RmtHitm  LclHitm                      Symbol            Object  =
+       Source:Line  Node
+> # .....  .......  .......  ..........................  ................  =
+..................  ....
+> #
+>   -------------------------
+>       0      412     1028
+>   -------------------------
+>           41.50%   42.22%  [k] revert_creds            [kernel.vmlinux]  =
+atomic64_64.h:39     0  1
+>           15.05%   10.60%  [k] override_creds          [kernel.vmlinux]  =
+atomic64_64.h:25     0  1
+>            0.73%    0.58%  [k] init_file               [kernel.vmlinux]  =
+atomic64_64.h:25     0  1
+>            0.24%    0.10%  [k] revert_creds            [kernel.vmlinux]  =
+cred.h:266           0  1
+>           32.28%   37.16%  [k] generic_permission      [kernel.vmlinux]  =
+mnt_idmapping.h:81   0  1
+>            9.47%    8.75%  [k] generic_permission      [kernel.vmlinux]  =
+mnt_idmapping.h:81   0  1
+>            0.49%    0.58%  [k] inode_owner_or_capable  [kernel.vmlinux]  =
+mnt_idmapping.h:81   0  1
+>            0.24%    0.00%  [k] generic_permission      [kernel.vmlinux]  =
+namei.c:354          0
+>
+>   -------------------------
+>       1       50      103
+>   -------------------------
+>          100.00%  100.00%  [k] update_cfs_group  [kernel.vmlinux]  atomic=
+64_64.h:15   0  1
+>
+>   -------------------------
+>       2       50       98
+>   -------------------------
+>           96.00%   96.94%  [k] update_cfs_group  [kernel.vmlinux]  atomic=
+64_64.h:15   0  1
+>            2.00%    1.02%  [k] update_load_avg   [kernel.vmlinux]  atomic=
+64_64.h:25   0  1
+>            0.00%    2.04%  [k] update_load_avg   [kernel.vmlinux]  fair.c=
+:4118        0
+>            2.00%    0.00%  [k] update_cfs_group  [kernel.vmlinux]  fair.c=
+:3932        0  1
+>
+> after this series:
+>
+> #
+> #        ----- HITM -----                                   Shared
+> #   Num  RmtHitm  LclHitm                 Symbol            Object       =
+Source:Line  Node
+> # .....  .......  .......   ....................  ................  .....=
+...........  ....
+> #
+>   -------------------------
+>       0       54       88
+>   -------------------------
+>          100.00%  100.00%   [k] update_cfs_group  [kernel.vmlinux]  atomi=
+c64_64.h:15   0  1
+>
+>   -------------------------
+>       1       48       83
+>   -------------------------
+>           97.92%   97.59%   [k] update_cfs_group  [kernel.vmlinux]  atomi=
+c64_64.h:15   0  1
+>            2.08%    1.20%   [k] update_load_avg   [kernel.vmlinux]  atomi=
+c64_64.h:25   0  1
+>            0.00%    1.20%   [k] update_load_avg   [kernel.vmlinux]  fair.=
+c:4118        0  1
+>
+>   -------------------------
+>       2       28       44
+>   -------------------------
+>           85.71%   79.55%   [k] generic_permission      [kernel.vmlinux] =
+ mnt_idmapping.h:81   0  1
+>           14.29%   20.45%   [k] generic_permission      [kernel.vmlinux] =
+ mnt_idmapping.h:81   0  1
+>
+>
+> The contention is practically gone.
+
+That is very impressive.
+Can you say which workloads were running during this test?
+Specifically, I am wondering how much of the improvement came from
+backing_file.c and how much from overlayfs/*.c.
+
+The reason I am asking is because the overlayfs patch is quite large and ca=
+n
+take more time to review, so I am wondering out loud if we are not
+better off this
+course of action:
+
+1. convert backing_file.c to use new helpers/guards
+2. convert overlayfs to use new helpers/guards
+
+#1 should definitely go in via Christian's tree and should get a wider revi=
+ew
+from fsdevel (please CC fsdevel next time)
+
+#2 is contained for overlayfs reviewers. Once the helpers are merged
+and used by backing_file helpers, overlayfs can be converted independently.
+
+#1 and #2 could both be merged in the same merge cycle, or not, it does not
+matter. Most likely, #2 will go through Christian's tree as well, but I thi=
+nk we
+need to work according to this merge order.
+
+We can also work on the review in parallel and you may keep the overlayfs
+patch in following posts, just wanted us to be on the same page w.r.t to
+the process.
+
+Thanks,
+Amir.
 
