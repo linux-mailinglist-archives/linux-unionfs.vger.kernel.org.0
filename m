@@ -1,170 +1,148 @@
-Return-Path: <linux-unionfs+bounces-262-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-268-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D5F842ECA
-	for <lists+linux-unionfs@lfdr.de>; Tue, 30 Jan 2024 22:46:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B6684332D
+	for <lists+linux-unionfs@lfdr.de>; Wed, 31 Jan 2024 03:11:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F13281F21FD3
-	for <lists+linux-unionfs@lfdr.de>; Tue, 30 Jan 2024 21:46:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 275E31F27BEE
+	for <lists+linux-unionfs@lfdr.de>; Wed, 31 Jan 2024 02:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C323C78B6C;
-	Tue, 30 Jan 2024 21:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BAE5697;
+	Wed, 31 Jan 2024 02:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EMZ3Bl0K"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UA044uZA"
 X-Original-To: linux-unionfs@vger.kernel.org
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F3E762DD;
-	Tue, 30 Jan 2024 21:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14266AC0;
+	Wed, 31 Jan 2024 02:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706651213; cv=none; b=vGX3knQN49OQKy6QZk4G6iwgc9/z0mclcfLchU5+7QZmOnzd+b06FUp7csccCDOW0hbwgrS8chsbYIYats4YPypiy1SEVnlhXeheFrW5/vUBfU8ZRjuYhnf4CSGCkksNWk8NPkLKgmgorlsS2RdWepNcttjb52rEYEF6UvlBHxY=
+	t=1706667093; cv=none; b=VFuTfm1XanTSpr1eIdjRMzFhCiml9Rjq6o/MeQ4o+dZJr4YJ2VNdwZlJLAuOqBQPqZGSpqayV12IPJ0JgKdxhZj5bBh6ILCeL1iG6dfGSMWUnGfE2deaJvXo5hSJv4bpBlF4I+wzznjhrVn97XegmOyCpluYM6eXP3c8qnbjkFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706651213; c=relaxed/simple;
-	bh=9e8yppFii/adbHh4Wc651Fjp4Pbx1zTSyGcucHY8QPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SMODH3KpJiakRwd1Ro3RnvrHACmXEn3LzjOJVn/8RnIsFTbu5+JsTXX6cZTHq1QESUa//ST4liTV0/nZ4AF/oEmLjqdwZqNXesaoySqIXVLSQ6PPkJ/bPaIb/J6bgteNDnd1efy+XiDc7MOpJHeVzXvfMGZnbY17QH5gje1ULBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EMZ3Bl0K; arc=none smtp.client-ip=148.163.158.5
+	s=arc-20240116; t=1706667093; c=relaxed/simple;
+	bh=5V+1lVSFCwl0HqD4XTm+JK1RWoUpkuJT6j5pOs1vZ4k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=albxGSOxOYxFRKgvLmMZxLinmFkUwjRkZmwk4ojRQH7lOasHzTw/JDQ39jJ4ktalcZB/PD4VWNp7hSuyRb4w4C0ed+1ZiOwOTXcs8nG/8pE3Rwh0kTa8TRaaYDo3v/pPuPu4vR49ft2cS7gdvZcs774r0691unANYz5pUTdW1E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UA044uZA; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40ULMbpO017915;
-	Tue, 30 Jan 2024 21:46:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=u33QTQz3zwo8w5gMckYZiE6nW3SK8ZOIksLnuOv7pdo=;
- b=EMZ3Bl0KO8UEP3sJZ9CkLBscEBRVetKOGq2gLhaWsKuTT3Q7VHMmMxf6ISo7dhfh51Eh
- WGKIOk8Uuxql2V2LVyAgMwg+c5P+nHKSEs6jCPIOSwXJXhYNZyBF9ReWzj4GRrzYBGYe
- RJRfr3XgQWSldcAhcXNvgCTICTXnCcrT1khFdDDJIJ/38tB+cDLHCC3GBrVIbf4e98XR
- j3K51RqUCsjtsLzJlTmBBRt6/OIF/Iz6JiU0RZXycbVL1RXSZ97Y4N9B5fgxraxmMIR1
- na8JtTDcdjIsTSDZnQGFugkNj86MA9iCRR8dqK8JguWpvKgaWDA0aokQ/LlBZ5urrBsx 1g== 
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40UNr8SG014227;
+	Wed, 31 Jan 2024 02:11:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=titW6woM4Us3aYaR4S1UO/MqF5zLOoOIb81u5xnqcLA=;
+ b=UA044uZAKJwp402Sybb0iOQkotJv4O2uAg4KnLxRPItk8jnFjMeqB4YX2xuQTvHupzOq
+ B5nekJ8yzW/ZYaPhr8Ea9i7EISbJHjd6CKZf0JIYNS36FbRSYRJ0oiKWNli8fObXb+QD
+ s7d6WZzm0tkJ6d0qq0MlPuqeTDzrbQhm41K63bVdJXnAhtRkB1sgz6LG9p9CX+dw5sqn
+ P5tE3gJX2oEYxlynUgwRgvYtjKDi7lQ6YY8LX+xx3rxNiBWb8V4GLPVtZimKON9FaYKY
+ bXBKp7sq8swv/Gz/QG8v5y7O+sRCLe/wd2u/IEuxNltjThvkO2XkUrWIML02PsY7T5AC YA== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vy6pyutad-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vyb5x2df3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jan 2024 21:46:33 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40ULCD8p012740;
-	Tue, 30 Jan 2024 21:46:32 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vy6pyuta6-1
+	Wed, 31 Jan 2024 02:11:18 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40V1xgus014362;
+	Wed, 31 Jan 2024 02:11:18 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vyb5x2da0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jan 2024 21:46:32 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40UIjMkv017723;
-	Tue, 30 Jan 2024 21:46:32 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vwchysnhs-1
+	Wed, 31 Jan 2024 02:11:17 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40V20Hcb008234;
+	Wed, 31 Jan 2024 02:10:49 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vwdnm2ggp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jan 2024 21:46:31 +0000
+	Wed, 31 Jan 2024 02:10:49 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40ULkUrM12648960
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40V2AmYS5440320
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Jan 2024 21:46:31 GMT
+	Wed, 31 Jan 2024 02:10:48 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D7BDB58056;
-	Tue, 30 Jan 2024 21:46:30 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id A483958052;
+	Wed, 31 Jan 2024 02:10:48 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3C8DA58067;
-	Tue, 30 Jan 2024 21:46:30 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+	by IMSVA (Postfix) with ESMTP id C15A158056;
+	Wed, 31 Jan 2024 02:10:47 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
 	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 30 Jan 2024 21:46:30 +0000 (GMT)
-From: Stefan Berger <stefanb@linux.ibm.com>
-To: linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-unionfs@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, zohar@linux.ibm.com, roberto.sassu@huawei.com,
-        amir73il@gmail.com, miklos@szeredi.hu,
-        Stefan Berger <stefanb@linux.ibm.com>
-Subject: [PATCH 5/5] evm: Enforce signatures on unsupported filesystem for EVM_INIT_X509
-Date: Tue, 30 Jan 2024 16:46:20 -0500
-Message-ID: <20240130214620.3155380-6-stefanb@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240130214620.3155380-1-stefanb@linux.ibm.com>
-References: <20240130214620.3155380-1-stefanb@linux.ibm.com>
+	Wed, 31 Jan 2024 02:10:47 +0000 (GMT)
+Message-ID: <38230b4c-54ae-45ed-a6fb-34e63501e5b1@linux.ibm.com>
+Date: Tue, 30 Jan 2024 21:10:47 -0500
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] evm: Use the real inode's metadata to calculate
+ metadata hash
+To: linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-unionfs@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com, zohar@linux.ibm.com, roberto.sassu@huawei.com,
+        amir73il@gmail.com, miklos@szeredi.hu
+References: <20240130214620.3155380-1-stefanb@linux.ibm.com>
+ <20240130214620.3155380-5-stefanb@linux.ibm.com>
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20240130214620.3155380-5-stefanb@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: w54US0XujnxYbbq40R4fIPU11T3fX_Xg
-X-Proofpoint-ORIG-GUID: j_5mG8R2wvP_LmnI04u5nCN3YQ-FKZEp
+X-Proofpoint-GUID: Zc1qrXxFCD3ijIZFAPrQM6sGqbDaSGHp
+X-Proofpoint-ORIG-GUID: zaUA5QI1SqCbCcF4YyZKcyyHfxVKhZXa
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-30_12,2024-01-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- clxscore=1015 impostorscore=0 priorityscore=1501 mlxscore=0 suspectscore=0
- malwarescore=0 mlxlogscore=932 bulkscore=0 lowpriorityscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401300162
+ definitions=2024-01-30_14,2024-01-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ spamscore=0 priorityscore=1501 phishscore=0 impostorscore=0 mlxscore=0
+ adultscore=0 clxscore=1015 mlxlogscore=999 suspectscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401310017
 
-Unsupported filesystems currently do not enforce any signatures. Add
-support for signature enforcement of the "original" and "portable &
-immutable" signatures when EVM_INIT_X509 is enabled.
 
-The "original" signature type contains filesystem specific metadata.
-Thus it cannot be copied up and verified. However with EVM_INIT_X509
-and EVM_ALLOW_METADATA_WRITES enabled, the "original" file signature
-may be written.
 
-When EVM_ALLOW_METADATA_WRITES is not set or once it is removed from
-/sys/kernel/security/evm by setting EVM_INIT_HMAC for example, it is not
-possible to write or remove xattrs on the overlay filesystem.
+On 1/30/24 16:46, Stefan Berger wrote:
+> Changes to the file attribute (mode bits, uid, gid) on the lower layer
+> are not take into account when d_backing_inode() is used when a file is
+> accessed on the overlay layer and this file has not yet been copied up.
+> This is because d_backing_inode() does not return the real inode of the
+> lower layer but instead returns the backing inode which holds old file
+> attributes. When the old file attributes are used for calculating the
+> metadata hash then the expected hash is calculated and the file then
+> mistakenly passes signature verification. Therefore, use d_real_inode()
+> which returns the inode of the lower layer for as long as the file has
+> not been copied up and returns the upper layer's inode otherwise.
+> 
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> ---
+>   security/integrity/evm/evm_crypto.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/security/integrity/evm/evm_crypto.c b/security/integrity/evm/evm_crypto.c
+> index b1ffd4cc0b44..2e48fe54e899 100644
+> --- a/security/integrity/evm/evm_crypto.c
+> +++ b/security/integrity/evm/evm_crypto.c
+> @@ -223,7 +223,7 @@ static int evm_calc_hmac_or_hash(struct dentry *dentry,
+>   				 size_t req_xattr_value_len,
+>   				 uint8_t type, struct evm_digest *data)
+>   {
+> -	struct inode *inode = d_backing_inode(dentry);
+> +	struct inode *inode = d_real_inode(dentry);
+>   	struct xattr_list *xattr;
+>   	struct shash_desc *desc;
+>   	size_t xattr_size = 0;
 
-This change still prevents EVM from writing HMAC signatures on
-unsupported filesystem when EVM_INIT_HMAC is enabled.
-
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
----
- security/integrity/evm/evm_main.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/security/integrity/evm/evm_main.c b/security/integrity/evm/evm_main.c
-index e96d127b48a2..f49609dfcbc7 100644
---- a/security/integrity/evm/evm_main.c
-+++ b/security/integrity/evm/evm_main.c
-@@ -192,7 +192,11 @@ static enum integrity_status evm_verify_hmac(struct dentry *dentry,
- 		     iint->evm_status == INTEGRITY_PASS_IMMUTABLE))
- 		return iint->evm_status;
- 
--	if (is_unsupported_fs(dentry))
-+	/*
-+	 * On unsupported filesystems with EVM_INIT_X509 not enabled, skip
-+	 * signature verification.
-+	 */
-+	if (!(evm_initialized & EVM_INIT_X509) && is_unsupported_fs(dentry))
- 		return INTEGRITY_UNKNOWN;
- 
- 	/* if status is not PASS, try to check again - against -ENOMEM */
-@@ -262,7 +266,8 @@ static enum integrity_status evm_verify_hmac(struct dentry *dentry,
- 				evm_status = INTEGRITY_PASS_IMMUTABLE;
- 			} else if (!IS_RDONLY(inode) &&
- 				   !(inode->i_sb->s_readonly_remount) &&
--				   !IS_IMMUTABLE(inode)) {
-+				   !IS_IMMUTABLE(inode) &&
-+				   !is_unsupported_fs(dentry)) {
- 				evm_update_evmxattr(dentry, xattr_name,
- 						    xattr_value,
- 						    xattr_value_len);
-@@ -422,9 +427,6 @@ enum integrity_status evm_verifyxattr(struct dentry *dentry,
- 	if (!evm_key_loaded() || !evm_protected_xattr(xattr_name))
- 		return INTEGRITY_UNKNOWN;
- 
--	if (is_unsupported_fs(dentry))
--		return INTEGRITY_UNKNOWN;
--
- 	if (!iint) {
- 		iint = integrity_iint_find(d_backing_inode(dentry));
- 		if (!iint)
--- 
-2.43.0
-
+We need this patch when NOT activating CONFIG_OVERLAY_FS_METACOPY but 
+when setting CONFIG_OVERLAY_FS_METACOPY=y it has to be reverted...  I am 
+not sure what the solution is.
 
