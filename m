@@ -1,137 +1,129 @@
-Return-Path: <linux-unionfs+bounces-581-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-588-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7161987F2AB
-	for <lists+linux-unionfs@lfdr.de>; Mon, 18 Mar 2024 22:55:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 310CA880799
+	for <lists+linux-unionfs@lfdr.de>; Tue, 19 Mar 2024 23:56:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12E9EB20DDD
-	for <lists+linux-unionfs@lfdr.de>; Mon, 18 Mar 2024 21:55:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B98772847C5
+	for <lists+linux-unionfs@lfdr.de>; Tue, 19 Mar 2024 22:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711C85A4C7;
-	Mon, 18 Mar 2024 21:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B384F885;
+	Tue, 19 Mar 2024 22:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z0nbCrFg"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bdXBL9s0"
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33AD5A4C2;
-	Mon, 18 Mar 2024 21:54:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493753FBB1;
+	Tue, 19 Mar 2024 22:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710798901; cv=none; b=YVdigL81qqxkDjJQHaKYs6LPv1vvGoSfATz2hD68rboloOLYWYvOwKZmc3YiBEFjPyA95G0Lod+bQu2XueKF1E19o01SVPZVY5YqnUP+CWgD2XbRqCp/du9wzUKw5GY25su3O0u0Zipm7frM0Gy3LIitq/UjEkNXLJDvvlWo0h0=
+	t=1710888921; cv=none; b=dUnvyl+dB1MT6DGmldFEVF3rZwrm+JiXtJdcdaBBhhE0zuttS6l3oimtBR0vkQKVCwlpKjBjo29NNWCtR27urNXjS53NAB5PA5jZTRgNgtnLI37jx9j4QYP8juxXa8xJP4l6rZJ35PV3d4QosClQeK+DGaQLSu74nSXvOkqd/z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710798901; c=relaxed/simple;
-	bh=OtuCDqkSfVg0+5ApOlxKzqe1QfAgEjBGhzs/PhrLUJ4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=V8FOoEer+m+7qcFbitTEYlFVgjeI+qEG+7Cr/st9e4AVTeaElasMmRJmlIjWljwG8oJSqNUENUZGix1HMgJBmyHJ5RntYzA3Gm6f84MDcyqjamhkBvwGU63lI7LzAJyWVYzgmPUL/iFeI5OCTK+mMHIJ2UTDALf/4Yh68xbcVZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z0nbCrFg; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710798899; x=1742334899;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=OtuCDqkSfVg0+5ApOlxKzqe1QfAgEjBGhzs/PhrLUJ4=;
-  b=Z0nbCrFg7SJyNp2WEc6LlS/4UyM808nHqsSf+0OSgo8s+PsG1flP1R/1
-   BhaI/GkYw3fYOpn62pH7d+pNP7L3GeZ7XzcFsonkol7fjqFkZ0vEBZ2Ri
-   Fmb9m7zgipo53p8DXWxfFbKANDkPGICKAYOK8rzuYQXD2dvq96btvrnaw
-   FgcJDYdpxTHGTx9veHh6oHYN6VsEzukq3UXdAccQPcCEGh1LKbqlF935Y
-   pVhpWQaiQmaALa4L6k2R6lOuXpMrOYOO07FeD9mEXwSQTWe4JziMDkMtO
-   bsUkpAGhg7WTmuMuFrxpZsgmjEWgHB73RLWhMhXRt5Jv6GVhK/m3+rIGP
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="16786152"
-X-IronPort-AV: E=Sophos;i="6.07,135,1708416000"; 
-   d="scan'208";a="16786152"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 14:54:58 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,135,1708416000"; 
-   d="scan'208";a="36731025"
-Received: from unknown (HELO vcostago-mobl3) ([10.125.110.188])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 14:54:57 -0700
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: amir73il@gmail.com, hu1.chen@intel.com, miklos@szeredi.hu,
- malini.bhandaru@intel.com, tim.c.chen@intel.com, mikko.ylinen@intel.com,
- lizhen.you@intel.com, linux-unionfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC v3 1/5] cleanup: Fix discarded const warning when defining
- lock guard
-In-Reply-To: <20240318-flocken-nagetiere-1e027955d06e@brauner>
-References: <20240216051640.197378-1-vinicius.gomes@intel.com>
- <20240216051640.197378-2-vinicius.gomes@intel.com>
- <20240318-flocken-nagetiere-1e027955d06e@brauner>
-Date: Mon, 18 Mar 2024 14:54:56 -0700
-Message-ID: <875xxjp5n3.fsf@intel.com>
+	s=arc-20240116; t=1710888921; c=relaxed/simple;
+	bh=fLjxN0Sk5KrBVRj/F43291DNmPrPvvUPq+zN5q/P3rA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:Mime-Version; b=lBQCEbP3BfM9ZcBDgEYvbmOnw3vbBAzg130Lre0OVr94lTIkvuIC9cq2c13X9T0xsslVvJ+gz7p4Es1R/okQJXm9zfWSyLGJvLNj5ssrsKqyA9ZITFKb0MUazGK3K8Yd0pZvGcSB89ZpzkcoBsXy2r+37usX4WgbBZJ9CAtQWmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bdXBL9s0; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42JMk5on029729;
+	Tue, 19 Mar 2024 22:55:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=xEWRN1kQtdflhyrl2Pxa7AJCVUu9MrlZm0JM8RwO/9o=;
+ b=bdXBL9s072ucTw/T756cHbAiv3eHX4VX1bzTqEI/PGp9Ehbyi0QZb2VNMLiaOUqyF53d
+ w45hcKopSlSpaQPhsENGAAn7Rcuj/e+JqMOehOOB1OlgWK+7kyVKivfo0FyVm8V0UwpO
+ hf/+meSzkh/WYcmVeAKfcVS/TUhvUVtEwpwQo0qwCXB6CJb7b7Xfs9LRbVW04NL2le0f
+ dchd9UOlPh8WXcbMt+SbOnyBCvyK6O/KWKjmHX2UunkewiCPk74aUtTVZDqbl8A6eD30
+ IAaGfJSN3WCrSPHsHGbE/6lOqbt4dwFF1dRShpV+aAf2tmCIFWD4ZlATNrMpx19o4zeH iw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wyjx0g397-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Mar 2024 22:55:08 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42JMt7iA011599;
+	Tue, 19 Mar 2024 22:55:07 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wyjx0g35t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Mar 2024 22:55:07 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42JL1JNs002780;
+	Tue, 19 Mar 2024 22:50:43 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wwrf2j58e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Mar 2024 22:50:43 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42JMofpc21758708
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 19 Mar 2024 22:50:43 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E7B1F58068;
+	Tue, 19 Mar 2024 22:50:40 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0A43A58056;
+	Tue, 19 Mar 2024 22:50:40 +0000 (GMT)
+Received: from li-5cd3c5cc-21f9-11b2-a85c-a4381f30c2f3.ibm.com (unknown [9.61.80.83])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 19 Mar 2024 22:50:39 +0000 (GMT)
+Message-ID: <9daaa1d12d351bca982b28830354f86f7ef97b6f.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 01/10] ima: Rename backing_inode to real_inode
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Stefan Berger <stefanb@linux.ibm.com>, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-unionfs@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com, roberto.sassu@huawei.com, amir73il@gmail.com,
+        brauner@kernel.org, miklos@szeredi.hu
+Date: Tue, 19 Mar 2024 18:50:39 -0400
+In-Reply-To: <20240223172513.4049959-2-stefanb@linux.ibm.com>
+References: <20240223172513.4049959-1-stefanb@linux.ibm.com>
+	 <20240223172513.4049959-2-stefanb@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-23.el8_9) 
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: jvYkY3ss7LvP5Zm-XbPVGn_4UYQFYrFN
+X-Proofpoint-GUID: cqs4CkSCMlhN4GqJuCVj4XPxha8djzpE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-19_09,2024-03-18_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=693
+ priorityscore=1501 spamscore=0 bulkscore=0 clxscore=1015 malwarescore=0
+ adultscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403140000 definitions=main-2403190176
 
-Christian Brauner <brauner@kernel.org> writes:
+Hi Stefan,
 
-> On Thu, Feb 15, 2024 at 09:16:36PM -0800, Vinicius Costa Gomes wrote:
->> Fix the following warning when defining a cleanup guard for a "const"
->> pointer type:
->>=20
->> ./include/linux/cleanup.h:211:18: warning: return discards =E2=80=98cons=
-t=E2=80=99 qualifier from pointer target type [-Wdiscarded-qualifiers]
->>   211 |         return _T->lock;                                        =
-        \
->>       |                ~~^~~~~~
->> ./include/linux/cleanup.h:233:1: note: in expansion of macro =E2=80=98__=
-DEFINE_UNLOCK_GUARD=E2=80=99
->>   233 | __DEFINE_UNLOCK_GUARD(_name, _type, _unlock, __VA_ARGS__)       =
-        \
->>       | ^~~~~~~~~~~~~~~~~~~~~
->> ./include/linux/cred.h:193:1: note: in expansion of macro =E2=80=98DEFIN=
-E_LOCK_GUARD_1=E2=80=99
->>   193 | DEFINE_LOCK_GUARD_1(cred, const struct cred, _T->lock =3D overri=
-de_creds_light(_T->lock),
->>       | ^~~~~~~~~~~~~~~~~~~
->>=20
->> Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
->> ---
->>  include/linux/cleanup.h | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>=20
->> diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
->> index c2d09bc4f976..085482ef46c8 100644
->> --- a/include/linux/cleanup.h
->> +++ b/include/linux/cleanup.h
->> @@ -208,7 +208,7 @@ static inline void class_##_name##_destructor(class_=
-##_name##_t *_T)	\
->>  									\
->>  static inline void *class_##_name##_lock_ptr(class_##_name##_t *_T)	\
->>  {									\
->> -	return _T->lock;						\
->> +	return (void *)_T->lock;					\
->>  }
->
-> I think both of these patches are a bit ugly as we burden the generic
-> cleanup code with casting to void which could cause actual issues.
+On Fri, 2024-02-23 at 12:25 -0500, Stefan Berger wrote:
+> Rename the backing_inode variable to real_inode since it gets its value
+> from real_inode().
+> 
+> Suggested-by: Amir Goldstein <amir73il@gmail.com>
+> Co-developed-by: Mimi Zohar <zohar@linux.ibm.com>
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> Acked-by: Amir Goldstein <amir73il@gmail.com>
 
-Fair point.
+Thanks for adding me as a co-developer.  The "Co-developed-by" tag needs to be
+followed immediately by their "Signed-off-by" tag.  I'll need to move it
+immediately before my "Signed-off-by" tag.
 
->
-> Casting from const to non-const is rather specific to the cred code so I
-> would rather like to put the burden on the cred code instead of the
-> generic code if possible.
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 
-For what it's worth, I liked your changes, will remove these two "fixes"
-from the series and use your suggestions in the next version.
+Mimi
 
-
-Thank you,
---=20
-Vinicius
 
