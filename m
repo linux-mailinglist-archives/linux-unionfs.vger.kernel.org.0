@@ -1,171 +1,140 @@
-Return-Path: <linux-unionfs+bounces-664-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-667-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3148A3010
-	for <lists+linux-unionfs@lfdr.de>; Fri, 12 Apr 2024 16:02:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 584F88A3559
+	for <lists+linux-unionfs@lfdr.de>; Fri, 12 Apr 2024 20:06:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BABBB284322
-	for <lists+linux-unionfs@lfdr.de>; Fri, 12 Apr 2024 14:02:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4A3BB21C2F
+	for <lists+linux-unionfs@lfdr.de>; Fri, 12 Apr 2024 18:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F154385953;
-	Fri, 12 Apr 2024 14:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F111814E2F5;
+	Fri, 12 Apr 2024 18:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kNXdy89b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BembhugX"
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EE886263;
-	Fri, 12 Apr 2024 14:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAE7148313;
+	Fri, 12 Apr 2024 18:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712930504; cv=none; b=m3VKCbwoHIm2PIBYw3eNQIa5ujqvTJjEM7mFWdsuzFZ7hnbmQXc2gmK4rpF/qkf6hNNfo/d71eYUjk4Gvh4f5ARcqlHYiE3U92G+WXuvqJ/u7OkcI5Q4mgv7xJTi85m9lcIgOsg/IBrP3ilE1qXf81sx8hAoweWCj3WfYxPoFe0=
+	t=1712945113; cv=none; b=rcmBnW2yc/rTF/tdFwTXiNEuIhS2LN+O5usb81TNhFxTg32FuuilO4+bHTG12LCQvUKJQtAbe/6y9KaJlut9LuJ1n8g5Gkj0GqtITwm92uu0P+KUktNADw/drVFTRUGdTYAwYIKU4agMf6UUAjmUauc7vS6DGzq1Q0NkygEL630=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712930504; c=relaxed/simple;
-	bh=gGjW2b6424KvqKll5M6gaO2TdOJ5v0dFJTon93QnOCc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqLHhH2YpTRGRYLbp64O11OPQy2o+rDhEcBZf0uucteSxIfQXLb7K3QXSLLEw7/uuFdPjEylKUgkdsqKbi5xf3laOyXAriKnD25f88HuN/F/7yNBsG9732AlC526C5bSrdIWSu+s6hKZOJbMF1ZQD5m2lSOhnG8WzEO6h62PNgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kNXdy89b; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43CDFU1j023559;
-	Fri, 12 Apr 2024 14:01:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=EUCx6GDFLRxE+4XIrvIIlReZtZ6BbhEwIa722HP+UWQ=;
- b=kNXdy89bLll3B5Umv85WxDxEKAiEOKLKvI5uDsrkb5fhy//poQPb1Fq/UeD/vRDYIbbv
- H1DmDjHtbHtMqaxkBBNNqCHfenT2qTanUXwYieYfgagKOdJgLxQxgjwEMZ3xPAiNsmtM
- V4mAZPeunJF1FAuz1lXnnG2M8RmwJ/5AtO8YL/VpTdOmfsRRjzpNLpa8meYkP1fBM456
- qD/mwJs4HPl3Du3CIH0q8AvX+VL6UnviS8/+KSGtQEVHDe6DfQYq+81cE9AVoVqJla5e
- 8lwA40kOwhhOLFlHB207DY5VCKhhSJk0I8Ge0/fre7MmTNoWPYHIPmXZOASv0XhhLSft ng== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xf5kc836r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Apr 2024 14:01:34 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43CE1Xe3002193;
-	Fri, 12 Apr 2024 14:01:33 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xf5kc836p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Apr 2024 14:01:33 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43CC1AJr021479;
-	Fri, 12 Apr 2024 14:01:32 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xbjxm9whd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Apr 2024 14:01:32 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43CE1Ul910420964
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 12 Apr 2024 14:01:32 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F14685807D;
-	Fri, 12 Apr 2024 14:01:29 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 816D358072;
-	Fri, 12 Apr 2024 14:01:29 +0000 (GMT)
-Received: from sbct-3.bos2.lab (unknown [9.47.158.153])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 12 Apr 2024 14:01:29 +0000 (GMT)
-From: Stefan Berger <stefanb@linux.ibm.com>
-To: linux-integrity@vger.kernel.org, linux-unionfs@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, zohar@linux.ibm.com,
-        roberto.sassu@huawei.com, amir73il@gmail.com, miklos@szeredi.hu,
-        Stefan Berger <stefanb@linux.ibm.com>
-Subject: [RFC 2/2] ima: Fix detection of read/write violations on stacked filesystems
-Date: Fri, 12 Apr 2024 10:01:22 -0400
-Message-ID: <20240412140122.2607743-3-stefanb@linux.ibm.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240412140122.2607743-1-stefanb@linux.ibm.com>
-References: <20240412140122.2607743-1-stefanb@linux.ibm.com>
+	s=arc-20240116; t=1712945113; c=relaxed/simple;
+	bh=+OOlDC7Xxm6MIaBGhJg19XXHllnLQ9JmPImaSQkrJ18=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jl8ETz37UbaHP0asWL+8fZu7om9iQnZHWwgOl+DakmD7359PJTzd0KIZLlxH/vAldgRYRE1SMK4thjbaBrhwxPIZHBJrsrOQeV8zXER5lT0upm95Occ5D4EmdMEdePM82rdGOodDk4vmFjh5zInpvqV1rpUUErPPlqC1Sco/BME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BembhugX; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-696315c9da5so10005116d6.2;
+        Fri, 12 Apr 2024 11:05:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712945111; x=1713549911; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NXIp91wOih9CoCfNDEheAqOA0zoVihgOT0Xf+EbLOzs=;
+        b=BembhugXcDGLgv5SQW5FFSr67EiA2p7ltSOkEPfLeb0NtSglFEemLAKwky1e2FCO9S
+         wokQlMwMS8meeMbfpFXIJ/up+v5ndGPydNqDCnDYRHAF+4YhX1BD4bDbfrXUSCS3t1Xo
+         K5/K4pHc06tHEdecuw+0IxMm6Mt8hcNoZSpsCOrmFfJ4oKLc/baxTK0EH+U4SF7H3HmG
+         eeu3xVFZFV+a7/0nNv2gA/vtVcTENoDfvgArkOqzoVYhycwM34N5XOGE/aXfR5WY1kBF
+         fydUTDgx5ad7W1+9oNMe/neUrAEeYoR+kp9qM96XQMHQyc38gigo0ov3hmQoa6Ag7moY
+         2sLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712945111; x=1713549911;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NXIp91wOih9CoCfNDEheAqOA0zoVihgOT0Xf+EbLOzs=;
+        b=EJG8Sr/O/4f/bftFinYBx81ZDmrFTVTjoFP/YGz/ygYWmsfw14iGnOPXCBTmaRHhW1
+         P99+Y4OIgzA3MxgRvi/+tZ+gXaVd1AEkve7TBwrG0Y259IiIUEzEsYHS5o6/oSM67JbB
+         lKUtdSufzcvThfh2L3SErcPKbPLliJaLFwPNKtDMJjB5Il0Jp5rhfr1Vp380D3/M0nkj
+         kzMuQ0xZAbkg0EedQBiD+xoWH4xquEWqlBG0J0nyAxv2PdVaPXPVfmXzvXar2ajGHVDI
+         RDkAKIkQeVHJd9V4E2jDSpVus/FwhpShvHiq5TaiGQZgDxBq8IWS7K5HnqOZrf2j12JX
+         95Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCXbwphoZTssr9yRCbR6UYEbVzDaljdMtfSNLnAevACoo+POhKf67DHiJXEwPhlAIJGJffUHwRHDcM4DiRnwcfSspatSu6nyVw9uw4X8PXCcvpoBV1WQlBTqL3q5jxrIPQ/usDITjcON87TpoA==
+X-Gm-Message-State: AOJu0YxEWZqhqPjBm2Gl3QjgUw60vl12qNNr02chhLVp4YL51m5iaKVd
+	D+ybczWjgv/WouEiTdLI2Us/WZQeFtDQGLV2YzamIfcMxfGuJ12IE+mXBsKIl6kYd1X7RPdySou
+	ygj36fmuSuqWKzyLpVQJLSZ50fxI=
+X-Google-Smtp-Source: AGHT+IG/8HJwtDYDi7eVF5555tvAtRnoSP6wV0lzz7X8Ji2t5zDXvQOTMLyRxapB9H3x4DDuD5pCvPEYTWgU020ambk=
+X-Received: by 2002:a0c:e852:0:b0:699:2274:b229 with SMTP id
+ l18-20020a0ce852000000b006992274b229mr3779676qvo.14.1712945111598; Fri, 12
+ Apr 2024 11:05:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: F66x76YQQK7e3KFcjK8xmYKVfx3CRbU_
-X-Proofpoint-GUID: dGfdMG9kHsPPIYDH-CQ5EZKWf7XlgOYw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-12_10,2024-04-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
- bulkscore=0 spamscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0
- mlxlogscore=665 phishscore=0 suspectscore=0 impostorscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2404010000
- definitions=main-2404120101
+References: <20240412140122.2607743-1-stefanb@linux.ibm.com> <20240412140122.2607743-2-stefanb@linux.ibm.com>
+In-Reply-To: <20240412140122.2607743-2-stefanb@linux.ibm.com>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Fri, 12 Apr 2024 21:05:00 +0300
+Message-ID: <CAOQ4uxgNRYi-mYo=LZ5yiWch2zwDeTG2q9ZYD0ysEN6XaJkVhw@mail.gmail.com>
+Subject: Re: [RFC 1/2] ovl: Define D_REAL_FILEDATA for d_real to return dentry
+ with data
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: linux-integrity@vger.kernel.org, linux-unionfs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, zohar@linux.ibm.com, roberto.sassu@huawei.com, 
+	miklos@szeredi.hu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On a stacked filesystem, when one process opens the file holding a file's
-data (e.g., on upper or lower layer on overlayfs) then issue a violation
-when another process opens the file for reading on the top layer (overlay
-layer on overlayfs). This then provides similar behavior to the existing
-case where a violation is generated when one process opens a file for
-writing and another one opens the same file for reading. On stacked
-filesystem also search all the lower layers for relevant files opened for
-writing and issue the violation if one is found.
+On Fri, Apr 12, 2024 at 5:01=E2=80=AFPM Stefan Berger <stefanb@linux.ibm.co=
+m> wrote:
+>
+> Define D_REAL_FILEDATA which is to be used as a parameter for d_real()
+> to return the dentry that is holding the file data, which is either the
 
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
----
- security/integrity/ima/ima_main.c | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+D_REAL_DATA already does that
 
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index f04f43af651c..590dd9d5d99a 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -121,8 +121,11 @@ static void ima_rdwr_violation_check(struct file *file,
- 				     const char **pathname,
- 				     char *filename)
- {
-+	struct inode *real_inode = d_real_inode(file_dentry(file));
- 	struct inode *inode = file_inode(file);
-+	struct dentry *fd_dentry, *d;
- 	fmode_t mode = file->f_mode;
-+	struct inode *fd_inode;
- 	bool send_tomtou = false, send_writers = false;
- 
- 	if (mode & FMODE_WRITE) {
-@@ -134,11 +137,25 @@ static void ima_rdwr_violation_check(struct file *file,
- 						&iint->atomic_flags))
- 				send_tomtou = true;
- 		}
--	} else {
--		if (must_measure)
--			set_bit(IMA_MUST_MEASURE, &iint->atomic_flags);
--		if (inode_is_open_for_write(inode) && must_measure)
--			send_writers = true;
-+	} else if (must_measure) {
-+		set_bit(IMA_MUST_MEASURE, &iint->atomic_flags);
-+
-+		if (inode == real_inode) {
-+			if (inode_is_open_for_write(inode))
-+				send_writers = true;
-+		} else {
-+			d = d_real(file_dentry(file), D_REAL_FILEDATA);
-+			do {
-+				fd_dentry = d;
-+				fd_inode = d_inode(fd_dentry);
-+				if (inode_is_open_for_write(fd_inode)) {
-+					send_writers = true;
-+					break;
-+				}
-+				/* next layer of stacked fs */
-+				d = d_real(fd_dentry, D_REAL_FILEDATA);
-+			} while (d != fd_dentry);
-+		}
- 	}
- 
- 	if (!send_tomtou && !send_writers)
--- 
-2.43.0
+> upper or the lower denry. The caller is expected to call d_real() again
+> on the returned dentry to get to lower layers of a stacked filesystem,
+> if available.
+>
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> ---
+>  fs/overlayfs/super.c   | 6 ++++++
+>  include/linux/dcache.h | 1 +
+>  2 files changed, 7 insertions(+)
+>
+> diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+> index 06a231970cb5..f466ad89b005 100644
+> --- a/fs/overlayfs/super.c
+> +++ b/fs/overlayfs/super.c
+> @@ -36,6 +36,7 @@ static struct dentry *ovl_d_real(struct dentry *dentry,=
+ enum d_real_type type)
+>         switch (type) {
+>         case D_REAL_DATA:
+>         case D_REAL_METADATA:
+> +       case D_REAL_FILEDATA:
+>                 break;
+>         default:
+>                 goto bug;
+> @@ -47,6 +48,11 @@ static struct dentry *ovl_d_real(struct dentry *dentry=
+, enum d_real_type type)
+>         }
+>
+>         upper =3D ovl_dentry_upper(dentry);
+> +       if (type =3D=3D D_REAL_FILEDATA) {
+> +               if (ovl_has_upperdata(d_inode(dentry)))
+> +                       return upper;
 
+This one is already the returned value for D_REAL_DATA
+
+> +               return ovl_dentry_lower(dentry);
+
+And this one is a wrong value, because the lower file's data is at
+ovl_dentry_lowerdata(), which is what D_REAL_DATA
+returns.
+
+So it is not clear to me what it is that you tried to do here.
+
+Thanks,
+Amir.
 
