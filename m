@@ -1,87 +1,127 @@
-Return-Path: <linux-unionfs+bounces-686-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-688-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007178ABDD4
-	for <lists+linux-unionfs@lfdr.de>; Sun, 21 Apr 2024 02:21:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77C788AD03C
+	for <lists+linux-unionfs@lfdr.de>; Mon, 22 Apr 2024 17:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7C551F213DA
-	for <lists+linux-unionfs@lfdr.de>; Sun, 21 Apr 2024 00:21:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1388F1F2309E
+	for <lists+linux-unionfs@lfdr.de>; Mon, 22 Apr 2024 15:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E65A41;
-	Sun, 21 Apr 2024 00:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF676152522;
+	Mon, 22 Apr 2024 15:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="XoKjUqkb"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DBu4hbOs"
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC6036C;
-	Sun, 21 Apr 2024 00:21:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941261474B9;
+	Mon, 22 Apr 2024 15:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713658898; cv=none; b=T6kGX6u04cHyQvoQIqO6yDBuBj4/oHtFXLFz0DNNr/T8J3p7ukDMTS++w8r/HMVBS5FRzInbPgT0OD80m47nC9YqQNhV++DYRw+DJj+GRrXfAihSrs27398nFv8qnOR2f0F/oj7DfvqUq8WzDP0JgBwr3pnc9A/mErH1/Ea/GRQ=
+	t=1713798442; cv=none; b=iCgyuyNHm9bTCPiZou54OsLlf12WBSyaBBPJgZVdt5El58lQ7nHDTLWhJcX2c8SLFSs+9BXhcwoI2d88W1QW9LLoSe2IeFtxD4t9W8DCV6zOrU/tvYpIwAubTzQULNKWCVVfz/whFY9Cw10I9+fLbHjGFYNM3tQrOgSiF5MP054=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713658898; c=relaxed/simple;
-	bh=bWhEB44EU+xCR31GHSqW8y0nOZf3Pfvhbwo2n9eiZUM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Aye+fr8LtCWFQ8UqOXc2V/ftREHpFso6lZ95eUzbUczSO7Uw+bhEnNGFSIAn79bhisj0sjM16Z+E8odzrGnNcaqpFVKuluB11iTmiihWIRPKZtAvcAIxzVzhI3aw8i4EbQfuugOLE+VmVKQrmscFdEXL3V7jT/Y2MMXct+OG3Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=XoKjUqkb; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=cXdj4Y/fti/COs7xn/VBIILsxCDjiWFHrNpqQP0RP+U=; b=XoKjUqkbexemjpVQe9KdnickZD
-	3kN3WplxDHu3+zlEcmP5J5Ono+lrmr6cMnOnkb7ItX5CKD9zcHN/Mxrq2qwEI/Jlm+ihBBqEOTUEI
-	8Ru5oY/Lpq2rQKf7X8M7X4i8aAbb2bQFqi3UkXpDIKN8Ry75fssZ2wJKVn60rNq4OTt0rxnxyZarM
-	ZOTQluByd+WvAmx2R/B/uiVZmoe8Hw1EHt0zbpCKRwpYy7ZP4sk8VPFDCcYk1+zaWO9hyCxouiSBP
-	2REjEBr7WWjqt33Pfmd7wCfrfzUVJtAN9zowvkYiEtH7on3hrBGuNjU/gYmuVXEUEAurpoW0g2XbU
-	byHd0ZZQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1ryKxV-0009aU-0g;
-	Sun, 21 Apr 2024 00:21:29 +0000
-Date: Sun, 21 Apr 2024 01:21:29 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: syzbot <syzbot+5ad5425056304cbce654@syzkaller.appspotmail.com>
-Cc: amir73il@gmail.com, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org,
-	miklos@szeredi.hu, syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [overlayfs?] possible deadlock in ovl_nlink_start
-Message-ID: <20240421002129.GF2118490@ZenIV>
-References: <0000000000002615fd06166c7b16@google.com>
+	s=arc-20240116; t=1713798442; c=relaxed/simple;
+	bh=OwBTM38wR2q83NXNwr0WZqVclcVxAfrXdY/laVtugxs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oh429OtPT9OYA/tVm5hnlOkbQ7bAq5UrENa7LpUE8ubNzVbLcDWSvJMwh3DE8rnWOasBn5+dlIQGbhekSv6LnLNOhZMePZUFvJH2HmZQ//TiXm8qVD7kIZwLe82VfePqDDiIjddH0oKKRDWGnyqy4mF8sO5JVNp+XnMVF+vs/7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DBu4hbOs; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43MEnfqJ031250;
+	Mon, 22 Apr 2024 15:07:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=X/qZpknkXE3GmCsg7Uudnu3Lok0kBSYi8OLJ1TnoCRE=;
+ b=DBu4hbOsuSInpXU5lJUbIMaL861LBWfosxc6+TtL2clnP3T4/GPYec2EdJvcyx/aJpzd
+ tiigYfRnhekq4Q48DYOK1v6d79BdOP3tdd3bX4shSjMWCxs/4SlJlpks5ZBNDEFk2Gbj
+ J9y0mtu/KlznbBxl9eucSL0m3e9qDXbA3zLTZhnJEVqj4j00lFkX0KQXu6gcxRYjGduM
+ SKVEmHUEib3EXOWRtU3HqW4E99kXFU8gF7aAQvstIzMBGdlWaJN635CXbxggyAKHjIwu
+ WRLwi+ccYoQuiS+fOUmNfFs70iZMjkKVhD6JfefS3NRfWroUiWCKbM7Hia44HcGsQxiC 6w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xnsyx81j8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Apr 2024 15:07:03 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43MF73Qg030610;
+	Mon, 22 Apr 2024 15:07:03 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xnsyx81j5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Apr 2024 15:07:03 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43MEk6Vj005341;
+	Mon, 22 Apr 2024 15:07:02 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xmx3c732k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Apr 2024 15:07:02 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43MF6xbU25035364
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 22 Apr 2024 15:07:01 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6151E58063;
+	Mon, 22 Apr 2024 15:06:59 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7EAD958053;
+	Mon, 22 Apr 2024 15:06:58 +0000 (GMT)
+Received: from sbct-3.bos2.lab (unknown [9.47.158.153])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 22 Apr 2024 15:06:58 +0000 (GMT)
+From: Stefan Berger <stefanb@linux.ibm.com>
+To: linux-integrity@vger.kernel.org, linux-unionfs@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, zohar@linux.ibm.com,
+        roberto.sassu@huawei.com, amir73il@gmail.com, miklos@szeredi.hu,
+        brauner@kernel.org, Stefan Berger <stefanb@linux.ibm.com>
+Subject: [RFC PATCH v2 0/2] ima: Fix detection of read/write violations on stacked filesystems
+Date: Mon, 22 Apr 2024 11:06:49 -0400
+Message-ID: <20240422150651.2908169-1-stefanb@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0000000000002615fd06166c7b16@google.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: YpzgEsrKWbOGmi1SxPnRCSSENnl8QvoO
+X-Proofpoint-GUID: JzYrXdFfo49JUJD0CxIcfkUo230NyBie
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-22_09,2024-04-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ clxscore=1015 malwarescore=0 mlxlogscore=561 impostorscore=0 spamscore=0
+ priorityscore=1501 mlxscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2404010000
+ definitions=main-2404220065
 
-On Thu, Apr 18, 2024 at 10:37:18PM -0700, syzbot wrote:
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    fe46a7dd189e Merge tag 'sound-6.9-rc1' of git://git.kernel..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=106c9fa3180000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=4d90a36f0cab495a
-> dashboard link: https://syzkaller.appspot.com/bug?extid=5ad5425056304cbce654
-> compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-> 
-> Unfortunately, I don't have any reproducer for this issue yet.
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/72ab73815344/disk-fe46a7dd.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/2d6d6b0d7071/vmlinux-fe46a7dd.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/48e275e5478b/bzImage-fe46a7dd.xz
+This series fixes the detection of read/write violations on stacked
+filesystems. To be able to access the relevant dentries necessary to
+detect files opened for writing on a stacked filesystem a new d_real_type
+D_REAL_FILEDATA is introduced that allows callers to access all relevant
+files involved in a stacked filesystem while traversing the layers.
 
-Should be fixed in mainline since 72374d71c315
+  Stefan
+
+v2:
+ - Simplified 2nd patch
+ - Improvements on patch description on 1st patch
+
+Stefan Berger (2):
+  ovl: Define D_REAL_FILEDATA for d_real to return dentry with data
+  ima: Fix detection of read/write violations on stacked filesystems
+
+ fs/overlayfs/super.c              |  6 ++++++
+ include/linux/dcache.h            |  1 +
+ security/integrity/ima/ima_main.c | 21 ++++++++++++++++-----
+ 3 files changed, 23 insertions(+), 5 deletions(-)
+
+-- 
+2.43.0
+
 
