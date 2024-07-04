@@ -1,39 +1,40 @@
-Return-Path: <linux-unionfs+bounces-770-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-768-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD4E927036
-	for <lists+linux-unionfs@lfdr.de>; Thu,  4 Jul 2024 09:05:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE89927035
+	for <lists+linux-unionfs@lfdr.de>; Thu,  4 Jul 2024 09:05:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F029E1C22A1F
-	for <lists+linux-unionfs@lfdr.de>; Thu,  4 Jul 2024 07:05:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0790028595B
+	for <lists+linux-unionfs@lfdr.de>; Thu,  4 Jul 2024 07:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A7B41A0710;
-	Thu,  4 Jul 2024 07:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D114D1A01DE;
+	Thu,  4 Jul 2024 07:05:37 +0000 (UTC)
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C97E1A01B8
-	for <linux-unionfs@vger.kernel.org>; Thu,  4 Jul 2024 07:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E139113E024
+	for <linux-unionfs@vger.kernel.org>; Thu,  4 Jul 2024 07:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720076738; cv=none; b=OOPzhHXKADeRn7/BVqxwvQCRLjIh8nxXdydFZOB6GFY/MX9pY5KSPkq1bVBC/EbQKjqJRvY7/DEq8XwTye54kKR31m7OkyXu4VmQtiAeJgamL41ePLNjgz1zLLZCVuEGf66SgkNsQAvPUnR54lTrUAi1ZQ/o/AbnM2oqx7HN9+o=
+	t=1720076737; cv=none; b=GttVIy5yFtADND+DnQQ3usUM7C3Pz4uSFTqPl30fueiSy7pUrqt3sRqvVFrLSgSZMsFxYIGC41McDQBUwjdJj++2VFP9Th43OxalhJB5RiYEbwyf8MAYYjNp0DgzTTy6NbUKyZWzIjK/XhTIuzd0gvB9eq3slLCGzikYQ7BvjCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720076738; c=relaxed/simple;
-	bh=G9H7p+Si3dIe4d16KUaIFQ2MXen//SLUd3LThqyiB7g=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iNnIN/wKx1KmUGz0I/sT89DIWk6fU4Dhfo3azYgIUDwIqVSsU76srmLSbtotjTINNH0uBfFWwekKkxHShTddr5yGaTt/Tak3AS2JriAEc4qocbIS7QiGYGo2szGWm9PwlKdY0B3U9fBSaVs1UR0dkk380J52iFga0F268NafkU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+	s=arc-20240116; t=1720076737; c=relaxed/simple;
+	bh=d1RfOw5f8V1dSmyW5gx5AYxZnT8RZLBeiSfVpvXfwa4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZiXDIwywYnLaasRwYYoYD9mQOgdmFZXU+zbE2cCzh3X3NRn0Yu1g9gzD8RuZ+4uWMOqApn8sDNKYbs4m6Ca26D5PNKngjGI0GuCmMGAWCf26U2pPJeWerYU2nPud/3ivAPp3w8LYmB1YRquvLFgqIrCPDbJ8MvvCV5XR1nXZc00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4WF6xt4pLhzQkG9;
-	Thu,  4 Jul 2024 15:01:22 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4WF70Q56RDzdgHn;
+	Thu,  4 Jul 2024 15:03:34 +0800 (CST)
 Received: from kwepemm000013.china.huawei.com (unknown [7.193.23.81])
-	by mail.maildlp.com (Postfix) with ESMTPS id B7E8718006E;
-	Thu,  4 Jul 2024 15:05:11 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 41FFB140443;
+	Thu,  4 Jul 2024 15:05:12 +0800 (CST)
 Received: from huawei.com (10.175.104.67) by kwepemm000013.china.huawei.com
  (7.193.23.81) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 4 Jul
@@ -41,10 +42,12 @@ Received: from huawei.com (10.175.104.67) by kwepemm000013.china.huawei.com
 From: Zhihao Cheng <chengzhihao1@huawei.com>
 To: <miklos@szeredi.hu>, <amir73il@gmail.com>
 CC: <linux-unionfs@vger.kernel.org>, <brauner@kernel.org>
-Subject: [PATCH v2 0/3] ovl: simplify ovl_parse_param_lowerdir()
-Date: Thu, 4 Jul 2024 15:03:20 +0800
-Message-ID: <20240704070323.3365042-1-chengzhihao1@huawei.com>
+Subject: [PATCH v2 1/3] ovl: pass string to ovl_parse_layer()
+Date: Thu, 4 Jul 2024 15:03:21 +0800
+Message-ID: <20240704070323.3365042-2-chengzhihao1@huawei.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240704070323.3365042-1-chengzhihao1@huawei.com>
+References: <20240704070323.3365042-1-chengzhihao1@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
@@ -56,24 +59,42 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  kwepemm000013.china.huawei.com (7.193.23.81)
 
-v1->v2:
- 1. Repalce lower layers parsing code with the existing helper function
-    ovl_parse_param_lowerdir().
- 2. Add '\n' for pr_err in function ovl_parse_param_lowerdir().
+From: Christian Brauner <brauner@kernel.org>
 
-The overlay/079, overlay/085 and overlay/086 are passed after applying
-pacthes.
+So it can be used for parsing the Opt_lowerdir.
 
-Christian Brauner (1):
-  ovl: pass string to ovl_parse_layer()
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+---
+ fs/overlayfs/params.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-Zhihao Cheng (2):
-  ovl: fix wrong lowerdir number check for parameter Opt_lowerdir
-  ovl: ovl_parse_param_lowerdir: Add missed '\n' for pr_err
-
- fs/overlayfs/params.c | 49 ++++++++++---------------------------------
- 1 file changed, 11 insertions(+), 38 deletions(-)
-
+diff --git a/fs/overlayfs/params.c b/fs/overlayfs/params.c
+index 4860fcc4611b..52e3860973b7 100644
+--- a/fs/overlayfs/params.c
++++ b/fs/overlayfs/params.c
+@@ -365,10 +365,9 @@ static void ovl_add_layer(struct fs_context *fc, enum ovl_opt layer,
+ 	}
+ }
+ 
+-static int ovl_parse_layer(struct fs_context *fc, struct fs_parameter *param,
+-			   enum ovl_opt layer)
++static int ovl_parse_layer(struct fs_context *fc, const char *layer_name, enum ovl_opt layer)
+ {
+-	char *name = kstrdup(param->string, GFP_KERNEL);
++	char *name = kstrdup(layer_name, GFP_KERNEL);
+ 	bool upper = (layer == Opt_upperdir || layer == Opt_workdir);
+ 	struct path path;
+ 	int err;
+@@ -582,7 +581,7 @@ static int ovl_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 	case Opt_datadir_add:
+ 	case Opt_upperdir:
+ 	case Opt_workdir:
+-		err = ovl_parse_layer(fc, param, opt);
++		err = ovl_parse_layer(fc, param->string, opt);
+ 		break;
+ 	case Opt_default_permissions:
+ 		config->default_permissions = true;
 -- 
 2.39.2
 
