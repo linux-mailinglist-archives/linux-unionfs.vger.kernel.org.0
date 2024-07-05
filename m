@@ -1,53 +1,77 @@
-Return-Path: <linux-unionfs+bounces-778-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-780-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF552927F9A
-	for <lists+linux-unionfs@lfdr.de>; Fri,  5 Jul 2024 03:17:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1394928138
+	for <lists+linux-unionfs@lfdr.de>; Fri,  5 Jul 2024 06:26:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61578283DF2
-	for <lists+linux-unionfs@lfdr.de>; Fri,  5 Jul 2024 01:17:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D201F1C20FBF
+	for <lists+linux-unionfs@lfdr.de>; Fri,  5 Jul 2024 04:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8319479F3;
-	Fri,  5 Jul 2024 01:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8851CFBD;
+	Fri,  5 Jul 2024 04:25:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mbaynton-com.20230601.gappssmtp.com header.i=@mbaynton-com.20230601.gappssmtp.com header.b="jfc2EAIC"
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085CA79CE
-	for <linux-unionfs@vger.kernel.org>; Fri,  5 Jul 2024 01:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59B71CD02
+	for <linux-unionfs@vger.kernel.org>; Fri,  5 Jul 2024 04:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720142227; cv=none; b=ZWiGD5O351GHMNPzZ4XQNqk50kA8RrFKXKFWLgBNxTkbI8/qNuPBXnaKd8qrJz+Ue2yIUq/Codo9ZX5jYlN4PBv7mOQb148Eg9lh8QoMsidisFHnBEp+hgE++0ehG4qxYMsOH8KzJikikhgRnxqzeKn5KNU5EDDUHRUINmD93+Q=
+	t=1720153556; cv=none; b=bRnUPObGrTlOlHz9j0FJNVXNLY5SSU6OHgnHYfnEZps0qiHdznWLVWucq8AkIs4jVms1IQE4O13s39xAaybRluCQiFVm7bDwT72k/7dcjy6phiKhgvVcFFhHuxrUrTpjxVwwRRaNNgv3IvjsANvZvdKNLs9SU8b00iUoNLU/f0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720142227; c=relaxed/simple;
-	bh=OknZaB4TI0r/TB1UINhHNWii3YKXWy3k18tBjwm7vz8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RsAs0BE/bqmGiIcm2HBFZeTyeYyndjEYUOyeQvwf9Iqwzqn5kThhyB+U1wZCRk8OJ2dEgzO0OtSV3lH0zGn58Xh+FWfXM/wUx8BC2W2cWiWnB/c8D9svM++JhGJS30F9+/SFJ8053XM2Mo1+2cuhvix6raTL7CbQDD+++bPXS4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4WFb9j2YWNz1yv3P;
-	Fri,  5 Jul 2024 09:13:13 +0800 (CST)
-Received: from kwepemm000013.china.huawei.com (unknown [7.193.23.81])
-	by mail.maildlp.com (Postfix) with ESMTPS id CA4761402C7;
-	Fri,  5 Jul 2024 09:17:02 +0800 (CST)
-Received: from huawei.com (10.175.104.67) by kwepemm000013.china.huawei.com
- (7.193.23.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 5 Jul
- 2024 09:17:02 +0800
-From: Zhihao Cheng <chengzhihao1@huawei.com>
-To: <miklos@szeredi.hu>, <amir73il@gmail.com>
-CC: <linux-unionfs@vger.kernel.org>, <brauner@kernel.org>
-Subject: [PATCH v3 3/3] ovl: ovl_parse_param_lowerdir: Add missed '\n' for pr_err
-Date: Fri, 5 Jul 2024 09:15:10 +0800
-Message-ID: <20240705011510.794025-4-chengzhihao1@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240705011510.794025-1-chengzhihao1@huawei.com>
-References: <20240705011510.794025-1-chengzhihao1@huawei.com>
+	s=arc-20240116; t=1720153556; c=relaxed/simple;
+	bh=/3A/xr3HDWg9ScMXjacOI5vet9iZ51r8iYrAw0urznU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uPw/6CbBY2IOWVnNRHYnhxN9S6UsyoZ5YUKRiMtTN3bpo20KaBb/33fBDR2D9Bb6S5xVkOhRXZH23jhfMlNRMVtK7JNb0apQFs3MMoKCpM4V2z2w07TsuXxg1XyQEpKCUKP9nehtyvtizdTEW6WWk0c+6iDwpDNfybKQvVzDWdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mbaynton.com; spf=none smtp.mailfrom=mbaynton.com; dkim=pass (2048-bit key) header.d=mbaynton-com.20230601.gappssmtp.com header.i=@mbaynton-com.20230601.gappssmtp.com header.b=jfc2EAIC; arc=none smtp.client-ip=209.85.166.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mbaynton.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mbaynton.com
+Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-7f3d884e70bso61378239f.3
+        for <linux-unionfs@vger.kernel.org>; Thu, 04 Jul 2024 21:25:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mbaynton-com.20230601.gappssmtp.com; s=20230601; t=1720153553; x=1720758353; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Upgfs7RxQhcl7BSiGR3loal7vDWdAlabKhTtzvWxtdg=;
+        b=jfc2EAICB7AWpuRs5DPOatOPgUgG5LF7lXi7EvYGrebMrYC2DZS5KnsDYeDZtFT+50
+         iKNFDGLZrZ7ypXtIRHahoUn19iclKbxZ1/Hhaz8P3N1KKlLsQgGTcU3gGJiTSCOAMmRd
+         MR6L7EA1/vixqyKIH2HUvjp+Jg7TY9EL6FVUcjCxrMVBRpucPfBcW3H8qU9tRlKYa4k5
+         2aophvzNPAU916HxxMYz24qV/c8zmRJE9KFNDDqklxHpJkBAuvxIusl+9gbM7dhw/ESD
+         f0gjcnnlMFUPLXTi7wk2xtGzfl9d8bXEYIbjLU2PtDJnAeIxJkhf5Q9VQR4oKZRhFUDN
+         zojQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720153553; x=1720758353;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Upgfs7RxQhcl7BSiGR3loal7vDWdAlabKhTtzvWxtdg=;
+        b=vBJHq/ferTgFszNHB2cilUcQXzZRGSGFOAz34lfTZHTylVB6FaElh1wV+235EPyUqA
+         GZLIWh60zZBoqR1LAVO52EaQ4x8tnOatQVqJH50dwkHbqKx8CEtWvnT5IxandBQ083Gu
+         FHg3g0nMNzfeZyETUS17vW5RjFx5lWultw+sYCPzouHPM5jisUaITluc/ATgaaY1QQ1I
+         i49Ncwl++Pziv4fPUCoXJvGsoLoI5kZR962tN03b5l4wZl31G5ADWd/UksK5Z9GXEJLG
+         9fYDX1C9ySgn3tT1XwusbpBKKlzFggn7Xf/Ph/ikeStRoRDf9FLP9A75IQ2LVqft2nFy
+         K3Mg==
+X-Gm-Message-State: AOJu0Yxq735BdFVf9ofX5YeSY1+xyePyiyMvUGHj0lQ7u0EmCQUwtVNS
+	wRKzwPzUHsy9kygk0qmFSr+bKr2TwSaZf7f67arTFXmwJMgzzLMQrhfHzqMXce+Ogw180s9QOiD
+	m
+X-Google-Smtp-Source: AGHT+IGA8SbcX5CnYiTpgzOY2zeXbVlMCSxQpCLp0sBOzGvsvQFrSG7BhbqZs71tu+NYiHT5kjKT/Q==
+X-Received: by 2002:a05:6602:600b:b0:7eb:f3c8:c59b with SMTP id ca18e2360f4ac-7f66de60174mr528356039f.2.1720153553404;
+        Thu, 04 Jul 2024 21:25:53 -0700 (PDT)
+Received: from mike-laptop.lan.mbaynton.com ([2601:444:600:440:d443:7d67:4db4:213b])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4bb742c2551sm4298298173.149.2024.07.04.21.25.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jul 2024 21:25:52 -0700 (PDT)
+From: Mike Baynton <mike@mbaynton.com>
+To: linux-unionfs@vger.kernel.org
+Cc: Mike Baynton <mike@mbaynton.com>
+Subject: [PATCH] Data-only layer mount time validations
+Date: Thu,  4 Jul 2024 23:25:42 -0500
+Message-Id: <20240705042542.2003917-1-mike@mbaynton.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
@@ -55,33 +79,65 @@ List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemm000013.china.huawei.com (7.193.23.81)
 
-Add '\n' for pr_err in function ovl_parse_param_lowerdir(), which
-ensures that error message is displayed at once.
+There seem to be a few scenarios where it is possible to successfully
+mount up an overlay filesystem including data-only layer(s), but in
+configurations where it will never be possible to read data successfully
+from the data-only layers. I think this should result in a mount-time
+error instead of the current behavior of being unable to read data from
+the files that should normally return data from a data-only layer.
 
-Fixes: b36a5780cb44 ("ovl: modify layer parameter parsing")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Both cases were found by attempting to use data-only lower layers from a
+user namespace, a proposition that appears to be guaranteed to not end
+well since data-only lower layers requires use of trusted xattrs, but
+trusted xattrs can only be accessed in the initial user namespace.
+
+Case 1: upper dirs in use but xattrs cannot be written to the filesystem
+containing workdir (for any reason, user namespace-related or not.) This
+triggers a fallback behavior of disabling metacopy after an existing
+validation in ovl_fs_params_verify ensured metacopy is on when
+data-only layers are present. This is now rechecked after possibly
+disabling metacopy.
+
+Case 2: upper dirs are not in use, data-only layer(s) in use, mount
+initiated from a user namespace other than the initial one.
+
+When the filesystem consists of only lower layers, the test of xattrs
+is not performed and so metacopy remains on, satisfying Case 1.
+Therefore it is also neceessary to explicitly check for data-only layers
+in a mount whose initiator lacks CAP_SYS_ADMIN in the initial user
+namespace.
+
+Signed-off-by: Mike Baynton <mike@mbaynton.com>
 ---
- fs/overlayfs/params.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/overlayfs/super.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/fs/overlayfs/params.c b/fs/overlayfs/params.c
-index 8dd834c7f291..657da705db25 100644
---- a/fs/overlayfs/params.c
-+++ b/fs/overlayfs/params.c
-@@ -493,7 +493,7 @@ static int ovl_parse_param_lowerdir(const char *name, struct fs_context *fc)
- 			 * there are no data layers.
- 			 */
- 			if (ctx->nr_data > 0) {
--				pr_err("regular lower layers cannot follow data lower layers");
-+				pr_err("regular lower layers cannot follow data lower layers\n");
- 				goto out_err;
- 			}
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 06a231970cb5..4382f21c36a0 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1394,6 +1394,19 @@ int ovl_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	if (IS_ERR(oe))
+ 		goto out_err;
  
++	if (ofs->numdatalayer) {
++		if (!ofs->config.metacopy) {
++			pr_err("lower data-only dirs require metacopy support.\n");
++			err = -EINVAL;
++			goto out_err;
++		}
++		if (!capable(CAP_SYS_ADMIN)) {
++			pr_err("lower data-only dirs require CAP_SYS_ADMIN in the initial user namespace.\n");
++			err = -EPERM;
++			goto out_err;
++		}
++	}
++
+ 	/* If the upper fs is nonexistent, we mark overlayfs r/o too */
+ 	if (!ovl_upper_mnt(ofs))
+ 		sb->s_flags |= SB_RDONLY;
 -- 
-2.39.2
+2.34.1
 
 
