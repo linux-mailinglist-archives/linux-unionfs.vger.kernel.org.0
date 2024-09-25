@@ -1,46 +1,46 @@
-Return-Path: <linux-unionfs+bounces-927-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-928-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8264D985BC2
-	for <lists+linux-unionfs@lfdr.de>; Wed, 25 Sep 2024 14:31:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0810985E16
+	for <lists+linux-unionfs@lfdr.de>; Wed, 25 Sep 2024 15:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36A92285A74
-	for <lists+linux-unionfs@lfdr.de>; Wed, 25 Sep 2024 12:31:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B7D81F24FFF
+	for <lists+linux-unionfs@lfdr.de>; Wed, 25 Sep 2024 13:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09701C4615;
-	Wed, 25 Sep 2024 11:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3953E20B865;
+	Wed, 25 Sep 2024 12:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EiF/W+dJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F5CAxvv2"
 X-Original-To: linux-unionfs@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775EA1C4611;
-	Wed, 25 Sep 2024 11:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF9020B862;
+	Wed, 25 Sep 2024 12:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265163; cv=none; b=rnVxYCm15tfl9slqGNI+ioHL7vWfnwj4jiC6lzyQc7Nx8OOWIU74PKmAVPTb3OuvE0pZYaBIob1tg8VI5qHh9vGT8CP52SoWJ6B3wRLv/S9MhKmC1E8Saiff49BCm+H3iov0YQof0K/QjDPJl3SWmQENdZ3v1q9Od9znES9eJJU=
+	t=1727266121; cv=none; b=BPc0/5W9mS7DRXsdCd71YLCwB6tZkQ9VsEFLNe/YA61nPU3uhLOiTWqu7hSHssfbAi/sniy+pI+XZ5iSod7qtc9jIC3JzM6yTK75CfarVuujeC9qEyXBGjotT/JoG83/2ipOXnEbHNOF7NpGVywrBIb8xHoytvKnzTJ2Jfof9Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265163; c=relaxed/simple;
+	s=arc-20240116; t=1727266121; c=relaxed/simple;
 	bh=m2ROjprRWhTVD3wZGN+3R3wT6CoVz83aRSUjazL7pI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ihk9Ju+cCc/O8IVffHYJFmEP76mZsn5M5IDwNTmSqM/d78bNpkfSk56mueJFgmoon2aUeMPkKBswN85qZlEBhO5ySoIKjkNhQ/V22VaJTGFA/WS9UMyVPXM1ciW1WVYa7UkEFXcxI3EFPQ3F9JvNlqTiSPzKPTCL88eQ5jAxyWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EiF/W+dJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA31C4CEC3;
-	Wed, 25 Sep 2024 11:52:41 +0000 (UTC)
+	 MIME-Version; b=nYx8ZdV5zELS+pqxP9sDY9jWMvI8e07ku4ycKKWHS8isU2XfLkIXEYtYTOb1po7L/VZCTAFSkuk+22jNhrm7OmWdHoSIF+/QKm0D82siwIS8OBz4aCB7PI5InEAOyCKWUUWeJCHsMV8BVGX5KvkFz9JPjFp3yyR2R35nEbvAfS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F5CAxvv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0481BC4CEC7;
+	Wed, 25 Sep 2024 12:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265163;
+	s=k20201202; t=1727266120;
 	bh=m2ROjprRWhTVD3wZGN+3R3wT6CoVz83aRSUjazL7pI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EiF/W+dJFB3lNxQZRWlw2dd+/IFKJQlNsfEBYpNJcffH2uqopZYQFQ/eZ2C88Rv1x
-	 s+Vm2QATKyCnzYLXOQuqWbSo3mCTlZ180o/dBh3KlqY0j/bz8XP4y9N2sEHXqsj14q
-	 QodXBIjXnpcGWE7un579Vc0SeMIerJ3llqvGOMFGdbcLSQ6mP9+IcYP69t5s9sumHM
-	 2qje+QEw3tdrddQhwQymC8LUIV2JZ7tKn4MbsolfOlC+zRYBnvb+WpH4q96Uv+VVc2
-	 WVzvZ2lAC4eFG2fZ9X+7thle6d61BOco3PLRrt8NWLJI8Ytnr4qrtwpWAWRbsBjy2n
-	 kyDizlMEAnvTQ==
+	b=F5CAxvv2PHjDIG6TBxtoTslgRSQZGpa6hklrZzqvs8pYfko452F699ldqVXIbg/aS
+	 HzCW3wx8qE3ExaWbWf6W0Mk+uhoBQFxsS2tczJR8HLpwuiNImVSOIl1dIrNLV+7BCo
+	 cN/8BSbPq1Yy2+Te49laRt+5UXiQ9+IWSJyRpzBzyrkugYxS0F8iYMcF/MYsl726vl
+	 6OT7jg2ylNUu2Q3PpHijTi6bmvZJWT3RNX8YBNKbZLOqtSpknH5O1q6CoW80yA+bX9
+	 qZNqaxw5tgCMGGdjkufSrkDNP2gA3VJwvl4RC6j//ZrxkZfZCxiaZuib/JOWLyoR3/
+	 8AysImMWAxI8w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,12 +49,12 @@ Cc: Amir Goldstein <amir73il@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
 	miklos@szeredi.hu,
 	linux-unionfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 222/244] ovl: fsync after metadata copy-up
-Date: Wed, 25 Sep 2024 07:27:23 -0400
-Message-ID: <20240925113641.1297102-222-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 179/197] ovl: fsync after metadata copy-up
+Date: Wed, 25 Sep 2024 07:53:18 -0400
+Message-ID: <20240925115823.1303019-179-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
-References: <20240925113641.1297102-1-sashal@kernel.org>
+In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
+References: <20240925115823.1303019-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.11
+X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
 From: Amir Goldstein <amir73il@gmail.com>
