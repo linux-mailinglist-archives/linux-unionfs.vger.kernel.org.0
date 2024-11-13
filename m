@@ -1,97 +1,116 @@
-Return-Path: <linux-unionfs+bounces-1103-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-1105-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08789C6403
-	for <lists+linux-unionfs@lfdr.de>; Tue, 12 Nov 2024 23:07:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4DA39C6CDC
+	for <lists+linux-unionfs@lfdr.de>; Wed, 13 Nov 2024 11:29:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2241DB33B7C
-	for <lists+linux-unionfs@lfdr.de>; Tue, 12 Nov 2024 21:29:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6129B226E9
+	for <lists+linux-unionfs@lfdr.de>; Wed, 13 Nov 2024 10:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8CC21A4CB;
-	Tue, 12 Nov 2024 21:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD80B1FBC97;
+	Wed, 13 Nov 2024 10:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NrVYDOHS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ih3MwP4I"
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9662C2170DD
-	for <linux-unionfs@vger.kernel.org>; Tue, 12 Nov 2024 21:29:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCC51FBC95;
+	Wed, 13 Nov 2024 10:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731446970; cv=none; b=MeTQBZAY1Ov5STokV2h7YmFq86I7AJC4M1zjWYP9jIXJbwr+EfwzIeH3kYP5xKvlhnxkHIoInn4fBhbdDO0TJf3c6fKxQqfsFQCfkjgYbF4EzvzMsf7iuUX6edQEDehY5RIkbP68mnKXhWlShrv5D4oPKFf+1a2PdZQ4/Hk3kZc=
+	t=1731493334; cv=none; b=g9R6WNv2+FoQqA7t6hJkNSYiVi+ZiCslLdmF8cGvqtijrcFMbmrG2FlemroKq3wMn8mrzu2yU7IemrfkDdEZImB6vb0qk3wJ8veQi5A3RjwyfGWzdcWyj2boCslRAdwMDPXL4HqQPA+ug1SUcrb/e5BT5TO7VKdNijvv1g8LuQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731446970; c=relaxed/simple;
-	bh=JWVjvOuUu6cR6pPjE3K7atmNp6S5Wl0cAN2jxQvRU8k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HF2BwzTpJDiKYZtUU6pYXGyPuApqvB3LRv/AponTZ5crTubdA15gMzTYJtVQdmge9/Kn/poXNtZdLjq+0BsatTLDx+CCW0U//zs9a9GXBMb7odWrxEAAA6rv8CogBozX/V08GSuBffBoo8I7SKloUm+UJoYvMgi3H2db5p/UYts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NrVYDOHS; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1731446965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ciDG6XzStM4rMTl5F/ayytQQTAJYpG9+U+DoCstH5lQ=;
-	b=NrVYDOHS9kWwxOEc1hua7/rLZqlSjgbxMu3ZSLh4K34jqt0MkZIo7JxIIR85+b7AWCL1AP
-	ZjzqUCyrP+LoqPFcYadib2idTOkyr+GqZEmKENHWPnLdG28xd3MNJJc+8FStzPD2pZO3pZ
-	m2afJVVrEQjI1qKWtqatecCLL9CWGXM=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Miklos Szeredi <miklos@szeredi.hu>,
-	Amir Goldstein <amir73il@gmail.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	linux-unionfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ovl: Use str_on_off() helper in ovl_show_options()
-Date: Tue, 12 Nov 2024 22:28:15 +0100
-Message-ID: <20241112212814.237680-2-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1731493334; c=relaxed/simple;
+	bh=bT3AvCqjBcCd0NVLxpcDY8LCVWeB8yiyYDP1SIlQBtI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B972kW9jU7YsYByvBz7rWMSZE6VZsU+FPy0nNArDh+dDI7khWixLOBgISvHWNJ6MM0vU4Yw++ckyDPpGNv+8/586mJIijYxmUC1nQQguFD4bbGDyJMmswZbKfv20MR5QcAD5NVLRoWfc79MECet0N9WU/b+A6bRpiNWvT7l18Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ih3MwP4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA551C4CECD;
+	Wed, 13 Nov 2024 10:22:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731493334;
+	bh=bT3AvCqjBcCd0NVLxpcDY8LCVWeB8yiyYDP1SIlQBtI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ih3MwP4I2gfc2bBZbggLAF5x6bidt/U41gzwloc2iwo7+gDsp5JhG4dzksT0CE0tj
+	 YfzNuQfnT3jvtR/YcHmk3HPbqWnzH+oXlqgdSDG1EdRkBt3UJ0wI6hnP7Z32DV0hyC
+	 IXt0Ea5gqCTcgDoJ489BbtOn9sH/3TfUWsbzCKPjwB4HIDJZNU5cVva2mq68Sl18z5
+	 qnfA70lWtfXM6epzuK3esSaQjJ72cC0dJvPRV7Z5p+JrToImWIY31anEkYbLBE+r66
+	 o0f06adqj1jaWPND9RaQvFiY+3DZfY4s/qzKvt99D7qtMb/ngaer6k5RU3105H/l+6
+	 jHOZU2/9/Knmg==
+Date: Wed, 13 Nov 2024 11:22:09 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>, 
+	Jens Axboe <axboe@kernel.dk>, Stefan Berger <stefanb@linux.ibm.com>, 
+	Tyler Hicks <code@tyhicks.com>, ecryptfs@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>, 
+	Amir Goldstein <amir73il@gmail.com>, linux-unionfs@vger.kernel.org
+Subject: Re: [PATCH 4/5] fs: Simplify getattr interface function checking
+ AT_GETATTR_NOSEC flag
+Message-ID: <20241113-utensil-unteilbar-cfed225308c6@brauner>
+References: <20241112202118.GA3387508@ZenIV>
+ <20241112202552.3393751-1-viro@zeniv.linux.org.uk>
+ <20241112202552.3393751-4-viro@zeniv.linux.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241112202552.3393751-4-viro@zeniv.linux.org.uk>
 
-Remove hard-coded strings by using the str_on_off() helper function.
+On Tue, Nov 12, 2024 at 08:25:51PM +0000, Al Viro wrote:
+> From: Stefan Berger <stefanb@linux.ibm.com>
+> 
+> Commit 8a924db2d7b5 ("fs: Pass AT_GETATTR_NOSEC flag to getattr interface
+> function")' introduced the AT_GETATTR_NOSEC flag to ensure that the
+> call paths only call vfs_getattr_nosec if it is set instead of vfs_getattr.
+> Now, simplify the getattr interface functions of filesystems where the flag
+> AT_GETATTR_NOSEC is checked.
+> 
+> There is only a single caller of inode_operations getattr function and it
+> is located in fs/stat.c in vfs_getattr_nosec. The caller there is the only
+> one from which the AT_GETATTR_NOSEC flag is passed from.
+> 
+> Two filesystems are checking this flag in .getattr and the flag is always
+> passed to them unconditionally from only vfs_getattr_nosec:
+> 
+> - ecryptfs:  Simplify by always calling vfs_getattr_nosec in
+>              ecryptfs_getattr. From there the flag is passed to no other
+>              function and this function is not called otherwise.
+> 
+> - overlayfs: Simplify by always calling vfs_getattr_nosec in
+>              ovl_getattr. From there the flag is passed to no other
+>              function and this function is not called otherwise.
+> 
+> The query_flags in vfs_getattr_nosec will mask-out AT_GETATTR_NOSEC from
+> any caller using AT_STATX_SYNC_TYPE as mask so that the flag is not
+> important inside this function. Also, since no filesystem is checking the
+> flag anymore, remove the flag entirely now, including the BUG_ON check that
+> never triggered.
+> 
+> The net change of the changes here combined with the original commit is
+> that ecryptfs and overlayfs do not call vfs_getattr but only
+> vfs_getattr_nosec.
+> 
+> Fixes: 8a924db2d7b5 ("fs: Pass AT_GETATTR_NOSEC flag to getattr interface function")
+> Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+> Closes: https://lore.kernel.org/linux-fsdevel/20241101011724.GN1350452@ZenIV/T/#u
+> Cc: Tyler Hicks <code@tyhicks.com>
+> Cc: ecryptfs@vger.kernel.org
+> Cc: Miklos Szeredi <miklos@szeredi.hu>
+> Cc: Amir Goldstein <amir73il@gmail.com>
+> Cc: linux-unionfs@vger.kernel.org
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: linux-fsdevel@vger.kernel.org
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+> ---
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- fs/overlayfs/params.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/fs/overlayfs/params.c b/fs/overlayfs/params.c
-index e42546c6c5df..1127721a5f7f 100644
---- a/fs/overlayfs/params.c
-+++ b/fs/overlayfs/params.c
-@@ -987,17 +987,16 @@ int ovl_show_options(struct seq_file *m, struct dentry *dentry)
- 		seq_printf(m, ",redirect_dir=%s",
- 			   ovl_redirect_mode(&ofs->config));
- 	if (ofs->config.index != ovl_index_def)
--		seq_printf(m, ",index=%s", ofs->config.index ? "on" : "off");
-+		seq_printf(m, ",index=%s", str_on_off(ofs->config.index));
- 	if (ofs->config.uuid != ovl_uuid_def())
- 		seq_printf(m, ",uuid=%s", ovl_uuid_mode(&ofs->config));
- 	if (ofs->config.nfs_export != ovl_nfs_export_def)
--		seq_printf(m, ",nfs_export=%s", ofs->config.nfs_export ?
--						"on" : "off");
-+		seq_printf(m, ",nfs_export=%s",
-+			   str_on_off(ofs->config.nfs_export));
- 	if (ofs->config.xino != ovl_xino_def() && !ovl_same_fs(ofs))
- 		seq_printf(m, ",xino=%s", ovl_xino_mode(&ofs->config));
- 	if (ofs->config.metacopy != ovl_metacopy_def)
--		seq_printf(m, ",metacopy=%s",
--			   ofs->config.metacopy ? "on" : "off");
-+		seq_printf(m, ",metacopy=%s", str_on_off(ofs->config.metacopy));
- 	if (ofs->config.ovl_volatile)
- 		seq_puts(m, ",volatile");
- 	if (ofs->config.userxattr)
--- 
-2.47.0
-
+Reviewed-by: Christian Brauner <brauner@kernel.org>
 
