@@ -1,78 +1,78 @@
-Return-Path: <linux-unionfs+bounces-1499-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-1502-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983E5ACC401
-	for <lists+linux-unionfs@lfdr.de>; Tue,  3 Jun 2025 12:08:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B04ACC406
+	for <lists+linux-unionfs@lfdr.de>; Tue,  3 Jun 2025 12:08:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2427F3A2BA8
-	for <lists+linux-unionfs@lfdr.de>; Tue,  3 Jun 2025 10:08:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A94A1678CE
+	for <lists+linux-unionfs@lfdr.de>; Tue,  3 Jun 2025 10:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EEC2288CB;
-	Tue,  3 Jun 2025 10:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10EF4226D08;
+	Tue,  3 Jun 2025 10:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lwuhuc6S"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PwdsO06l"
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD191D63E4;
-	Tue,  3 Jun 2025 10:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87562288D5;
+	Tue,  3 Jun 2025 10:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748945278; cv=none; b=vB1mos8j89Infi1GYSqek3fIeqL1PWecbC/5q4pCfrP5lA3wqN+MQxMBUgUW6gKairElh9bmhcJTpEw9zmj05Xs2EwUS+cYeSPVxjmRuqvkYue+y641IDON3gBH/hD+kFMiCIMzJLLHijedoKhrGcUSm1gIPsJqTmIOiiqcf16k=
+	t=1748945281; cv=none; b=Z0S3+qJQ81gsWUeMaeBcToOnVQvlh49FsBWsi46K3O6V3+wGdhMtEWFbO6iaeu2/v5jkuLV0tpcjCg01FG603OKzj6b8iy5egVlh2mcxutTOsoJ9U8/BQyn8g6cJkm7/9QziBJxIulEgGWEerXk8R9sz0YmoSJPuCl4bKd6ZWTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748945278; c=relaxed/simple;
-	bh=wddbm3nvJyxtM2VBIVR939L0xRl9+rCx6Se4lGKEJro=;
+	s=arc-20240116; t=1748945281; c=relaxed/simple;
+	bh=kED8MuozkX0CG6L5Npp6pcP5W8jJUAtDd73XAKBUfyA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=khlBwqNsx9coGZuDvHypuXOx3yqEKhrS2VZBjmzZMeF3r6UDaXxapBGyNre2cPcgq4CaJaXLCnJbg0phQ2B6k1dV4LXuHszG04YYYEfvZFmiqzz1W7e+RN2nhdTqKI+6/BiXcM7wQAbWXE95gzlr8vPLPZYiDVzy5+eMmpZQyew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lwuhuc6S; arc=none smtp.client-ip=209.85.128.44
+	 MIME-Version:Content-Type; b=OXB+Cm3p/WrexDerBkdqrdTn5Lk4hlQT0hjDzKr3aqK1yFV2nHa7goJf0CIfWc015hjDdEF+DcO1Vqb6gdzC6E9KQ7V6KtanmnLgctfyDuVr4QW3KFSOM3s52+UhHhqR6u8nbJic35IKyk6GW6WK6RsIEusp47iD9BllFeEDkIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PwdsO06l; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-450caff6336so32638505e9.3;
-        Tue, 03 Jun 2025 03:07:56 -0700 (PDT)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3a50956e5d3so1693730f8f.1;
+        Tue, 03 Jun 2025 03:07:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748945275; x=1749550075; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1748945276; x=1749550076; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=w6SPQjW8lvFk9myCC+1QcuExel7OE7RmtQQM1sEzqvE=;
-        b=Lwuhuc6SGpR0L3cVG+su3c/non3XaYu1qEodrbw+atu6sK6ON1X2f3fZEEjtLwqOmU
-         edeOR5xbASeZTtnkzfB6kPoKIMX4xcLE2meVIoo8z9kKxhpFE/vLOv4wCQdtjVlCDixZ
-         Hxy1kHT/yDRQrgZBE1nR47q8jP3qbUtJC7ZX95mAegvhH6AJtk1u956iaK3lzepeI+AT
-         QOg95vxbaQRikn2T3ee6r5maB9LX7JJEzrZ28Ca0/wMXNhP0AwTJXdZn8qVnyPBFO86H
-         t52tIeWcNV51GbgEvoJvjMxjTD9VJ9mtgpcDsVKpg33lcG0n946ZAZJyZKMlmBU4IIIH
-         jmgQ==
+        bh=oJMKSRLKMa5YCt+7AqT+Wg1Dq77KY4GJkgZwkY2T3xE=;
+        b=PwdsO06lOQsm+RI8wBR7LSOpHOxfQCxkBWWVnxSiEJIx2pMpsT/GzPkd7cFWKRxkd+
+         A1eUjsc0cFR7YtEk5pkmhTYjXCSeVCQbEtzKj6SfdwhK0ut1oJo/j9tMhE+fKHO0zG02
+         Vt5HuSZ48HmS35hY1LoV1AtuQbGWudsgfeBLxvmtspwZ6z0HQBX3Jq1SF+zWDmb7AG+m
+         ryHnFQ654cR8lhQxWw8jeQmfmQJduFtB5IpqDTTT/7C5MjJa784CDcM9phSsjCjtECbo
+         MHralmizfme2/ZeUeHmWW605EYXMccJXCUgcTyjgNFKSwYV5AHZL0lwk8BuA+9OmjE/r
+         cr2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748945275; x=1749550075;
+        d=1e100.net; s=20230601; t=1748945276; x=1749550076;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=w6SPQjW8lvFk9myCC+1QcuExel7OE7RmtQQM1sEzqvE=;
-        b=fuHEJ0aGn+HiREO8D9ZTret6djk1aXMgiVV32btBwrM3yKyvEkVYoVP/NeMBHly4NU
-         AklxB73Cv9nmwGRnJDSjcwBdWDgmnks6mzjeJzdhop5XvXQVCT+EaA7WCNb2iMcUVpBd
-         ktlKXBwOO3/oElLzFtS18EYCFLSdhvsF2B7UZ3qF6jRAp2ekUiEkB2BcC4VBhZTd38R8
-         EWO4ndTrTLp+yxt1mhiX2MD4Y5sicOEnjiwl5MlJZ0ufs50M62VaFa6gLbwq+l/f6A24
-         o96I+XjxkbkIieSQJGEVovYPtPul16yeiqZVEh852Ox6Fnjz50q07BQPRM8DPqUDpCaM
-         FfBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCULAd2QkSjv03F0k/qO0cGetyRfO3dTIa6eWmtbIUVPW3ynIzgtvseaSN3uMWHGM3E9Yh4UGK4d67CEfvm49Q==@vger.kernel.org, AJvYcCV9Y8Vib3zjAckuDpqjnXKDpUH8Aj91dAn4cfNZdo4Zwg854k3pofCfkoIvbAapuQ6CuxV+8KpW@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSn5aVKHxwZzI5rRZkgpWQZ4mH7zMULMXzFD/B3ZIEWf+veEmS
-	BU0Y/oBbjoJaV5VlVZ04slgZ57N+3SwjwaIMQL+Sw0iKwH+387dknXYi
-X-Gm-Gg: ASbGncsVB9Si6vRqqG1d6MkXDIWFcj+BvSo+PRCjQBvkiSh6cXAyf0i8HBsaSQlaYR/
-	T/GEoh9Ce9Vbmm9L+tpbbun+LgYv3ZW2EOXR7QmvekKPOxaCRuLR+TPyIsJknq/GaxZ3025Z3dD
-	vGqzn4XV4Ja3NnlygxPd2f/PN/Sv41vX528zOE+LlklWaBpsLO688JMUHHbzdhdVrPBTXUiqTIJ
-	JES5X3H9REft0URCluo8I9T5VsQtmyA41nJULWuY4QwbnI/4eLH7BPYeLJA7orsbBpuGpdGzM2T
-	51TdTyxWtqBFpDtGmmch3AHqtUpbsWFBGev7p71xOgPZTlOi2un2pnTYw44ga+kQUp/rIVrHutE
-	8CJw9r5wnh63IZZFxzKPHXQGWfyByLVI3asaH/ZaiCSw6kM7Z
-X-Google-Smtp-Source: AGHT+IHK9fu+rKJrN0qf8U0X9N+dPocUvfhFrbDASOhslpXVCl2x3B3IYmoezmD2m6G1aqOL4XUSIQ==
-X-Received: by 2002:a05:600c:46cb:b0:442:d9fb:d9f1 with SMTP id 5b1f17b1804b1-450d882b051mr144725745e9.4.1748945274992;
-        Tue, 03 Jun 2025 03:07:54 -0700 (PDT)
+        bh=oJMKSRLKMa5YCt+7AqT+Wg1Dq77KY4GJkgZwkY2T3xE=;
+        b=vQplnhm6bJ9gdNE6MKsrEescwaG+H7OiUjA/5Zfd8+ky8otT+Ze4cmgErEfspRo1VK
+         oGSiWdv6jX5rALjdH9Bt0vPlkDT/NklXmJ7XUOQp0sL00RE4e/kUYFYE6Fl9JjjheA/8
+         48jTltau7ejJJ/PpVVOpad9jA4s1DNbmMLVDKFExvg9Vb5S1WuBPyux2wbzkaHQiggHp
+         0LXDPa8gDSIvjv3FmB1H4sMuPlSP1RloQuPAdS6Dwny1f/A7k6i/Z+KnFKWd20tBxIGs
+         oM1o74DKLOS/1qBQrPpLQcC+mKYPSiX6LNEgUvXL/32O0ES/Zm0RkmIcHb7Rquk5rLkr
+         R1Eg==
+X-Forwarded-Encrypted: i=1; AJvYcCVojpy9XlYjpNLVev6Si0ZEWzMhcOholhgaoRHznTjMOXjVEttME22wE3QHW9PZf5554gHAM7HnsquSJxf68A==@vger.kernel.org, AJvYcCVwsVobYmAUL0CVfLyJcUgcpUbMP4sgk6W/f4YKK1uDVNVTbjwDzAR4g2pKXHTAplOlPQMlm2BI@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7Z/2yW/RySyHECC5S0eWfzrfDHTV/2ENj3nTSa5gfDPkUKI6E
+	sy9Pwlq64CsAn4cyBfQwQOnP8cR/PKPKZjDqobvCfw90Vtf/F+yyM/It
+X-Gm-Gg: ASbGncvWIq3ZYHz7jj0W1RvL8VxWYfpAkjKI6QbQdmlW1th6RyppS03wM3FFZDAKPCD
+	Ojluzve+dQc1q42uGgjd3LoPfiGoh4NZOLHly5ros9l4BQbwwrODnP9vYlKVpm7RmRkTINexsWH
+	SIticHYY+qCRet1klNQq+WjFim9QPKnXzJJ0TniF59rHd1qGRzlqE49KCEaEhV8LDBNe5PA2xo3
+	UcRomxPadyibzzMTNT+5n8drHAXRDat85h98ThQC9KBlyodWzaFO0z5SgTqgJ2xDrL1ammHlKVD
+	R2TrZweNWuR5lU9/a+bYH55phb1Za2vnW4M3SGsbWcGhtAEs9qlT4r36yYrLRoAQO6zz4prz6CQ
+	PmBuAVJ6NNUe+7V11QnvxBt5PHz3gR3UROHfRI0bXRV6b/r9wDKxfVpwZBFg=
+X-Google-Smtp-Source: AGHT+IFkh+Dsusl7W0eZaZMeDrRwn+dS+RbgQkLCCUtH23wd4RV/h0puyQiwwz9U6vDWBLWzm6DZoA==
+X-Received: by 2002:a05:6000:250d:b0:3a1:fe77:9e1d with SMTP id ffacd0b85a97d-3a4f7a4d55amr13099447f8f.16.1748945275715;
+        Tue, 03 Jun 2025 03:07:55 -0700 (PDT)
 Received: from amir-ThinkPad-T480.arnhem.chello.nl (92-109-99-123.cable.dynamic.v4.ziggo.nl. [92.109.99.123])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d7fa24c6sm157191525e9.12.2025.06.03.03.07.54
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d7fa24c6sm157191525e9.12.2025.06.03.03.07.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Jun 2025 03:07:54 -0700 (PDT)
+        Tue, 03 Jun 2025 03:07:55 -0700 (PDT)
 From: Amir Goldstein <amir73il@gmail.com>
 To: Zorro Lang <zlang@redhat.com>
 Cc: Miklos Szeredi <miklos@szeredi.hu>,
@@ -80,9 +80,9 @@ Cc: Miklos Szeredi <miklos@szeredi.hu>,
 	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
 	linux-unionfs@vger.kernel.org,
 	fstests@vger.kernel.org
-Subject: [PATCH v2 3/6] generic/604: do not run with overlayfs
-Date: Tue,  3 Jun 2025 12:07:42 +0200
-Message-Id: <20250603100745.2022891-4-amir73il@gmail.com>
+Subject: [PATCH v2 4/6] generic/623: do not run with overlayfs
+Date: Tue,  3 Jun 2025 12:07:43 +0200
+Message-Id: <20250603100745.2022891-5-amir73il@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250603100745.2022891-1-amir73il@gmail.com>
 References: <20250603100745.2022891-1-amir73il@gmail.com>
@@ -95,58 +95,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Overlayfs does not allow mounting over again with the same layers
-until umount is fully completed, so is not appropriate for this test
-which tries to mount in parallel to umount.
+This test performs shutdown via xfs_io -c shutdown.
 
-This is manifested as the test failure below when overlayfs strict mount
-checks are enabled by enabling the index feature:
+Overlayfs tests can use _scratch_shutdown, but they cannot use
+"-c shutdown" xfs_io command without jumping through hoops, so by
+default we do not support it.
 
-$ echo Y > /sys/module/overlay/parameters/index
-...
-    +mount: /vdf/ovl-mnt: /vdf already mounted or mount point busy.
-    +       dmesg(1) may have more information after failed mount system call.
-    +mount /vdf /vdf/ovl-mnt failed
+Add this condition to _require_xfs_io_command and add the require
+statement to test generic/623 so it wont run with overlayfs.
 
-Opt-out of this test with overlayfs and remove the hacks that were placed
-by commit 06cee932 ("generic/604: Fix for overlayfs") to make the test pass
-with overlayfs in the first place.
-
+Reported-by: André Almeida <andrealmeid@igalia.com>
 Tested-by: André Almeida <andrealmeid@igalia.com>
+Link: https://lore.kernel.org/linux-fsdevel/20250521-ovl_ro-v1-1-2350b1493d94@igalia.com/
 Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 ---
- tests/generic/604 | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ common/rc         | 8 ++++++++
+ tests/generic/623 | 1 +
+ 2 files changed, 9 insertions(+)
 
-diff --git a/tests/generic/604 b/tests/generic/604
-index 744d3456..481250fd 100755
---- a/tests/generic/604
-+++ b/tests/generic/604
-@@ -13,6 +13,9 @@ _begin_fstest auto quick mount
- # Import common functions.
- . ./common/filter
+diff --git a/common/rc b/common/rc
+index d8ee8328..bffd576a 100644
+--- a/common/rc
++++ b/common/rc
+@@ -3033,6 +3033,14 @@ _require_xfs_io_command()
+ 		touch $testfile
+ 		testio=`$XFS_IO_PROG -c "syncfs" $testfile 2>&1`
+ 		;;
++	"shutdown")
++		if [ $FSTYP = "overlay" ]; then
++			# Overlayfs tests can use _scratch_shutdown, but they
++			# cannot use "-c shutdown" xfs_io command without jumping
++			# through hoops, so by default we do not support it.
++			_notrun "xfs_io $command not supported on $FSTYP"
++		fi
++		;;
+ 	*)
+ 		testio=`$XFS_IO_PROG -c "help $command" 2>&1`
+ 	esac
+diff --git a/tests/generic/623 b/tests/generic/623
+index b97e2adb..4e36daaf 100755
+--- a/tests/generic/623
++++ b/tests/generic/623
+@@ -16,6 +16,7 @@ _begin_fstest auto quick shutdown mmap
  
-+# Overlayfs does not allow mounting over again with the same layers
-+# until umount is fully completed, so is not appropriate for this test.
-+_exclude_fs overlay
+ _require_scratch_nocheck
+ _require_scratch_shutdown
++_require_xfs_io_command "shutdown"
  
- # Modify as appropriate.
- _require_scratch
-@@ -22,11 +25,9 @@ _scratch_mount
- for i in $(seq 0 500); do
- 	$XFS_IO_PROG -f -c "pwrite 0 4K" $SCRATCH_MNT/$i >/dev/null
- done
--# For overlayfs, avoid unmounting the base fs after _scratch_mount tries to
--# mount the base fs.  Delay the mount attempt by a small amount in the hope
--# that the mount() call will try to lock s_umount /after/ umount has already
--# taken it.
--_unmount $SCRATCH_MNT &
-+# Delay the mount attempt by a small amount in the hope that the mount() call
-+# will try to lock s_umount /after/ umount has already taken it.
-+_scratch_unmount &
- sleep 0.01s ; _scratch_mount
- wait
- 
+ _scratch_mkfs &>> $seqres.full
+ _scratch_mount
 -- 
 2.34.1
 
