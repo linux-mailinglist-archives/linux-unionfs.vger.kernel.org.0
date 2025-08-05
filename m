@@ -1,103 +1,133 @@
-Return-Path: <linux-unionfs+bounces-1837-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-1843-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E666B1A0E7
-	for <lists+linux-unionfs@lfdr.de>; Mon,  4 Aug 2025 14:11:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2584B1ACE4
+	for <lists+linux-unionfs@lfdr.de>; Tue,  5 Aug 2025 05:48:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C90D3A3C77
-	for <lists+linux-unionfs@lfdr.de>; Mon,  4 Aug 2025 12:11:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00DCE17EFDE
+	for <lists+linux-unionfs@lfdr.de>; Tue,  5 Aug 2025 03:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5705F257440;
-	Mon,  4 Aug 2025 12:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148151DE89B;
+	Tue,  5 Aug 2025 03:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="cg121kSb"
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from neil.brown.name (neil.brown.name [103.29.64.221])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBDD15DBC1;
-	Mon,  4 Aug 2025 12:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.29.64.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328BE72615;
+	Tue,  5 Aug 2025 03:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754309506; cv=none; b=LPQPH42MGXmqn7W9f51wGoZA5RQcBDN7DaFy1ZWXFEm6kbDlburY+aywWw8XFaT9nNQn77ONZrs9wGB3mj67mAGqeUou1a5Uy6E64kUcaH3rv/uJTnBmcrUkfE6nud1KPAqYO5hf7TY+ZC1PkJYxlNX+yLZE9rW2auGnAYsKnrU=
+	t=1754365711; cv=none; b=CbjSVVHr4VRCp0pQrocGNTtQhvWG6+MYC3y48rVQd1UrlH3Ny85LW109b9AS5pHo2r+T5gsEGBXMmEuNqj4KlhTd4monCfApS/SwJztDnjck6H0RYRcJf2+Df32CY+LiT7cOlHvxgdlsmFSdMGexbM8ILkKtImU2HiaeJFptwtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754309506; c=relaxed/simple;
-	bh=HZYJYovbap4LZlUOMuPXEpnsAzBda5MmeXAe7HICO2A=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=KXmk9hnxeWyZryFBJZnLeKj9v0STJgDGLHuQaLHQQTpiX95X+bBdyd5UsAhNzuphKmOP8vbIRKfCSc73JzR795xVPsDYtHCSP1dAWqo2wA1qvlC80ZinmG7RI7Up1n2Mcu8UptnWhebtioE8O5jZz7a+4LZmzZqSxVqBbWdq0Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name; spf=pass smtp.mailfrom=neil.brown.name; arc=none smtp.client-ip=103.29.64.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=neil.brown.name
-Received: from 196.186.233.220.static.exetel.com.au ([220.233.186.196] helo=home.neil.brown.name)
-	by neil.brown.name with esmtp (Exim 4.95)
-	(envelope-from <mr@neil.brown.name>)
-	id 1uiu2K-004SOk-Tr;
-	Mon, 04 Aug 2025 12:11:30 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1754365711; c=relaxed/simple;
+	bh=2NYG8G2h5AQQlHz2qPx5CzpuSIMUYeDTyFMImmoO7UA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CkFCE8F/HbFdvVjiRdc7S6HkoCYalKo4NffW6B+KvH48vALEb/dt9lk5Apky3Q1hWe1y7MfkCxWcQj8EKWH877GrPUbKJGKuvHMUR3PC1uXksEU2uQIceTqaH3tGnKNrQC+L1foRfPgjeMSuVSOXVRoUcst6HLEFLCGhgNXUm+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=cg121kSb; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=PUdM4E1mQH13KKw+cr4oA8dVQ/P7q9l6p3ARqB/UHdU=; b=cg121kSbJksjOxfX9P3HAtlqH0
+	RYTeauJh7VjKt4cdzWXRygLqUEUYVHLxYzkBUiw2HnuFuAy84EbV9lZLFRbcQTaKPpG0A6hDmuTRN
+	3g95hH2yEI/gxqvBAdHM30vbP2dXaVMCBI4Cmn1av/RH7Gx7xs3a9BjHnw02fVeYExEKFyE8cfaK8
+	ZhrOXhKil1+76VRL9B/HN7PWaOd9dEIoM1kD9ntj72q7jgE7Ew+wCmOHVcRalguIU+n48lOFqrn98
+	nzrQwl8hPV0r5DNbsN6EYyHqzXXJnu+3aIaPRwFi4BqnUun60qHAKwEMFlzxmn+fS4wiO/JH+WXpQ
+	hbarEVzw==;
+Received: from [191.204.199.202] (helo=[192.168.15.100])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1uj838-009TiJ-Dp; Tue, 05 Aug 2025 05:09:14 +0200
+From: =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
+Subject: [PATCH RFC v2 0/8] ovl: Enable support for casefold filesystems
+Date: Tue, 05 Aug 2025 00:09:04 -0300
+Message-Id: <20250805-tonyk-overlayfs-v2-0-0e54281da318@igalia.com>
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "NeilBrown" <neil@brown.name>
-To: "Amir Goldstein" <amir73il@gmail.com>, "Al Viro" <viro@zeniv.linux.org.uk>,
- "Miklos Szeredi"  <miklos@szeredi.hu>,
- "Christian Brauner" <brauner@kernel.org>
-Cc: Alan Huang <mmpgouride@gmail.com>,
- syzbot <syzbot+7836a68852a10ec3d790@syzkaller.appspotmail.com>,
- linux-bcachefs@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzkaller-bugs@googlegroups.com, linux-unionfs@vger.kernel.org
-Subject:
- [PATCH] ovl: use I_MUTEX_PARENT when locking parent in ovl_create_temp()
-In-reply-to:
- <CAOQ4uxi=bHN+UuTGHF8AH=GwJcED94KAPE0GAgB5zmv3PEhU8g@mail.gmail.com>
-References:
- <CAOQ4uxi=bHN+UuTGHF8AH=GwJcED94KAPE0GAgB5zmv3PEhU8g@mail.gmail.com>
-Date: Mon, 04 Aug 2025 22:11:28 +1000
-Message-id: <175430948898.2234665.11303643314523472166@noble.neil.brown.name>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANB1kWgC/3WNzQrCMBCEX6Xs2UjSP4knQfABvEoPS7tpF9tEk
+ hIsJe9u6N3jN8N8s0MgzxTgWuzgKXJgZzOUpwL6Ce1IgofMUMqykbXUYnV2ewsXyc+4mSAarUx
+ D9VDLC0JefTwZ/h7GFzwfd+hyOHFYnd+Ol6iO6q8wKiFFpbVqVWtIY3XjEWfGc+8W6FJKPypXW
+ si0AAAA
+X-Change-ID: 20250409-tonyk-overlayfs-591f5e4d407a
+To: Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>, 
+ Theodore Tso <tytso@mit.edu>, Gabriel Krisman Bertazi <krisman@kernel.org>
+Cc: linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ kernel-dev@igalia.com, 
+ =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
+X-Mailer: b4 0.14.2
 
+Hi all,
 
-ovl_create_temp() treats "workdir" as a parent in which it creates an
-object so it should use I_MUTEX_PARENT.
+We would like to support the usage of casefold filesystems with
+overlayfs to be used with container tools. This use case requires a
+simple setup, where every layer will have the same encoding setting
+(i.e. Unicode version and flags), using one upper and one lower layer.
 
-Prior to the commit identified below the lock was taken by the caller
-which sometimes used I_MUTEX_PARENT and sometimes used I_MUTEX_NORMAL.
-The use of I_MUTEX_NORMAL was incorrect but unfortunately copied into
-ovl_create_temp().
+* Implementation
 
-Note to backporters: This patch only applies after the last Fixes given
-below (post v6.16).  To fix the bug in v6.7 and later the
-inode_lock() call in ovl_copy_up_workdir() needs to nest using
-I_MUTEX_PARENT.
+When merge layers, ovl uses a red-black tree to check if a given dentry
+name from a lower layers already exists in the upper layer. For merging
+case-insensitive names, we need to store then in tree casefolded.
+However, when displaying to the user the dentry name, we need to respect
+the name chosen when the file was created (e.g. Picture.PNG, instead of
+picture.png). To achieve this, I create a new field for cache entries
+that stores the casefolded names and a function ovl_strcmp() that uses
+this name for searching the rb_tree. For composing the layer, ovl uses
+the original name, keeping it consistency with whatever name the user
+created.
 
-Link: https://lore.kernel.org/all/67a72070.050a0220.3d72c.0022.GAE@google.com/
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+7836a68852a10ec3d790@syzkaller.appspotmail.com
-Fixes: c63e56a4a652 ("ovl: do not open/llseek lower file with upper sb_writer=
-s held")
-Fixes: d2c995581c7c ("ovl: Call ovl_create_temp() without lock held.")
-Signed-off-by: NeilBrown <neil@brown.name>
+The rest of the patches are mostly for checking if casefold is being
+consistently used across the layers and dropping the mount restrictions
+that prevented case-insensitive filesystems to be mounted.
+
+Thanks for the feedback!
+
 ---
- fs/overlayfs/dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+- Almost a full rewritten from the v1.
+v1: https://lore.kernel.org/lkml/20250409-tonyk-overlayfs-v1-0-3991616fe9a3@igalia.com/
 
-diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
-index 70b8687dc45e..dbd63a74df4b 100644
---- a/fs/overlayfs/dir.c
-+++ b/fs/overlayfs/dir.c
-@@ -225,7 +225,7 @@ struct dentry *ovl_create_temp(struct ovl_fs *ofs, struct=
- dentry *workdir,
- 			       struct ovl_cattr *attr)
- {
- 	struct dentry *ret;
--	inode_lock(workdir->d_inode);
-+	inode_lock_nested(workdir->d_inode, I_MUTEX_PARENT);
- 	ret =3D ovl_create_real(ofs, workdir,
- 			      ovl_lookup_temp(ofs, workdir), attr);
- 	inode_unlock(workdir->d_inode);
+---
+André Almeida (8):
+      olv: Store casefold name for case-insentive dentries
+      ovl: Create ovl_strcmp() with casefold support
+      fs: Create sb_same_encoding() helper
+      ovl: Ensure that all mount points have the same encoding
+      ovl: Set case-insensitive dentry operations for ovl sb
+      ovl: Set inode S_CASEFOLD for casefolded dentries
+      ovl: Check casefold consistency in ovl stack
+      ovl: Drop restrictions for casefolded dentries
 
+ fs/overlayfs/inode.c   |  7 +++++
+ fs/overlayfs/namei.c   | 25 ++++++---------
+ fs/overlayfs/params.c  |  7 -----
+ fs/overlayfs/readdir.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++--
+ fs/overlayfs/super.c   | 21 +++++++++++++
+ fs/overlayfs/util.c    |  8 ++---
+ include/linux/fs.h     | 22 ++++++++++++++
+ 7 files changed, 143 insertions(+), 29 deletions(-)
+---
+base-commit: ba04dc6f8768e61d6de2d0c5c5079a8b54e62fbb
+change-id: 20250409-tonyk-overlayfs-591f5e4d407a
+
+Best regards,
+-- 
+André Almeida <andrealmeid@igalia.com>
 
 
