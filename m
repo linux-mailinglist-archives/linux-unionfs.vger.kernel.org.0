@@ -1,124 +1,100 @@
-Return-Path: <linux-unionfs+bounces-1842-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-1847-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730B3B1ACA9
-	for <lists+linux-unionfs@lfdr.de>; Tue,  5 Aug 2025 05:10:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E748B1AD7A
+	for <lists+linux-unionfs@lfdr.de>; Tue,  5 Aug 2025 07:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF31318A2154
-	for <lists+linux-unionfs@lfdr.de>; Tue,  5 Aug 2025 03:10:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C2D03AEE8E
+	for <lists+linux-unionfs@lfdr.de>; Tue,  5 Aug 2025 05:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42111FF5E3;
-	Tue,  5 Aug 2025 03:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EF513C8FF;
+	Tue,  5 Aug 2025 05:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="G1rFRbYB"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="vcUc10On"
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D831DED49;
-	Tue,  5 Aug 2025 03:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF092AD0B;
+	Tue,  5 Aug 2025 05:08:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754363380; cv=none; b=Bh81M71Fn5k06C1NpKD+65qAPQwi3i2mkwi8Z+QK5NlXbszNWd+NpQGLG9jVoNhe+/SEchBfYN7sdxSng3oOw6a2VW/AHGYofwtUOVtRMcVMqruYpjRX7+l+bF25Txzlg+JVWacFXP2qBg5uAjtWc4IwuP8SKjVQPqB3ClF/Yf8=
+	t=1754370496; cv=none; b=XtjNpWIj9Au4uLIsceLcRLCUrxOBHFcH53z2NFdidLm5aNz8snqd2bJXTWVzUayn588YTrj2RAXG7QbQo2hZ7mjDXZ5CIIJLgezYbX0GwvUvAGRo06m0YrGr/h3nrHYIkQy7zDNnUAN9sTNwABb2lC7KswYLSqLo8Gy4N/AGb20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754363380; c=relaxed/simple;
-	bh=KXRKtpIorrVSm+ENgWZSMXbBbvXp7K4wV9sI2VRsD9Q=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=W3aqm0qyAjFhpbMRf1NtdTHddk5irY1L1Q6ZxYdLqFjZXL3huTOxfbRnUhUgpTPZnAllOXrhP400F3B8HHyV8KkJcOIaJo/VSSmOpUQDKCgui1vVsEfuZIEnmURzVyzLFKaqDqwlxfqQGgJYksAk0mOSEQzF8RcAgmQj39wQEps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=G1rFRbYB; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=MAYPBEI5qE+orymxndgIHcMY+kCdXPZFTQwApjcA/OI=; b=G1rFRbYBbWZggMuAeUHsub6NNp
-	EBv2R1BInLgB+VbP5ChOi2/N/Vkcep6auP6mBCS4JV2sa6bZ5kg/B/Ucu4nRQQ/Me9E9vOoYfLy5M
-	CT5Io59c2bTv38lhReAZMikXznOm+I2Z4YXG9LFdhQczflcEsUzvSlSAsLANS/LgLN3VUQREnMoqd
-	9D1D06lQaso1ydL/42tDkHbWwROw34Y/dqy0RpZsYGkgXb/5u0Mw0INUhYE/BFVYkVhoIOEQTBSwc
-	bzvybEnU6XgTpHnX7UjDoHBPgLwK/4go7OkugenVbd20BwazSmNJ12RJf/QzeJXH9OfRhLKJ+jjzI
-	ntL/XJUw==;
-Received: from [191.204.199.202] (helo=[192.168.15.100])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1uj83U-009TiJ-VU; Tue, 05 Aug 2025 05:09:37 +0200
-From: =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-Date: Tue, 05 Aug 2025 00:09:12 -0300
-Subject: [PATCH RFC v2 8/8] ovl: Drop restrictions for casefolded dentries
+	s=arc-20240116; t=1754370496; c=relaxed/simple;
+	bh=BJsYSkptW/Gg0j+GjEzbmB5TlwxyI1N0SYcghDZO9HU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iputEOgK6tKOilffj2sWtzXGip9k2C6Q8R/krr20OzRbKdhWFzVgTgrTDCpDBuuPtO0BvfIpGDmSSpJUsXz9durvR8n9epLppGQiQvAGdPFU5LoFEGArhP6qslhl32qwVRt6azj2e/feLGxXBESYUA6zQUcEeS935BYU2IVlRAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=vcUc10On; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
+	bh=ly6DSdUr2XbxUhMhtav5my3WakhtZnB56NBTKhEPeCM=; b=vcUc10OnYD2Riy40ESV/uGoLxI
+	Il4eRKfMWEvKa/ujC2PPuZcXvE4wyNLMmiRogn6UJPyYcG1DWBezUBPs6fzwRdfRTHmTRuqxNL4nm
+	viOW1systuSjbJYKYLUHlJ9A1K0hahi8cB749ZIDWa89m2k9Wa12urbOWGaWJ2wvb2B14kljHYL8P
+	v3ay+FX+5QOqsyQMJO6r2lZed33gURFTwt8N0QxTDNGWC6OQ40QunsOBf59mks7AjxSFOeKYc4WAC
+	wG2DJK0qdx7TK3vnkygovoD6eeP8pp1CgtOifKqs+WDaAfAtAZ+w7y37KPrd/paoBmKQ+I9t1CXOr
+	Yf9IFTvQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uj9uD-0000000HQPe-1q0O;
+	Tue, 05 Aug 2025 05:08:09 +0000
+Date: Tue, 5 Aug 2025 06:08:09 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: =?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@igalia.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Gabriel Krisman Bertazi <krisman@kernel.org>,
+	linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	kernel-dev@igalia.com
+Subject: Re: [PATCH RFC v2 2/8] ovl: Create ovl_strcmp() with casefold support
+Message-ID: <20250805050809.GA222315@ZenIV>
+References: <20250805-tonyk-overlayfs-v2-0-0e54281da318@igalia.com>
+ <20250805-tonyk-overlayfs-v2-2-0e54281da318@igalia.com>
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250805-tonyk-overlayfs-v2-8-0e54281da318@igalia.com>
-References: <20250805-tonyk-overlayfs-v2-0-0e54281da318@igalia.com>
-In-Reply-To: <20250805-tonyk-overlayfs-v2-0-0e54281da318@igalia.com>
-To: Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>, 
- Theodore Tso <tytso@mit.edu>, Gabriel Krisman Bertazi <krisman@kernel.org>
-Cc: linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- kernel-dev@igalia.com, 
- =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-X-Mailer: b4 0.14.2
+In-Reply-To: <20250805-tonyk-overlayfs-v2-2-0e54281da318@igalia.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-Drop the restriction for casefold dentries to enable support for
-casefold filesystems in overlayfs.
+On Tue, Aug 05, 2025 at 12:09:06AM -0300, André Almeida wrote:
 
-Signed-off-by: AndrÃ© Almeida <andrealmeid@igalia.com>
----
- fs/overlayfs/params.c | 7 -------
- fs/overlayfs/util.c   | 8 ++++----
- 2 files changed, 4 insertions(+), 11 deletions(-)
+> +static int ovl_strcmp(const char *str, struct ovl_cache_entry *p, int len)
 
-diff --git a/fs/overlayfs/params.c b/fs/overlayfs/params.c
-index f4e7fff909ac49e2f8c58a76273426c1158a7472..dd3a893d37603842f7d19d90accb981f0d12e971 100644
---- a/fs/overlayfs/params.c
-+++ b/fs/overlayfs/params.c
-@@ -281,13 +281,6 @@ static int ovl_mount_dir_check(struct fs_context *fc, const struct path *path,
- 	if (!d_is_dir(path->dentry))
- 		return invalfc(fc, "%s is not a directory", name);
- 
--	/*
--	 * Allow filesystems that are case-folding capable but deny composing
--	 * ovl stack from case-folded directories.
--	 */
--	if (ovl_dentry_casefolded(path->dentry))
--		return invalfc(fc, "case-insensitive directory on %s not supported", name);
--
- 	if (ovl_dentry_weird(path->dentry))
- 		return invalfc(fc, "filesystem on %s not supported", name);
- 
-diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
-index a33115e7384c129c543746326642813add63f060..7a6ee058568283453350153c1720c35e11ad4d1b 100644
---- a/fs/overlayfs/util.c
-+++ b/fs/overlayfs/util.c
-@@ -210,11 +210,11 @@ bool ovl_dentry_weird(struct dentry *dentry)
- 		return true;
- 
- 	/*
--	 * Allow filesystems that are case-folding capable but deny composing
--	 * ovl stack from case-folded directories.
-+	 * Exceptionally for casefold dentries, we accept that they have their
-+	 * own hash and compare operations
- 	 */
--	if (sb_has_encoding(dentry->d_sb))
--		return IS_CASEFOLDED(d_inode(dentry));
-+	if (ovl_dentry_casefolded(dentry))
-+		return false;
- 
- 	return dentry->d_flags & (DCACHE_OP_HASH | DCACHE_OP_COMPARE);
- }
+> +	if (p->map && !is_dot_dotdot(str, len)) {
+> +		dst = kmalloc(OVL_NAME_LEN, GFP_KERNEL);
 
--- 
-2.50.1
+...`
 
+> +	kfree(dst);
+> +
+> +	return cmp;
+> +}
+> +
+
+> @@ -107,7 +145,7 @@ static struct ovl_cache_entry *ovl_cache_entry_find(struct rb_root *root,
+>  	while (node) {
+>  		struct ovl_cache_entry *p = ovl_cache_entry_from_node(node);
+>  
+> -		cmp = strncmp(name, p->name, len);
+> +		cmp = ovl_strcmp(name, p, len);
+>  		if (cmp > 0)
+>  			node = p->node.rb_right;
+>  		else if (cmp < 0 || len < p->len)
+
+Am I misreading that, or do really we get a kmalloc()/kfree() for each
+sodding tree node we traverse on rbtree lookup here?
 
