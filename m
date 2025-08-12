@@ -1,188 +1,194 @@
-Return-Path: <linux-unionfs+bounces-1868-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-1872-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE2A7B1FA10
-	for <lists+linux-unionfs@lfdr.de>; Sun, 10 Aug 2025 15:02:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D6E4B23C7D
+	for <lists+linux-unionfs@lfdr.de>; Wed, 13 Aug 2025 01:53:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B550A188800D
-	for <lists+linux-unionfs@lfdr.de>; Sun, 10 Aug 2025 13:02:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF55C62733C
+	for <lists+linux-unionfs@lfdr.de>; Tue, 12 Aug 2025 23:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA479198E9B;
-	Sun, 10 Aug 2025 13:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A5x6GaxY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A453A2E2DDB;
+	Tue, 12 Aug 2025 23:53:04 +0000 (UTC)
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from neil.brown.name (neil.brown.name [103.29.64.221])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88BF1C683;
-	Sun, 10 Aug 2025 13:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D46B2DAFCE;
+	Tue, 12 Aug 2025 23:53:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.29.64.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754830955; cv=none; b=TPqbKU7Z/YYVY6yQjBLR+oOhPPWp3Qtay7UCDSp0XT9P+M/bii5voAyl8PWjcC1HwMuNqqucjvGuedsDl+NOmY52hpf/fNXvVEfWhETfwDWg6otLCjoDzPhWWhB57vVJAimrJSKgkfN9eMNJTlN6m9KPv6PuIGASeYuFIlJPFiw=
+	t=1755042784; cv=none; b=qaD+ynXvSLH3xtSxD0AEqeyO/GzZDmpIPFvgh64IUR86OXISxzaXxxJkUnFLoFC3UNxCdBxeYfiClfrCnGxjRKw6ISULmcsEUBWDxtdRM6ubXAoyj67nVS9hdvnAmrAz2kgfPhGcvHfhbfmtV/+CBCNCdUZrExu96/nIq9mts/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754830955; c=relaxed/simple;
-	bh=7vETKwtpidENX53WjwI6MHM6eVFOckiWgacFT/qG6FM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fl4MDNWKxcSeDyX9fGiD3qYEfAY3f8vWVJlxs8NrVEyjzIyin/oaXZjWGLJoijUSkpYpzn8lfXy4ScTa9V2R8lXXpvyTe7vNyuX55hLQvNDlm/HmMXaGEasGBIkmaM8BKUpJykNKoqAhzx7MAUEB9cju9QKuqi9DF66UnaCzrsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A5x6GaxY; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-af98b77d2f0so660647066b.3;
-        Sun, 10 Aug 2025 06:02:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754830952; x=1755435752; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oSlOOEhHSp0QmqGAVt0Ofk92yXA+aQmJze++Vd3SO3g=;
-        b=A5x6GaxYRh9k6qmp5rI3dT/W1fNYdHygpTq9FZOkjs4ur1PMpqvCoIE+R8CAh+NJ1N
-         U/ubZ+2T3KT/ED0yDs0Ok0a93IcbgZRQ0e5S1qb94GO0RPC2eDv2e00C4uH/WO6iDM4u
-         IvhYOnIbMsIXnh8U3IvE49PhAf/HDRzN6pwHvXs0Zmb9tEYRgHTlM735mzkkgqzIwSq0
-         OCxnnONIGFU21b14mYgXBbUC/tzuZvzb5f1xumV6Nwo1qkRaMvO4ekDJ9zUhQJHzfJM6
-         Pal6iuqmkZZ3E6XSVeTPutOeE2FC53IMqhKYDArsXx7CYnUcDyQApv9Que54rs+q2ZmV
-         2hIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754830952; x=1755435752;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oSlOOEhHSp0QmqGAVt0Ofk92yXA+aQmJze++Vd3SO3g=;
-        b=T1MJVp2Cgp4Yx/An4kkdNZx9TWnalEP9DLwJGUsH7oOTsfbBKu5Nu/eTIzDtc6pMT2
-         XfOFO+pJOwlfQYBS/qL2zGISUorwNQdDagRNMuVv4d7Y/995iY8lAJ90mcH05ydI07m5
-         iHo36g17NO5AM8KtegwYIzf9J4NRZftDLRExgFIEABVTLdkaiQKS8QdyCVzdNnWiIyhf
-         ZOPDKe9ryK39ZGWw1cspP4YFOHBSG2CCPqRe6r/27zKorypl6mGa/ejqFpveoj7YB3CH
-         bgueCgzDGUOO29TEmMvn/kPd3OZ/3CCtk5Y/2JMTgFOEmF9/lMRrCC/pMyE5JjuVr599
-         j6Gw==
-X-Forwarded-Encrypted: i=1; AJvYcCUC9hv1TYBBQmE7lJMm2Se/nSzw88TiZl+ZthezESdcJkI8O0AvGhSw7piNhZbJj8xNYUQYmbTcK/hU/BoT@vger.kernel.org, AJvYcCUh2u3regHOZTnbZoXORDB13c0NECUiIgW/2bUWNVIFBlz1QAUKOpqq/1Pmk8DNMo22J5BPdtWK1OdurHFphw==@vger.kernel.org, AJvYcCVpWqG3Tz5zWdogboKLTBUexBlMbCUPBIE+TXA8nM26qDTW6Zq45r3FMySJuxoGas5vy6EqoUQREDufbMMY@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWhLu44rIWbYKiO1KSyV93HXbsG/LFwSFRmTnWmEPXPPyCMRSe
-	WTCZqaGa0oDPHayQ4+kC6oTjXpD65yr7mbqNo0WS48q0px5gknOrIePUY2lMmd4/G+NvwrWFgop
-	ITnU/2yf+jgVjR2B7nkl5WSTRLouye4s=
-X-Gm-Gg: ASbGnctG6dnL6AAt+YgIV6N28RjybKwVFTWUEKBuKa0c0fWsWfmJ8oQtEfy53yZOqX8
-	fAKPWiYZDGM52lWhDL3ZrX3EUMv2TJXOMCWtumpFF3LQu+biXpHYMz6Gel+/xYY8qNWDn8B8ttR
-	+2zQQWiJN5OGcLA5L0uBa0HOFVgxG543FkxiZVe5WrDdhnsVw2PN49ACIFgr5RHnBI96QuIVX8Y
-	iDcnRY=
-X-Google-Smtp-Source: AGHT+IGc1LjBDs581anLLqxndQtaeysDoGVU+r3AisBDGvFqnux7ki0lPq5hSFTSlEIgP20ONz/YoIpX6TnfSC527jk=
-X-Received: by 2002:a17:906:9f8b:b0:ae6:f087:953 with SMTP id
- a640c23a62f3a-af9c63b0a87mr823318466b.12.1754830951730; Sun, 10 Aug 2025
- 06:02:31 -0700 (PDT)
+	s=arc-20240116; t=1755042784; c=relaxed/simple;
+	bh=gn54IA1/q/Cn2j1DUaCUAMg4l43QdpVX0r604C6RKaY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sCDw1VF2S9Abc2JQPlRxAHaZtQqIS8HoQm2Iav8kVbIFb4Ssio3zWCX1WvMMGEfRgj4/mHt5qJDVMhbKJtzzXTqulEjLs2e9a5/aaOPgggn7A0r7grVEbmbNDd5UOXFUHTWpd+rZJudamba+eYGim4VhUA/rVciF8KDX5IG5ubw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name; spf=pass smtp.mailfrom=neil.brown.name; arc=none smtp.client-ip=103.29.64.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=neil.brown.name
+Received: from 196.186.233.220.static.exetel.com.au ([220.233.186.196] helo=home.neil.brown.name)
+	by neil.brown.name with esmtp (Exim 4.95)
+	(envelope-from <mr@neil.brown.name>)
+	id 1ulynI-005Y1s-6o;
+	Tue, 12 Aug 2025 23:52:41 +0000
+From: NeilBrown <neil@brown.name>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>
+Cc: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Tyler Hicks <code@tyhicks.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Steve French <sfrench@samba.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	linux-afs@lists.infradead.org,
+	netfs@lists.linux.dev,
+	ceph-devel@vger.kernel.org,
+	ecryptfs@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-nfs@vger.kernel.org,
+	linux-unionfs@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 00/11] VFS: prepare for changes to directory locking
+Date: Tue, 12 Aug 2025 12:25:03 +1000
+Message-ID: <20250812235228.3072318-1-neil@brown.name>
+X-Mailer: git-send-email 2.50.0.107.gf914562f5916.dirty
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250808-tonyk-overlayfs-v3-0-30f9be426ba8@igalia.com>
- <20250808-tonyk-overlayfs-v3-6-30f9be426ba8@igalia.com> <CAOQ4uxiDtq4LF-OVtQ6ufmcAZqLn-jqynM06RgHLgUYOW-uHHA@mail.gmail.com>
-In-Reply-To: <CAOQ4uxiDtq4LF-OVtQ6ufmcAZqLn-jqynM06RgHLgUYOW-uHHA@mail.gmail.com>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Sun, 10 Aug 2025 15:02:20 +0200
-X-Gm-Features: Ac12FXz3sd9nkTZqSLTKZCKnaQeDmVdIW_6sTRxrlBzilIXPWIRh2FNlF3TnYpg
-Message-ID: <CAOQ4uxg326bEDdfKCKnoV0MnBBgRbxPEgN_41kBJv9HUdb-5dg@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 6/7] ovl: Add S_CASEFOLD as part of the inode flag
- to be copied
-To: =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, Theodore Tso <tytso@mit.edu>, 
-	Gabriel Krisman Bertazi <krisman@kernel.org>, linux-unionfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	kernel-dev@igalia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Aug 9, 2025 at 11:51=E2=80=AFAM Amir Goldstein <amir73il@gmail.com>=
- wrote:
->
-> On Fri, Aug 8, 2025 at 10:59=E2=80=AFPM Andr=C3=A9 Almeida <andrealmeid@i=
-galia.com> wrote:
-> >
-> > To keep ovl's inodes consistent with their real inodes, add the
-> > S_CASEFOLD flag as part of the flags that need to be copied.
-> >
-> > Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@igalia.com>
-> > ---
-> > Changes from v2:
-> > - Instead of manually setting the flag if the realpath dentry is
-> >   casefolded, just add this flag as part of the flags that need to be
-> >   copied.
-> > ---
-> >  fs/overlayfs/overlayfs.h | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
-> > index bb0d7ded8e763a4a7a6fc506d966ed2f3bdb4f06..8a9a67d2933173c61b0fa0a=
-f5634d91e092e00b2 100644
-> > --- a/fs/overlayfs/overlayfs.h
-> > +++ b/fs/overlayfs/overlayfs.h
-> > @@ -822,7 +822,7 @@ struct inode *ovl_get_inode(struct super_block *sb,
-> >  void ovl_copyattr(struct inode *to);
-> >
-> >  /* vfs inode flags copied from real to ovl inode */
-> > -#define OVL_COPY_I_FLAGS_MASK  (S_SYNC | S_NOATIME | S_APPEND | S_IMMU=
-TABLE)
-> > +#define OVL_COPY_I_FLAGS_MASK  (S_SYNC | S_NOATIME | S_APPEND | S_IMMU=
-TABLE | S_CASEFOLD)
-> >  /* vfs inode flags read from overlay.protattr xattr to ovl inode */
-> >  #define OVL_PROT_I_FLAGS_MASK  (S_APPEND | S_IMMUTABLE)
-> >
->
-> Ok, this is simpler, but it's too simple.
-> OVL_COPY_I_FLAGS_MASK is used in copy up with the assumption that
-> all copied i_flags are related to fileattr flags, so you need something l=
-ike:
->
-> diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-> index 27396fe63f6d..66bd43a99d2e 100644
-> --- a/fs/overlayfs/copy_up.c
-> +++ b/fs/overlayfs/copy_up.c
-> @@ -670,7 +670,7 @@ static int ovl_copy_up_metadata(struct
-> ovl_copy_up_ctx *c, struct dentry *temp)
->         if (err)
->                 return err;
->
-> -       if (inode->i_flags & OVL_COPY_I_FLAGS_MASK &&
-> +       if (inode->i_flags & OVL_FATTR_I_FLAGS_MASK &&
->             (S_ISREG(c->stat.mode) || S_ISDIR(c->stat.mode))) {
->                 /*
->                  * Copy the fileattr inode flags that are the source of a=
-lready
+This is the first of 3 sets of patches which, together, allow
+filesystems to opt-out of having the directory inode lock held over
+directory operations (except readdir).
+- This set creates some new APIs in the VFS and makes a few changes in
+  callers either because they are trivial (patch 08) or because they
+  involve a flag-day change (patches 06, 07, and 09).
+- The second set rolls the new APIs out to all non-VFS code which 
+  invokes directory operations.
+- The third (which isn't yet bug-free) changes the implementation
+  of these APIs to make the use of inode_lock() optional.
 
-Which reminds me that you also need to verify that a copied up directory
-conforms to the ofs->casefold expectation, because there is no code
-to make the copied up directory casefolded.
+I imagine these three set landing in three different merge windows,
+though some of the second set could get in the same window as the first.
 
-We can assume that layers check has already verified that upperdir/workdir
-are casefold correct, but we need to verify that $workdir/work/$tmpdir crea=
-ted
-by ovl_create_temp() has inherited the expected casefolding.
+The patches are listed below and are available at 
+   https://github.com/neilbrown/linux
+in branch pdirops.
 
-Same goes for ovl_mkdir(), we must verify that the new created dentry/inode
-conform to the expected ofs->casefold.
+This first set adds and updates APIs with three particular goals:
+1/ centralising all lookup and locking for directory ops.  This
+  includes a variety of dentry_lookup() calls with done_dentry_lookup(),
+  and rename_lookup() with done_rename_lookup().
+2/ Removing the use of d_drop() during a directory operation (it is
+   OK for d_drop to happen at the end).  As the goal is for locks
+   to be based on the dentry, a dropped dentry will no longer protect the name.
+   The only change in this patch set is 08 which changes d_splice_alias()
+   and d_add() to not require a preceding d_drop(), and then removes
+   the unnecessary d_drop()s.
+3/ No blocking in d_alloc_parallel() within readdir() (iterate_shared()) requests.
+   We will need to invert the ordering between d_alloc_parallel() and
+   inode_lock(), so blocking in d_alloc_parallel() to, e.g., prime the
+   dcache during readdir must be avoided.  The last patch introduces
+   new interfaces that can be used instead and explains them.
+   Patches 9 and 10 prepare for this.
 
-I think this check in ovl_create_real() should cover both cases:
-
-diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
-index 70b8687dc45e..be8c5d02302d 100644
---- a/fs/overlayfs/dir.c
-+++ b/fs/overlayfs/dir.c
-@@ -187,6 +187,11 @@ struct dentry *ovl_create_real(struct ovl_fs
-*ofs, struct dentry *parent,
-                        /* mkdir is special... */
-                        newdentry =3D  ovl_do_mkdir(ofs, dir, newdentry,
-attr->mode);
-                        err =3D PTR_ERR_OR_ZERO(newdentry);
-+                       /* expect to inherit casefolding from
-workdir/upperdir */
-+                       if (!err && ofs->casefold !=3D
-ovl_dentry_casefolded(newdentry)) {
-+                               dput(newdentry);
-+                               err =3D -EINVAL;
-+                       }
-                        break;
+Please review and consider for 6.18.
 
 Thanks,
-Amir.
+NeilBrown
+
+ [PATCH 01/11] VFS: discard err2 in filename_create()
+ [PATCH 02/11] VFS: introduce dentry_lookup() and friends
+ [PATCH 03/11] VFS: add dentry_lookup_killable()
+ [PATCH 04/11] VFS: introduce dentry_lookup_continue()
+ [PATCH 05/11] VFS: add rename_lookup()
+ [PATCH 06/11] VFS: unify old_mnt_idmap and new_mnt_idmap in
+ [PATCH 07/11] VFS: Change vfs_mkdir() to unlock on failure.
+ [PATCH 08/11] VFS: allow d_splice_alias() and d_add() to work on
+ [PATCH 09/11] VFS: use global wait-queue table for d_alloc_parallel()
+ [PATCH 10/11] VFS: use d_alloc_parallel() in lookup_one_qstr_excl().
+ [PATCH 11/11] VFS: introduce d_alloc_noblock() and d_alloc_locked()
+
+Future patches:
+
+set 2:
+ devtmpfs: use new dentry locking APIs
+ audit: use new dentry locking APIs
+ debugfs: use new dentry locking APIs.
+ binderfs: use new dentry locking APIs.
+ binfmt_misc: use new dentry locking APIs.
+ kernel/bpf: use new dentry locking APIs.
+ devpts: use new dentry locking APIs.
+ ipc/mqueue: use new dentry locking APIs.
+ s390/hypfs: use new dentry locking APIs.
+ security: use new dentry locking APIs.
+ tracefs: use new dentry locking APIs.
+
+ ecryptfs: use dentry_lookup_continue() in lock_parent()
+ ecryptfs: use rename_lookup()
+
+ fs/proc: Don't look root inode when creating "self" and "thread-self"
+ proc: use d_alloc_locked() and lock_lookup()
+
+ bcachefs: use new dentry locking APIs
+ exfat: use d_splice_alias(), don't d_drop()
+ coda: don't d_drop() early.
+ smb/server: use new dentry locking APIs.
+ nfsd: use new dentry locking APIs.
+ cachefiles: use new dentry locking APIs.
+ btrfs: use dentry_lookup_killable()
+ fuse: use new dentry locking APIs.
+ sunrpc/rpc_pipe: use new dentry locking APIs.
+ xfs: use new dentry locking APIs.
+
+ ovl: use is_subdir() for testing if one thing is a subdir of another
+ ovl: introduce ovl_upper_dentry_lookup() and use it.
+ ovl: switch from parent_lock() to dentry_lookup_continue() except for rename.
+ ovl: use dentry_lookup_killable() in ovl_check_whiteouts()
+ ovl: split ovl_tempname() out from ovl_lookup_temp().
+ ovl: Change ovl_lookup_temp() to use ovl_upper_dentry_lookup()
+ ovl: Change all rename code to use rename_lookup_noperm()
+ ovl: don't dget_parent() in ovl_lookup_real_one()
+ ovl: use new APIs in ovl_lookup_real_one()
+ ovl: use new dir apis in ovl_cache_update()
+
+ NFS: remove d_drop() from nfs_atomic_open()
+ nfs: use d_alloc_noblock() in silly-rename
+
+ afs: use d_splice_alias() in afs_vnode_new_inode()
+ afs: use d_time instead of d_fsdata
+ afs: don't unhash/rehash dentries during unlink/rename
+ AFS: use new dir access APIs.
+
+set 3:
+ VFS: make various namei.c functions static.
+ VFS: Remove lookup_one() and lookup_noperm()
+ VFS: Introduce S_DYING which warns that S_DEAD might follow.
+ VFS: lift d_alloc_parallel above inode_lock
+ VFS: provide alternative to s_vfs_rename_mutex
+ VFS: Add ability to exclusively lock a dentry
+ VFS: use new dentry locking for open/create/remove/rename
+ VFS: allow a filesystem to opt out of directory locking.
+ NFS: allow concurrent dir ops.
+
 
