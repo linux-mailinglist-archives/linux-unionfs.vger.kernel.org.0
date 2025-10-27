@@ -1,113 +1,177 @@
-Return-Path: <linux-unionfs+bounces-2296-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-2299-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DCDC0FBF2
-	for <lists+linux-unionfs@lfdr.de>; Mon, 27 Oct 2025 18:47:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADCD9C11171
+	for <lists+linux-unionfs@lfdr.de>; Mon, 27 Oct 2025 20:33:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 083884E0F2C
-	for <lists+linux-unionfs@lfdr.de>; Mon, 27 Oct 2025 17:47:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47F01581954
+	for <lists+linux-unionfs@lfdr.de>; Mon, 27 Oct 2025 19:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C531E2614;
-	Mon, 27 Oct 2025 17:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536E232B9B2;
+	Mon, 27 Oct 2025 19:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="vqf8YkrP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETCUEFib"
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from forward500d.mail.yandex.net (forward500d.mail.yandex.net [178.154.239.208])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9571DF26A;
-	Mon, 27 Oct 2025 17:47:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206AD304BD3;
+	Mon, 27 Oct 2025 19:27:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761587240; cv=none; b=cXrIsdQgrv8ZiSSyq4Skno0SQhP/OdLgIn1MWB2pbc4MpUtyBq34vkAIS8I2VnxXmnUwiY2TfNjGEK+synuKs0ulcNDgBkDd2evvnocprYI4g/mxSnibG4URy3+bq7UupaCRobyxWFyb61dA6JWJ2I4G7yd8agpqfsH0qiQDYM8=
+	t=1761593229; cv=none; b=p9cXXftcKX1baE7rR+KQQDZsfOcrDtKybAN+aznhKeyW3twFjpa3NMS51bDaDBSjj7+X7dSxyENj8S2+K+HURlzu9tmTLLCcX3O7da/XvAo4FGkd4mrmiQb2LOJRmViggSrF8ID6NapFNCdFRUsAZtFyEZAK+q5JzIW+E1m+mnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761587240; c=relaxed/simple;
-	bh=TrNSkzcQs2ypl/M/ayB8waqo4ncJLbfGeVyJl9gFsUo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lFn1NTfgk3/bShFyVCXEOb0ZFIITRBhpsuP8lWgry3JPKhgDL9b6TlA73nNaABrKYa/9RxsJvkEZrBiqrtR23qcKiDUsvF2HeK7+zF3W98yH6DwX2trDyiGMGJ/gZVQW+0VLz2mY3FdhbRveZyAFjYHTmkfnI3vzDbLQFjXHo/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=vqf8YkrP; arc=none smtp.client-ip=178.154.239.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:d7c6:0:640:5e67:0])
-	by forward500d.mail.yandex.net (Yandex) with ESMTPS id 8E56081143;
-	Mon, 27 Oct 2025 20:47:08 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 3lgj6B7L5a60-NLa0OgXb;
-	Mon, 27 Oct 2025 20:47:08 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1761587228; bh=Nj4jl6elpyxVm99JZ8K7flhoAbs5bX09y6sM/8r83UQ=;
-	h=In-Reply-To:To:From:Cc:Date:References:Subject:Message-ID;
-	b=vqf8YkrPbZGLTE2/8nMGABpLMKTRmg0lVkpQ3ve1AMy4qHOkZy3EYduhEj2mLufGa
-	 4JVbsMg9vOB8aqOl0Ex4PcevxMtHj9KDhvzR8ggoxaKN1Nv6yBXMacTxaPm/xQJSvQ
-	 e0wcOL3+ASTHJKAP/9yYninU5bWQuQ/PlSVL6cNU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <8d8fede6-7798-4665-b5a8-34fb2b02766c@yandex.ru>
-Date: Mon, 27 Oct 2025 20:47:03 +0300
+	s=arc-20240116; t=1761593229; c=relaxed/simple;
+	bh=E+kZsIn/00RIUuNdDPsmsEckBa8NBdUjcNjTNhYm/hc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CWT/N0Qxpgw/ODMGFye+ZwSvrgJC11JIp3VL6BZsbxtSIKjnpj8Vm7bp1SLG7BYoXVsxmg8X1qDd5W8TBy0SMkuHbTFZAzBm5gZgtrp8OSqfyItvG4bnNJlX0i9vyWd7+rU2BL5vS1ILaGFrU/a4WS3oX/+IvWPMjEYBCKQFgz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETCUEFib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61919C4CEF1;
+	Mon, 27 Oct 2025 19:27:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1761593228;
+	bh=E+kZsIn/00RIUuNdDPsmsEckBa8NBdUjcNjTNhYm/hc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ETCUEFib2ykscH30bkeDtdsXd/8Ct29QAC6WyVZCf++SloZ5dddIc+bSWwEAbT5eg
+	 AFTjax5W0vztzWWiyg6CQKipfahNl3sNyYpJfJfPybujRpNvGxukJHxCCUqM1n8p9K
+	 9jFeSxHT517e9iC94KzBFPEdH+L/JkL/rRju0Hz8=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jakub Acs <acsjakub@amazon.de>,
+	Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-unionfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.17 061/184] fs/notify: call exportfs_encode_fid with s_umount
+Date: Mon, 27 Oct 2025 19:35:43 +0100
+Message-ID: <20251027183516.529735185@linuxfoundation.org>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251027183514.934710872@linuxfoundation.org>
+References: <20251027183514.934710872@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] overlayfs: avoid redundant call to strlen() in
- ovl_lookup_temp()
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org,
- NeilBrown <neil@brown.name>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
-References: <20251027141230.657732-1-dmantipov@yandex.ru>
- <CAOQ4uxgRBO9bAi-p_L+Svc13+DiLB_Sh8JVqhUBy80mtFiOKrw@mail.gmail.com>
-Content-Language: en-MW
-From: Dmitry Antipov <dmantipov@yandex.ru>
-Autocrypt: addr=dmantipov@yandex.ru; keydata=
- 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
- A/UwwXBRuvydGV0=
-In-Reply-To: <CAOQ4uxgRBO9bAi-p_L+Svc13+DiLB_Sh8JVqhUBy80mtFiOKrw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/27/25 8:07 PM, Amir Goldstein wrote:
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
-> Makes sense, but this patch by Neil is going to remove this helper, so I think
-> there is no use in fixing it now?
-> 
-> https://lore.kernel.org/linux-fsdevel/20251022044545.893630-11-neilb@ownmail.net
+------------------
 
-Sure. If ovl_lookup_temp() is going to be removed, just disregard this.
+From: Jakub Acs <acsjakub@amazon.de>
 
-Dmitry
+commit a7c4bb43bfdc2b9f06ee9d036028ed13a83df42a upstream.
+
+Calling intotify_show_fdinfo() on fd watching an overlayfs inode, while
+the overlayfs is being unmounted, can lead to dereferencing NULL ptr.
+
+This issue was found by syzkaller.
+
+Race Condition Diagram:
+
+Thread 1                           Thread 2
+--------                           --------
+
+generic_shutdown_super()
+ shrink_dcache_for_umount
+  sb->s_root = NULL
+
+                    |
+                    |             vfs_read()
+                    |              inotify_fdinfo()
+                    |               * inode get from mark *
+                    |               show_mark_fhandle(m, inode)
+                    |                exportfs_encode_fid(inode, ..)
+                    |                 ovl_encode_fh(inode, ..)
+                    |                  ovl_check_encode_origin(inode)
+                    |                   * deref i_sb->s_root *
+                    |
+                    |
+                    v
+ fsnotify_sb_delete(sb)
+
+Which then leads to:
+
+[   32.133461] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   32.134438] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+[   32.135032] CPU: 1 UID: 0 PID: 4468 Comm: systemd-coredum Not tainted 6.17.0-rc6 #22 PREEMPT(none)
+
+<snip registers, unreliable trace>
+
+[   32.143353] Call Trace:
+[   32.143732]  ovl_encode_fh+0xd5/0x170
+[   32.144031]  exportfs_encode_inode_fh+0x12f/0x300
+[   32.144425]  show_mark_fhandle+0xbe/0x1f0
+[   32.145805]  inotify_fdinfo+0x226/0x2d0
+[   32.146442]  inotify_show_fdinfo+0x1c5/0x350
+[   32.147168]  seq_show+0x530/0x6f0
+[   32.147449]  seq_read_iter+0x503/0x12a0
+[   32.148419]  seq_read+0x31f/0x410
+[   32.150714]  vfs_read+0x1f0/0x9e0
+[   32.152297]  ksys_read+0x125/0x240
+
+IOW ovl_check_encode_origin derefs inode->i_sb->s_root, after it was set
+to NULL in the unmount path.
+
+Fix it by protecting calling exportfs_encode_fid() from
+show_mark_fhandle() with s_umount lock.
+
+This form of fix was suggested by Amir in [1].
+
+[1]: https://lore.kernel.org/all/CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com/
+
+Fixes: c45beebfde34 ("ovl: support encoding fid from inode with no alias")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: linux-unionfs@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/notify/fdinfo.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+--- a/fs/notify/fdinfo.c
++++ b/fs/notify/fdinfo.c
+@@ -17,6 +17,7 @@
+ #include "fanotify/fanotify.h"
+ #include "fdinfo.h"
+ #include "fsnotify.h"
++#include "../internal.h"
+ 
+ #if defined(CONFIG_PROC_FS)
+ 
+@@ -46,7 +47,12 @@ static void show_mark_fhandle(struct seq
+ 
+ 	size = f->handle_bytes >> 2;
+ 
++	if (!super_trylock_shared(inode->i_sb))
++		return;
++
+ 	ret = exportfs_encode_fid(inode, (struct fid *)f->f_handle, &size);
++	up_read(&inode->i_sb->s_umount);
++
+ 	if ((ret == FILEID_INVALID) || (ret < 0))
+ 		return;
+ 
+
+
 
