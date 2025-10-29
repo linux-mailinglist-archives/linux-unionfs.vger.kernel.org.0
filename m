@@ -1,180 +1,98 @@
-Return-Path: <linux-unionfs+bounces-2297-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-2300-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D9CC10FD6
-	for <lists+linux-unionfs@lfdr.de>; Mon, 27 Oct 2025 20:28:56 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AABFC1A807
+	for <lists+linux-unionfs@lfdr.de>; Wed, 29 Oct 2025 14:06:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 254045072D7
-	for <lists+linux-unionfs@lfdr.de>; Mon, 27 Oct 2025 19:20:26 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 05FF3359275
+	for <lists+linux-unionfs@lfdr.de>; Wed, 29 Oct 2025 13:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6B1328B41;
-	Mon, 27 Oct 2025 19:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CD6343D9C;
+	Wed, 29 Oct 2025 12:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1G4dBAT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ur6Ekr2s"
 X-Original-To: linux-unionfs@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5D11E47CA;
-	Mon, 27 Oct 2025 19:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B79275AFD;
+	Wed, 29 Oct 2025 12:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761592743; cv=none; b=UhdLISIFXO/rdR42/0HsMaxfoRvsa6LKaBxOpFl4o8fRbgFcl3e1ZibqpMjczeZld3XcHr20ErSaPjkcAR1tIeoKvZFhFp2aLjc2RwMdtl1UDIedgoK9iKgp4FtOhwe0JPqqxs9EZTgVTV0pJLHxzepOu8FRkCbecYjhlDu0pLg=
+	t=1761742535; cv=none; b=F/EERNzyoCEgj24pHswBSjvSc24dBhHzsSRfJwLPgf+7lmPRls37TlK6IKK4MYpIm/cbAG1DyzqTE1iefIzT6Pz8fr21swtDYacpTr/WWkrS6CxCcCADt4FqNnrmwnMasVQouc90ofkCVf6AbSteUY74MEO0gGhNP3MWHTEN6DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761592743; c=relaxed/simple;
-	bh=y4pka1w29PC/VgsouxsFLMaNNFTMzKtWMoz4Zr3Jqxo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9nSDq7SIqRfMPAH9sXbAcdiazRCUONl1mURacuEh8pB1ynH22j63Bfn/LeyWzlPH3aPXMSZxAtgUy9gpuncidQPLnJjMp6ahPrAL+SWwBPEtxGW0+WiJSeRi17dydcRGUzBFLI7bWoLFdEhrD3MFqzUxekO450tuRlAED1k54k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1G4dBAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8CAC4CEFD;
-	Mon, 27 Oct 2025 19:19:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761592743;
-	bh=y4pka1w29PC/VgsouxsFLMaNNFTMzKtWMoz4Zr3Jqxo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L1G4dBATTGfJrDh7mJpehGV8jJNGGUJWyuwTouE2nvyrfcUyNwqjjFcAtaMZeh6j2
-	 KF6CwVv/lZGhx17vn0BaoCk0RsIewnTKCi4VMYtIgzKWmwZRZC3I6FYRAJGL+Qn7RJ
-	 kaMA1Y3IG7IvqTJkgBB6kT21Hr7XE1UoaddRa2Vw=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Jakub Acs <acsjakub@amazon.de>,
-	Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Christian Brauner <brauner@kernel.org>,
-	linux-unionfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 79/84] fs/notify: call exportfs_encode_fid with s_umount
-Date: Mon, 27 Oct 2025 19:37:08 +0100
-Message-ID: <20251027183440.915948125@linuxfoundation.org>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183438.817309828@linuxfoundation.org>
-References: <20251027183438.817309828@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1761742535; c=relaxed/simple;
+	bh=0CzE2vJmUarjE3+QMrd+j0mHeIz5jGi5cgcCV2j7Gto=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FkZn9sfhZTevY7ZKAozwJ3nCEW28qJ4zDK0KZq7rHfxW5pjH94st+ANQVaXmvpF1TFBECS/RtFRkmin48jMm5NVlz+KNj/3SJXlJFklvUJYr/G6Ok72BBhKrnXsj1I5f5ik6cfSo+yFL0fUDs0Q9AanY7jFxyT+2TkJBVvlNRsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ur6Ekr2s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA4FC4CEF7;
+	Wed, 29 Oct 2025 12:55:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761742535;
+	bh=0CzE2vJmUarjE3+QMrd+j0mHeIz5jGi5cgcCV2j7Gto=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ur6Ekr2sxpK9kC1PNi5PiLCDzlSRO6FM0+oaVL0Fz8YUh5SxgvQXiBvK9gL9vzX1y
+	 FJHfJrBxfhcUwe5dZlRw6ODhiRJl/EJm2rWbu5QrVsPtIdVs3alSnIez2tiAIWH6/h
+	 ox/2F95UyuvJYNXfLY2SCq3uBNnh9JIw+5PQXbGVm6nDZmKCjPdaqJF4gD6WZNIxfM
+	 +O9W7KhgM63n0OUdWoExlc/9tbhDAscPQvz7uiqUs93Re9GNmMrnQsoYwuL1lG1HkW
+	 z3MMcgndaOWm17okctdlh7QveqspiHKAXE5wiW4Qgxh8V7dEAnzHTEFQv2U98huZ28
+	 lcdMvlRM8I1iw==
+Date: Wed, 29 Oct 2025 13:55:24 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Miklos Szeredi <miklos@szeredi.hu>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Chuck Lever <chuck.lever@oracle.com>, 
+	Alexander Aring <alex.aring@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
+	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>, 
+	Paulo Alcantara <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
+	Bharath SM <bharathsm@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	David Howells <dhowells@redhat.com>, Tyler Hicks <code@tyhicks.com>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+	Amir Goldstein <amir73il@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Steve French <smfrench@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Carlos Maiolino <cem@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, netfs@lists.linux.dev, 
+	ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v3 00/13] vfs: recall-only directory delegations for knfsd
+Message-ID: <20251029-visuell-gluthitze-e321cef788d0@brauner>
+References: <20251021-dir-deleg-ro-v3-0-a08b1cde9f4c@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251021-dir-deleg-ro-v3-0-a08b1cde9f4c@kernel.org>
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+On Tue, Oct 21, 2025 at 11:25:35AM -0400, Jeff Layton wrote:
+> Behold, another version of directory delegations. This version contains
+> support for recall-only delegations. Support for CB_NOTIFY will be
+> forthcoming (once the client-side patches have caught up).
+> 
+> This main differences in this version are bugfixes, but the last patch
+> adds a more formal API for userland to request a delegation. That
+> support is optional. We can drop it and the rest of the series should be
+> fine.
+> 
+> My main interest in making delegations available to userland is to allow
+> testing this support without nfsd. I have an xfstest ready to submit for
+> this if that support looks acceptable. If it is, then I'll also plan to
+> submit an update for fcntl(2).
+> 
+> Christian, Chuck mentioned he was fine with you merging the nfsd bits
+> too, if you're willing to take the whole pile.
 
-------------------
-
-From: Jakub Acs <acsjakub@amazon.de>
-
-[ Upstream commit a7c4bb43bfdc2b9f06ee9d036028ed13a83df42a ]
-
-Calling intotify_show_fdinfo() on fd watching an overlayfs inode, while
-the overlayfs is being unmounted, can lead to dereferencing NULL ptr.
-
-This issue was found by syzkaller.
-
-Race Condition Diagram:
-
-Thread 1                           Thread 2
---------                           --------
-
-generic_shutdown_super()
- shrink_dcache_for_umount
-  sb->s_root = NULL
-
-                    |
-                    |             vfs_read()
-                    |              inotify_fdinfo()
-                    |               * inode get from mark *
-                    |               show_mark_fhandle(m, inode)
-                    |                exportfs_encode_fid(inode, ..)
-                    |                 ovl_encode_fh(inode, ..)
-                    |                  ovl_check_encode_origin(inode)
-                    |                   * deref i_sb->s_root *
-                    |
-                    |
-                    v
- fsnotify_sb_delete(sb)
-
-Which then leads to:
-
-[   32.133461] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-[   32.134438] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-[   32.135032] CPU: 1 UID: 0 PID: 4468 Comm: systemd-coredum Not tainted 6.17.0-rc6 #22 PREEMPT(none)
-
-<snip registers, unreliable trace>
-
-[   32.143353] Call Trace:
-[   32.143732]  ovl_encode_fh+0xd5/0x170
-[   32.144031]  exportfs_encode_inode_fh+0x12f/0x300
-[   32.144425]  show_mark_fhandle+0xbe/0x1f0
-[   32.145805]  inotify_fdinfo+0x226/0x2d0
-[   32.146442]  inotify_show_fdinfo+0x1c5/0x350
-[   32.147168]  seq_show+0x530/0x6f0
-[   32.147449]  seq_read_iter+0x503/0x12a0
-[   32.148419]  seq_read+0x31f/0x410
-[   32.150714]  vfs_read+0x1f0/0x9e0
-[   32.152297]  ksys_read+0x125/0x240
-
-IOW ovl_check_encode_origin derefs inode->i_sb->s_root, after it was set
-to NULL in the unmount path.
-
-Fix it by protecting calling exportfs_encode_fid() from
-show_mark_fhandle() with s_umount lock.
-
-This form of fix was suggested by Amir in [1].
-
-[1]: https://lore.kernel.org/all/CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com/
-
-Fixes: c45beebfde34 ("ovl: support encoding fid from inode with no alias")
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Amir Goldstein <amir73il@gmail.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: linux-unionfs@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/notify/fdinfo.c |    6 ++++++
- 1 file changed, 6 insertions(+)
-
---- a/fs/notify/fdinfo.c
-+++ b/fs/notify/fdinfo.c
-@@ -17,6 +17,7 @@
- #include "fanotify/fanotify.h"
- #include "fdinfo.h"
- #include "fsnotify.h"
-+#include "../internal.h"
- 
- #if defined(CONFIG_PROC_FS)
- 
-@@ -50,7 +51,12 @@ static void show_mark_fhandle(struct seq
- 	f.handle.handle_bytes = sizeof(f.pad);
- 	size = f.handle.handle_bytes >> 2;
- 
-+	if (!super_trylock_shared(inode->i_sb))
-+		return;
-+
- 	ret = exportfs_encode_fid(inode, (struct fid *)f.handle.f_handle, &size);
-+	up_read(&inode->i_sb->s_umount);
-+
- 	if ((ret == FILEID_INVALID) || (ret < 0))
- 		return;
- 
-
-
+Absolutely!
 
