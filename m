@@ -1,49 +1,50 @@
-Return-Path: <linux-unionfs+bounces-2369-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-2360-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA76C2BE4F
-	for <lists+linux-unionfs@lfdr.de>; Mon, 03 Nov 2025 14:00:06 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4564C2BF1A
+	for <lists+linux-unionfs@lfdr.de>; Mon, 03 Nov 2025 14:06:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E83E034410B
-	for <lists+linux-unionfs@lfdr.de>; Mon,  3 Nov 2025 13:00:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B7AC64F63D7
+	for <lists+linux-unionfs@lfdr.de>; Mon,  3 Nov 2025 12:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EB631A570;
-	Mon,  3 Nov 2025 12:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79C2313E0D;
+	Mon,  3 Nov 2025 12:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YwfojEvQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K005a3dC"
 X-Original-To: linux-unionfs@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C85431A564;
-	Mon,  3 Nov 2025 12:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AE6313E08;
+	Mon,  3 Nov 2025 12:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762174429; cv=none; b=eqDXfUe4BiZA/YUOUoXB+H2vGhTp71lghSuo2mEsAI7b1BH6uOo4Vj1XVzLmwCRhU6YA6Cn5vzZFaS/B9Jpl61Rg+twmp1iR5EaQQHzk4tpLEJ+16OAjwRhZoMrJ47sGLElUIELg+FWsKsIj/5+0RhB0LH5yOPuzxqS+OTiohGo=
+	t=1762174398; cv=none; b=a5E4mIYPDqKoaeh7iMi8lR3JR2HlDNpbfo1ys5afYBzykR9tfF+Uw9/sNO4imJZzb2BRfp2h9L9beP2ktRdDwLbMHzuSbPHrGv8GBloCjOBzL8OCkMxomvMxw4KD5X/ehd2GvDCtDvdDlJM3GkGN6eUzRPALcj9EYtYOcFATEYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762174429; c=relaxed/simple;
-	bh=5vnEsFLmQTNGsjzc9nlp6oQVoid1mJ5o3l9cHdo2eoU=;
+	s=arc-20240116; t=1762174398; c=relaxed/simple;
+	bh=zBQyD4C+LOu4tUZSnzQKyrp9sE+YBQAdVnnbBh8HRrY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZSo9f8HP68sQLgUpRROUKPuubLujBpJeoYtnjwmEeR03D0nP+1QAAegkFsyhrEp5Wziu6qmBcZOS6PW9NN2x72gO9O1ppGdpC4EwfDT6UNAsj9IKhzEKPNMmwLwyCcywsFKZ3VwWRedwsB1qlhu5eV71oCzVQU8PyWX0orpMphg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YwfojEvQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98ECC4CEE7;
-	Mon,  3 Nov 2025 12:53:45 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=fZTmWH8siVnMBL2xE6F+ZzUoX/UVKF0LH06ee7rS8yWZ230jbfJ1HIZqtnKfoWmN8lf6L0Xr51wzjnquMICoSJ9s8Qz8tUh+A8UUaSmNPqIJj3vSg1rTKPaYprySNCHSc4lp4VfO64H7lTYJP5oOr8XuyDueCGt1Oz2DjM0lEv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K005a3dC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15CDDC19421;
+	Mon,  3 Nov 2025 12:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762174428;
-	bh=5vnEsFLmQTNGsjzc9nlp6oQVoid1mJ5o3l9cHdo2eoU=;
+	s=k20201202; t=1762174398;
+	bh=zBQyD4C+LOu4tUZSnzQKyrp9sE+YBQAdVnnbBh8HRrY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=YwfojEvQFoTNEWx92dDbQY9YwM2gMVZbl+HVm2qYIb4bEdRAKAFfXcjEUTdDW9tfA
-	 7qXTMn/4SphtVmKx7owviI2gqf+g28D6onZp70Dxl2KaYswfcWV98lpmJV4MOBcgCj
-	 Wag9u0li54jMktkldlTwPf3QPOYjN0yCg0ufsprjCOKUMsB4NJR9vtyx1urhXyMK/y
-	 VbMFkgGAAtJPuB3kj+igWAVCsbRmSvWIaUIHNtrmv9DaM6ZAgfcKN0eMi4AwG+ZWLI
-	 ooxWF6PEQPSNB5dQlfTSkYL/QkAO3JLSOnbPwqh+V5VUYE80VrSbGTba3GyIiELZIz
-	 I2Ur7jxHtbysQ==
+	b=K005a3dClFRlVkCQx2mxrAew4WgX2j9tDcI9PhFNb8lWXC9k/cvqwfqktV33YBdES
+	 OxgO4iGpp/lvE5GrK76eKbhZtF1gUdp0ovjkPMYT88uHOwBUM/aHMVcR+ga61PXb6t
+	 5xfFxD8/4HhKiN7z1tbKnvBxo3MZ+jd2v4dD9G9JiPJ00Fk5tAZFslMghlw4XJQR+h
+	 g52j6cxGu3WVUlMbHekYZW3VhTcVSn3JOhd57ijB0g/u19Or5I8FX6SaJ1cyRcPK4r
+	 vjwrpr01hEthr9OI/FVettQBV5PrZVgFu2FbC9lqnfrLBHr0S4NBq4jr1jz0FzPJKj
+	 FRBzYZJElwUJw==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Mon, 03 Nov 2025 07:52:45 -0500
-Subject: [PATCH v4 17/17] vfs: expose delegation support to userland
+Date: Mon, 03 Nov 2025 07:52:36 -0500
+Subject: [PATCH v4 08/17] vfs: break parent dir delegations in open(...,
+ O_CREAT) codepath
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
@@ -52,7 +53,7 @@ List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251103-dir-deleg-ro-v4-17-961b67adee89@kernel.org>
+Message-Id: <20251103-dir-deleg-ro-v4-8-961b67adee89@kernel.org>
 References: <20251103-dir-deleg-ro-v4-0-961b67adee89@kernel.org>
 In-Reply-To: <20251103-dir-deleg-ro-v4-0-961b67adee89@kernel.org>
 To: Miklos Szeredi <miklos@szeredi.hu>, 
@@ -83,212 +84,107 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-xfs@vger.kernel.org, netdev@vger.kernel.org, 
  Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6381; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=5vnEsFLmQTNGsjzc9nlp6oQVoid1mJ5o3l9cHdo2eoU=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpCKWfL5rEDvoecb6h2EtHSx6vtxVMPU49VDa09
- uywOyfKWUeJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaQilnwAKCRAADmhBGVaC
- FT1vEADNkNWiGMlbqP7jUf8X5h6MV4sgqioLwoiaAFjuRU5X4KuPCYmeDsJwj9wB/gZ4ja/oL3g
- lr2Frya3Vi29F7gQOaEIk57edySLRufmHXUcdYbA4OEPTczEiLh/gX+YaFxnddpBLYXjSUPUBCz
- GAcnAXnCfnM6S67Pld55yVeOH+A3hSTo3tUHOpZ2WxgalhLWaNaVgrzWKkF05O1fj91Ca69FeLx
- 8Nk1SXdCZsF4SjEhBkUVqniNL97JKW+uL9fAUUt2n61XHohfJpZL4SSb96u+PghRlcOithDDZNW
- Yz3H+qOm2+UyrSKq/23CsCJpmPmBQJMWC3hQHgDfPKk/DmUstkYEphjo6MHP5JN/xh0xy+Fjc46
- vkcKFu0oJjyk4Cgg6N2VaSvnFlKF1CGhjTVwiyCf9S+r/NbfjkXEfTEfcuoMHVqA54X3HaL8Vei
- hVNqXr1t1/TWUJHoMFmSZdxgfdTmZ8/b1C5rnNNniSFnQcRktterb61H46ibbSoskjzhVpa5Rg6
- Npj3xwO1qGDqxlAoBqrzc4tkJcF2Z51uP8MuxufprmSzvr+n21c5g2bjvHEqoJ4BuKcsTfQMu8t
- 285nYgJNzuxJzNtQbtllD1d/nd6IjJOA/4kNVIDBwbHOiqmWfk22Ekl+QIh9dbCU51bkH5cS1kk
- CX67UzGREA7+Yug==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3106; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=zBQyD4C+LOu4tUZSnzQKyrp9sE+YBQAdVnnbBh8HRrY=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpCKWdF28PWpNhmabGcgJBnMa4PUb64CV+jturl
+ YtCe62Z/GqJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaQilnQAKCRAADmhBGVaC
+ FUm3EADDrhqGTPH46E1VAb1qeQ2BvFl40DH/jHgjbwnbyGm7mAbh6WQiGsfUbc2ETePYVvd9mY5
+ sUU9YiU/+Y/dLxL/2zppKnYcs48WXE2XYWzBRNgvhdRSX7WdlFRGHFo8bmILDNiRI5J30CmhGh+
+ IY3p2mFxCZjHqEgnDBrPikwpjjZQeVnclyrIYN12kVBbnWYNIafHYKXlV4ZP6ghaOn1Q/6tbZ8G
+ 0AamJGLaUmPTeY+ewLzGrPayeuUFgBJYTSuB+XgmswnqIMV09ucf0Y3ef2ull46egfNqf2nDtfL
+ ilx7qi74O85CfcxxsdqIjiSgjXfZEUaRo3hfAcTD8pB5kYnrEePN9evuDxO+B3AZHrMPAZf7Y3t
+ vGQ5ydRq69FNnJcJbEqTg05lQ1OPvvrZXEAncHbRHQBRO2yUNQgHQ8DnkmEW1LITMK+H3AnRADC
+ aXoVABskPWA+J2zbhf4HxGjmSOCvrZijlZrSSXyWYMnhpdFxMNVQKTawfjnnhJHTva1e55bPZDV
+ k714QBM6/D22IgM7GXURFpGrZhsINgAZhyq14kocIgWYHppKsJ4pcHBqFTgdiV/bUzMtEm+mdgh
+ KsW4dZ7ibvGLfl66fe0aG/lFHiMyAmT7YmavLic3KVJtf0psICdkmL7fq76T6VFm252Xm2lqdMD
+ FtQdIBCPgc/oLww==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-Now that support for recallable directory delegations is available,
-expose this functionality to userland with new F_SETDELEG and F_GETDELEG
-commands for fcntl().
+In order to add directory delegation support, we need to break
+delegations on the parent whenever there is going to be a change in the
+directory.
 
-Note that this also allows userland to request a FL_DELEG type lease on
-files too. Userland applications that do will get signalled when there
-are metadata changes in addition to just data changes (which is a
-limitation of FL_LEASE leases).
+Add a delegated_inode parameter to lookup_open and have it break the
+delegation. Then, open_last_lookups can wait for the delegation break
+and retry the call to lookup_open once it's done.
 
-These commands accept a new "struct delegation" argument that contains a
-flags field for future expansion.
-
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: NeilBrown <neil@brown.name>
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/fcntl.c                 | 14 ++++++++++++++
- fs/locks.c                 | 42 +++++++++++++++++++++++++++++++++++++-----
- include/linux/filelock.h   | 12 ++++++++++++
- include/uapi/linux/fcntl.h | 10 ++++++++++
- 4 files changed, 73 insertions(+), 5 deletions(-)
+ fs/namei.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/fs/fcntl.c b/fs/fcntl.c
-index 72f8433d9109889eecef56b32d20a85b4e12ea44..8d57a6e34076d68228b6d8d9bb381f78a751b151 100644
---- a/fs/fcntl.c
-+++ b/fs/fcntl.c
-@@ -445,6 +445,7 @@ static long do_fcntl(int fd, unsigned int cmd, unsigned long arg,
- 		struct file *filp)
- {
- 	void __user *argp = (void __user *)arg;
-+	struct delegation deleg;
- 	int argi = (int)arg;
- 	struct flock flock;
- 	long err = -EINVAL;
-@@ -550,6 +551,19 @@ static long do_fcntl(int fd, unsigned int cmd, unsigned long arg,
- 	case F_SET_RW_HINT:
- 		err = fcntl_set_rw_hint(filp, arg);
- 		break;
-+	case F_GETDELEG:
-+		if (copy_from_user(&deleg, argp, sizeof(deleg)))
-+			return -EFAULT;
-+		fcntl_getdeleg(filp, &deleg);
-+		if (copy_to_user(argp, &deleg, sizeof(deleg)))
-+			return -EFAULT;
-+		err = 0;
-+		break;
-+	case F_SETDELEG:
-+		if (copy_from_user(&deleg, argp, sizeof(deleg)))
-+			return -EFAULT;
-+		err = fcntl_setdeleg(fd, filp, &deleg);
-+		break;
- 	default:
- 		break;
- 	}
-diff --git a/fs/locks.c b/fs/locks.c
-index dd290a87f58eb5d522f03fa99d612fbad84dacf3..1e29aecf79b8df66a6c67ca5f59cec40a376b9bc 100644
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -1703,7 +1703,7 @@ EXPORT_SYMBOL(lease_get_mtime);
-  *	XXX: sfr & willy disagree over whether F_INPROGRESS
-  *	should be returned to userspace.
+diff --git a/fs/namei.c b/fs/namei.c
+index 9e0393a92091ac522b5324fcdad8c5592a948e8d..f439429bdfa271ccc64c937771ef4175597feb53 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -3697,7 +3697,7 @@ static struct dentry *atomic_open(struct nameidata *nd, struct dentry *dentry,
   */
--int fcntl_getlease(struct file *filp)
-+static int __fcntl_getlease(struct file *filp, unsigned int flavor)
+ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
+ 				  const struct open_flags *op,
+-				  bool got_write)
++				  bool got_write, struct delegated_inode *delegated_inode)
  {
- 	struct file_lease *fl;
- 	struct inode *inode = file_inode(filp);
-@@ -1719,7 +1719,8 @@ int fcntl_getlease(struct file *filp)
- 		list_for_each_entry(fl, &ctx->flc_lease, c.flc_list) {
- 			if (fl->c.flc_file != filp)
- 				continue;
--			type = target_leasetype(fl);
-+			if (fl->c.flc_flags & flavor)
-+				type = target_leasetype(fl);
- 			break;
+ 	struct mnt_idmap *idmap;
+ 	struct dentry *dir = nd->path.dentry;
+@@ -3786,6 +3786,11 @@ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
+ 
+ 	/* Negative dentry, just create the file */
+ 	if (!dentry->d_inode && (open_flag & O_CREAT)) {
++		/* but break the directory lease first! */
++		error = try_break_deleg(dir_inode, delegated_inode);
++		if (error)
++			goto out_dput;
++
+ 		file->f_mode |= FMODE_CREATED;
+ 		audit_inode_child(dir_inode, dentry, AUDIT_TYPE_CHILD_CREATE);
+ 		if (!dir_inode->i_op->create) {
+@@ -3848,6 +3853,7 @@ static struct dentry *lookup_fast_for_open(struct nameidata *nd, int open_flag)
+ static const char *open_last_lookups(struct nameidata *nd,
+ 		   struct file *file, const struct open_flags *op)
+ {
++	struct delegated_inode delegated_inode = { };
+ 	struct dentry *dir = nd->path.dentry;
+ 	int open_flag = op->open_flag;
+ 	bool got_write = false;
+@@ -3879,7 +3885,7 @@ static const char *open_last_lookups(struct nameidata *nd,
+ 				return ERR_PTR(-ECHILD);
  		}
- 		spin_unlock(&ctx->flc_lock);
-@@ -1730,6 +1731,16 @@ int fcntl_getlease(struct file *filp)
- 	return type;
- }
+ 	}
+-
++retry:
+ 	if (open_flag & (O_CREAT | O_TRUNC | O_WRONLY | O_RDWR)) {
+ 		got_write = !mnt_want_write(nd->path.mnt);
+ 		/*
+@@ -3892,7 +3898,7 @@ static const char *open_last_lookups(struct nameidata *nd,
+ 		inode_lock(dir->d_inode);
+ 	else
+ 		inode_lock_shared(dir->d_inode);
+-	dentry = lookup_open(nd, file, op, got_write);
++	dentry = lookup_open(nd, file, op, got_write, &delegated_inode);
+ 	if (!IS_ERR(dentry)) {
+ 		if (file->f_mode & FMODE_CREATED)
+ 			fsnotify_create(dir->d_inode, dentry);
+@@ -3907,8 +3913,16 @@ static const char *open_last_lookups(struct nameidata *nd,
+ 	if (got_write)
+ 		mnt_drop_write(nd->path.mnt);
  
-+int fcntl_getlease(struct file *filp)
-+{
-+	return __fcntl_getlease(filp, FL_LEASE);
-+}
+-	if (IS_ERR(dentry))
++	if (IS_ERR(dentry)) {
++		if (is_delegated(&delegated_inode)) {
++			int error = break_deleg_wait(&delegated_inode);
 +
-+void fcntl_getdeleg(struct file *filp, struct delegation *deleg)
-+{
-+	deleg->d_type = __fcntl_getlease(filp, FL_DELEG);
-+}
-+
- /**
-  * check_conflicting_open - see if the given file points to an inode that has
-  *			    an existing open that would conflict with the
-@@ -2039,13 +2050,13 @@ vfs_setlease(struct file *filp, int arg, struct file_lease **lease, void **priv)
- }
- EXPORT_SYMBOL_GPL(vfs_setlease);
++			if (!error)
++				goto retry;
++			return ERR_PTR(error);
++		}
+ 		return ERR_CAST(dentry);
++	}
  
--static int do_fcntl_add_lease(unsigned int fd, struct file *filp, int arg)
-+static int do_fcntl_add_lease(unsigned int fd, struct file *filp, unsigned int flavor, int arg)
- {
- 	struct file_lease *fl;
- 	struct fasync_struct *new;
- 	int error;
- 
--	fl = lease_alloc(filp, FL_LEASE, arg);
-+	fl = lease_alloc(filp, flavor, arg);
- 	if (IS_ERR(fl))
- 		return PTR_ERR(fl);
- 
-@@ -2081,7 +2092,28 @@ int fcntl_setlease(unsigned int fd, struct file *filp, int arg)
- 
- 	if (arg == F_UNLCK)
- 		return vfs_setlease(filp, F_UNLCK, NULL, (void **)&filp);
--	return do_fcntl_add_lease(fd, filp, arg);
-+	return do_fcntl_add_lease(fd, filp, FL_LEASE, arg);
-+}
-+
-+/**
-+ *	fcntl_setdeleg	-	sets a delegation on an open file
-+ *	@fd: open file descriptor
-+ *	@filp: file pointer
-+ *	@deleg: delegation request from userland
-+ *
-+ *	Call this fcntl to establish a delegation on the file.
-+ *	Note that you also need to call %F_SETSIG to
-+ *	receive a signal when the lease is broken.
-+ */
-+int fcntl_setdeleg(unsigned int fd, struct file *filp, struct delegation *deleg)
-+{
-+	/* For now, no flags are supported */
-+	if (deleg->d_flags != 0)
-+		return -EINVAL;
-+
-+	if (deleg->d_type == F_UNLCK)
-+		return vfs_setlease(filp, F_UNLCK, NULL, (void **)&filp);
-+	return do_fcntl_add_lease(fd, filp, FL_DELEG, deleg->d_type);
- }
- 
- /**
-diff --git a/include/linux/filelock.h b/include/linux/filelock.h
-index 208d108df2d73a9df65e5dc9968d074af385f881..4384c6f61fad8f21d15974fac1d0f77747155f0f 100644
---- a/include/linux/filelock.h
-+++ b/include/linux/filelock.h
-@@ -159,6 +159,8 @@ int fcntl_setlk64(unsigned int, struct file *, unsigned int,
- 
- int fcntl_setlease(unsigned int fd, struct file *filp, int arg);
- int fcntl_getlease(struct file *filp);
-+int fcntl_setdeleg(unsigned int fd, struct file *filp, struct delegation *deleg);
-+void fcntl_getdeleg(struct file *filp, struct delegation *deleg);
- 
- static inline bool lock_is_unlock(struct file_lock *fl)
- {
-@@ -278,6 +280,16 @@ static inline int fcntl_getlease(struct file *filp)
- 	return F_UNLCK;
- }
- 
-+static inline int fcntl_setdeleg(unsigned int fd, struct file *filp, struct delegation *deleg)
-+{
-+	return -EINVAL;
-+}
-+
-+static inline int fcntl_getdeleg(struct file *filp, struct delegation *deleg)
-+{
-+	return F_UNLCK;
-+}
-+
- static inline bool lock_is_unlock(struct file_lock *fl)
- {
- 	return false;
-diff --git a/include/uapi/linux/fcntl.h b/include/uapi/linux/fcntl.h
-index 3741ea1b73d8500061567b6590ccf5fb4c6770f0..aae88f4b5c05205b2b28ae46b21bca9817197e04 100644
---- a/include/uapi/linux/fcntl.h
-+++ b/include/uapi/linux/fcntl.h
-@@ -79,6 +79,16 @@
-  */
- #define RWF_WRITE_LIFE_NOT_SET	RWH_WRITE_LIFE_NOT_SET
- 
-+/* Set/Get delegations */
-+#define F_GETDELEG		(F_LINUX_SPECIFIC_BASE + 15)
-+#define F_SETDELEG		(F_LINUX_SPECIFIC_BASE + 16)
-+
-+/* Argument structure for F_GETDELEG and F_SETDELEG */
-+struct delegation {
-+	short		d_type;		/* F_RDLCK, F_WRLCK, F_UNLCK */
-+	unsigned int	d_flags;
-+};
-+
- /*
-  * Types of directory notifications that may be requested.
-  */
+ 	if (file->f_mode & (FMODE_OPENED | FMODE_CREATED)) {
+ 		dput(nd->path.dentry);
 
 -- 
 2.51.1
