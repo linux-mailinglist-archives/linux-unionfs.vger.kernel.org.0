@@ -1,49 +1,49 @@
-Return-Path: <linux-unionfs+bounces-2608-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-2610-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E561C5901C
-	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 18:08:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3EFC58FB0
+	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 18:05:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C75F64280C2
-	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 16:47:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B70824A026A
+	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 16:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E4035A959;
-	Thu, 13 Nov 2025 16:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D0736A013;
+	Thu, 13 Nov 2025 16:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rO6heA4Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZNcEkNpq"
 X-Original-To: linux-unionfs@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2932ED151;
-	Thu, 13 Nov 2025 16:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A70035A958;
+	Thu, 13 Nov 2025 16:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763051921; cv=none; b=DjX0xB+xb2eb9BpcD5VJ0VWe0VhE8h64QY8JjUktigSoubG9BPtfOHUf1MhzxQCG63qZGmIsKCxlprL0Y9l1Mkf9cI1afKR3DaTq6ZLntFKfY/3czqFd4643oBSIdRpd3FR7axtmVwWFGs9TIHQHRLTVvdNCNM1eDlGmrP/+Ubs=
+	t=1763051925; cv=none; b=WCgmiuICjd23TAZuQtrOhe+1b1pYvr8kjmAulmGZjeQTlxI2uVZnzml2UDMUb0PCEUKoRAtGc38u33FiokVwq+M5/UG1LmiqWAQi2xza0Jl+tHVH8ionYvOOXAZCu+OXYAPfybN/uhY+UHSAN7PHE4cHp4pXgfDWf3PzM6QjTPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763051921; c=relaxed/simple;
-	bh=8IgLSpd6HRv75++STpc1IzHNcgaCMDksThvNQVW8RDw=;
+	s=arc-20240116; t=1763051925; c=relaxed/simple;
+	bh=IywD2BmQKvbf/BcUntmmS39gkpy8Qz7uVjWzUS+jG9o=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Cv6yhKn2VqwcPMGrKDsn4F22jxsRoKV8OEyEC9bmk4hGL7LxgtrwSMGfOf/G25Dcx76s8+PkbvtKg1bwQOCLLThpzoxh+tN5XhxC6OB5PioxeD+t2sw5Gdq6pOPwOEy/CwCMLlquZiTQO1bB6xNPBucS2U8QI+K61qkhkWzxq+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rO6heA4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E89C4CEF7;
-	Thu, 13 Nov 2025 16:38:39 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=RVE+fswAVmkoojCJy4o8rpQF9qJcBNtXOE0A4+7ZBTWRoGBL7QqDN7xX+MPjwtXygpzxqxuPLSTIC8PFrVqDscrMJiwKQOvapN4z4MiOEP4bapGksuYypfdr3A7/VFlYhasp5YkyILTNdh4mDxfC8783HKg4+4/iFEx8Yx2O5hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZNcEkNpq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5AAAC4CEF7;
+	Thu, 13 Nov 2025 16:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763051921;
-	bh=8IgLSpd6HRv75++STpc1IzHNcgaCMDksThvNQVW8RDw=;
+	s=k20201202; t=1763051925;
+	bh=IywD2BmQKvbf/BcUntmmS39gkpy8Qz7uVjWzUS+jG9o=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=rO6heA4QlnHW7Mcb0YvZKkQ5fEsw7hnMnGPDFh63ZbBMi/BcqdiEoVDbd6Wl4kf2u
-	 ylbuAhyhT+gTRvOtQ/5NySx2WGWxEttk4EUOrD+v/8+bcwpsvXFmQJOkp4VkU4GoDM
-	 E5zeWqG8SKdAb7p0iuclnzyzPPmcF4EJj6AQxCo1rEMkD1LSV1O2I4mx1FrARzj5AA
-	 wNUTvrAeeUbS6v167uVIa1QW/gGvTt0UEPfsHMdfVNGJCFU9rB2HChkGgiH2Syqjz3
-	 JdMGe6Bzhx+6upLxnUVUBkPfj5XUC+3Ue7eFal5kuW3C4c49TTGGw5tw3rKsP0Oxa/
-	 5PLqk30oVFKqg==
+	b=ZNcEkNpqUv5K1zmtwn219mm+IudUiZH0oZxkLlI/uIiprWLIe+smepfN9cTczI1RH
+	 3CZbcrgJxZk2eio2b2smtT4PqKkGjfGoKp+YTKoNCQy/zFCfT8xEEI3qQQYm+A7trr
+	 YOkTxaUoeAY4m1K+GUhCMorKbKj8RuUuvAqoL1SExiQj1h3enopzw8DLTt6r30+aDI
+	 JYwOEVBFxOjACZ23cAcPQnUSRcgke+IDF5IOPbwtfsHE00+0FWtOa2LPbv11XJ+pb0
+	 sBhF9sim82BYgf2ZiX+eim0f4yonxwyo1qhYqWWR46HnL7kGInfXHd213SeOBxi2oc
+	 xU/vi3JWPMwrA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 13 Nov 2025 17:37:44 +0100
-Subject: [PATCH v2 39/42] ovl: refactor ovl_fill_super()
+Date: Thu, 13 Nov 2025 17:37:46 +0100
+Subject: [PATCH v2 41/42] ovl: remove ovl_revert_creds()
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251113-work-ovl-cred-guard-v2-39-c08940095e90@kernel.org>
+Message-Id: <20251113-work-ovl-cred-guard-v2-41-c08940095e90@kernel.org>
 References: <20251113-work-ovl-cred-guard-v2-0-c08940095e90@kernel.org>
 In-Reply-To: <20251113-work-ovl-cred-guard-v2-0-c08940095e90@kernel.org>
 To: Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>
@@ -60,200 +60,52 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  Christian Brauner <brauner@kernel.org>
 X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5060; i=brauner@kernel.org;
- h=from:subject:message-id; bh=8IgLSpd6HRv75++STpc1IzHNcgaCMDksThvNQVW8RDw=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSKcbq/8Jn4oc8vsZYnnPtCZ/jbSZr/orKXx3LJvDd/X
- HTH7Xl2RykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwERytzEyXNjVvOD3s7mxD8pk
- 7hsuYSqbmxW7R+ugzlbBr3emXlr1X4fhf/WU5eFCR2oMxY2UPvvJS1dv+sLwOyshVDhs7XT3t4H
- 72QE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1337; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=IywD2BmQKvbf/BcUntmmS39gkpy8Qz7uVjWzUS+jG9o=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSKcXpYGxesnN7uu3T209lTvi2Z86ap+/KdxO08mR7LV
+ 2esjzC92FHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCR/72MDBf//f7umS66REzo
+ 6NOGhHY1lcruDfxmcnxOhg0LmXaFGTMyHM04eMDqm9fnXvmH4hPWp2jsPpuz863x3OTFPVEpm/W
+ 2sgMA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Split the core into a separate helper in preparation of converting the
-caller to the scoped ovl cred guard.
+The wrapper isn't needed anymore. Overlayfs completely relies on its
+cleanup guard.
 
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 ---
- fs/overlayfs/super.c | 91 +++++++++++++++++++++++++++-------------------------
- 1 file changed, 48 insertions(+), 43 deletions(-)
+ fs/overlayfs/overlayfs.h | 1 -
+ fs/overlayfs/util.c      | 5 -----
+ 2 files changed, 6 deletions(-)
 
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index 43ee4c7296a7..e3781fccaef8 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -1369,53 +1369,35 @@ static void ovl_set_d_op(struct super_block *sb)
- 	set_default_d_op(sb, &ovl_dentry_operations);
+diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+index eeace590ba57..41a3c0e9595b 100644
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -437,7 +437,6 @@ int ovl_want_write(struct dentry *dentry);
+ void ovl_drop_write(struct dentry *dentry);
+ struct dentry *ovl_workdir(struct dentry *dentry);
+ const struct cred *ovl_override_creds(struct super_block *sb);
+-void ovl_revert_creds(const struct cred *old_cred);
+ 
+ EXTEND_CLASS(override_creds, _ovl, ovl_override_creds(sb), struct super_block *sb)
+ 
+diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
+index e2f2e0d17f0b..dc521f53d7a3 100644
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -69,11 +69,6 @@ const struct cred *ovl_override_creds(struct super_block *sb)
+ 	return override_creds(ofs->creator_cred);
  }
  
--int ovl_fill_super(struct super_block *sb, struct fs_context *fc)
-+static int do_ovl_fill_super(struct fs_context *fc, struct super_block *sb)
- {
- 	struct ovl_fs *ofs = sb->s_fs_info;
-+	struct cred *creator_cred = (struct cred *)ofs->creator_cred;
- 	struct ovl_fs_context *ctx = fc->fs_private;
--	const struct cred *old_cred = NULL;
--	struct dentry *root_dentry;
--	struct ovl_entry *oe;
- 	struct ovl_layer *layers;
--	struct cred *cred;
-+	struct ovl_entry *oe = NULL;
- 	int err;
- 
--	err = -EIO;
--	if (WARN_ON(fc->user_ns != current_user_ns()))
--		goto out_err;
+-void ovl_revert_creds(const struct cred *old_cred)
+-{
+-	revert_creds(old_cred);
+-}
 -
--	ovl_set_d_op(sb);
--
--	err = -ENOMEM;
--	if (!ofs->creator_cred)
--		ofs->creator_cred = cred = prepare_creds();
--	else
--		cred = (struct cred *)ofs->creator_cred;
--	if (!cred)
--		goto out_err;
--
--	old_cred = ovl_override_creds(sb);
--
- 	err = ovl_fs_params_verify(ctx, &ofs->config);
- 	if (err)
--		goto out_err;
-+		return err;
- 
- 	err = -EINVAL;
- 	if (ctx->nr == 0) {
- 		if (!(fc->sb_flags & SB_SILENT))
- 			pr_err("missing 'lowerdir'\n");
--		goto out_err;
-+		return err;
- 	}
- 
- 	err = -ENOMEM;
- 	layers = kcalloc(ctx->nr + 1, sizeof(struct ovl_layer), GFP_KERNEL);
- 	if (!layers)
--		goto out_err;
-+		return err;
- 
- 	ofs->config.lowerdirs = kcalloc(ctx->nr + 1, sizeof(char *), GFP_KERNEL);
- 	if (!ofs->config.lowerdirs) {
- 		kfree(layers);
--		goto out_err;
-+		return err;
- 	}
- 	ofs->layers = layers;
- 	/*
-@@ -1448,12 +1430,12 @@ int ovl_fill_super(struct super_block *sb, struct fs_context *fc)
- 		err = -EINVAL;
- 		if (!ofs->config.workdir) {
- 			pr_err("missing 'workdir'\n");
--			goto out_err;
-+			return err;
- 		}
- 
- 		err = ovl_get_upper(sb, ofs, &layers[0], &ctx->upper);
- 		if (err)
--			goto out_err;
-+			return err;
- 
- 		upper_sb = ovl_upper_mnt(ofs)->mnt_sb;
- 		if (!ovl_should_sync(ofs)) {
-@@ -1461,13 +1443,13 @@ int ovl_fill_super(struct super_block *sb, struct fs_context *fc)
- 			if (errseq_check(&upper_sb->s_wb_err, ofs->errseq)) {
- 				err = -EIO;
- 				pr_err("Cannot mount volatile when upperdir has an unseen error. Sync upperdir fs to clear state.\n");
--				goto out_err;
-+				return err;
- 			}
- 		}
- 
- 		err = ovl_get_workdir(sb, ofs, &ctx->upper, &ctx->work);
- 		if (err)
--			goto out_err;
-+			return err;
- 
- 		if (!ofs->workdir)
- 			sb->s_flags |= SB_RDONLY;
-@@ -1478,7 +1460,7 @@ int ovl_fill_super(struct super_block *sb, struct fs_context *fc)
- 	oe = ovl_get_lowerstack(sb, ctx, ofs, layers);
- 	err = PTR_ERR(oe);
- 	if (IS_ERR(oe))
--		goto out_err;
-+		return err;
- 
- 	/* If the upper fs is nonexistent, we mark overlayfs r/o too */
- 	if (!ovl_upper_mnt(ofs))
-@@ -1531,7 +1513,7 @@ int ovl_fill_super(struct super_block *sb, struct fs_context *fc)
- 		sb->s_export_op = &ovl_export_fid_operations;
- 
- 	/* Never override disk quota limits or use reserved space */
--	cap_lower(cred->cap_effective, CAP_SYS_RESOURCE);
-+	cap_lower(creator_cred->cap_effective, CAP_SYS_RESOURCE);
- 
- 	sb->s_magic = OVERLAYFS_SUPER_MAGIC;
- 	sb->s_xattr = ovl_xattr_handlers(ofs);
-@@ -1549,27 +1531,50 @@ int ovl_fill_super(struct super_block *sb, struct fs_context *fc)
- 	sb->s_iflags |= SB_I_EVM_HMAC_UNSUPPORTED;
- 
- 	err = -ENOMEM;
--	root_dentry = ovl_get_root(sb, ctx->upper.dentry, oe);
--	if (!root_dentry)
-+	sb->s_root = ovl_get_root(sb, ctx->upper.dentry, oe);
-+	if (!sb->s_root)
- 		goto out_free_oe;
- 
--	sb->s_root = root_dentry;
--
--	ovl_revert_creds(old_cred);
- 	return 0;
- 
- out_free_oe:
- 	ovl_free_entry(oe);
--out_err:
--	/*
--	 * Revert creds before calling ovl_free_fs() which will call
--	 * put_cred() and put_cred() requires that the cred's that are
--	 * put are not the caller's creds, i.e., current->cred.
--	 */
--	if (old_cred)
-+	return err;
-+}
-+
-+int ovl_fill_super(struct super_block *sb, struct fs_context *fc)
-+{
-+	struct ovl_fs *ofs = sb->s_fs_info;
-+	const struct cred *old_cred = NULL;
-+	struct cred *cred;
-+	int err;
-+
-+	err = -EIO;
-+	if (WARN_ON(fc->user_ns != current_user_ns()))
-+		goto out_err;
-+
-+	ovl_set_d_op(sb);
-+
-+	err = -ENOMEM;
-+	if (!ofs->creator_cred)
-+		ofs->creator_cred = cred = prepare_creds();
-+	else
-+		cred = (struct cred *)ofs->creator_cred;
-+	if (!cred)
-+		goto out_err;
-+
-+	old_cred = ovl_override_creds(sb);
-+
-+	err = do_ovl_fill_super(fc, sb);
-+
- 	ovl_revert_creds(old_cred);
-+
-+out_err:
-+	if (err) {
- 		ovl_free_fs(ofs);
- 		sb->s_fs_info = NULL;
-+	}
-+
- 	return err;
- }
- 
+ /*
+  * Check if underlying fs supports file handles and try to determine encoding
+  * type, in order to deduce maximum inode number used by fs.
 
 -- 
 2.47.3
