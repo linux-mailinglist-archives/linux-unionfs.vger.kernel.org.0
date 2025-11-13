@@ -1,123 +1,117 @@
-Return-Path: <linux-unionfs+bounces-2568-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-2571-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8770FC5863B
-	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 16:30:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC96EC58E2D
+	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 17:54:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D416B426C1C
-	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 15:23:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 356C13B80D9
+	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 16:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582FA2EAB8D;
-	Thu, 13 Nov 2025 15:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8EF3328B43;
+	Thu, 13 Nov 2025 16:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RSita2Jy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cyo7puvs"
 X-Original-To: linux-unionfs@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D75C2E9749;
-	Thu, 13 Nov 2025 15:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C086223F294;
+	Thu, 13 Nov 2025 16:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763046674; cv=none; b=f3i7QYAt/H7fSonFJ/bfx1yuHr9sIIfKBDefmBWhlrM/ktMHi+5m67IH9C+od3PWFzdneDcOX4ioyl+k01vfrC/3x3GP6oUn2Z/eMAcLxhm4FyAeXl6Dtv33rAOXRKMggpfJ/6jGMLxd3A4JM7mkkyVGoMh9J2ZDe0mMVetxKoI=
+	t=1763051853; cv=none; b=WcybaRAkC13eBWHX/gEYHRUlBpkmuI5lKZ0JUSkwgmlYzlfBvSqzgWq0bCIEYDo8nJzPpFH1nLtNxr7SpXHtVBK/PcHKCl4BidD8msl3yUMlqP6UdpqC0eBU10AJxT9v8ta9juMcsgi8islrj5vk5bBppgnbiB6qVqGT1QbKWsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763046674; c=relaxed/simple;
-	bh=oQ+UbjZNjGXss26QaGkdKv/TWlWa+qKQlh8JjT8b3ho=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lX8D1Hfto4jBkrxPP+870dnLVQaTKsumy+dG83SZF29xDF54vgaeNl6Qeaz7FXdcJoRvwNi4+fBkew0Se/JFqqPoCW48WfSGjTpDTDob+0guHBaNe76Mz8QymmMPXyw0TvrjkcDF+KCdh1e2kPYYJZFnNZeVvdr9M6FGzDvkHK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RSita2Jy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67AD0C4CEF5;
-	Thu, 13 Nov 2025 15:11:12 +0000 (UTC)
+	s=arc-20240116; t=1763051853; c=relaxed/simple;
+	bh=JQkkm7Inl7v7mfQ7uetkHJysie3VsUXDpKlDJW6ZVOg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=vDjU0VkQ/EXkVq7u7VUPcGf+twufZ6f/9ZKpdVpP3vTNnw6UV3g1tb7fu2FvjMU4/J5VBtJRPVY01xPtbosH/B5qF9xQC5B56yVznCju97azmYbTr+UbLode4V9u0TqJfQId38jNgcCO3kb2KBz6cN4uDteJsa0C/lAisZkOcXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cyo7puvs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE0CC4CEF5;
+	Thu, 13 Nov 2025 16:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763046673;
-	bh=oQ+UbjZNjGXss26QaGkdKv/TWlWa+qKQlh8JjT8b3ho=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RSita2JyPvBKYns+qaLPaMigtzPfR1LZ+n9Vn3Oa4FIkqvh7nI1oggOnrGMwYVnWg
-	 FsIGWz+H0bZth5FzZN+CKy/einnZhN+YNipNQKUVnY3e2EFcLW2/3IZ0Eql6Dv88wW
-	 ruH+Ckken8n7uNYnq41TW4tJGd9TB4uDTbPmZN7Ez6arIrNeNZ4EBwiRWBuPlBkDpO
-	 0oYODPp+Zwe1ce7mRRaY/a4CCuiROP/yhPfAW1YN1IKyZAAf0jCrSueergwUCtTp84
-	 9562IUWfrvfFoYFc5zMXM/zJ7NSQrJEyiH9A9xhganSDAo1zJqVR0qKisYaxgVHfmb
-	 i2wFuL5Jr8iww==
-Date: Thu, 13 Nov 2025 16:11:09 +0100
+	s=k20201202; t=1763051853;
+	bh=JQkkm7Inl7v7mfQ7uetkHJysie3VsUXDpKlDJW6ZVOg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=Cyo7puvsb3ukJ+lPPBJ4rtaNzeNxOyR57SMrhCpT1Pexy9SJ0JJ1mTG/wRYEEdKjo
+	 VJjeFpZInDYEjAHqRN+0OCXjCzT/t+6bpWi2dD0tngy7scshUh6pCHKe2L+ME1MATw
+	 O5qGX8nYi1VHNLNOeYptEqvJ6TPHyplxO64CzfzqUYMAQOzi8PIBbIaMfwab/EfLax
+	 dF5iuL4xwZ8Ee+YY6xqs++yBGzqSnayNpclx0dJYrCmNY2YVfspyvZiLP/AGTX0YUn
+	 tA33NZWa7koIhMaDr0+u+1JZsKPgeNen1cRTbfQE9jB6QqKFcO4NlGX4fh8CWkYBlU
+	 xhF2vovSG5IAA==
 From: Christian Brauner <brauner@kernel.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH RFC 40/42] ovl: refactor ovl_fill_super()
-Message-ID: <20251113-misskredit-ziesel-29c08c35e738@brauner>
-References: <20251113-work-ovl-cred-guard-v1-0-fa9887f17061@kernel.org>
- <20251113-work-ovl-cred-guard-v1-40-fa9887f17061@kernel.org>
- <CAOQ4uxjwg2Nx=J8UtKCkGddq4TE0ix4BdTNVPLZ8-EDmB9vW9w@mail.gmail.com>
+Date: Thu, 13 Nov 2025 17:37:07 +0100
+Subject: [PATCH v2 02/42] ovl: port ovl_copy_up_flags() to cred guards
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOQ4uxjwg2Nx=J8UtKCkGddq4TE0ix4BdTNVPLZ8-EDmB9vW9w@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251113-work-ovl-cred-guard-v2-2-c08940095e90@kernel.org>
+References: <20251113-work-ovl-cred-guard-v2-0-c08940095e90@kernel.org>
+In-Reply-To: <20251113-work-ovl-cred-guard-v2-0-c08940095e90@kernel.org>
+To: Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ Christian Brauner <brauner@kernel.org>
+X-Mailer: b4 0.15-dev-a6db3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1179; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=JQkkm7Inl7v7mfQ7uetkHJysie3VsUXDpKlDJW6ZVOg=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSKcbrqvO/9Eij9/s0Flnt7XRyrHlz0O/LgCnv+U/NHK
+ 9Y1TODP6yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI1zqG/64ezPrr/k3MZleQ
+ KjDkSJxmefnP3wXbGB2nbpdQ2FPB6MTwP3xlfhBvV86m8gvXrqf5WzXcerVHgvWAifi6RzNdtKS
+ PMgIA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-On Thu, Nov 13, 2025 at 03:32:16PM +0100, Amir Goldstein wrote:
-> On Thu, Nov 13, 2025 at 2:03 PM Christian Brauner <brauner@kernel.org> wrote:
-> >
-> > Split the core into a separate helper in preparation of converting the
-> > caller to the scoped ovl cred guard.
-> >
-> > Signed-off-by: Christian Brauner <brauner@kernel.org>
-> > ---
-> >  fs/overlayfs/super.c | 119 +++++++++++++++++++++++++++------------------------
-> >  1 file changed, 62 insertions(+), 57 deletions(-)
-> >
-> > diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-> > index 43ee4c7296a7..6876406c120a 100644
-> > --- a/fs/overlayfs/super.c
-> > +++ b/fs/overlayfs/super.c
-> > @@ -1369,53 +1369,35 @@ static void ovl_set_d_op(struct super_block *sb)
-> >         set_default_d_op(sb, &ovl_dentry_operations);
-> >  }
-> >
-> > -int ovl_fill_super(struct super_block *sb, struct fs_context *fc)
-> > +static int do_ovl_fill_super(struct super_block *sb, struct ovl_fs *ofs,
-> > +                             struct fs_context *fc)
-> >  {
-> > -       struct ovl_fs *ofs = sb->s_fs_info;
-> > -       struct ovl_fs_context *ctx = fc->fs_private;
-> > -       const struct cred *old_cred = NULL;
-> > -       struct dentry *root_dentry;
-> > -       struct ovl_entry *oe;
-> > +       struct ovl_fs_context *fsctx = fc->fs_private;
-> >         struct ovl_layer *layers;
-> > -       struct cred *cred;
-> > +       struct ovl_entry *oe = NULL;
-> > +       struct cred *cred = (struct cred *)ofs->creator_cred;
-> >         int err;
-> >
-> > -       err = -EIO;
-> > -       if (WARN_ON(fc->user_ns != current_user_ns()))
-> > -               goto out_err;
-> > -
-> > -       ovl_set_d_op(sb);
-> > -
-> > -       err = -ENOMEM;
-> > -       if (!ofs->creator_cred)
-> > -               ofs->creator_cred = cred = prepare_creds();
-> > -       else
-> > -               cred = (struct cred *)ofs->creator_cred;
-> > -       if (!cred)
-> > -               goto out_err;
-> > -
-> > -       old_cred = ovl_override_creds(sb);
-> > -
-> > -       err = ovl_fs_params_verify(ctx, &ofs->config);
-> > +       err = ovl_fs_params_verify(fsctx, &ofs->config);
-> 
-> The rename of ctx var seems like unneeded churn.
-> Am I missing something?
+Use the scoped ovl cred guard.
 
-Fixed, was an oversight from a prior version of this patch. Thanks!
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+---
+ fs/overlayfs/copy_up.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index 604a82acd164..bb0231fc61fc 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -1214,7 +1214,6 @@ static int ovl_copy_up_one(struct dentry *parent, struct dentry *dentry,
+ static int ovl_copy_up_flags(struct dentry *dentry, int flags)
+ {
+ 	int err = 0;
+-	const struct cred *old_cred;
+ 	bool disconnected = (dentry->d_flags & DCACHE_DISCONNECTED);
+ 
+ 	/*
+@@ -1234,7 +1233,6 @@ static int ovl_copy_up_flags(struct dentry *dentry, int flags)
+ 	if (err)
+ 		return err;
+ 
+-	old_cred = ovl_override_creds(dentry->d_sb);
+ 	while (!err) {
+ 		struct dentry *next;
+ 		struct dentry *parent = NULL;
+@@ -1254,12 +1252,12 @@ static int ovl_copy_up_flags(struct dentry *dentry, int flags)
+ 			next = parent;
+ 		}
+ 
++		with_ovl_creds(dentry->d_sb)
+ 			err = ovl_copy_up_one(parent, next, flags);
+ 
+ 		dput(parent);
+ 		dput(next);
+ 	}
+-	ovl_revert_creds(old_cred);
+ 
+ 	return err;
+ }
+
+-- 
+2.47.3
+
 
