@@ -1,49 +1,50 @@
-Return-Path: <linux-unionfs+bounces-2590-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-2593-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0B4C58E2A
-	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 17:54:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33309C58F4D
+	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 18:01:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49692427217
-	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 16:46:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DC87E5638AB
+	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 16:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540353081DE;
-	Thu, 13 Nov 2025 16:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CF4366575;
+	Thu, 13 Nov 2025 16:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xc72ld8K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tnjBYVkj"
 X-Original-To: linux-unionfs@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA7035B157;
-	Thu, 13 Nov 2025 16:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B84B2F5316;
+	Thu, 13 Nov 2025 16:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763051889; cv=none; b=iffez1Epvyit0ySdE8YIxjZKl3MKIA+lnD+PuXMFOjb35iInbQUwYedIDbTym3up/M441htYgscxvPkNucWarWr5L2vVw6uChlFRN64ifsv6mejUEQC3BXBf5hwMTg8Mz3/c2wwokfC4gDxQ2Rz0F4j88uUSBkf35hQ2Y1E4jkQ=
+	t=1763051894; cv=none; b=o3wjzTDcE4hFzzoMQ6s+nSxL2FH0+fFlWKOWDbcFjOoqJp1GT4hhLyCkwLde7VTfdwLMTvsJ2eM8oaE1Ik0kCmV90ueR0qvixtiHBfPKSrCMV4RQ4RUYRgdAMbNulfYAIGIO3aEI+TRb4Suu5AkPwgM4H8j8Xk1xVwgFVJMOnT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763051889; c=relaxed/simple;
-	bh=4VGubPAlnRpXUixqX2KUafd8FQOO+JGZhfJ1L/vjEpY=;
+	s=arc-20240116; t=1763051894; c=relaxed/simple;
+	bh=oLWJCOoirB81PvWPQsj4tHBL9mWmJKgCn7/tar7A83U=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eqnQ95PTMdv7E+FVoIqXSKY+bBzPoY7EK2ALDBJRZaw/2Wqhap0MS+u1lh+Kt0q9tG1B2YFoPxKhiYKqvY1pinvYnp1qc43T8iv9BsvImyyyd6jjscbyECPfhZszfYqQE44NGtrK4kIi6Pqza10Xro2+A/tINhQzlIqzMZOsJ7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xc72ld8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD74C4CEF7;
-	Thu, 13 Nov 2025 16:38:07 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=AEkJwv5p+fj0OvI5h7AdXuKmVLDstTCtFM6NXajPAKdo4GYcNCG6oMDZVu1zPdXW4xhrMQ1dl1DhbSu8uWFZ8VckmSxaodaa4OavrrnQ/p3AYyIUEFqlN9g2Bk4f8pHaq59HWL8vcdEqVRiTwXBvNqHYPUn40357gLWaFWWFjzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tnjBYVkj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B4FC4CEF1;
+	Thu, 13 Nov 2025 16:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763051888;
-	bh=4VGubPAlnRpXUixqX2KUafd8FQOO+JGZhfJ1L/vjEpY=;
+	s=k20201202; t=1763051894;
+	bh=oLWJCOoirB81PvWPQsj4tHBL9mWmJKgCn7/tar7A83U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Xc72ld8KilB8cRGMWeQpP14ySOmiqCH6qs2RcJPhX45UxqqOEWRUDp7+EScal/wSd
-	 OFTtT4X5ojGtw5oWnFoexnh8tq9ASyatedsaetFxZM1272JGuhzmnZLQgHCbVWOp+0
-	 pQVzJ3i7POPuhErVmtBUS0+u16Dbzt+5OBSi/+QysbXkwjJjCRJemkOD+QcKMrnnf2
-	 I9SKOYVX52wmQUosbwh6PK9no/0++FCr7R+5ooqLrXUjrJ1X+r3N9ZVOAXEmRSJCwq
-	 RwoG9NZ5GeIzrJDexZKsuMsQbAdM6JUB9n8p476aQ0lLyHi8jv85e6bS3hYoNsv8yn
-	 hkiidG9zU/0Vw==
+	b=tnjBYVkjqYwiLbDq6BRkWz51BFK3Qd+j/ctU5iGSxGFmaC9TNsKXkV+Gh7/EYi8sR
+	 Vbez/M1cXRDBAz1WuIODF9/efRrFMqechs7aIyPcjXkoLc5j3tlICJPr4MAfVkQuzD
+	 IQtPfaXlFn7uxD4DxeVmEn4ax0gaSHcR+pX1qq8uInGoHK9n97HiaqyFP0XnPSuyxC
+	 OaflI6Mslrp9GKs7g1tPifB/4gTBdwL/IT/Z404W2ifJn7OvaAZsRS6YLPPSDGc5tf
+	 /E+F7HquQOeiQK6ZYLV7nv+cZM3Ks933EL6wwazkTfQfzwlkSUBtutYhD/Bm6I3PH9
+	 gmvRQ7cN97zbg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 13 Nov 2025 17:37:26 +0100
-Subject: [PATCH v2 21/42] ovl: port ovl_fileattr_get() to cred guard
+Date: Thu, 13 Nov 2025 17:37:29 +0100
+Subject: [PATCH v2 24/42] ovl: don't override credentials for
+ ovl_check_whiteouts()
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
@@ -51,8 +52,8 @@ List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251113-work-ovl-cred-guard-v2-21-c08940095e90@kernel.org>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20251113-work-ovl-cred-guard-v2-24-c08940095e90@kernel.org>
 References: <20251113-work-ovl-cred-guard-v2-0-c08940095e90@kernel.org>
 In-Reply-To: <20251113-work-ovl-cred-guard-v2-0-c08940095e90@kernel.org>
 To: Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>
@@ -60,43 +61,93 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  Christian Brauner <brauner@kernel.org>
 X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=813; i=brauner@kernel.org;
- h=from:subject:message-id; bh=4VGubPAlnRpXUixqX2KUafd8FQOO+JGZhfJ1L/vjEpY=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSKcbq1OdsL7roptrfmY+X84wZ1kd+Y2EyUS4yObuDd+
- 7P0+IJjHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNh72NkuNeqdnSu4xnF/1Vs
- 6darWn5c8o7U+MPP9/DCKeHV6dHdcxn+O+qllKr+edjxrPSyoVD/hBPHXFbmr96eGLBE98s9671
- n2QA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2721; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=oLWJCOoirB81PvWPQsj4tHBL9mWmJKgCn7/tar7A83U=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSKcbo5aJl41k56+FVdaSPnpRiua7k9gsJMJdeTLr3eE
+ euc+SWgo5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCItTgz/nc5kVy26deWP0NRe
+ 5aw/Sg/cb5+yPeG3Ncr186UFWRK9WxgZfhn+KRPdcyz1k62rbbLVDav/Jgt/7gs+LLKnu2Ghkpk
+ SBwA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Use the scoped ovl cred guard.
+The function is only called when rdd->dentry is non-NULL:
+
+if (!err && rdd->first_maybe_whiteout && rdd->dentry)
+    err = ovl_check_whiteouts(realpath, rdd);
+
+| Caller                        | Sets rdd->dentry? | Can call ovl_check_whiteouts()? |
+|-------------------------------|-------------------|---------------------------------|
+| ovl_dir_read_merged()         | ✓ Yes (line 430)  | ✓ YES                           |
+| ovl_dir_read_impure()         | ✗ No              | ✗ NO                            |
+| ovl_check_d_type_supported()  | ✗ No              | ✗ NO                            |
+| ovl_workdir_cleanup_recurse() | ✗ No              | ✗ NO                            |
+| ovl_indexdir_cleanup()        | ✗ No              | ✗ NO                            |
+
+VFS layer (.iterate_shared file operation)
+  → ovl_iterate()
+      [CRED OVERRIDE]
+      → ovl_cache_get()
+          → ovl_dir_read_merged()
+              → ovl_dir_read()
+                  → ovl_check_whiteouts()
+      [CRED REVERT]
+
+ovl_unlink()
+  → ovl_do_remove()
+      → ovl_check_empty_dir()
+          [CRED OVERRIDE]
+          → ovl_dir_read_merged()
+              → ovl_dir_read()
+                  → ovl_check_whiteouts()
+          [CRED REVERT]
+
+ovl_rename()
+  → ovl_check_empty_dir()
+      [CRED OVERRIDE]
+      → ovl_dir_read_merged()
+          → ovl_dir_read()
+              → ovl_check_whiteouts()
+      [CRED REVERT]
+
+All valid callchains already override credentials so drop the override.
 
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 ---
- fs/overlayfs/inode.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/overlayfs/readdir.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index 3a23eb038097..40671fcc6c4e 100644
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -714,15 +714,13 @@ int ovl_fileattr_get(struct dentry *dentry, struct file_kattr *fa)
+diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
+index 1e9792cc557b..12f0bb1480d7 100644
+--- a/fs/overlayfs/readdir.c
++++ b/fs/overlayfs/readdir.c
+@@ -348,11 +348,7 @@ static bool ovl_fill_merge(struct dir_context *ctx, const char *name,
+ 
+ static int ovl_check_whiteouts(const struct path *path, struct ovl_readdir_data *rdd)
  {
- 	struct inode *inode = d_inode(dentry);
- 	struct path realpath;
+-	int err = 0;
+ 	struct dentry *dentry, *dir = path->dentry;
 -	const struct cred *old_cred;
- 	int err;
+-
+-	old_cred = ovl_override_creds(rdd->dentry->d_sb);
  
- 	ovl_path_real(dentry, &realpath);
- 
--	old_cred = ovl_override_creds(inode->i_sb);
-+	with_ovl_creds(inode->i_sb)
- 		err = ovl_real_fileattr_get(&realpath, fa);
- 	ovl_fileattr_prot_flags(inode, fa);
+ 	while (rdd->first_maybe_whiteout) {
+ 		struct ovl_cache_entry *p =
+@@ -365,13 +361,11 @@ static int ovl_check_whiteouts(const struct path *path, struct ovl_readdir_data
+ 			p->is_whiteout = ovl_is_whiteout(dentry);
+ 			dput(dentry);
+ 		} else if (PTR_ERR(dentry) == -EINTR) {
+-			err = -EINTR;
+-			break;
++			return -EINTR;
+ 		}
+ 	}
 -	ovl_revert_creds(old_cred);
  
- 	return err;
+-	return err;
++	return 0;
  }
+ 
+ static inline int ovl_dir_read(const struct path *realpath,
 
 -- 
 2.47.3
