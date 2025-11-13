@@ -1,49 +1,50 @@
-Return-Path: <linux-unionfs+bounces-2586-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-2591-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C92DC5942E
-	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 18:47:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A88CC59001
+	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 18:07:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8CEFC5072E3
-	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 16:46:11 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 01A4036182C
+	for <lists+linux-unionfs@lfdr.de>; Thu, 13 Nov 2025 16:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4C935E554;
-	Thu, 13 Nov 2025 16:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C200636657E;
+	Thu, 13 Nov 2025 16:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pLJRv6NW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DmN1knSB"
 X-Original-To: linux-unionfs@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A294A35A153;
-	Thu, 13 Nov 2025 16:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AC52F5316;
+	Thu, 13 Nov 2025 16:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763051881; cv=none; b=JNKOQjjHqEycdbtDhNmX4mJwdN3JPCwyM8VbxUKP6KwNobPJEvAEuphj9vtYfPsBf8/kseEwaUZq4CdBROJ6xBlRRYqHZUMIcivZDAk6Pea+s7E1sJzFj1mi5qqc3z9iK/jihp74cc0X0MBqzX9HyMDqwpzj3hEjbp2zSChu9jQ=
+	t=1763051890; cv=none; b=Kbowgt+H0ckXs9zF3a0gupW/AF65+rtoWaKHyTXA+1fH2NgVFDq4jVcPWrrAibsrMxHoeQpmnv61Ex16wXiMewobH5uy6n9KJ5uPSIYLBkJoxkNYhiO9/ZK7h8za1RfLN6Gek18QVqRATmZcx3nT27bAnscKQLgvUisILMBOCkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763051881; c=relaxed/simple;
-	bh=GZOx6xsdBBcJPbjJE9TdIEiXaZgusc5fhE/lcLlr69E=;
+	s=arc-20240116; t=1763051890; c=relaxed/simple;
+	bh=W/DqeeIcK6GazQCricaLbDQV0gL23WnHpeFTOhOoUc0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QNywN9bo3l8+Xhj6B7UYY9uxmxwQBe3ZWE+hHHJTrvWdk3qOxA2v4eTb4jVrUbRgr1ZK3LcKv4C2jMaLyDVuP3B/7Xordq05HRhPerx7tGHJgKoIhkRiuMH5ph3uIrFJWBOBy/t6HQ7HT07VNrJO8WO2Pnbjf+ycR/x/VPVKsqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pLJRv6NW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13FAC4CEF7;
-	Thu, 13 Nov 2025 16:37:59 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=upQGQ0c83L9KnLZ1FwGC/0FkdirP06XSqxQX9dsKNR++mbZ1FwP6BdaNeMnkOrTWgsU7H+/QopItTxM+f1oAxnaN7e8iDs0XKjmYqwRDKdCGgibPxAYzfVHMoS/Bjkwqtl/1gkGt6NvChwjhLLehXTeILAUIG43HRL3r1wnE0do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DmN1knSB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327C1C4CEF1;
+	Thu, 13 Nov 2025 16:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763051881;
-	bh=GZOx6xsdBBcJPbjJE9TdIEiXaZgusc5fhE/lcLlr69E=;
+	s=k20201202; t=1763051890;
+	bh=W/DqeeIcK6GazQCricaLbDQV0gL23WnHpeFTOhOoUc0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=pLJRv6NW7CeR3SwPSkrNPWz/14FqlCKktRIS+SfuapkgcarI8kQE+rWL6ASsIGHMR
-	 0BrmEBLqMSpA/C+gCPHwsTNxaPP42M+SJDN3knxtimzlT4ITA79sF3iLjT/ZSOKzg1
-	 MJvpwNwOa28FQkP/M2H1iiBmszj4D0varWuaMueRBvPd16/xmX8S+8uCE5JkOLxkXf
-	 5gxMFnmH6KJzSD9rt12NlcMSY70r4p4v983M83NIsqw0mUI/2CYusLljf4jlDiwMfQ
-	 3Me46sKMAt3s+PUZVWsDd7pJt//t5Eq/cR76m96rzw3/AaQhGrnlEtOmlOOBRUdEcU
-	 SPq0joc4f3Pqw==
+	b=DmN1knSBAfacY+ovxLMQRZz2uycJwnTg/56ni/LvuRUdIvOHlCzeXxE2BoPVfqtly
+	 EYUqdvHf7evXP8kEGH4dG5j+oi5KMygjWhNiH81sYA+FyISwJ7BnAH0KPOBLq66gCe
+	 Sj1CtfjwwJlaj9IQTgwDQIejHpXX6DexX5yRseg6asZdx7k0KT9bGmNQ6+t6matu44
+	 c7WudcvS/j5/pVTEYzp7RPgIt//MCyVgXgx1U+A2i8GdmcBaN6XEKKVoLgHYVD7qKS
+	 g8deWGKeYKxwAgiBEJxa7IZ1Go3cro0IPlgPmy64g2js4GR2M6TZdfjuyGCXeC7lV/
+	 JJMJo5Ow3fsSA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 13 Nov 2025 17:37:22 +0100
-Subject: [PATCH v2 17/42] ovl: port do_ovl_get_acl() to cred guard
+Date: Thu, 13 Nov 2025 17:37:27 +0100
+Subject: [PATCH v2 22/42] ovl: port ovl_maybe_validate_verity() to cred
+ guard
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
@@ -52,7 +53,7 @@ List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251113-work-ovl-cred-guard-v2-17-c08940095e90@kernel.org>
+Message-Id: <20251113-work-ovl-cred-guard-v2-22-c08940095e90@kernel.org>
 References: <20251113-work-ovl-cred-guard-v2-0-c08940095e90@kernel.org>
 In-Reply-To: <20251113-work-ovl-cred-guard-v2-0-c08940095e90@kernel.org>
 To: Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>
@@ -60,12 +61,12 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  Christian Brauner <brauner@kernel.org>
 X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=737; i=brauner@kernel.org;
- h=from:subject:message-id; bh=GZOx6xsdBBcJPbjJE9TdIEiXaZgusc5fhE/lcLlr69E=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSKcbqtWXmkS5D3o5twzKrindl5RvdrNjxm5c98IhUkd
- UXLtOd1RykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwER26DL805V+JqZSG5RYledx
- eGbJJMdSY9sJSS+i2+6+uWMTfJPrMcP/iqthigEuEyY9K7tvkej/4BITt8nbzD9KkwuETTZev5P
- GBgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=821; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=W/DqeeIcK6GazQCricaLbDQV0gL23WnHpeFTOhOoUc0=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSKcbo5rfxnePNOj2bq7xedGXV/D4cGuAi8W2PBwMq4j
+ te5mEuwo5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCJ3yxgZVpiXNekayCwPye7t
+ D3mYfKsn+oVib93rvT+2Bk74PG2CFSPDtiDnrA//riuVeBiqKPKtEjjLOnfxGaV6l+8iE2588nb
+ hAQA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
@@ -73,26 +74,30 @@ Use the scoped ovl cred guard.
 
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 ---
- fs/overlayfs/inode.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ fs/overlayfs/namei.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index 3a35f9b125f4..1e74b3d9b7f3 100644
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -461,11 +461,8 @@ struct posix_acl *do_ovl_get_acl(struct mnt_idmap *idmap,
+diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
+index e93bcc5727bc..dbacf02423cb 100644
+--- a/fs/overlayfs/namei.c
++++ b/fs/overlayfs/namei.c
+@@ -979,15 +979,10 @@ static int ovl_maybe_validate_verity(struct dentry *dentry)
+ 		return err;
  
- 		acl = get_cached_acl_rcu(realinode, type);
- 	} else {
+ 	if (!ovl_test_flag(OVL_VERIFIED_DIGEST, inode)) {
 -		const struct cred *old_cred;
 -
--		old_cred = ovl_override_creds(inode->i_sb);
-+		with_ovl_creds(inode->i_sb)
- 			acl = ovl_get_acl_path(&realpath, posix_acl_xattr_name(type), noperm);
+-		old_cred = ovl_override_creds(dentry->d_sb);
+-
++		with_ovl_creds(dentry->d_sb)
+ 			err = ovl_validate_verity(ofs, &metapath, &datapath);
+ 		if (err == 0)
+ 			ovl_set_flag(OVL_VERIFIED_DIGEST, inode);
+-
 -		ovl_revert_creds(old_cred);
  	}
  
- 	return acl;
+ 	ovl_inode_unlock(inode);
 
 -- 
 2.47.3
