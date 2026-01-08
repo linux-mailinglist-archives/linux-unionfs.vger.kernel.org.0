@@ -1,152 +1,210 @@
-Return-Path: <linux-unionfs+bounces-2986-lists+linux-unionfs=lfdr.de@vger.kernel.org>
+Return-Path: <linux-unionfs+bounces-2994-lists+linux-unionfs=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-unionfs@lfdr.de
 Delivered-To: lists+linux-unionfs@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F1E7D01641
-	for <lists+linux-unionfs@lfdr.de>; Thu, 08 Jan 2026 08:22:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF06D034A6
+	for <lists+linux-unionfs@lfdr.de>; Thu, 08 Jan 2026 15:21:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE62130141E4
-	for <lists+linux-unionfs@lfdr.de>; Thu,  8 Jan 2026 07:22:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CFDCA3009D53
+	for <lists+linux-unionfs@lfdr.de>; Thu,  8 Jan 2026 14:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454C233B946;
-	Thu,  8 Jan 2026 07:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA584FCC56;
+	Thu,  8 Jan 2026 14:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZgYDu5bM"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Rj/k32nr"
 X-Original-To: linux-unionfs@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A6332ABEC
-	for <linux-unionfs@vger.kernel.org>; Thu,  8 Jan 2026 07:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69914FDF12;
+	Thu,  8 Jan 2026 14:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767856934; cv=none; b=uXySTaOKOmSE3pLZSyvug92JIJyxtrpXKRAdpMOapd4hFITR4xPS6YXnikzy3yZYjCGHBj3L50Mmg9MQtatwZllPWzxYXFEoOD/hz+uxPgViwnbwKDjnA3ZmnUrTAHs2Y2BMBOzQEfwcMgJ5azn9tHbXwBzrSS1qTdS0wEYJ4kM=
+	t=1767882057; cv=none; b=HVOoqIWUgPGBrkxpWJ9UEJJ0kgUJTkmmQxzC6X2jCMkakU2+RBtSYTUXYcnWoAzgDmYPJkTK6u/5n854V1YGmBjkgEnzvn62y9kqBj26H3s45vLp4jIh8NNGdINz6Zeya0fCkIl76rbXm/mru9MCp7b06GOjeD3PrX4zQH0Edos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767856934; c=relaxed/simple;
-	bh=2ABbdPUUczhvjP+bO1uNWHeWut1Jwh8D2avvX8foP3Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VdPNBunXHTgGSFZ/kEFmJUgsSTXvwBN5Wrh5MtB8RGqTXpYtprsusWhXMAqhIZs1ijGk32dPBXM23yMUqqjMvz9EDxDykNm/ZRzQCMokEx3b56zqmu412lGPEqyd2KTjrhD2ut5FF8o7OGX7RBYaJX5ril7DHLOXIuQD5Tkb0uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZgYDu5bM; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-64b9b0b4d5dso5873218a12.1
-        for <linux-unionfs@vger.kernel.org>; Wed, 07 Jan 2026 23:22:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767856929; x=1768461729; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2ABbdPUUczhvjP+bO1uNWHeWut1Jwh8D2avvX8foP3Q=;
-        b=ZgYDu5bMxBaEPrXOI9LWvPa2HGdjypjDP14dmnlT6DwUgQORve64+J9PrZsFXQmbXk
-         jjFrUzeSy3XnYu2qEBOJk3fjNOip6MdtoS4gATfiemfmGa3nwT4o3MXrqvNOp7eewgFX
-         bT2H/MIC3e1Xun2Qc8dFn8wTVeTSF0ObbBoLjXvDH3KSZw4nNyk/xaCFHBmcK2Aht58w
-         v51aQmHp2A+wqI40QlMur27RnpPllOhbw0oEm1d4TQeCGL7CSYK/3FR2NhaWEIyOc0di
-         9PZvsV5PJj64ScZcr2f0R7QMw5rl3PV16ODgV5guhIJv4i8BjINX1SnjKuIxnkcxp8LM
-         X8tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767856929; x=1768461729;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2ABbdPUUczhvjP+bO1uNWHeWut1Jwh8D2avvX8foP3Q=;
-        b=gNYvxOWy7yr7ay5NBnDgybe7v8wpTXryddwXB3a2ZMMjpOUzZRog5zMcxNl5VRqSIx
-         BOzmq/NZ0JUXXwsSODRPXcs1AL4dEZSHETKuRTwrdoKSM6OqbGSCzkNsUHp3/oGsMCpV
-         M3sjhpnjBZ7uvZoqafxMVPhrdfSlGafAvfK4Gp3r5Itkloj4ZkCp9DC1f6QL1lpjOmob
-         qCDU6gA3F/ujwGgxIdbFfOi1wLvOF3A5hINVmxE3hi1IJMQDiKkgBabqthx3R3CBIN1l
-         IRg7PARHw7L1zu7kpP3z68pGfGQSAtR++s/pgAamUfXR03SUnoM7T5s71H6nqvreMORQ
-         wZjA==
-X-Forwarded-Encrypted: i=1; AJvYcCXVialy6RdEP0jF1fmDnCMuMlIv38YCWsvMANMBuE5XNvB810e7FBqzOTVeJweWDDVH9SUP7sEg+vAJdyuU@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYOzKv5q48wNDjnkRA0W6vISQfUVsMCyiWlsIWzbj2VTUMsaER
-	GcasfR087yx4xMkLl7BRieAftAe9hLt3ZEvs6S9fGeJcFrP3v85hX14J2w7gqTph1dT09P6EJOM
-	w9O1HXBEBKytbnMKNj3D/dSku0EKiXK538+ak
-X-Gm-Gg: AY/fxX5U+kPB7oXCHlLiS9VdWdJqxBkXWdDUVPazg8jOH6V74wugU316JylhYIxrlhn
-	VkODEQnPPqSRyfEHCZ6HkbtdbqFotqfLc6/uH56kY+ywWTu06P+3GTlz8DdMkGIZWEzbsfEHuMu
-	tXhipd6C2yrQnZjckitJDPhgH9aoWy3UX3lmplVdxgmRyOrUU0DTjhXxg+5GRql5LaRg6H8E+TR
-	YHKoC31ZlwB2AzdCcpek5HdZeOOg3GtPJX+RjZeL/apdMkt9iJ2nWA8GnzUURIhUlsm1AlphHQr
-	nfQFNK76IQtG3f9V9NM+OWf94wkw6w==
-X-Google-Smtp-Source: AGHT+IEKho5/95w0mw1isGhGEzAqmiNc9AwO44hAU/FLcqRyfxbyQMZB866nPF4cm7DzN0DeUeLV6ErXSjsokbziLz4=
-X-Received: by 2002:a05:6402:42c4:b0:64d:ab6b:17c9 with SMTP id
- 4fb4d7f45d1cf-65097ce5c61mr4606989a12.0.1767856928990; Wed, 07 Jan 2026
- 23:22:08 -0800 (PST)
+	s=arc-20240116; t=1767882057; c=relaxed/simple;
+	bh=QJW2Oz0j07zVy6gISVOder95FkX/kC6RYs86+NYXX8k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oNskc1S6bj51FpnCHzIK5eVQFKNGj04hFtp+SwXelGeBSxy/Jt/Uf/rWasQjJKeG0cO/Eq4zFpOv862X4UlQHLkMsUn3JKrHkSDnKQcIlf4JGEcwayQ3NkvDCWYt+AG8BSHutodYls8nzh/8r1yzQBZ2CxE+Hcqdx3d0Dgug53E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Rj/k32nr; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=0dLCsDSN8CWNV5iemdkcffE+N1acjCGYK7GrWAPKk38=; b=Rj/k32nri8aAeWW+yeSv0ka6vx
+	WWCaw40aBRtwJF2S1bACALB878VXYQoFoiJHKYPjz/PET0UAaQPEP1sh4A8wIDqd16bo5F4oXbOKM
+	QtK1qF/Dt2+5SmlWaSn+jyTOZsITJgIsEhvHzU6Gfju396fK6BNFsQCpqbnngsAnhoNcuI/7s6YfW
+	lZIBXRAIuNEv8VCZpbxlw4IaCOYjaOPM8BoL7efHONJZ7xHbo/v0FwLw3NNfLH6XlT/a+qIfKqU1L
+	+s4XnX1HAThEBHgkxc1bqiPhbCYn9oJAgX0YV7zPULJVT2JdygsS11Kn5hsec4bU7MAIszJu3/iwQ
+	B7sorWew==;
+Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vdqse-0000000HJce-2QTv;
+	Thu, 08 Jan 2026 14:20:53 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
+	David Sterba <dsterba@suse.com>,
+	Jan Kara <jack@suse.cz>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Stefan Roesch <shr@fb.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-btrfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	io-uring@vger.kernel.org,
+	devel@lists.orangefs.org,
+	linux-unionfs@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	linux-xfs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	Chaitanya Kulkarni <kch@nvidia.com>
+Subject: [PATCH 06/11] fs: factor out a sync_lazytime helper
+Date: Thu,  8 Jan 2026 15:19:06 +0100
+Message-ID: <20260108141934.2052404-7-hch@lst.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260108141934.2052404-1-hch@lst.de>
+References: <20260108141934.2052404-1-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: linux-unionfs@vger.kernel.org
 List-Id: <linux-unionfs.vger.kernel.org>
 List-Subscribe: <mailto:linux-unionfs+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-unionfs+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260107034551.439-1-luochunsheng@ustc.edu> <CAOQ4uxhjWwTdENS2GqmOxtx4hdbv=N4f90iLVuxHNgH=NLem9w@mail.gmail.com>
- <c5e3cce3-5953-4060-ae62-76e33022f4aa@ustc.edu>
-In-Reply-To: <c5e3cce3-5953-4060-ae62-76e33022f4aa@ustc.edu>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Thu, 8 Jan 2026 08:21:57 +0100
-X-Gm-Features: AQt7F2oLduIJm1jHYSGoSjXIDkoMd-Mb0Kc2cWkavzs2levI1s9rT8SuC5cCilk
-Message-ID: <CAOQ4uxgxGktn4YYH28+gytqPEJnG2NDx7Qjw9_dYae0_cGXyGA@mail.gmail.com>
-Subject: Re: [PATCH] overlayfs: mask d_type high bits before whiteout check
-To: Chunsheng Luo <luochunsheng@ustc.edu>
-Cc: miklos@szeredi.hu, bschubert@ddn.com, linux-unionfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel <linux-fsdevel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On Thu, Jan 8, 2026 at 4:48=E2=80=AFAM Chunsheng Luo <luochunsheng@ustc.edu=
-> wrote:
->
->
->
-> On 1/8/26 4:43 AM, Amir Goldstein wrote:
-> > On Wed, Jan 7, 2026 at 4:46=E2=80=AFAM Chunsheng Luo <luochunsheng@ustc=
-.edu> wrote:
-> >>
-> >> Commit c31f91c6af96 ("fuse: don't allow signals to interrupt getdents
-> >> copying") introduced the use of high bits in d_type as flags. However,
-> >> overlayfs was not adapted to handle this change.
-> >>
-> >> In ovl_cache_entry_new(), the code checks if d_type =3D=3D DT_CHR to
-> >> determine if an entry might be a whiteout. When fuse is used as the
-> >> lower layer and sets high bits in d_type, this comparison fails,
-> >> causing whiteout files to not be recognized properly and resulting in
-> >> incorrect overlayfs behavior.
-> >>
-> >> Fix this by masking out the high bits with S_DT_MASK before checking.
-> >>
-> >> Fixes: c31f91c6af96 ("fuse: don't allow signals to interrupt getdents =
-copying")
-> >> Link: https://github.com/containerd/stargz-snapshotter/issues/2214
-> >> Signed-off-by: Chunsheng Luo <luochunsheng@ustc.edu>
-> >
-> > Hi Chunsheng,
-> >
-> > Thanks for the report and the suggested fix.
-> >
-> > This time overlayfs was surprised by unexpected d_type flags and next
-> > time it could be another user.
-> >
-> > I prefer to fix this in a more profound way -
-> > Instead of making overlafys aware of d_type flags, require the users th=
-at
-> > use the d_type flags to opt-in for them.
-> >
-> > Please test/review the attached patch.
-> >
-> > Thanks,
-> > Amir.
-> >
->
-> Thank you for the profound solution!
->
-> The attached patch has been tested and verified to effectively address
-> the d_type high bits usage issue by enforcing the opt-in mechanism.
->
-> The variable `dt_flag_mask` might be clearer if renamed to
-> `dt_flags_mask` (plural "flags").
+Centralize how we synchronize a lazytime update into the actual on-disk
+timestamp into a single helper.
 
-Agreed.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+---
+ fs/fs-writeback.c                | 22 +++++++++++++++-------
+ fs/inode.c                       |  5 +----
+ fs/internal.h                    |  3 ++-
+ fs/sync.c                        |  4 ++--
+ include/trace/events/writeback.h |  6 ------
+ 5 files changed, 20 insertions(+), 20 deletions(-)
 
->
-> Reviewed-by: Chunsheng Luo <luochunsheng@ustc.edu>
-> Tested-by: Chunsheng Luo <luochunsheng@ustc.edu>
->
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 6800886c4d10..3d68b757136c 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -1711,6 +1711,16 @@ static void requeue_inode(struct inode *inode, struct bdi_writeback *wb,
+ 	}
+ }
+ 
++bool sync_lazytime(struct inode *inode)
++{
++	if (!(inode_state_read_once(inode) & I_DIRTY_TIME))
++		return false;
++
++	trace_writeback_lazytime(inode);
++	mark_inode_dirty_sync(inode);
++	return true;
++}
++
+ /*
+  * Write out an inode and its dirty pages (or some of its dirty pages, depending
+  * on @wbc->nr_to_write), and clear the relevant dirty flags from i_state.
+@@ -1750,17 +1760,15 @@ __writeback_single_inode(struct inode *inode, struct writeback_control *wbc)
+ 	}
+ 
+ 	/*
+-	 * If the inode has dirty timestamps and we need to write them, call
+-	 * mark_inode_dirty_sync() to notify the filesystem about it and to
+-	 * change I_DIRTY_TIME into I_DIRTY_SYNC.
++	 * For data integrity writeback, or when the dirty interval expired,
++	 * ask the file system to propagata lazy timestamp updates into real
++	 * dirty state.
+ 	 */
+ 	if ((inode_state_read_once(inode) & I_DIRTY_TIME) &&
+ 	    (wbc->sync_mode == WB_SYNC_ALL ||
+ 	     time_after(jiffies, inode->dirtied_time_when +
+-			dirtytime_expire_interval * HZ))) {
+-		trace_writeback_lazytime(inode);
+-		mark_inode_dirty_sync(inode);
+-	}
++			dirtytime_expire_interval * HZ)))
++		sync_lazytime(inode);
+ 
+ 	/*
+ 	 * Get and clear the dirty flags from i_state.  This needs to be done
+diff --git a/fs/inode.c b/fs/inode.c
+index a0dd11a05473..0cafe74bff2d 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -1979,11 +1979,8 @@ void iput(struct inode *inode)
+ 	if (atomic_add_unless(&inode->i_count, -1, 1))
+ 		return;
+ 
+-	if ((inode_state_read_once(inode) & I_DIRTY_TIME) && inode->i_nlink) {
+-		trace_writeback_lazytime_iput(inode);
+-		mark_inode_dirty_sync(inode);
++	if (inode->i_nlink && sync_lazytime(inode))
+ 		goto retry;
+-	}
+ 
+ 	spin_lock(&inode->i_lock);
+ 	if (unlikely((inode_state_read(inode) & I_DIRTY_TIME) && inode->i_nlink)) {
+diff --git a/fs/internal.h b/fs/internal.h
+index ab638d41ab81..18a062c1b5b0 100644
+--- a/fs/internal.h
++++ b/fs/internal.h
+@@ -214,7 +214,8 @@ bool in_group_or_capable(struct mnt_idmap *idmap,
+ /*
+  * fs-writeback.c
+  */
+-extern long get_nr_dirty_inodes(void);
++long get_nr_dirty_inodes(void);
++bool sync_lazytime(struct inode *inode);
+ 
+ /*
+  * dcache.c
+diff --git a/fs/sync.c b/fs/sync.c
+index 431fc5f5be06..4283af7119d1 100644
+--- a/fs/sync.c
++++ b/fs/sync.c
+@@ -183,8 +183,8 @@ int vfs_fsync_range(struct file *file, loff_t start, loff_t end, int datasync)
+ 
+ 	if (!file->f_op->fsync)
+ 		return -EINVAL;
+-	if (!datasync && (inode_state_read_once(inode) & I_DIRTY_TIME))
+-		mark_inode_dirty_sync(inode);
++	if (!datasync)
++		sync_lazytime(inode);
+ 	return file->f_op->fsync(file, start, end, datasync);
+ }
+ EXPORT_SYMBOL(vfs_fsync_range);
+diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
+index 311a341e6fe4..7162d03e69a5 100644
+--- a/include/trace/events/writeback.h
++++ b/include/trace/events/writeback.h
+@@ -856,12 +856,6 @@ DEFINE_EVENT(writeback_inode_template, writeback_lazytime,
+ 	TP_ARGS(inode)
+ );
+ 
+-DEFINE_EVENT(writeback_inode_template, writeback_lazytime_iput,
+-	TP_PROTO(struct inode *inode),
+-
+-	TP_ARGS(inode)
+-);
+-
+ DEFINE_EVENT(writeback_inode_template, writeback_dirty_inode_enqueue,
+ 
+ 	TP_PROTO(struct inode *inode),
+-- 
+2.47.3
 
-Thanks for review and testing!
-Amir.
 
